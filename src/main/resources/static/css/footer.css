@@ -1,0 +1,56 @@
+.footer-container {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #333;
+  color: white;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 50px;
+  font-size: small;
+}
+
+.footer-developer {
+  margin: 0 20px;
+}
+
+.footer-developers-container {
+  display: inline-flex;
+  padding-top: 2px;
+}
+
+.footer-dev-title {
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.footer-dev-email {
+  font-weight: 100;
+}
+.footer-dev-tel {
+  font-weight: 100;
+  margin-bottom: 30px;
+}
+.footer-dev-github {
+  font-weight: 100;
+}
+
+.footer-social-media {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-media-title {
+  margin-bottom: 10px;
+}
+
+.footer-media-icon-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.footer-media-icon {
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+}
