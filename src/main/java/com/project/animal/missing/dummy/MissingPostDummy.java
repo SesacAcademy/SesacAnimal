@@ -10,9 +10,18 @@ import java.util.stream.Collectors;
 
 public class MissingPostDummy {
   private static List<MissingPost> dummyPost = List.of(
+          new MissingPost(1, 1,"Lost Friendly Dog, faepoefjawpofawpofjawfeawfoawpj", 'd', "Brown", 150, "Central Park", LocalDateTime.now(), "Sma dog with a red collar and a friendly demeanor.", 0, 'L', true),
+          new MissingPost(1, 1,"Lost Friendly Dog", 'd', "Brown", 150, "Central Park", LocalDateTime.now(), "Sma dog with a red collar and a friendly demeanor.", 0, 'L', true),
+          new MissingPost(1, 1,"Lost Friendly Dog", 'd', "Brown", 150, "Central Park", LocalDateTime.now(), "Sma dog with a red collar and a friendly demeanor.", 0, 'L', true),
+          new MissingPost(1, 1,"Lost Friendly Dog", 'd', "Brown", 150, "Central Park", LocalDateTime.now(), "Sma dog with a red collar and a friendly demeanor.", 0, 'L', true),
+          new MissingPost(1, 1,"Lost Friendly Dog", 'd', "Brown", 150, "Central Park", LocalDateTime.now(), "Sma dog with a red collar and a friendly demeanor.", 0, 'L', true),
+          new MissingPost(1, 1,"Lost Friendly Dog", 'd', "Brown", 150, "Central Park", LocalDateTime.now(), "Sma dog with a red collar and a friendly demeanor.", 0, 'L', true),
+          new MissingPost(1, 1,"Lost Friendly Dog", 'd', "Brown", 150, "Central Park", LocalDateTime.now(), "Sma dog with a red collar and a friendly demeanor.", 0, 'L', true),
           new MissingPost(1, 1,"Lost Friendly Dog", 'd', "Brown", 150, "Central Park", LocalDateTime.now(), "Sma dog with a red collar and a friendly demeanor.", 0, 'L', true),
           new MissingPost(1, 1,"Lost Friendly Dog", 'd', "Brown", 150, "Central Park", LocalDateTime.now(), "Sma dog with a red collar and a friendly demeanor.", 0, 'L', true),
           new MissingPost(1, 1,"Lost Friendly Dog", 'd', "Brown", 150, "Central Park", LocalDateTime.now(), "Sma dog with a red collar and a friendly demeanor.", 0, 'L', true)
+
+
   );
 
   public static List<MissingListResDto> getDummyDto() {
