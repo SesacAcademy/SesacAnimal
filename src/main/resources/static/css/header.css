@@ -28,15 +28,12 @@ header{
   align-items: center;    
 }
 
-.logo-area .logo {
-    width:40px;
-}
-.logo-area .logo img{
-    width: 40px;
+.logo-area .logo{
   /*color:#f2d8b9;*/
   /*color:#c1dcf9;*/
-  /*color:#acb8f7;*/
+  color:#acb8f7;
   /*color:#e9ebf6;*/
+
 }
 
 

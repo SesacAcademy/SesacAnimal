@@ -48,13 +48,6 @@
 
 
 .adoption .select select {
-    /* height: 30px;
-    text-indent: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    vertical-align: top;
-    font-size: 15px; */
     width:173px;
     height:41px;
     background-color: rgba(240,240,240,0.41);
@@ -107,7 +100,6 @@
 .adoption-board ul li:last-child{
     border-bottom: 1px solid #aaa;
 }
-
 .adoption-board ul li .image-area{
     flex:20%;
     font-size: 14px;
@@ -116,16 +108,6 @@
 .adoption-board ul li .image-area img {
     /* margin-left: 15px; */
     width:200px;
-}
-
-.adoption-board ul li .status-area {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.adoption-board ul li .status-area span{
-    vertical-align: middle;
 }
 
 
@@ -158,16 +140,12 @@
 }
 
 /* 글쓰기 저장 버튼 영역 */
-.adoption-write .write-view-area{
+.adoption-write .write-button-area{
     display: flex;
-    justify-content: space-between;
-}
-.adoption-write .write-view-area .view-area span{
-    vertical-align: middle;
-    color:#777;
+    justify-content: flex-end;
 }
 
-.adoption-write .write-view-area .write-button{
+.adoption-write .write-button-area .write-button{
     border:none;
     display: inline-block;
     /*width:120px;*/
@@ -179,7 +157,7 @@
     text-decoration: none;
 }
 
-.adoption-write .write-view-area .write-button span{
+.adoption-write .write-button-area .write-button span{
     color:#f0b062;
     vertical-align: middle;
 }
