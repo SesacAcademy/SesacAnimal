@@ -24,4 +24,13 @@ public class MissingController {
 
     return ViewName.POST_LIST;
   }
+
+  @GetMapping(EndPoint.DETAIL)
+  public String getPostDetail(Model model) {
+    List<MissingListResDto> list = MissingPostDummy.getDummyDto();
+    model.addAttribute("detail", list.get(0));
+
+    return ViewName.POST_DETAIL;
+
+  }
 }
