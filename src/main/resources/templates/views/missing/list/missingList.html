@@ -40,10 +40,10 @@
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" th:href="@{/css/header.css}" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
-    <link rel="stylesheet" th:href="@{/css/missingList.css}" />
-    <link rel="stylesheet" th:href="@{/css/missingCard.css}" />
-    <link rel="stylesheet" th:href="@{/css/missingListFilter.css}" />
-    <link rel="stylesheet" th:href="@{/css/tableIndicator.css}" />
+    <link rel="stylesheet" th:href="@{/css/missing/list/missingList.css}" />
+    <link rel="stylesheet" th:href="@{/css/missing/list/missingCard.css}" />
+    <link rel="stylesheet" th:href="@{/css/missing/list/missingListFilter.css}" />
+    <link rel="stylesheet" th:href="@{/css/missing/list/tableIndicator.css}" />
     <script th:src="@{/js/main.js}"></script>
 
 
@@ -61,9 +61,9 @@
 
         console.log("list", list);
     </script>
-    <script th:src="@{/js/missing/utils.js}" type="module"></script>
-    <script th:src="@{/js/missing/init.js}" type="module"></script>
-    <script th:src="@{/js/missing/tableIndicator.js}" type="module"></script>
+    <script th:src="@{/js/missing/list/utils.js}" type="module"></script>
+    <script th:src="@{/js/missing/list/init.js}" type="module"></script>
+    <script th:src="@{/js/missing/list/tableIndicator.js}" type="module"></script>
 </head>
 <body>
     <th:block th:replace="../fragments/header/header :: header" />
@@ -74,17 +74,17 @@
         <div class="missing-list-page-content">
             <div class="missing-list-container">
                 <div th:each="post : ${list}">
-                    <th:block th:replace="./missing/missingCard :: missingCard(${post})" />
+                    <th:block th:replace="./missing/list/missingCard :: missingCard(${post})" />
                 </div>
             </div>
             <div>
-                <th:block th:replace="./missing/missingListFilter :: filter" />
+                <th:block th:replace="./missing/list/missingListFilter :: filter" />
             </div>
         </div>
 
 
             <div class="missing-list-indicator">
-                <th:block th:replace="./missing/missingIndicator :: indicator" />
+                <th:block th:replace="./missing/list/missingIndicator :: indicator" />
             </div>
 
 
