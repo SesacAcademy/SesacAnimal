@@ -1,0 +1,23 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="missingCard(post)">
+    <div class="missing-card-container">
+        <a th:href="@{/post/{id}(id=${post.id})}" >
+            <img th:src="@{/img/sample.jpeg}" alt="head" width="100%" height="100%" class="missing-card-image"/>
+            <div style="position: relative">
+
+                <div class="missing-card-body">
+                    <div th:text="${post.title}" class="missing-card-title truncate-1-line"></div>
+
+                    <div th:text="${post.missingPlace}" class="missing-card-content truncate-1-line"></div>
+                    <div th:text="${post.missingTime}" class="missing-card-content truncate-1-line"></div>
+
+                    <div th:if="${post.reward > -1}" th:text="'사례금: ' + ${post.reward}" class="missing-card-content truncate-1-line missing-card-reward"></div>
+
+
+                </div>
+                <img th:src="@{/img/ellipse.png}" alt="ellipse" width="100%" height="100%" class="missing-card-ellipse" />
+
+            </div>
+        </a>
+    </div>
+</div>
+
