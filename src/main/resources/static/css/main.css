@@ -27,8 +27,8 @@ a:active {
 
 a:hover {
     text-decoration: none;
-    color: rgb(6,199,85);
     cursor: pointer;
+    color: #3f464d !important;
 }
 
 /* 폰트 적용 */
