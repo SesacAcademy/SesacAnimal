@@ -1,0 +1,125 @@
+/* 입양 게시판 css 영역 */
+
+.adoption {
+    width: 1200px;
+    margin: 150px auto;
+    padding:50px 100px;
+    /* background-color: #eee; */
+    border:1px solid #aaa;
+}
+
+.adoption .search-area {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 25px;
+    padding-right:20px;
+}
+
+
+.adoption .search input {
+    /* height: 35px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; */
+    width:173px;
+    height:41px;
+    background-color: rgba(240,240,240,0.41);
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+
+}
+
+.adoption .search .search-button{
+    display: inline-block;
+    border:none;
+    background-color: #fff;
+    cursor: pointer;
+
+}
+
+.adoption .search .search-button span{
+    vertical-align: top;
+}
+
+
+.adoption .select select {
+    /* height: 30px;
+    text-indent: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    vertical-align: top;
+    font-size: 15px; */
+    width:173px;
+    height:41px;
+    background-color: rgba(240,240,240,0.41);
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-indent: 10px;
+}
+
+.adoption .write .write-button{
+    border:none;
+    display: inline-block;
+    width:120px;
+    height:30px;
+    line-height: 30px;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.adoption .write .write-button span{
+    color:#f2d8b9;
+    vertical-align: middle;
+}
+
+
+/* 게시판 리스트 영역 */
+.adoption-board{
+    /* background-color: skyblue; */
+}
+
+.adoption-board ul {
+    margin:0;
+    padding:0;
+    margin-top:25px;
+
+}
+
+.adoption-board ul li{
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    border:1px solid #aaa;
+    border-bottom: none;
+    padding: 5px 15px;
+}
+
+.adoption-board ul li:last-child{
+    border-bottom: 1px solid #aaa;
+}
+.adoption-board ul li .image-area{
+    flex:25%;
+    font-size: 14px;
+}
+
+.adoption-board ul li .image-area img {
+    /* margin-left: 15px; */
+    width:200px;
+}
+
+
+.adoption-board ul li .content-area{
+    flex:60%;
+}
+
+.adoption-board ul li .info-area{
+    flex:15%;
+}
