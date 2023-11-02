@@ -1,0 +1,23 @@
+
+.missing-list-page {
+    max-width: 1200px;
+    margin: 50px auto;
+}
+
+.missing-list-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 1000px;
+}
+
+.missing-list-page-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.missing-list-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
