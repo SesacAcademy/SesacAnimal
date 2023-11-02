@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@ToString
 @Entity
 @Table(name ="Missing")
 public class MissingPost {
@@ -71,6 +70,9 @@ public class MissingPost {
 
   @Column(name="updated_at")
   private LocalDateTime updatedAt;
+
+  // TODO: Comment 생성시 ManyToOne 으로 관계설정 하기
+  //  private List<Comment> comments;
 
   public MissingPost(long missingId, long memberId, String title, char animalType, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, char missingStatus, boolean isActive) {
     this.missingId = missingId;
