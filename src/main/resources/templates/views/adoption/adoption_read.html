@@ -57,85 +57,49 @@
 <body>
  <th:block th:replace="../fragments/header/header :: header"></th:block>
 
-     <section class="adoption-read">
-         <div class="view-button-area">
-             <p class="view-area">
-                 <span class="material-symbols-outlined">visibility</span> <span>조회수</span> <span>11</span>
-             </p>
-             <p>
-                 <a href="/v1/adoption/edit" class="edit-button" title="글쓰기">
-                     <span class="material-symbols-outlined">edit</span>
-                     <span>글 수정</span>
-                 </a>
-             </p>
-         </div>
-         <div class="contents-area">
-             <div class="image-area">
-                 <p>
-                     <span class="title">이미지</span>
-                 </p>
-                 <p class="image">
-                     <img src="/img/cat_basic.jpg" alt="image"/>
-                 </p>
-             </div>
-             <p>
-                 <span class="title">제목</span>
-                 <span class="desc"></span>
-             </p>
-             <p>
-                 <span class="title">묘종/견종</span>
-                 <span class="desc"></span>
-             </p>
-             <p>
-                 <span class="title">성별</span>
-                 <span class="desc"></span>
-             </p>
-             <p>
-                 <span class="title">나이</span>
-                 <span class="desc"></span>
-             </p>
-             <p>
-                 <span class="title">센터 유무</span>
-                 <span class="desc"></span>
-             </p>
-             <!-- <p>
-                 <label for="">공고번호</label>
-                 <input />
-             </p> -->
-             <p>
-                 <span class="title">중성화유무</span>
-                 <span class="desc"></span>
-             </p>
-             <p class="text-area">
-                 <label for="textarea">내용</label>
-                 <textarea id="textarea"></textarea>
-             </p>
-         </div>
-
-
-
-     </section>
-
-
-     <div class="adoption-comments-read">
-         <h4 class="comment-read-title">댓글 읽기</h4>
-
-         <div class="comments-read">
-             <p>
-                 <label for="comment-contents" class="author">sdf</label><textarea id="comment-contents" class="comment-contents" name="read-comment-contents" readonly>aasdfasfd</textarea>
-             </p>
-         </div>
-
-     </div>
-
-     <div class="adoption-comments-write">
-         <h4 class="comment-write-title">댓글 쓰기</h4>
-
-         <div class="comments-write">
-             <label ><input class="author" type="text" value="" name="author" placeholder="작성자"/></label><label for="comment-contents"><textarea id="write-comment-contents" class="comment-contents" name="comment-contents">aasdfasfd</textarea></label>
-             <button>댓글달기</button>
-         </div>
-     </div>
+    <section class="adoption-read">
+        <p class="edit-button-area">
+            <a href="/adoption/adoption_edit" class="edit-button" title="글쓰기">
+                <span class="material-symbols-outlined">edit</span>
+                <span>글 수정</span>
+            </a>
+        </p>
+        <div class="contents-area">
+            <p>
+                <span class="title">제목</span>
+                <span class="desc"></span>
+            </p>
+            <p>
+                <span class="title">묘종/견종</span>
+                <span class="desc"></span>
+            </p>
+            <p>
+                <span class="title">성별</span>
+                <span class="desc"></span>
+            </p>
+            <p>
+                <span class="title">나이</span>
+                <span class="desc"></span>
+            </p>
+            <p>
+                <span class="title">센터 유무</span>
+                <span class="desc"></span>
+            </p>
+            <!-- <p>
+                <label for="">공고번호</label>
+                <input />
+            </p> -->
+            <p>
+                <span class="title">중성화유무</span>
+                <span class="desc"></span>
+            </p>
+            <p class="text-area">
+                <label for="textarea">내용</label>
+                <textarea id="textarea"></textarea>
+            </p>
+        </div>
+                    
+    </section>
  <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
 </body>
 </html>
