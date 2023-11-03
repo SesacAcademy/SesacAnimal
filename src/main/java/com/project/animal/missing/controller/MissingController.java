@@ -37,4 +37,10 @@ public class MissingController {
     return ViewName.POST_DETAIL;
 
   }
+
+  @GetMapping(EndPoint.NEW)
+  public String getPostNew() {
+    return ViewName.POST_NEW;
+  }
+
 }
