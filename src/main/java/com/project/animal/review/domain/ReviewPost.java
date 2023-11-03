@@ -1,6 +1,7 @@
 package com.project.animal.review.domain;
 
 import com.project.animal.member.domain.Member;
+import com.project.animal.review.dto.CreateReviewPostDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,10 +25,8 @@ public class ReviewPost {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @NotNull
     private String title;
 
-    @NotNull
     private String content;
 
     @Column(name = "view_count")
@@ -46,8 +45,10 @@ public class ReviewPost {
 //    @OneToMany(mappedBy = "reviewPost")
 //    private List<ReviewComment> comments;
 
-    public ReviewPost(String content, int viewCount) {
-        this.content = content;
-        this.viewCount = viewCount;
+
+
+    public ReviewPost(CreateReviewPostDto createReviewPostDto) {
+        this.content = createReviewPostDto.getContent();
+        this.title = createReviewPostDto.getTitle();
     }
 }
