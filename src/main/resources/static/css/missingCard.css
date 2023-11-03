@@ -1,0 +1,55 @@
+.missing-card-container {
+  width: 190px;
+  height: 350px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+.missing-card-image {
+  width: 190px;
+  height: 201px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px
+}
+
+.missing-card-body {
+  position: absolute;
+  z-index: 2;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 0 10px;
+}
+
+.missing-card-ellipse {
+ position: absolute;
+ z-index: 1;
+ top: -19px;
+ width: 190px;
+ height: 25.37px;
+}
+
+.missing-card-title {
+    font-size: 1.35rem;
+    width: 160px;
+    margin-bottom: 20px;
+}
+
+.missing-card-content {
+    font-size: 1rem;
+    width: 160px;
+    overflow: hidden;
+}
+
+.missing-card-reward {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.truncate-1-line {
+  white-space: nowrap;  /* 텍스트를 한 줄로 유지 */
+  overflow: hidden;     /* 내용이 넘칠 경우 숨김 처리 */
+  text-overflow: ellipsis;  /* 넘친 텍스트를 말줄임표로 표시 */
+}
