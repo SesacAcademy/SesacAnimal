@@ -1,0 +1,65 @@
+ .container {
+        width: 600px; /* 요구사항 1: 컨테이너의 가로 길이를 1.5배로 늘립니다 */
+        margin: 0 auto;
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        margin: 10px 0;
+        position: relative;
+    }
+
+    .input-container label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    /* 요구사항 2: 제목 입력 칸 가로 길이를 1.5배로 늘리기 */
+    .input-container input[type="text"] {
+        width: 150%; /* 요구사항 2: 가로 길이를 1.5배로 늘립니다 */
+        padding: 5px;
+        border: 2px solid #000;
+    }
+
+    /* 요구사항 3: 본문 입력 칸 가로 길이를 1.5배로 늘리고 세로를 1.4배로 늘리기 */
+    .input-container textarea {
+        width: 150%; /* 요구사항 3: 가로 길이를 1.5배로 늘립니다 */
+        height: 420px; /* 요구사항 3: 세로를 1.4배로 늘립니다 */
+        padding: 5px;
+        border: 2px solid #000;
+    }
+
+    /* 요구사항 4: 가로 길이를 일치시키기 */
+    .input-container input[type="text"],
+    .input-container textarea {
+        width: 100%;
+    }
+
+    .attachment-icon {
+        font-size: 24px;
+        margin-top: 10px;
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        cursor: pointer; /* 요구사항 1: 아이콘을 클릭 가능하게 만듭니다 */
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin: 10px 0;
+    }
+
+    .button-container button {
+        border: 2px solid #000;
+        font-weight: bold;
+        margin-left: 10px;
+    }
+
+    #image-preview {
+        max-width: 100%;
+        height: auto;
+        margin-top: 10px;
+        display: none; /* 요구사항 2: 미리보기 이미지를 숨깁니다 */
+    }

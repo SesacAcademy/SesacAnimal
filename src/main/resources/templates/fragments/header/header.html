@@ -1,0 +1,44 @@
+<!--
+    -헤더 영역 작성 : 231101 이경진
+    -아이콘 : 구글 폰트 아이콘 사용
+    -링크는 url 링크로 이동
+    -로고는 현재 구글 아이콘으로 사용하였으나 추후 변경 가능
+    -CSS는 static/css/header.css에 작성하였고, index.html에 링크하였음
+    - 폰트는 구글 폰트를 이용하여 Roboto, Noto Sans Kr을 사용하였음
+    -타임리프로 fragment만들어서 replace로 index.html에 연결하여서 사용하면됨
+-->
+
+<header lang="ko"
+        xmlns:th="http://www.thymeleaf.org" th:fragment="header">
+    <div class="logo-area">
+        <p class="material-symbols-outlined logo">
+            pets
+            <!-- <img src="" alt="새싹 애니멀"/>-->
+        </p>
+        <h1 class="logo-title">
+            <a href="/" title="home">새싹 애니멀</a>
+        </h1>
+    </div>
+
+    <menu class="menu">
+        <ul>
+            <li><a href="/" title="Home">Home</a></li>
+            <li><a href="/adoption" title="입양">입양/임보</a></li>
+            <li><a href="/missing" title="실종">실종</a></li>
+            <li><a href="/review" title="후기">후기</a></li>            
+        </ul>
+    </menu>
+
+    
+    <div class="login-area">
+        <p>
+            <a href="/v1/auth/login" title="로그인" class="material-symbols-outlined">login</a>
+        </p>
+        <p>
+            <a href="/v1/auth/signup" title="회원가입" class="material-symbols-outlined">person_add</a>
+        </p>
+    </div>
+
+
+
+</header>
