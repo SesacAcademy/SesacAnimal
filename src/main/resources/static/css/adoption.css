@@ -160,12 +160,9 @@
 /* 글쓰기 저장 버튼 영역 */
 .adoption-write .write-view-area{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
-.adoption-write .write-view-area .view-area span{
-    vertical-align: middle;
-    color:#777;
-}
+
 
 .adoption-write .write-view-area .write-button{
     border:none;
@@ -179,6 +176,17 @@
     text-decoration: none;
 }
 
+.adoption-write .write-view-area .reset-button {
+    background-color: #fff;
+    border:none;
+    width:50px;
+    height: 50px;
+    color:#f0b062;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
 .adoption-write .write-view-area .write-button span{
     color:#f0b062;
     vertical-align: middle;
@@ -189,6 +197,91 @@
 .adoption-write .contents-area {
     width:100%;
     padding: 10px;
+}
+
+.adoption-write .contents-area .col{
+    display: flex;
+    margin-bottom: 4px;
+}
+
+.adoption-write .contents-area .col input{
+    /* display: inline-block;
+    height:41px;
+    line-height: 41px;
+    background-color: rgba(240,240,240,0.41);
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding:0 10px; */
+    display: none;
+
+}
+
+.adoption-write .contents-area .col label{
+    display: inline-block;
+    width:200px;
+    height:41px;
+    line-height: 41px;
+    background-color: rgba(240,240,240,0.41);
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding:0 10px;
+    margin-bottom: 15px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.adoption-write .contents-area .col image{
+    width:300px;
+
+}
+
+.adoption-write .contents-area .col .remove-image{
+    /* margin-top:15px;
+    border:1px solid #aaa;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 17px;
+    cursor: pointer;
+    color: #aaa; */
+    display: inline-block;
+    /* width:100px; */
+    height:41px;
+    line-height: 41px;
+    margin-top: 10px;
+    background-color: rgba(240,240,240,0.41);
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding:0 10px;
+    text-align: center;
+    cursor: pointer;
+
+}
+
+.adoption-write .contents-area .title{
+    display: inline-block;
+    width:120px;
+    height:41px;
+    font-size:18px;
+    font-weight: 600;
+    margin-right: 3px;
+}
+
+.adoption-write .contents-area .desc{
+    width:800px;
+    height:41px;
+    line-height: 41px;
+    background-color: rgba(240,240,240,0.41);
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding:0 10px;
 }
 
 .adoption-write .contents-area label{
@@ -216,12 +309,13 @@
 .adoption-write .contents-area input{
     width:800px;
     height:41px;
+    line-height: 41px;
     background-color: rgba(240,240,240,0.41);
     box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
     border:1px solid rgb(240,240,240);
     border-radius: 10px;
     box-sizing: border-box;
-    text-indent: 10px;
+    padding: 0 10px;
 }
 
 .adoption-write .contents-area select {
@@ -243,7 +337,7 @@
     border:1px solid rgb(240,240,240);
     border-radius: 10px;
     box-sizing: border-box;
-    text-indent: 10px;
+    padding: 10px;
     font-size:18px;
     resize: none;
 }
@@ -261,12 +355,21 @@
 
 /* 글 수정 버튼 영역 */
 /* 글쓰기 저장 버튼 영역 */
-.adoption-read .edit-button-area{
+.adoption-read .view-button-area{
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+}
+.adoption-read .view-button-area .view-area span{
+    vertical-align: middle;
+    color:#777;
 }
 
-.adoption-read .edit-button-area .edit-button{
+
+.adoption-read .view-button-area a{
+    color: #f0b062;
+}
+
+.adoption-read .view-button-area .edit-button{
     border:none;
     display: inline-block;
     width:120px;
@@ -278,10 +381,7 @@
     text-decoration: none;
 }
 
-.adoption-write .write-button-area .write-button span{
-    color:#f0b062;
-    vertical-align: middle;
-}
+
 
 
 /* 입양 게시판 Read 영역 */
@@ -297,7 +397,26 @@
     height:41px;
     font-size:18px;
     font-weight: 600;
+    vertical-align: top;
 }
+
+.adoption-read .contents-area .image-area{
+    display: flex;
+}
+
+
+.adoption-read .contents-area .image img{
+    width:350px;
+    /* height: 300px; */
+    margin-left:5px;
+    border-radius: 10px;
+    overflow: hidden;
+    border:1px solid rgb(240,240,240);
+    box-sizing: border-box;
+    object-fit: cover;
+
+}
+
 
 .adoption-read .contents-area .text-area{
     display: flex;
@@ -344,7 +463,107 @@
     border:1px solid rgb(240,240,240);
     border-radius: 10px;
     box-sizing: border-box;
-    text-indent: 10px;
+    padding:10px;
     font-size:18px;
     resize: none;
+}
+/* 게시글 읽기 댓글 읽기 영역 */
+.adoption-comments-read {
+    width:1200px;
+    margin:50px auto;
+    font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+}
+
+.adoption-comments-read h4{
+    width:1200px;
+    margin:0 auto;
+    font-size: 20px;
+}
+
+.adoption-comments-read .comments-read{
+    border: 1px solid #ddd;
+    padding:50px;
+}
+
+.adoption-comments-read .comments-read .author{
+    display: inline-block;
+    width:120px;
+    height:41px;
+    font-size:18px;
+    font-weight: 600;
+    border:none;
+    border-right: 1px solid #ddd;
+    vertical-align: top;
+}
+
+.adoption-comments-read .comments-read .comment-contents{
+    margin-left:20px;
+    padding:10px;
+    width:800px;
+    height: 150px;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: bottom;
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    resize: none;
+}
+
+/* 게시글 읽기 댓글 쓰기 영역 */
+.adoption-comments-write {
+    width:1200px;
+    margin:50px auto;
+    font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+}
+
+.adoption-comments-write h4{
+    width:1200px;
+    margin:0 auto;
+    font-size: 20px;
+}
+
+.adoption-comments-write .comments-write{
+    border: 1px solid #ddd;
+    padding:50px;
+}
+
+.adoption-comments-write .comments-write .author{
+    display: inline-block;
+    width:120px;
+    height:41px;
+    font-size:18px;
+    font-weight: 600;
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    border-right: 1px solid #ddd;
+    vertical-align: top;
+}
+
+.adoption-comments-write .comments-write .comment-contents{
+    margin-left:20px;
+    padding:10px;
+    width:800px;
+    height: 150px;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: bottom;
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    resize: none;
+}
+
+.adoption-comments-write .comments-write button{
+    margin-left:20px;
+    padding:10px;
+    /* width:800px;
+    height: 150px; */
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: top;
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
 }

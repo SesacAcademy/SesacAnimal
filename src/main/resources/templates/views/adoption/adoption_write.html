@@ -54,65 +54,79 @@
 </head>
 <body>
  <th:block th:replace="../fragments/header/header :: header"></th:block>
- <section class="adoption-write">
-     <form action="/v1/adoption/edit" method="POST" name="edit" accept-charset="utf-8">
-         <legend>입양 게시판</legend>
-         <div class="write-view-area">
-             <p class="view-area">
-                 <span class="material-symbols-outlined">visibility</span> <span>조회수</span> <span>11</span>
-             </p>
-             <p>
-                 <button type="submit" class="write-button" title="글쓰기">
-                     <span class="material-symbols-outlined">edit_square</span>
-                     <span>글쓰기 저장</span>
-                 </button>
-             </p>
-         </div>
-         <div class="contents-area">
-             <p>
-                 <label for="title-input">제목</label>
-                 <input id="title-input" type="text" name="title"/>
-             </p>
-             <p>
-                 <label for="breed-input">묘종/견종</label>
-                 <input id="breed-input" type="text" name="breed" />
-             </p>
-             <p>
-                 <label for="gender-input">성별</label>
-                 <input id="gender-input" type="text" name=""/>
-             </p>
-             <p>
-                 <label for="age-input">나이</label>
-                 <input id="age-input" type="text"/>
-             </p>
-             <p>
-                 <label for="center-select">센터 유무</label>
-                 <select id="center-select">
-                     <option value="user">일반</option>
-                     <option value="center">센터</option>
-                 </select>
-             </p>
-             <!-- <p>
-                 <label for="">공고번호</label>
-                 <input />
-             </p> -->
-             <p>
-                 <label>중성화유무</label>
-                 <select>
-                     <option value="">모름</option>
-                     <option value="o">중성화 O</option>
-                     <option value="x">중성화 X</option>
-                 </select>
-             </p>
-             <p class="text-area">
-                 <label for="textarea">내용</label>
-                 <textarea id="textarea"></textarea>
-             </p>
-         </div>
+     <section class="adoption-write">
+         <form action="/v1/adoption/edit" method="POST" name="edit" accept-charset="utf-8">
+             <legend>입양 게시판</legend>
+             <div class="write-view-area">
+                 <p>
+                     <button type="reset" class="reset-button">취소</button>
+                     <button type="submit" class="write-button" title="글쓰기">
+                         <span class="material-symbols-outlined">edit_square</span>
+                         <span>글쓰기 저장</span>
+                     </button>
+                 </p>
+             </div>
+             <div class="contents-area">
+                 <p class="col">
+                     <span class="title">작성자</span>
+                     <span class="desc" aria-readonly="true">asdf</span>
+                 </p>
+                 <p>
+                     <label for="title-input">제목</label>
+                     <input id="title-input" type="text" name="title"/>
+                 </p>
+                 <div class="col">
+                     <p class="title">
+                         <span class="title">이미지</span>
+                     </p>
+                     <p>
+                         <label for="image-file">이미지 업로드 하기</label>
+                         <input type="file" id="image-file" name="image-file" value="이미지 업로드" placeholder="이미지 업로드"/><br/>
 
-     </form>
+                         <img src="https://picsum.photos/id/237/200/300" alt=""/><br/>
+                         <button class="remove-image">이미지 삭제</button>
+                     </p>
+                 </div>
+                 <p>
+                     <label for="breed-input">묘종/견종</label>
+                     <input id="breed-input" type="text" name="breed" />
+                 </p>
+                 <p>
+                     <label for="gender-input">성별</label>
+                     <input id="gender-input" type="text" name="gender"/>
+                 </p>
+                 <p>
+                     <label for="age-input">나이</label>
+                     <input id="age-input" type="text" name="age" />
+                 </p>
+                 <p>
+                     <label for="center-select">센터 유무</label>
+                     <select id="center-select" name="center">
+                         <option value="user">일반</option>
+                         <option value="center">센터</option>
+                     </select>
+                 </p>
+                 <!-- <p>
+                     <label for="">공고번호</label>
+                     <input />
+                 </p> -->
+                 <p>
+                     <label for="neutered">중성화유무</label>
+                     <select id="neutered" name="neutered">
+                         <option value="">모름</option>
+                         <option value="o">중성화 O</option>
+                         <option value="x">중성화 X</option>
+                     </select>
+                 </p>
+                 <p class="text-area">
+                     <label for="textarea">내용</label>
+                     <textarea id="textarea" name="textarea"></textarea>
+                 </p>
+             </div>
 
-    </section>
+         </form>
+
+     </section>
 
  <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
 </body>
