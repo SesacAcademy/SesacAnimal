@@ -1,0 +1,29 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="detailCard($detail)">
+    <h3 th:text="${detail.title}" />
+    <section class="missing-detail-page-content">
+        <div class="missing-detail-thumb-container">
+            <figure class="missing-detail-thumb">
+                <img th:src="@{/img/sample.jpeg}" alt="head" width="100%" height="100%" style="border-radius:10px" />
+            </figure>
+        </div>
+        <section class="missing-detail-info-container">
+            <div class="missing-detail-info-content-container">
+                <div style="margin-right: 30px">
+                    <div class="missing-detail-field" th:text="'종류: ' + ${detail.specifics}" />
+                    <div class="missing-detail-field" th:text="'실종장소: ' + ${detail.missingPlace}" />
+                    <div class="missing-detail-field" th:text="'사례금: ' + ${detail.reward}" />
+                </div>
+                <div>
+                    <div class="missing-detail-field" th:text="'색상: ' + ${detail.color}" />
+                    <div class="missing-detail-field" th:text="'실종시간: ' + ${detail.missingTime}" />
+                </div>
+            </div>
+            <div style="flex flex-col">
+                <div>설명</div>
+                <textarea class="missing-detail-textarea">
+                                    awpfo
+                                </textarea>
+            </div>
+        </section>
+    </section>
+</div>
