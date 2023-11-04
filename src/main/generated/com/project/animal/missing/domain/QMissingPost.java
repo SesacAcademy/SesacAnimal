@@ -41,6 +41,8 @@ public class QMissingPost extends EntityPathBase<MissingPost> {
 
     public final NumberPath<Integer> reward = createNumber("reward", Integer.class);
 
+    public final StringPath specifics = createString("specifics");
+
     public final StringPath title = createString("title");
 
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);

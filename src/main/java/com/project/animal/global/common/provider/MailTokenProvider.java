@@ -1,9 +1,10 @@
 package com.project.animal.global.common.provider;
 
 import com.project.animal.global.common.constant.TokenType;
+import com.project.animal.member.exception.InvalidTokenException;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.MailSender;
