@@ -3,6 +3,7 @@ package com.project.animal.member.controller;
 import com.project.animal.global.common.dto.ResponseDto;
 import com.project.animal.global.common.provider.MailTokenProvider;
 import com.project.animal.member.dto.CheckMailTokenDto;
+import com.project.animal.member.dto.MemberFormDto;
 import com.project.animal.member.service.inf.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class MemberController {
 
     @ResponseBody
     @PostMapping("/v1/api/auth/signup")
-    public ResponseEntity<String> signup() {
+    public ResponseEntity<String> signup(@RequestBody MemberFormDto memberFormDto) {
         return null;
     }
 
