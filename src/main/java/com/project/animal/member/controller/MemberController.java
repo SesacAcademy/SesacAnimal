@@ -6,11 +6,14 @@ import com.project.animal.member.dto.CheckMailTokenDto;
 import com.project.animal.member.dto.MemberFormDto;
 import com.project.animal.member.service.inf.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
@@ -26,8 +29,9 @@ public class MemberController {
 
     @ResponseBody
     @PostMapping("/v1/api/auth/signup")
-    public ResponseEntity<String> signup(@RequestBody MemberFormDto memberFormDto) {
-        return null;
+    public ResponseDto<String> signup(@RequestBody @Validated MemberFormDto memberFormDto) {
+        memberService.save(memberFormDto);
+        return new ResponseDto<>(HttpStatus.OK.value(), "null", "회원가입 완료");
     }
 
     @ResponseBody

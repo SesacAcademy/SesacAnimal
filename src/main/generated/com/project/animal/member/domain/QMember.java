@@ -23,9 +23,11 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath email = createString("email");
 
-    public final StringPath grade = createString("grade");
+    public final NumberPath<Integer> grade = createNumber("grade", Integer.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final NumberPath<Integer> isActive = createNumber("isActive", Integer.class);
 
     public final DateTimePath<java.time.LocalDateTime> lastLoginAt = createDateTime("lastLoginAt", java.time.LocalDateTime.class);
 
@@ -34,8 +36,6 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath password = createString("password");
 
     public final StringPath phone = createString("phone");
-
-    public final StringPath status = createString("status");
 
     public final StringPath type = createString("type");
 
