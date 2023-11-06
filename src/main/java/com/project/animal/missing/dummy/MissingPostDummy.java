@@ -23,6 +23,10 @@ public class MissingPostDummy {
 
   );
 
+  public static List<MissingPost> getList() {
+    return dummyPost;
+  }
+
   public static List<MissingListResDto> getDummyDto() {
    return dummyPost.stream().map((entity) -> MissingListResDto.fromMissingPost(entity)).collect(Collectors.toList());
   }

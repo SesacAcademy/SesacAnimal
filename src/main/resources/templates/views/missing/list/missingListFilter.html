@@ -1,36 +1,41 @@
-<section xmlns:th="http://www.thymeleaf.org" th:fragment="filter" class="missing-filter-container ">
-    <div class="missing-filter-item">
-        <div class="missing-filter-label">검색</div>
-        <input  class="basic-input missing-filter-input" type="text" />
-    </div>
-    <div class="missing-filter-item">
-        <div class="missing-filter-label">강아지/고양이</div>
-        <select class="basic-select missing-filter-select">
-            <option>강아지</option>
-            <option>고양이</option>
-        </select>
-    </div>
-    <div class="missing-filter-item">
-        <div class="missing-filter-label">품종</div>
-        <input  class="basic-input missing-filter-input" type="text" />
-    </div>
-    <div class="missing-filter-item">
-        <div class="missing-filter-label">색상</div>
-        <input class="basic-input missing-filter-input" type="text" />
-    </div>
-    <div class="missing-filter-item">
-        <div class="missing-filter-label">기간 (시작일)</div>
-        <input class="basic-input missing-filter-input" type="date" />
-    </div>
-    <div class="missing-filter-item">
-        <div class="missing-filter-label">기간 (종료일)</div>
-        <input class="basic-input missing-filter-input" type="date" />
-    </div>
-    <div class="missing-filter-item">
-        <button class="missing-filter-apply">
-            <div style="margin-right: 5px;">적용하기</div>
-            <span class="material-symbols-outlined logo" style="color: #acb8f7;">pets</span>
-        </button>
+<section xmlns:th="http://www.thymeleaf.org" th:fragment="filter" class="missing-filter-container">
+    <form action="/missing/list" method="get" >
+        <input name="page" value="1" hidden />
+        <input name="size" value="10" hidden />
+        <div class="missing-filter-item">
+            <div class="missing-filter-label">검색</div>
+            <input  class="basic-input missing-filter-input" type="text" name="search"/>
+        </div>
+        <div class="missing-filter-item">
+            <div class="missing-filter-label">강아지/고양이</div>
+            <select class="basic-select missing-filter-select" name="animalType">
+                <option value="" selected disabled>선택해주세요</option>
+                <option value="dog">강아지</option>
+                <option value="cat">고양이</option>
+            </select>
+        </div>
+        <div class="missing-filter-item">
+            <div class="missing-filter-label">품종</div>
+            <input  class="basic-input missing-filter-input" type="text" name="specifics" />
+        </div>
+        <div class="missing-filter-item">
+            <div class="missing-filter-label">색상</div>
+            <input class="basic-input missing-filter-input" type="text" name="color" />
+        </div>
+        <div class="missing-filter-item">
+            <div class="missing-filter-label">기간 (시작일)</div>
+            <input class="basic-input missing-filter-input" type="date" name="fromDate" />
+        </div>
+        <div class="missing-filter-item">
+            <div class="missing-filter-label">기간 (종료일)</div>
+            <input class="basic-input missing-filter-input" type="date" name="endDate" />
+        </div>
+        <div class="missing-filter-item">
+            <button class="missing-filter-apply" >
+                <div style="margin-right: 5px;">적용하기</div>
+                <span class="material-symbols-outlined logo" style="color: #acb8f7;">pets</span>
+            </button>
 
-    </div>
+        </div>
+    </form>
 </section>
