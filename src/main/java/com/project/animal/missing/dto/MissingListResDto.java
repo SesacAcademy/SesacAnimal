@@ -70,9 +70,5 @@ public class MissingListResDto {
             missingTime, reward, missingStatus, updatedAt);
   }
 
-  private static boolean convertMissingStatus(char status) {
-    // TODO: Should define status
-    return true;
-  }
 
 }
