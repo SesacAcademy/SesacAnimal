@@ -1,8 +1,8 @@
 
 export const count = _count;
 export const page = _page;
-export const limit = _limit;
-export const maxPageCount = Math.ceil(count / limit);
+export const size = _size;
+export const maxPageCount = Math.ceil(count / size);
 
 export const search = _search;
 export const animalType = _animalType;

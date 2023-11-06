@@ -2,20 +2,20 @@ package com.project.animal.missing.controller;
 
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
-import com.project.animal.missing.dto.MissingListReqDto;
+import com.project.animal.missing.dto.MissingFilterDto;
 import com.project.animal.missing.dto.MissingListResDto;
 import com.project.animal.missing.dummy.MissingPostDummy;
-import com.project.animal.missing.service.MissingService;
+import com.project.animal.missing.service.MissingPostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.swing.text.View;
-import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -23,17 +23,24 @@ import java.util.List;
 @RequestMapping(EndPoint.MISSING)
 public class MissingController {
 
-  private final MissingService missingService;
+  private final MissingPostService missingPostService;
 
   @Autowired
-  public MissingController(MissingService missingService) {
-    this.missingService = missingService;
+  public MissingController(MissingPostService missingPostService) {
+    this.missingPostService = missingPostService;
   }
 
 
   @GetMapping(EndPoint.LIST)
-  public String getPostList(@Valid MissingListReqDto dto, BindingResult br, Model model) {
-    List<MissingListResDto> list = missingService.getPostList(dto);
+  public String getPostList(
+          MissingFilterDto filterDto,
+          @PageableDefault(sort="missing_id", direction = Sort.Direction.DESC)
+          Pageable pageable,
+          Model model) {
+    List<MissingListResDto> list = missingPostService.getPostList(filterDto, pageable);
+
+    log.info("filter: > " + filterDto);
+    log.info("pageable: > " + pageable);
 
     model.addAttribute("list", list);
     model.addAttribute("count", 100);

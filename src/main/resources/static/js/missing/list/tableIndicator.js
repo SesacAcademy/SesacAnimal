@@ -1,4 +1,4 @@
-import { limit, page, maxPageCount, search, animalType, specifics, color, fromDate, endDate } from './init.js';
+import { page, size, maxPageCount, search, animalType, specifics, color, fromDate, endDate } from './init.js';
 import { createFilterUrl } from './utils.js';
 
 const PAGE_RANGE = 5;
@@ -34,7 +34,7 @@ const createEachPage = (url, text, isSelected) => {
 const drawIndicator = (pages, currentPage) => {
     const container = document.querySelector(".page-container");
     const tags = pages.map((page) => {
-    const url = createFilterUrl({ page, limit, search, animalType, specifics, color, fromDate, endDate })
+    const url = createFilterUrl({ page, size, search, animalType, specifics, color, fromDate, endDate })
     const component = createEachPage(url, page, page == currentPage);
     return component;
   });
@@ -58,7 +58,7 @@ function handleDomContentLoaded(maxPageCount, page) {
           document.querySelector(".prev").addEventListener("click", () => {
             const prevPage = page - 1;
             if (prevPage > 0) {
-              window.location.href = createFilterUrl({ page: prevPage, limit, search, animalType, specifics, color, fromDate, endDate });
+              window.location.href = createFilterUrl({ page: prevPage, size, search, animalType, specifics, color, fromDate, endDate });
             } else {
               alert("It is the last page");
             }
@@ -67,7 +67,7 @@ function handleDomContentLoaded(maxPageCount, page) {
         document.querySelector(".next").addEventListener("click", () => {
             const nextPage = page + 1;
             if (nextPage <= maxPageCount) {
-              window.location.href = createFilterUrl({ page: nextPage, limit, search, animalType, specifics, color, fromDate, endDate });
+              window.location.href = createFilterUrl({ page: nextPage, size, search, animalType, specifics, color, fromDate, endDate });
             } else {
               alert("It is the last page");
             }
