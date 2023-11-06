@@ -40,56 +40,19 @@
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" th:href="@{/css/header.css}" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
-    <link rel="stylesheet" th:href="@{/css/missingList.css}" />
-    <link rel="stylesheet" th:href="@{/css/missingCard.css}" />
-    <link rel="stylesheet" th:href="@{/css/missingListFilter.css}" />
-    <link rel="stylesheet" th:href="@{/css/tableIndicator.css}" />
     <script th:src="@{/js/main.js}"></script>
 
+    <link rel="stylesheet" th:href="@{/css/missing/new/missingNew.css}" />
+    <link rel="stylesheet" th:href="@{/css/missing/new/missingNewCard.css}" />
 
     <title>새싹 애니멀</title>
-    <script th:inline="javascript" defer>
-        const list = /*[[${list}]]*/ [];
-        const __count = /*[[${count}]]*/ 0;
-        const params = new URLSearchParams(window.location.search);
 
-        const _count = Number(__count);
-        const _page = Number(params.get('page')) || 1;
-        const _limit = Number(params.get('limit')) || 10;
-        const _order = params.get('order') ?? 'desc';
-        const _sort = params.get('sort') ?? 'new';
-
-        console.log("list", list);
-    </script>
-    <script th:src="@{/js/missing/utils.js}" type="module"></script>
-    <script th:src="@{/js/missing/init.js}" type="module"></script>
-    <script th:src="@{/js/missing/tableIndicator.js}" type="module"></script>
 </head>
 <body>
-    <th:block th:replace="../fragments/header/header :: header" />
-    <div class="missing-list-page">
-        <h3 class="missing-list-title">
-            실종 동물들이 가족의 품으로 돌아갈 수 있게 도와주세요
-        </h3>
-        <div class="missing-list-page-content">
-            <div class="missing-list-container">
-                <div th:each="post : ${list}">
-                    <th:block th:replace="./missing/missingCard :: missingCard(${post})" />
-                </div>
-            </div>
-            <div>
-                <th:block th:replace="./missing/missingListFilter :: filter" />
-            </div>
-        </div>
-
-
-            <div class="missing-list-indicator">
-                <th:block th:replace="./missing/missingIndicator :: indicator" />
-            </div>
-
-
-    </div>
-    <th:block th:replace="../fragments/footer/footer :: footer" />
+<th:block th:replace="../fragments/header/header :: header" />
+    <section class="missing-new-page">
+        <th:block th:replace="./missing/new/missingNewCard :: newCard" />
+    </section>
+<th:block th:replace="../fragments/footer/footer :: footer" />
 </body>
 </html>
-

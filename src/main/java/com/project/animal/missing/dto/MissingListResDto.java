@@ -21,6 +21,8 @@ public class MissingListResDto {
   // TODO: Decide what to use either String or Enum;
   private String animalType;
 
+  private String specifics;
+
   private String color;
 
   private int viewCount;
@@ -35,11 +37,12 @@ public class MissingListResDto {
 
   private LocalDateTime updatedAt;
 
-  private MissingListResDto(long id, String title, long memberId, String animalType, String color, int viewCount, String missingPlace, LocalDateTime missingTime, int reward, boolean missingStatus, LocalDateTime updatedAt) {
+  private MissingListResDto(long id, String title, long memberId, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, int reward, boolean missingStatus, LocalDateTime updatedAt) {
     this.id = id;
     this.title = title;
     this.memberId = memberId;
     this.animalType = animalType;
+    this.specifics = specifics;
     this.color = color;
     this.viewCount = viewCount;
     this.missingPlace = missingPlace;
@@ -54,6 +57,7 @@ public class MissingListResDto {
     String title = post.getTitle();
     long memberId = post.getMemberId();
     String animalType = convertAnimalType(post.getAnimalType());
+    String specifics = post.getSpecifics();
     String color = post.getColor();
     int viewCount = post.getViewCount();
     String missingPlace = post.getMissingPlace();
@@ -63,7 +67,7 @@ public class MissingListResDto {
     LocalDateTime updatedAt = post.getUpdatedAt();
 
     return new MissingListResDto(
-            id, title, memberId, animalType, color, viewCount, missingPlace,
+            id, title, memberId, animalType, specifics, color, viewCount, missingPlace,
             missingTime, reward, missingStatus, updatedAt);
   }
 

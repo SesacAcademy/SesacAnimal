@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.swing.text.View;
 import java.util.List;
 
 @Slf4j
@@ -24,4 +25,22 @@ public class MissingController {
 
     return ViewName.POST_LIST;
   }
+
+  @GetMapping(EndPoint.DETAIL)
+  public String getPostDetail(Model model) {
+    List<MissingListResDto> list = MissingPostDummy.getDummyDto();
+    String[] comments = {"test1", "comments2"};
+
+    model.addAttribute("detail", list.get(0));
+    model.addAttribute("comments", comments);
+
+    return ViewName.POST_DETAIL;
+
+  }
+
+  @GetMapping(EndPoint.NEW)
+  public String getPostNew() {
+    return ViewName.POST_NEW;
+  }
+
 }

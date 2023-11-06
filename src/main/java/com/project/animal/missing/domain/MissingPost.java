@@ -3,12 +3,10 @@ package com.project.animal.missing.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,6 +31,10 @@ public class MissingPost {
   @NotNull
   @Column(name="animal_type")
   private char animalType;
+
+  @NotNull
+  @Column(name="specifics")
+  private String specifics;
 
   @NotNull
   @Column(name="color")
@@ -74,11 +76,12 @@ public class MissingPost {
   // TODO: Comment 생성시 ManyToOne 으로 관계설정 하기
   //  private List<Comment> comments;
 
-  public MissingPost(long missingId, long memberId, String title, char animalType, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, char missingStatus, boolean isActive) {
+  public MissingPost(long missingId, long memberId, String title, char animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, char missingStatus, boolean isActive) {
     this.missingId = missingId;
     this.memberId = memberId;
     this.title = title;
     this.animalType = animalType;
+    this.specifics = specifics;
     this.color = color;
     this.viewCount = viewCount;
     this.missingPlace = missingPlace;

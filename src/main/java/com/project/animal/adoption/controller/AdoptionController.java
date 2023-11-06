@@ -5,30 +5,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/adoption")
+@RequestMapping("/v1/adoption")
 public class AdoptionController {
 
 
     @GetMapping
     public String adoptionMain(){
 
-        return "adoption/adoption";
+        return "adoption/adoptionList";
     }
 
 
-    @GetMapping("/adoption-write")
+    @GetMapping("/edit")
     public String adoptionWrite(){
 
         return "adoption/adoption_write";
     }
 
-    @GetMapping("/adoption-edit")
+    @GetMapping("/edit/{id}")
     public String adoptionEdit(){
 
         return "adoption/adoption_edit";
     }
 
-    @GetMapping("/adoption-read")
+    @GetMapping("/{id}")
     public String adoptionRead(){
 
         return "adoption/adoption_read";
