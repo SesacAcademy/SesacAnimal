@@ -4,11 +4,21 @@ import com.project.animal.global.common.dto.ResponseDto;
 import com.project.animal.member.exception.InvalidTokenException;
 import com.project.animal.member.exception.NestedEmailException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailSendException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice(assignableTypes = {MemberController.class})
@@ -49,5 +59,24 @@ public class MemberControllerAdvice {
         log.error("이메일 인증 확인 에러 발생", e);
 
         return new ResponseDto(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());
+    }
+
+    /**
+     * API : (POST) /v1/api/auth/signup
+     * - 회원가입 과정에서 Bean Validation로 인한 데이터 검증 실패 시, 해당 예외 발생
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseDto<String> test(MethodArgumentNotValidException e) {
+        BindingResult bindingResult = e.getBindingResult();
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+
+        Map<String, String> errorData = new HashMap<>();
+
+        fieldErrors.stream().forEach(x -> {
+            errorData.put(x.getField(), x.getDefaultMessage());
+        });
+
+        return new ResponseDto(HttpStatus.BAD_REQUEST.value(), errorData, "");
     }
 }
