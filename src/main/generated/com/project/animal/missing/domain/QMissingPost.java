@@ -19,7 +19,7 @@ public class QMissingPost extends EntityPathBase<MissingPost> {
 
     public static final QMissingPost missingPost = new QMissingPost("missingPost");
 
-    public final ComparablePath<Character> animalType = createComparable("animalType", Character.class);
+    public final StringPath animalType = createString("animalType");
 
     public final StringPath color = createString("color");
 
@@ -35,7 +35,7 @@ public class QMissingPost extends EntityPathBase<MissingPost> {
 
     public final StringPath missingPlace = createString("missingPlace");
 
-    public final ComparablePath<Character> missingStatus = createComparable("missingStatus", Character.class);
+    public final NumberPath<Integer> missingStatus = createNumber("missingStatus", Integer.class);
 
     public final DateTimePath<java.time.LocalDateTime> missingTime = createDateTime("missingTime", java.time.LocalDateTime.class);
 

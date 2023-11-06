@@ -1,7 +1,6 @@
 package com.project.animal.missing.dto;
 
 import com.project.animal.missing.domain.MissingPost;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -33,11 +32,11 @@ public class MissingListResDto {
 
   private int reward;
 
-  private boolean missingStatus;
+  private int missingStatus;
 
   private LocalDateTime updatedAt;
 
-  private MissingListResDto(long id, String title, long memberId, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, int reward, boolean missingStatus, LocalDateTime updatedAt) {
+  private MissingListResDto(long id, String title, long memberId, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, int reward, int missingStatus, LocalDateTime updatedAt) {
     this.id = id;
     this.title = title;
     this.memberId = memberId;
@@ -56,14 +55,14 @@ public class MissingListResDto {
     long id = post.getMissingId();
     String title = post.getTitle();
     long memberId = post.getMemberId();
-    String animalType = convertAnimalType(post.getAnimalType());
+    String animalType = post.getAnimalType();
     String specifics = post.getSpecifics();
     String color = post.getColor();
     int viewCount = post.getViewCount();
     String missingPlace = post.getMissingPlace();
     LocalDateTime missingTime = post.getMissingTime();
     int reward = post.getReward();
-    boolean missingStatus = convertMissingStatus(post.getMissingStatus());
+    int missingStatus = post.getMissingStatus();
     LocalDateTime updatedAt = post.getUpdatedAt();
 
     return new MissingListResDto(
@@ -76,8 +75,4 @@ public class MissingListResDto {
     return true;
   }
 
-  private static String convertAnimalType(char type) {
-    // TODO: Should define Type
-    return "DOG";
-  }
 }
