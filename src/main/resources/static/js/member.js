@@ -174,7 +174,7 @@ function signup() {
             location.href="/v1/auth/login";
         }
         else if (response.data.statusCode === 400) {
-            
+
             // 인증번호가 만료된 경우
             if (response.data.context === null) {
                 alert(response.data.message);
@@ -185,19 +185,21 @@ function signup() {
             else {
                 const errorData = response.data.context;
 
-                if (errorData.name !== null) {
+                console.log(response.data);
+
+                if (errorData.name !== undefined) {
                     alert(response.data.context.name);
                 }
 
-                if (errorData.password !== null) {
+                if (errorData.password !== undefined) {
                     alert(response.data.context.password);
                 }
 
-                if (errorData.phone !== null) {
+                if (errorData.phone !== undefined) {
                     alert(response.data.context.phone);
                 }
 
-                if (errorData.token !== null) {
+                if (errorData.token !== undefined) {
                     alert(response.data.context.token);
                 }
             }

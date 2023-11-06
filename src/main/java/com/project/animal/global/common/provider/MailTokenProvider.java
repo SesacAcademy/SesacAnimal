@@ -11,6 +11,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.Optional;
 import java.util.Random;
 
@@ -91,7 +92,7 @@ public class MailTokenProvider {
 
     private void saveToken(String key, String value) {
         ValueOperations<String, String> operation = template.opsForValue();
-        operation.set(key, value);
+        operation.set(key, value, Duration.ofSeconds(tokenValidTime));
     }
 
     private void sendMail(String email, String token) {

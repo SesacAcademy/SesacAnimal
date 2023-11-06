@@ -1,5 +1,7 @@
 package com.project.animal.member.controller;
 
+import com.project.animal.global.common.constant.EndPoint;
+import com.project.animal.global.common.constant.ViewName;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,12 +10,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class LoginController {
 
-    @GetMapping("/v1/auth/login")
+    @GetMapping(EndPoint.LOGIN)
     public String loginForm() {
-        return "/member/login";
+        return ViewName.LOGIN_VIEW;
     }
 
-    @PostMapping("v1/auth/login")
+    @PostMapping(EndPoint.LOGIN_API)
     @ResponseBody
     public String login() {
         return null;
