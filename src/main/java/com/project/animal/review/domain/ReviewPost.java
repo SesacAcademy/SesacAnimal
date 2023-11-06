@@ -47,8 +47,11 @@ public class ReviewPost {
 
 
 
-    public ReviewPost(CreateReviewPostDto createReviewPostDto) {
+    public ReviewPost(CreateReviewPostDto createReviewPostDto, Member member) {
         this.content = createReviewPostDto.getContent();
         this.title = createReviewPostDto.getTitle();
+        this.createdAt = LocalDateTime.now();
+        this.member = member;
+        this.viewCount = 0;
     }
 }
