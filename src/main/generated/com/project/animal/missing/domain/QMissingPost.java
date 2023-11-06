@@ -27,7 +27,7 @@ public class QMissingPost extends EntityPathBase<MissingPost> {
 
     public final StringPath description = createString("description");
 
-    public final BooleanPath isActive = createBoolean("isActive");
+    public final NumberPath<Integer> isActive = createNumber("isActive", Integer.class);
 
     public final NumberPath<Long> memberId = createNumber("memberId", Long.class);
 
