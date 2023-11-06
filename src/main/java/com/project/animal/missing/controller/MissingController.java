@@ -5,7 +5,9 @@ import com.project.animal.missing.constant.ViewName;
 import com.project.animal.missing.dto.MissingListReqDto;
 import com.project.animal.missing.dto.MissingListResDto;
 import com.project.animal.missing.dummy.MissingPostDummy;
+import com.project.animal.missing.service.MissingService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,9 +23,18 @@ import java.util.List;
 @RequestMapping(EndPoint.MISSING)
 public class MissingController {
 
+  private final MissingService missingService;
+
+  @Autowired
+  public MissingController(MissingService missingService) {
+    this.missingService = missingService;
+  }
+
+
   @GetMapping(EndPoint.LIST)
   public String getPostList(@Valid MissingListReqDto dto, BindingResult br, Model model) {
-    List<MissingListResDto> list = MissingPostDummy.getDummyDto();
+    List<MissingListResDto> list = missingService.getPostList(dto);
+
     model.addAttribute("list", list);
     model.addAttribute("count", 100);
 
