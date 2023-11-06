@@ -24,7 +24,7 @@ public class MissingPostService {
   public ListResponseDto<MissingListResDto> getPostList(MissingFilterDto filter, Pageable pageable) {
     Page<MissingPost> pages = missingPostRepository.findByFilter(filter, pageable);
 
-    int count = pages.getTotalPages();
+    int count = (int) pages.getTotalElements();
     List<MissingListResDto> posts = pages.stream()
             .map((entity) -> MissingListResDto.fromMissingPost(entity))
             .collect(Collectors.toList());
