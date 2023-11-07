@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+
 @RequiredArgsConstructor
 @Slf4j
 public class AdoptionController {
@@ -40,7 +41,6 @@ public class AdoptionController {
 
 //        List<Adoption> foundAdoptionList = adoptionService.findAll();
         List<Adoption> allWithImages = adoptionRepository.findAllWithImages();
-
 
         model.addAttribute("list",allWithImages);
 
@@ -89,7 +89,6 @@ public class AdoptionController {
          Adoption adoption = adoptionRepository.findByIdWithImage(id);
          AdoptionReadDto adoptionReadDto = new AdoptionReadDto(adoption);
          model.addAttribute("read", adoptionReadDto);
-
 
         return "adoption/adoption_read";
     }

@@ -357,11 +357,22 @@
 .adoption-read .view-button-area{
     display: flex;
     justify-content: space-between;
+
 }
 .adoption-read .view-button-area .view-area span{
     vertical-align: middle;
     color:#777;
 }
+
+
+.adoption-read .view-button-area a{
+    color: #f0b062;
+}
+.adoption-read .view-button-area .view-area span{
+    vertical-align: middle;
+    color:#777;
+}
+
 
 
 .adoption-read .view-button-area a{
