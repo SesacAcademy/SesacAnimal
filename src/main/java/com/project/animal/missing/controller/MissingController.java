@@ -56,7 +56,7 @@ public class MissingController {
 
 
   @GetMapping(EndPoint.DETAIL)
-  public String getPostDetail(@PathVariable(EndPoint.POST_ID) long postId, Model model) {
+  public String getPostDetail(@PathVariable(EndPoint.ID) long postId, Model model) {
     MissingDetailDto detail = missingPostService.getPostDetail(postId);
     String[] comments = {"test1", "comments2"};
 
@@ -71,7 +71,7 @@ public class MissingController {
     return ViewName.POST_NEW;
   }
 
-  @PostMapping(EndPoint.NEW)
+  @PostMapping(EndPoint.CREATE)
   public String handleCreateRequest(@Valid @ModelAttribute("post") MissingNewDto dto, BindingResult br, RedirectAttributes redirectAttributes) {
     if (br.hasErrors()) {
       throw new InvalidCreateFormException(dto, br);
@@ -82,6 +82,18 @@ public class MissingController {
     redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
 
     return "redirect:" + EndPoint.MISSING + EndPoint.NEW;
+  }
+
+  @PutMapping(EndPoint.EDIT)
+  public String handleEditRequest(@PathVariable(EndPoint.ID) long id) {
+    log.info("id: >>> " + id);
+    return "index";
+  }
+
+  @DeleteMapping(EndPoint.DELETE)
+  public String handleDeleteRequest(@PathVariable(EndPoint.ID) long id) {
+    log.info("id: >>> " + id);
+    return "index";
   }
 
 
