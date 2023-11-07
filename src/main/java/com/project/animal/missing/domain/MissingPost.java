@@ -1,5 +1,6 @@
 package com.project.animal.missing.domain;
 
+import com.project.animal.missing.dto.MissingNewDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -75,7 +76,22 @@ public class MissingPost {
   // TODO: Comment 생성시 ManyToOne 으로 관계설정 하기
   //  private List<Comment> comments;
 
-  public MissingPost(long missingId, long memberId, String title, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, char missingStatus, int isActive) {
+  public MissingPost(long memberId, String title, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, int missingStatus, int isActive) {
+    this.memberId = memberId;
+    this.title = title;
+    this.animalType = animalType;
+    this.specifics = specifics;
+    this.color = color;
+    this.viewCount = viewCount;
+    this.missingPlace = missingPlace;
+    this.missingTime = missingTime;
+    this.description = description;
+    this.reward = reward;
+    this.missingStatus = missingStatus;
+    this.isActive = isActive;
+  }
+
+  public MissingPost(long missingId, long memberId, String title, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, int missingStatus, int isActive) {
     this.missingId = missingId;
     this.memberId = memberId;
     this.title = title;
