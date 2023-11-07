@@ -38,8 +38,11 @@ public class AdoptionController {
     @GetMapping("/v1/adoption")
     public String adoptionMain(Model model){
 
-        List<Adoption> foundAdoptionList = adoptionService.findAll();
-        model.addAttribute("list",foundAdoptionList);
+//        List<Adoption> foundAdoptionList = adoptionService.findAll();
+        List<Adoption> allWithImages = adoptionRepository.findAllWithImages();
+
+
+        model.addAttribute("list",allWithImages);
 
         return "adoption/adoption_list";
     }
@@ -64,8 +67,8 @@ public class AdoptionController {
 
         adoptionService.save(adoptionWriteDto, file);
 
-        return "/adoption/adoption_list";
-//        return "redirect: /v1/adoption";
+//        return "/adoption/adoption_list";
+        return "redirect:/v1/adoption";
     }
 
     // 수정 영역
@@ -80,38 +83,16 @@ public class AdoptionController {
     @GetMapping("/v1/adoption/{id}")
     public String adoptionRead(@PathVariable Long id, Model model){
         // 조회수 올리기
-//        adoptionService.plusView(id);
+        adoptionService.plusView(id);
 
-        // id를 사용하여 DB에서 해당 게시물 정보를 조회
-//        Optional<Adoption> foundAdoption = adoptionService.findById(id);
-//
-//        if(foundAdoption.isPresent()){
-//            Adoption adoption = foundAdoption.get();
-//            AdoptionReadDto adoptionReadDto = new AdoptionReadDto(adoption);
-//            System.out.println("path 찾기"+adoption.getAdoptionImage().getPath());
-//            System.out.println("path 찾기"+adoptionReadDto.getPath());
-//            model.addAttribute("read",adoptionReadDto);
-//        }
+
          Adoption adoption = adoptionRepository.findByIdWithImage(id);
          AdoptionReadDto adoptionReadDto = new AdoptionReadDto(adoption);
          model.addAttribute("read", adoptionReadDto);
-
-//        Optional<AdoptionImage> foundImage = adoptionImageService.findById(postId);
-//        AdoptionImage adoptionImage = foundImage.get();
-//        model.addAttribute("image",adoptionImage);
-//
-//        System.out.println("foundImage"+foundImage);
-//        // 조회한 게시물 정보를 모델에 추가
-//        foundAdoption.ifPresent(adoption -> {
-//            model.addAttribute("adoption", adoption);
-//        });
-//        foundImage.ifPresent(image -> {
-//            model.addAttribute("image",adoptionImage);
-//        });
-
 
 
         return "adoption/adoption_read";
     }
 
 }
+

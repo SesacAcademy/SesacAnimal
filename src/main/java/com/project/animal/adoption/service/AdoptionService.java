@@ -9,28 +9,19 @@ import com.project.animal.member.domain.Member;
 import com.project.animal.member.repository.MemberRepository;
 import io.minio.*;
 import io.minio.errors.*;
-import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.ServerException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Iterator;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
 
 
 @Service
@@ -51,8 +42,15 @@ public class AdoptionService {
        try {
 
            // 4. 파일 업로드 (바이너리)
-           String serverFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-//           String filePath = "testing_"+file.getOriginalFilename();
+           System.out.println("file"+file);
+           System.out.println("file isempty"+file.isEmpty());
+            String serverFileName;
+           if(file.isEmpty()){
+               serverFileName = "empty";
+           }else{
+               serverFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+           }
+
            InputStream is = file.getInputStream();
 
            minioClient.putObject(
@@ -118,7 +116,7 @@ public class AdoptionService {
 //            int hit = adoption.getHit();
 //            hit++;
 //            adoption.setHit(hit);
-            adoptionRepository.plusView(adoption);
+//            adoptionRepository.plusView(adoption);
             adoptionRepository.save(adoption);
 
         }
@@ -132,13 +130,15 @@ public class AdoptionService {
        return adoptionRepository.findAll();
     }
 
+
+
     public boolean isBucketByUserId(String userId) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, io.minio.errors.ServerException {
         return minioClient.bucketExists(BucketExistsArgs.builder().bucket(userId).build());
     }
 
-//    public void plusView(Long id){
-//        Optional<Adoption> byId = adoptionRepository.findById(id);
-//
-//
-//    }
+    public void plusView(Long id){
+        Optional<Adoption> foundAdoptionId = adoptionRepository.findById(id);
+        adoptionRepository.plusView(foundAdoptionId.get());
+
+    }
 }

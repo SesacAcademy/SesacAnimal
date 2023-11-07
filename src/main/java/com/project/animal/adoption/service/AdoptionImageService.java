@@ -13,27 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AdoptionImageService {
 
-    private final AdoptionImageRepository adoptionImageRepository;
 
-    public AdoptionImage save(AdoptionImage adoptionImage){
-
-        return adoptionImage;
-    }
-
-    /*public Optional<AdoptionImage> findById(Adoption adoption){
-        Optional<AdoptionImage> foundId = adoptionImageRepository.findById(adoption.getMember().getId());
-
-        return foundId;
-    }*/
-//    public AdoptionImage findById(Long id){
-//       return  adoptionImageRepository.findById(id).get();
-//    }
-
-//    public Optional<AdoptionImage> findByAdoptionId(Adoption adoption){
-//
-//        AdoptionImage byAdoptionId = adoptionImageRepository.findByAdoptionId(adoption.getId());
-//        return byAdoptionId;
-//    }
 
 
 }

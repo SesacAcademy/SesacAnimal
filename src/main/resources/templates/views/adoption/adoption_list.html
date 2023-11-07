@@ -85,10 +85,12 @@
                      <a th:href="@{'/v1/adoption/' + ${adoption.id}}">
                          <div class="image-area">
                              <p>
-                                 <img src="/img/dog-sample.jpg" alt="유기견 썸네일" />
+<!--                                 <span th:text="${adoption.adoptionImage.path}"></span>-->
+<!--                                 <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${adoption.adoptionImage.path}" alt="유기견 썸네일" />-->
+                                 <img th:src="${adoption.adoptionImage.path.equals('empty')} ?  '/img/dog-sample.jpg' : 'http://infra.shucloud.site:8007/adoption/' + ${adoption.adoptionImage.path}" alt="유기견 썸네일" />
                              </p>
                              <p class="status-area">
-                                 <span th:text="${adoption.status}">입양대기중</span>
+                                 <span th:text="${adoption.status}" >입양대기중</span>
                                  <span class="material-symbols-outlined">heart_plus</span>
                              </p>
                          </div>

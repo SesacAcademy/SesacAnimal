@@ -9,10 +9,12 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "adoption_like")
 public class AdoptionLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "adoption_like_id")
     private Long id;
 
     @ManyToOne

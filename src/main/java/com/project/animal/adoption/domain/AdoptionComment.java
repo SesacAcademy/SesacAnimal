@@ -3,16 +3,19 @@ package com.project.animal.adoption.domain;
 import com.project.animal.member.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "adoption_comment")
 public class AdoptionComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "adoption_comment_id")
     private Long id;
 
     @ManyToOne

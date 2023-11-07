@@ -10,29 +10,29 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QTempIamage is a Querydsl query type for TempIamage
+ * QTempImage is a Querydsl query type for TempImage
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QTempIamage extends EntityPathBase<TempIamage> {
+public class QTempImage extends EntityPathBase<TempImage> {
 
-    private static final long serialVersionUID = -748541342L;
+    private static final long serialVersionUID = 1223125635L;
 
-    public static final QTempIamage tempIamage = new QTempIamage("tempIamage");
+    public static final QTempImage tempImage = new QTempImage("tempImage");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath imageUrl = createString("imageUrl");
 
-    public QTempIamage(String variable) {
-        super(TempIamage.class, forVariable(variable));
+    public QTempImage(String variable) {
+        super(TempImage.class, forVariable(variable));
     }
 
-    public QTempIamage(Path<? extends TempIamage> path) {
+    public QTempImage(Path<? extends TempImage> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QTempIamage(PathMetadata metadata) {
-        super(TempIamage.class, metadata);
+    public QTempImage(PathMetadata metadata) {
+        super(TempImage.class, metadata);
     }
 
 }

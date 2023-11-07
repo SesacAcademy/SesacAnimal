@@ -23,7 +23,11 @@ public interface AdoptionRepository extends JpaRepository<Adoption, Long> {
         ++hit;
 
         adoption.setHit(hit);
+
     }
     @Query("SELECT a FROM Adoption a JOIN FETCH a.adoptionImage WHERE a.id = :id")
     Adoption findByIdWithImage(@Param("id") Long id);
+
+    @Query("SELECT a FROM Adoption a JOIN FETCH a.adoptionImage")
+    List<Adoption> findAllWithImages();
 }

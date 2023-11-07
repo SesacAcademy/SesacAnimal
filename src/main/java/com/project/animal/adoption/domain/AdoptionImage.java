@@ -11,18 +11,17 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "adoption_image")
 public class AdoptionImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "adoption_image_id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "adoption_id")
     private Adoption adoption;
-
-//    private MultipartFile image;
 
     private String path;
 }

@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "adoption")
 public class Adoption {
 
     @Id
@@ -59,9 +60,6 @@ public class Adoption {
     @NotBlank
     private String neutered; // 중성화 유무
 
-//    public Long getMemberId(Member member) {
-//        return member.getId();
-//    }
 
 
 

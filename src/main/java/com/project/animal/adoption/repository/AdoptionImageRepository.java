@@ -7,9 +7,4 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface AdoptionImageRepository extends JpaRepository<AdoptionImage, Long> {
 
-//    @Override
-//    Optional<AdoptionImage> findByMemberId(Member member);
-
-//    AdoptionImage findByAdoptionId(Adoption adoption);
-
 }

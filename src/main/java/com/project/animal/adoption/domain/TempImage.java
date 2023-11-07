@@ -8,10 +8,12 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class TempIamage {
+@Table(name = "temp_image")
+public class TempImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "temp_image_id")
     private Long id;
 
     @Column( name = "image_url")
