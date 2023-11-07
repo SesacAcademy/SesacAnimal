@@ -1,4 +1,4 @@
-package com.project.animal.missing.exceptions;
+package com.project.animal.missing.exception;
 
 import com.project.animal.missing.dto.MissingNewDto;
 import lombok.Getter;

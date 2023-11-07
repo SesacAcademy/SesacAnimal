@@ -65,6 +65,12 @@
         const _endDate = params.get('endDate');
 
     </script>
+    <script th:inline="javascript" defer>
+        const _serverMsg = /*[[${serverMsg}]]*/ "";
+        if (_serverMsg) {
+            alert(_serverMsg);
+        }
+    </script>
     <script th:src="@{/js/missing/list/utils.js}" type="module"></script>
     <script th:src="@{/js/missing/list/init.js}" type="module"></script>
     <script th:src="@{/js/missing/list/tableIndicator.js}" type="module"></script>

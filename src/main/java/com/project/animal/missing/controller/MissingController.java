@@ -4,9 +4,10 @@ import com.project.animal.global.common.utils.BindingResultParser;
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
 import com.project.animal.missing.dto.*;
-import com.project.animal.missing.exceptions.DetailNotFoundException;
-import com.project.animal.missing.exceptions.InvalidCreateFormException;
-import com.project.animal.missing.exceptions.PostSaveFailException;
+import com.project.animal.missing.exception.DetailNotFoundException;
+import com.project.animal.missing.exception.InvalidCreateFormException;
+import com.project.animal.missing.exception.PostDeleteFailException;
+import com.project.animal.missing.exception.PostSaveFailException;
 import com.project.animal.missing.service.MissingPostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,15 +92,19 @@ public class MissingController {
   }
 
   @DeleteMapping(EndPoint.DELETE)
-  public String handleDeleteRequest(@PathVariable(EndPoint.ID) long id) {
-    log.info("id: >>> " + id);
-    return "index";
+  public String handleDeleteRequest(@PathVariable(EndPoint.ID) long id, RedirectAttributes redirectAttributes) {
+    boolean result = missingPostService.deletePost(id);
+
+    redirectAttributes.addFlashAttribute("serverMsg", "Success to delete the post");
+
+    return "redirect:" + EndPoint.MISSING + EndPoint.LIST;
   }
 
 
   @ExceptionHandler(DetailNotFoundException.class)
   public String handleDetailNotFound(DetailNotFoundException ex, Model model) {
     model.addAttribute("error", "Fail to find detail");
+    model.addAttribute("type", "detail");
 
     return ViewName.POST_DETAIL;
   }
@@ -130,6 +135,14 @@ public class MissingController {
 
     log.error("handlePostSaveFail: >> Invalid Input " + ex.getMessage());
     return "redirect:" + EndPoint.MISSING + EndPoint.NEW;
+  }
+
+  @ExceptionHandler(PostDeleteFailException.class)
+  public String handlePostDeleteFail(PostDeleteFailException ex, RedirectAttributes redirectAttributes) {
+    redirectAttributes.addFlashAttribute("error", "Fail to delete post");
+    redirectAttributes.addFlashAttribute("type", "delete");
+
+    return "redirect:" + EndPoint.MISSING + "/" + ex.getTargetId();
   }
 
 }

@@ -50,20 +50,21 @@
             const _errorMsg = /*[[${error}]]*/ "";
             const _detail = /*[[${detail}]]*/ {};
             const _comments= /*[[${comments}]]*/ [];
+            const _type = /*[[${type}]]*/ "";
 
             console.log(_comments);
 
         </script>
         <script defer>
-            const showAlert = (msg) => {
-                alert(msg);
+            const handleError = (msg, errorFrom) => {
+                if (msg) alert(msg);
+                if (errorFrom === "detail") {
+                    history.replaceState(null, null, '/missing/list');
+                    window.location.href="/missing/list";
+                }
             };
 
-            if (_errorMsg) {
-                showAlert(_errorMsg);
-                history.replaceState(null, null, '/missing/list');
-                window.location.href="/missing/list";
-            }
+            handleError(_errorMsg, _type);
         </script>
     </head>
     <body>
