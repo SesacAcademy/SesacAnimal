@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -59,6 +60,13 @@ public class Adoption {
     @NotNull
     @NotBlank
     private String neutered; // 중성화 유무
+
+    @Column(name = "create_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "update_at")
+    private LocalDateTime updatedAt;
+
 
 
     public Adoption(String title, String breed, String gender, int age, String center, String neutered, String content) {

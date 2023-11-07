@@ -26,6 +26,8 @@ public class QAdoptionComment extends EntityPathBase<AdoptionComment> {
 
     public final StringPath content = createString("content");
 
+    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
+
     public final NumberPath<Integer> group_num = createNumber("group_num", Integer.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -33,6 +35,8 @@ public class QAdoptionComment extends EntityPathBase<AdoptionComment> {
     public final com.project.animal.member.domain.QMember member;
 
     public final NumberPath<Integer> tab = createNumber("tab", Integer.class);
+
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
     public QAdoptionComment(String variable) {
         this(AdoptionComment.class, forVariable(variable), INITS);

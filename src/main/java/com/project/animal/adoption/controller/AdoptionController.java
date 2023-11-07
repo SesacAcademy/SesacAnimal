@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-
 @RequiredArgsConstructor
 @Slf4j
 public class AdoptionController {
@@ -75,7 +74,7 @@ public class AdoptionController {
     @GetMapping("/v1/adoption/edit/{id}")
     public String adoptionEdit(){
 
-        return "redirect: /adoption/adoption_edit";
+        return "redirect:/adoption/adoption_edit";
     }
     
     

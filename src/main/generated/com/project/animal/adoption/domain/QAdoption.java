@@ -32,6 +32,8 @@ public class QAdoption extends EntityPathBase<Adoption> {
 
     public final StringPath content = createString("content");
 
+    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
+
     public final StringPath gender = createString("gender");
 
     public final NumberPath<Integer> hit = createNumber("hit", Integer.class);
@@ -45,6 +47,8 @@ public class QAdoption extends EntityPathBase<Adoption> {
     public final ComparablePath<Character> status = createComparable("status", Character.class);
 
     public final StringPath title = createString("title");
+
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
     public QAdoption(String variable) {
         this(Adoption.class, forVariable(variable), INITS);
