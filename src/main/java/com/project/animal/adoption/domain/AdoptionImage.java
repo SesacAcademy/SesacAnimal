@@ -24,4 +24,9 @@ public class AdoptionImage {
     private Adoption adoption;
 
     private String path;
+
+    public AdoptionImage(String serverFileName, Adoption adoption) {
+        this.adoption = adoption;
+        this.path = serverFileName;
+    }
 }

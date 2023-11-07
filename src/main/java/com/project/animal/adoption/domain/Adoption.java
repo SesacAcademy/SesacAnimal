@@ -61,6 +61,24 @@ public class Adoption {
     private String neutered; // 중성화 유무
 
 
+    public Adoption(String title, String breed, String gender, int age, String center, String neutered, String content) {
+        this.title=title;
+        this.breed=breed;
+        this.gender=gender;
+        this.age=age;
+        this.center=center;
+        this.neutered=neutered;
+        this.content=content;
+    }
 
-
+    public Adoption(String title, String breed, String gender, int age, String center, String neutered, String content, Member member) {
+        this.title=title;
+        this.breed=breed;
+        this.gender=gender;
+        this.age=age;
+        this.center=center;
+        this.neutered=neutered;
+        this.content=content;
+        this.member=member;
+    }
 }

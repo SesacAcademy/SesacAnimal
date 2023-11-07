@@ -42,49 +42,31 @@ public class AdoptionService {
        try {
 
            // 4. 파일 업로드 (바이너리)
-           System.out.println("file"+file);
-           System.out.println("file isempty"+file.isEmpty());
             String serverFileName;
            if(file.isEmpty()){
                serverFileName = "empty";
            }else{
                serverFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+               InputStream is = file.getInputStream();
+
+               minioClient.putObject(
+                       PutObjectArgs.builder()
+                               .bucket("adoption")
+                               .object(serverFileName)
+                               .stream(is, is.available(), 0)
+                               .build()
+               );
+               is.close();
            }
 
-           InputStream is = file.getInputStream();
+           Adoption adoption = new Adoption(adoptionWriteDto.getTitle(),adoptionWriteDto.getBreed(),adoptionWriteDto.getGender(),adoptionWriteDto.getAge(),adoptionWriteDto.getCenter(),adoptionWriteDto.getNeutered(),adoptionWriteDto.getContent());
 
-           minioClient.putObject(
-                   PutObjectArgs.builder()
-                           .bucket("adoption")
-                           .object(serverFileName)
-                           .stream(is, is.available(), 0)
-                           .build()
-           );
-           is.close();
-
-           Adoption adoption = new Adoption();
-
-           adoption.setTitle(adoptionWriteDto.getTitle());
-           adoption.setBreed(adoptionWriteDto.getBreed());
-           adoption.setGender(adoptionWriteDto.getGender());
-           adoption.setAge(adoptionWriteDto.getAge());
-
-           adoption.setCenter(adoptionWriteDto.getCenter());
-           adoption.setNeutered(adoptionWriteDto.getNeutered());
-           adoption.setContent(adoptionWriteDto.getContent());
-
-
-           AdoptionImage adoptionImage = new AdoptionImage();
-           adoptionImage.setPath(serverFileName);
-           adoptionImage.setAdoption(adoption);
-
-
+           AdoptionImage adoptionImage = new AdoptionImage(serverFileName, adoption);
 
            Optional<Member> member = repository.findById(1L);
            Member member1 = member.get();
            adoption.setMember(member1);
 
-//
            Adoption saved = adoptionRepository.save(adoption);
 
 

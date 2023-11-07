@@ -75,7 +75,8 @@
                      <span class="title">이미지</span>
                  </p>
                  <p class="image">
-                     <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${read.path}" alt="image"/>
+                     <img th:src="${read.path.equals('empty')} ?  '/img/cat_basic.jpg' : 'http://infra.shucloud.site:8007/adoption/' + ${read.path}" alt="유기견 썸네일" />
+<!--                     <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${read.path}" alt="image"/>-->
                  </p>
              </div>
              <p>
