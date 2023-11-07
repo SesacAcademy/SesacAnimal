@@ -92,11 +92,10 @@
     margin:0;
     padding:0;
     margin-top:25px;
-
+    list-style-type: none;
 }
 
-.adoption-board ul li{
-    list-style-type: none;
+.adoption-board ul li a{
     display: flex;
     justify-content: space-between;
     border:1px solid #aaa;
@@ -179,7 +178,7 @@
 .adoption-write .write-view-area .reset-button {
     background-color: #fff;
     border:none;
-    width:50px;
+    width:100px;
     height: 50px;
     color:#f0b062;
     vertical-align: middle;
@@ -214,7 +213,7 @@
     border-radius: 10px;
     box-sizing: border-box;
     padding:0 10px; */
-    display: none;
+    /*display: none;*/
 
 }
 
@@ -358,11 +357,22 @@
 .adoption-read .view-button-area{
     display: flex;
     justify-content: space-between;
+
 }
 .adoption-read .view-button-area .view-area span{
     vertical-align: middle;
     color:#777;
 }
+
+
+.adoption-read .view-button-area a{
+    color: #f0b062;
+}
+.adoption-read .view-button-area .view-area span{
+    vertical-align: middle;
+    color:#777;
+}
+
 
 
 .adoption-read .view-button-area a{
@@ -441,7 +451,7 @@
     border:1px solid rgb(240,240,240);
     border-radius: 10px;
     box-sizing: border-box;
-    text-indent: 10px;
+    padding:5px 10px;
 }
 
 .adoption-read .contents-area select {

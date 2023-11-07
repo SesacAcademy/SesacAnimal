@@ -1,6 +1,7 @@
 package com.project.animal.member.domain;
 
-import lombok.*;
+
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

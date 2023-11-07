@@ -54,8 +54,9 @@
 </head>
 <body>
  <th:block th:replace="../fragments/header/header :: header"></th:block>
+
      <section class="adoption-write">
-         <form action="/v1/adoption/edit" method="POST" name="edit" accept-charset="utf-8">
+         <form action="/v1/adoption/edit" method="POST" name="edit" accept-charset="utf-8" enctype="multipart/form-data">
              <legend>입양 게시판</legend>
              <div class="write-view-area">
                  <p>
@@ -67,9 +68,9 @@
                  </p>
              </div>
              <div class="contents-area">
-                 <p class="col">
-                     <span class="title">작성자</span>
-                     <span class="desc" aria-readonly="true">asdf</span>
+                 <p>
+                     <label for="author-input" class="title">작성자</label>
+                     <input id="author-input" type="text" class="desc"  name="author" />
                  </p>
                  <p>
                      <label for="title-input">제목</label>
@@ -81,9 +82,9 @@
                      </p>
                      <p>
                          <label for="image-file">이미지 업로드 하기</label>
-                         <input type="file" id="image-file" name="image-file" value="이미지 업로드" placeholder="이미지 업로드"/><br/>
+                         <input type="file" id="image-file" name="image" value="이미지 업로드" placeholder="이미지 업로드" accept="image/*"/><br/>
 
-                         <img src="https://picsum.photos/id/237/200/300" alt=""/><br/>
+<!--                         <img src="https://picsum.photos/id/237/200/300"  alt=""/><br/>-->
                          <button class="remove-image">이미지 삭제</button>
                      </p>
                  </div>
@@ -102,7 +103,7 @@
                  <p>
                      <label for="center-select">센터 유무</label>
                      <select id="center-select" name="center">
-                         <option value="user">일반</option>
+                         <option value="user" selected>일반</option>
                          <option value="center">센터</option>
                      </select>
                  </p>
@@ -120,14 +121,13 @@
                  </p>
                  <p class="text-area">
                      <label for="textarea">내용</label>
-                     <textarea id="textarea" name="textarea"></textarea>
+                     <textarea id="textarea" name="content"></textarea>
                  </p>
              </div>
 
          </form>
 
      </section>
-
  <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
 </body>
 </html>
