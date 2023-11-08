@@ -1,7 +1,8 @@
-<div  xmlns:th="http://www.thymeleaf.org" th:fragment="editCard($detail)">
+<div  xmlns:th="http://www.thymeleaf.org" th:fragment="editCard(detail)">
     <h3>등록하기</h3>
     <form method="post" th:action="@{/missing/edit/{id}(id=${detail.id})}" enctype="multipart/form-data" th:object="${detail}">
         <input type="hidden" name="_method" value="put"/>
+        <input type="hidden" name="missingId" th:value="*{id}"/>
         <section class="missing-edit-page-content">
             <div style="display: flex; flex-direction:row; padding-right:30px;">
                 <div class="missing-edit-thumb-container">
@@ -48,7 +49,7 @@
                             </div>
                             <div class="missing-edit-field">
                                 <label>실종시간</label>
-                                <input type="date" name="missingTime" th:value="*{missingTime}"/>
+                                <input id="missing-edit-missingTime" type="date" name="missingTime" th:value="*{missingTime}"/>
                             </div>
                             <div class="missing-edit-field">
                                 <label>사례금</label>
@@ -66,4 +67,5 @@
             </section>
         </section>
     </form>
+    <script th:src="@{/js/missing/edit/missingTimeFormatter.js}" defer></script>
 </div>
