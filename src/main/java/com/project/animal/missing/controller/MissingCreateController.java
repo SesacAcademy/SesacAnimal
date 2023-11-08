@@ -19,11 +19,7 @@ import java.util.Map;
 @Slf4j
 @Controller
 @RequestMapping(EndPoint.MISSING_BASE + EndPoint.NEW)
-public class MissingCreateController {
-  private final int SUCCESS_FLAG = 1;
-
-  private final int FAIL_FLAG = 0;
-
+public class MissingCreateController extends MissingController {
   private final MissingPostService missingPostService;
 
   public MissingCreateController(MissingPostService missingPostService) {

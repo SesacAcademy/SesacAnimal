@@ -7,12 +7,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MissingController {
+
+  public final int SUCCESS_FLAG = 1;
+
+  public final int FAIL_FLAG = 0;
   public Map<String, String> createLinkConstants(String ...destinations) {
     Map<String, String> endPoints = Map.of(
             "edit", EndPoint.MISSING_BASE + EndPoint.EDIT,
             "delete",  EndPoint.MISSING_BASE + EndPoint.DELETE,
             "detail", EndPoint.MISSING_BASE + EndPoint.DETAIL,
-            "list",  EndPoint.MISSING_BASE + EndPoint.LIST
+            "list",  EndPoint.MISSING_BASE + EndPoint.LIST,
+            "newComment", EndPoint.MISSING_BASE + EndPoint.DETAIL + EndPoint.COMMENT + EndPoint.NEW
     );
 
     return Arrays.stream(destinations).collect(

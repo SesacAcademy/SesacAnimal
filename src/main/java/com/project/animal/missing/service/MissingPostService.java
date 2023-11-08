@@ -40,7 +40,7 @@ public class MissingPostService {
 
   public MissingDetailDto getPostDetail(long postId) {
     Optional<MissingPost> post =  missingPostRepository.findById(postId);
-    MissingPost postDetail = post.orElseThrow(() -> new DetailNotFoundException());
+    MissingPost postDetail = post.orElseThrow(() -> new DetailNotFoundException(postId));
     MissingDetailDto detailDto = MissingDetailDto.fromMissingPost(postDetail);
 
     return detailDto;
@@ -62,7 +62,7 @@ public class MissingPostService {
 
   public boolean deletePost(long postId) {
     Optional<MissingPost> maybePost = missingPostRepository.findById(postId);
-    MissingPost postDetail = maybePost.orElseThrow(() -> new DetailNotFoundException());
+    MissingPost postDetail = maybePost.orElseThrow(() -> new DetailNotFoundException(postId));
 
     try {
       postDetail.inactivatePost();

@@ -14,5 +14,7 @@ abstract public class EndPoint {
   public static final String DELETE = "/delete";
   public static final String CREATE = "";
 
+  public static final String COMMENT= "/comment";
+
 
 }
