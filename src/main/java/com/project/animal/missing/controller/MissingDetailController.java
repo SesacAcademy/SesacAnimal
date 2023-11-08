@@ -5,9 +5,13 @@ import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
 import com.project.animal.missing.dto.MissingCommentNewDto;
 import com.project.animal.missing.dto.MissingDetailDto;
+import com.project.animal.missing.exception.CommentSaveFailException;
 import com.project.animal.missing.exception.DetailNotFoundException;
 import com.project.animal.missing.exception.InvalidCommentFormException;
+import com.project.animal.missing.exception.PostSaveFailException;
+import com.project.animal.missing.service.MissingCommentService;
 import com.project.animal.missing.service.MissingPostService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,15 +25,13 @@ import java.util.Map;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(EndPoint.MISSING_BASE + EndPoint.DETAIL)
 public class MissingDetailController extends MissingController {
 
   private final MissingPostService missingPostService;
 
-
-  public MissingDetailController(MissingPostService missingPostService) {
-    this.missingPostService = missingPostService;
-  }
+  private final MissingCommentService missingCommentService;
 
   @GetMapping(EndPoint.PATH_ID)
   public String getPostDetail(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
@@ -47,13 +49,14 @@ public class MissingDetailController extends MissingController {
   }
 
   @PostMapping(EndPoint.COMMENT + EndPoint.NEW)
-  public String createNewComment(@Valid @ModelAttribute("comment") MissingCommentNewDto comment, BindingResult br) {
+  public String createNewComment(@Valid @ModelAttribute("comment") MissingCommentNewDto dto, BindingResult br) {
     if (br.hasErrors()) {
-      throw new InvalidCommentFormException(comment, br);
+      throw new InvalidCommentFormException(dto, br);
     }
 
-    log.info("test:>> " + comment);
-    return "index";
+    missingCommentService.createComment(dto);
+
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 
   @ExceptionHandler(DetailNotFoundException.class)
@@ -77,6 +80,16 @@ public class MissingDetailController extends MissingController {
     redirectAttributes.addFlashAttribute("type", "comment");
 
     log.error("InvalidCommentFormException: >> Invalid comment Input " + errors.toString());
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + ex.getInvalidForm().getMissingId();
+  }
+
+  @ExceptionHandler(CommentSaveFailException.class)
+  public String handlePostSaveFail(CommentSaveFailException ex, RedirectAttributes redirectAttributes) {
+
+    redirectAttributes.addFlashAttribute("error", "Fail to create comment");
+    redirectAttributes.addFlashAttribute("type", "comment");
+
+    log.error("CommentSaveFailException: >> Fail to DB save " + ex.getMessage());
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + ex.getInvalidForm().getMissingId();
   }
 }
