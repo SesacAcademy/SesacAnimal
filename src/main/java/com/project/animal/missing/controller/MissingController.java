@@ -92,7 +92,7 @@ public class MissingController {
 
   @PutMapping(EndPoint.EDIT)
   public String handleEditRequest(@Valid @ModelAttribute("detail") MissingEditDto dto, BindingResult br, RedirectAttributes redirectAttributes) {
-    if (br.hasErrors()) {
+    if (!br.hasErrors()) {
       throw new InvalidEditFormException(dto, br);
     }
 
@@ -157,4 +157,25 @@ public class MissingController {
     return "redirect:" + EndPoint.MISSING + "/" + ex.getTargetId();
   }
 
+  @ExceptionHandler(PostEditFailException.class)
+  public String handlePostEditFail(PostEditFailException ex, RedirectAttributes redirectAttributes) {
+    redirectAttributes.addFlashAttribute("error", "Fail to edit post");
+    redirectAttributes.addFlashAttribute("type", "edit");
+
+    return "redirect:" + EndPoint.MISSING + "/" + ex.getId();
+  }
+
+  @ExceptionHandler(InvalidEditFormException.class)
+  public String handleInvalidEditFormException(InvalidEditFormException ex, RedirectAttributes redirectAttributes) {
+    Map<String, String> errors = BindingResultParser.parse(ex.getBindingResult());
+
+    redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
+    redirectAttributes.addFlashAttribute("isSuccess", FAIL_FLAG);
+    redirectAttributes.addFlashAttribute("errors", errors);
+    redirectAttributes.addFlashAttribute("msg", "입력한 정보를 다시 확인해주세요.");
+    redirectAttributes.addFlashAttribute("post", ex.getInvalidForm());
+
+    log.error("InvalidEditFormException: >> Invalid Input " + errors.toString());
+    return "redirect:" + EndPoint.MISSING + "/edit" + '/' + ex.getInvalidForm().getMissingId();
+  }
 }
