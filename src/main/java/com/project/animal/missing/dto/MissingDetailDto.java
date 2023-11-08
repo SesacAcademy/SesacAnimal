@@ -8,6 +8,7 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 
 @Getter
+@ToString
 public class MissingDetailDto {
 
   private long id;

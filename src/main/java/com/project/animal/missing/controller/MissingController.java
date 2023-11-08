@@ -4,10 +4,7 @@ import com.project.animal.global.common.utils.BindingResultParser;
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
 import com.project.animal.missing.dto.*;
-import com.project.animal.missing.exception.DetailNotFoundException;
-import com.project.animal.missing.exception.InvalidCreateFormException;
-import com.project.animal.missing.exception.PostDeleteFailException;
-import com.project.animal.missing.exception.PostSaveFailException;
+import com.project.animal.missing.exception.*;
 import com.project.animal.missing.service.MissingPostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,9 +91,16 @@ public class MissingController {
   }
 
   @PutMapping(EndPoint.EDIT)
-  public String handleEditRequest(@PathVariable(EndPoint.ID) long id) {
-    log.info("id: >>> " + id);
-    return "index";
+  public String handleEditRequest(@Valid @ModelAttribute("detail") MissingEditDto dto, BindingResult br, RedirectAttributes redirectAttributes) {
+    if (br.hasErrors()) {
+      throw new InvalidEditFormException(dto, br);
+    }
+
+    boolean isSuccess = missingPostService.editPost(dto);
+    redirectAttributes.addFlashAttribute("isSuccess", isSuccess ? SUCCESS_FLAG : FAIL_FLAG);
+    redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
+
+    return "redirect:" + EndPoint.MISSING + "/" + dto.getMissingId();
   }
 
   @DeleteMapping(EndPoint.DELETE)

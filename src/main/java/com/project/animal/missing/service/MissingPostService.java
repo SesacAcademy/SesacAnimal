@@ -4,6 +4,7 @@ import com.project.animal.missing.domain.MissingPost;
 import com.project.animal.missing.dto.*;
 import com.project.animal.missing.exception.DetailNotFoundException;
 import com.project.animal.missing.exception.PostDeleteFailException;
+import com.project.animal.missing.exception.PostEditFailException;
 import com.project.animal.missing.exception.PostSaveFailException;
 import com.project.animal.missing.repository.MissingPostRepository;
 import com.project.animal.missing.service.converter.DtoEntityConverter;
@@ -71,6 +72,21 @@ public class MissingPostService {
     } catch (Exception ex) {
       log.error("Error in deletePost: >> " + postId);
       throw new PostDeleteFailException(ex.getMessage(), ex.getCause(), postId);
+    }
+  }
+
+  public boolean editPost(MissingEditDto dto) {
+    log.info("dto:>> " + dto.toString());
+    try {
+      MissingPost post = converter.toMissingPost(dto);
+      MissingPost result = missingPostRepository.save(post);
+
+      if (result == null) throw new Exception("no edit result");
+      return true;
+
+    } catch (Exception ex) {
+      log.error("Error in editPost: >> " + dto.toString());
+      throw new PostEditFailException(ex.getMessage(), ex.getCause(), dto);
     }
   }
 }
