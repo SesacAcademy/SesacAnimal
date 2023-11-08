@@ -1,5 +1,20 @@
-<div xmlns:th="http://www.thymeleaf.org" class="missing-detail-comment-container" th:fragment="comments(comments)">
-    <div th:each="comment : ${comments}">
-        <div>댓글</div>
-    </div>
+<div xmlns:th="http://www.thymeleaf.org" class="missing-detail-comment-container"
+        th:fragment="comments(memberId, postId, comments, actionPath)">
+
+        <section class="missing-detail-comment-card-container">
+            <div class="missing-comment-title">작성자</div>
+            <form class="missing-comment-form" method="post" th:action="@{{actionPath}(actionPath=${actionPath})}">
+                <input name="missingId" th:value="${postId}" hidden />
+                <input name="memberId" th:value="${memberId}" hidden />
+                <input class="missing-comment-input" type="text" name="comment" placeholder="댓글을 써주세요">
+                <button class="missing-comment-button">작성</button>
+            </form>
+        </section>
+
+        <section th:each="comment : ${comments}">
+            comm
+        </section>
+
+
+
 </div>
