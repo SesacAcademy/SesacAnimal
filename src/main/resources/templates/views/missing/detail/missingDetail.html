@@ -70,33 +70,16 @@
     <body>
         <th:block th:replace="../fragments/header/header :: header" />
         <section class="missing-detail-page">
-            <div th:if="${detail != null}">
+            <div th:if="${detail}">
                 <div style="display: flex; flex-direction: row;">
                     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
                         <th:block th:replace="./missing/detail/missingDetailCard :: detailCard(${$detail})" />
-                        <div style="display:flex; flex-direction: row; margin-top: 30px;">
-                            <div style="padding: 10px 40px; margin-right: 20px; border: 1px solid black; border-radius: 20px;">
-                                <form method="post" th:action="@{/missing/{id}(id=${detail.id})}">
-                                    <input type="hidden" name="_method" value="put"/>
-                                    <button>수정</button>
-                                </form>
-                            </div>
-                            <div style="padding: 10px 40px; border: 1px solid black; border-radius: 20px;">
-                                <form method="post" th:action="@{/missing/{id}(id=${detail.id})}">
-                                    <input type="hidden" name="_method" value="delete"/>
-                                    <button type="submit">삭제</button>
-                                </form>
-                            </div>
-                        </div>
+                        <th:block th:replace="./missing/detail/navigationButtons :: navButtons(${$detail})" />
                     </div>
-
-                    <div class="missing-detail-comment-container">
-                        <div th:each="comment : ${comments}">
-                            <div>댓글</div>
-                        </div>
+                    <div th:if="${$comments}">
+                        <th:block th:replace="./missing/detail/missingComment :: comments(${$comments})" />
                     </div>
                 </div>
-
             </div>
         </section>
 
