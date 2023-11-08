@@ -85,6 +85,14 @@ public class MissingController {
     return "redirect:" + EndPoint.MISSING + EndPoint.NEW;
   }
 
+  @GetMapping(EndPoint.EDIT)
+  public String showEditView(@PathVariable(EndPoint.ID) long postId, Model model) {
+    MissingDetailDto detail = missingPostService.getPostDetail(postId);
+    model.addAttribute("detail", detail);
+
+    return ViewName.POST_EDIT;
+  }
+
   @PutMapping(EndPoint.EDIT)
   public String handleEditRequest(@PathVariable(EndPoint.ID) long id) {
     log.info("id: >>> " + id);
