@@ -1,6 +1,5 @@
 package com.project.animal.missing.controller;
 
-import com.project.animal.global.common.utils.BindingResultParser;
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
 import com.project.animal.missing.dto.*;
@@ -18,11 +17,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
-@RequestMapping(EndPoint.MISSING)
+@RequestMapping(EndPoint.MISSING_BASE)
 public class MissingController {
 
   private final int SUCCESS_FLAG = 1;
@@ -45,7 +46,9 @@ public class MissingController {
           Model model) {
 
     ListResponseDto<MissingListResDto> result = missingPostService.getPostList(filterDto, pageable);
+    Map<String, String> endPoints = createLinkConstants("delete", "list");
 
+    model.addAttribute("endPoints", endPoints);
     model.addAttribute("list", result.getList());
     model.addAttribute("count", result.getTotalCount());
 
@@ -53,11 +56,14 @@ public class MissingController {
   }
 
 
-  @GetMapping(EndPoint.DETAIL)
-  public String getPostDetail(@PathVariable(EndPoint.ID) long postId, Model model) {
+  @GetMapping(EndPoint.DETAIL + EndPoint.PATH_ID)
+  public String getPostDetail(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
     MissingDetailDto detail = missingPostService.getPostDetail(postId);
     String[] comments = {"test1", "comments2"};
 
+    Map<String, String> endPoints = createLinkConstants("edit", "delete");
+
+    model.addAttribute("endPoints", endPoints);
     model.addAttribute("detail", detail);
     model.addAttribute("comments", comments);
 
@@ -82,15 +88,15 @@ public class MissingController {
     return "redirect:" + EndPoint.MISSING + EndPoint.NEW;
   }
 
-  @GetMapping(EndPoint.EDIT)
-  public String showEditView(@PathVariable(EndPoint.ID) long postId, Model model) {
+  @GetMapping(EndPoint.EDIT + EndPoint.PATH_ID)
+  public String showEditView(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
     MissingDetailDto detail = missingPostService.getPostDetail(postId);
     model.addAttribute("detail", detail);
 
     return ViewName.POST_EDIT;
   }
 
-  @PutMapping(EndPoint.EDIT)
+  @PutMapping(EndPoint.EDIT  + EndPoint.PATH_ID)
   public String handleEditRequest(@Valid @ModelAttribute("detail") MissingEditDto dto, BindingResult br, RedirectAttributes redirectAttributes) {
     if (!br.hasErrors()) {
       throw new InvalidEditFormException(dto, br);
@@ -103,14 +109,25 @@ public class MissingController {
     return "redirect:" + EndPoint.MISSING + "/" + dto.getMissingId();
   }
 
-  @DeleteMapping(EndPoint.DELETE)
-  public String handleDeleteRequest(@PathVariable(EndPoint.ID) long id, RedirectAttributes redirectAttributes) {
-    boolean result = missingPostService.deletePost(id);
+  @DeleteMapping(EndPoint.DELETE + EndPoint.PATH_ID)
+  public String handleDeleteRequest(@PathVariable(EndPoint.ID_KEY) long id, RedirectAttributes redirectAttributes) {
 
+    boolean result = missingPostService.deletePost(id);
     redirectAttributes.addFlashAttribute("serverMsg", "Success to delete the post");
 
-    return "redirect:" + EndPoint.MISSING + EndPoint.LIST;
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.LIST;
   }
 
+  private Map<String, String> createLinkConstants(String ...destinations) {
+    Map<String, String> endPoints = Map.of(
+            "edit", EndPoint.MISSING_BASE + EndPoint.EDIT,
+            "delete",  EndPoint.MISSING_BASE + EndPoint.DELETE,
+            "detail", EndPoint.MISSING_BASE,
+            "list",  EndPoint.MISSING_BASE + EndPoint.LIST
+    );
+
+   return Arrays.stream(destinations).collect(
+           Collectors.toMap((d) -> d, (d) -> endPoints.get(d)));
+  }
 
 }

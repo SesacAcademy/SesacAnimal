@@ -84,17 +84,17 @@
         <div class="missing-list-page-content">
             <div class="missing-list-container">
                 <div th:each="post : ${list}">
-                    <th:block th:replace="./missing/list/missingCard :: missingCard(${post})" />
+                    <th:block th:replace="./missing/list/missingCard :: missingCard(${post}, ${endPoints.detail})" />
                 </div>
             </div>
             <div>
-                <th:block th:replace="./missing/list/missingListFilter :: filter" />
+                <th:block th:replace="./missing/list/missingListFilter :: filter(${endPoints.list})" />
             </div>
         </div>
 
 
             <div class="missing-list-indicator">
-                <th:block th:replace="./missing/list/missingIndicator :: indicator" />
+                <th:block th:replace="./missing/list/missingIndicator :: indicator(${endPoints.list})" />
             </div>
 
 

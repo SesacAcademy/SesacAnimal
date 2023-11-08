@@ -73,11 +73,11 @@
             <div th:if="${detail}">
                 <div style="display: flex; flex-direction: row;">
                     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
-                        <th:block th:replace="./missing/detail/missingDetailCard :: detailCard(${$detail})" />
-                        <th:block th:replace="./missing/detail/navigationButtons :: navButtons(${$detail})" />
+                        <th:block th:replace="./missing/detail/missingDetailCard :: detailCard(${detail})" />
+                        <th:block th:replace="./missing/detail/navigationButtons :: navButtons(${detail}, ${endPoints.edit}, ${endPoints.delete})" />
                     </div>
-                    <div th:if="${$comments}">
-                        <th:block th:replace="./missing/detail/missingComment :: comments(${$comments})" />
+                    <div th:if="${comments}">
+                        <th:block th:replace="./missing/detail/missingComment :: comments(${comments})" />
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="missingCard(post)">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="missingCard(post, prefix)">
     <div class="missing-card-container">
-        <a th:href="@{/missing/{id}(id=${post.id})}" >
+        <a th:href="@{{prefix}/{id}(id=${post.id}, prefix=${prefix})}" >
             <img th:src="@{/img/sample.jpeg}" alt="head" width="100%" height="100%" class="missing-card-image"/>
             <div style="position: relative">
 

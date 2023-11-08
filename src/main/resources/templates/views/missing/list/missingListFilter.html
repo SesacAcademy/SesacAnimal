@@ -1,5 +1,5 @@
-<section xmlns:th="http://www.thymeleaf.org" th:fragment="filter" class="missing-filter-container">
-    <form action="/missing/list" method="get" >
+<section xmlns:th="http://www.thymeleaf.org" th:fragment="filter(href)" class="missing-filter-container">
+    <form th:action="@{{href}(href=${href})}" method="get" >
         <input name="page" value="0" hidden />
         <input name="size" value="10" hidden />
         <div class="missing-filter-item">
