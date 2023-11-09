@@ -3,14 +3,17 @@ package com.project.animal.missing.dto.comment;
 import com.project.animal.missing.domain.MissingComment;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class MissingCommentListEntryDto {
   private long commentId;
   private long memberId;
   private long postId;
   private Long parentId;
-
   private String content;
+
+  private List<MissingCommentListEntryDto> comments;
 
   private MissingCommentListEntryDto(long commentId, long memberId, long postId, Long parentId, String content) {
     this.commentId = commentId;

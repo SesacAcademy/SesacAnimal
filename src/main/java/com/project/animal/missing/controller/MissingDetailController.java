@@ -55,7 +55,6 @@ public class MissingDetailController extends MissingController {
     }
 
     missingCommentService.createComment(dto);
-
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 
