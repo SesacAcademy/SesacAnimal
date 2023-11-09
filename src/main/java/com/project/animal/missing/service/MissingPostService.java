@@ -46,9 +46,8 @@ public class MissingPostService {
     Optional<MissingPost> maybePost =  missingPostRepository.findById(postId);
     MissingPost post = maybePost.orElseThrow(() -> new DetailNotFoundException(postId));
 
-    log.info("test: >> " + post.getComments().size());
     List<MissingCommentListEntryDto> comments =  createCommentList(post.getMissingId(), post.getComments());
-    log.info("test2: >> " + comments.size());
+
     MissingDetailDto detailDto = MissingDetailDto.fromMissingPost(post, comments);
 
     return detailDto;

@@ -17,7 +17,9 @@ public class MissingController {
             "delete",  EndPoint.MISSING_BASE + EndPoint.DELETE,
             "detail", EndPoint.MISSING_BASE + EndPoint.DETAIL,
             "list",  EndPoint.MISSING_BASE + EndPoint.LIST,
-            "newComment", EndPoint.MISSING_BASE + EndPoint.DETAIL + EndPoint.COMMENT + EndPoint.NEW
+            "newComment", EndPoint.MISSING_BASE + EndPoint.DETAIL + EndPoint.COMMENT + EndPoint.NEW,
+            "editComment", EndPoint.MISSING_BASE + EndPoint.DETAIL + EndPoint.COMMENT + EndPoint.EDIT,
+            "deleteComment", EndPoint.MISSING_BASE + EndPoint.DETAIL + EndPoint.COMMENT + EndPoint.DELETE
     );
 
     return Arrays.stream(destinations).collect(

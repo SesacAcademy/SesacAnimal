@@ -31,7 +31,7 @@ containers.forEach((dom) => {
         input.style.marginRight = "10px";
         input.style.borderRadius = "4px";
 
-        const button = document.createElement('div');
+        const button = document.createElement('button');
         button.textContent = '작성';
         button.style.fontSize = "1rem";
         button.style.display = "flex";

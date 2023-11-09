@@ -39,7 +39,7 @@ public class MissingDetailController extends MissingController {
     MissingDetailDto detail = missingPostService.getPostDetail(postId);
     List<MissingCommentListEntryDto> comments = detail.getComments();
 
-    Map<String, String> endPoints = createLinkConstants("edit", "delete", "newComment");
+    Map<String, String> endPoints = createLinkConstants("edit", "delete", "newComment", "editComment");
 
     model.addAttribute("endPoints", endPoints);
     model.addAttribute("post", detail);
@@ -57,6 +57,13 @@ public class MissingDetailController extends MissingController {
     missingCommentService.createComment(dto);
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
+
+  @PutMapping(EndPoint.COMMENT + EndPoint.EDIT)
+  public String editComment() {
+
+    return "index";
+  }
+
 
   @ExceptionHandler(DetailNotFoundException.class)
   public String handleDetailNotFound(DetailNotFoundException ex, Model model) {

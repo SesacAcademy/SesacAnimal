@@ -1,9 +1,9 @@
 <div xmlns:th="http://www.thymeleaf.org" class="missing-detail-comment-container"
-        th:fragment="comments(memberId, postId, comments, actionPath, parentId)">
+        th:fragment="comments(memberId, postId, comments, endPoints, parentId)">
 
         <section class="missing-detail-comment-card-container">
             <div class="missing-comment-title">작성자</div>
-            <form class="missing-comment-form" method="post" th:action="@{{actionPath}(actionPath=${actionPath})}">
+            <form class="missing-comment-form" method="post" th:action="@{{actionPath}(actionPath=${endPoints.newComment})}">
                 <input name="missingId" th:value="${postId}" hidden />
                 <input name="memberId" th:value="${memberId}" hidden />
                 <input th:if="${parentId}" name="parentId" th:value="${parentId}" hidden />
@@ -25,14 +25,18 @@
                     </div>
                     <div class="missing-comment-form">
                         <div class="missing-comment-content" th:text="${comment.content}" />
-                        <form class="missing-comment-edit-form" style="flex: display; flex-direction: row; display: none;">
-                            <input type="text" th:value="${comment.content}"/>
+                        <form class="missing-comment-edit-form" method="post" th:action="@{{actionPath}(actionPath=${endPoints.editComment})}">
+                            <input type="hidden" name="_method" value="put"/>
+                            <input name="missingId" th:value="${postId}" hidden />
+                            <input name="memberId" th:value="${memberId}" hidden />
+                            <input name="commentId" th:value="${comment.commentId}" hidden />
+                            <input type="text" name="content" th:value="${comment.content}"/>
                             <button>수정</button>
                         </form>
 
                     </div>
                     <div>
-                        <form class="missing-recomment-form" method="post" th:action="@{{actionPath}(actionPath=${actionPath})}">
+                        <form class="missing-recomment-form" method="post" th:action="@{{actionPath}(actionPath=${endPoints.newComment})}">
                             <input name="missingId" th:value="${postId}" hidden />
                             <input name="memberId" th:value="${memberId}" hidden />
                             <input name="parentId" th:value="${comment.commentId}" hidden />
@@ -52,7 +56,9 @@
                                 </div>
 
                                 <div class="missing-recomment-content" th:text="${recomment.content}" />
-                                <form class="missing-recomment-edit-form">
+                                <form class="missing-recomment-edit-form" method="post" th:action="@{{actionPath}(actionPath=${endPoints.editComment})}">
+                                    <input type="hidden" name="_method" value="put"/>
+                                    <input type="hidden" name="parentId" th:value="${recomment.parentId}"/>
                                     <input type="text" th:value="${recomment.content}" style="width: 70%;"/>
                                     <button>수정</button>
                                 </form>
