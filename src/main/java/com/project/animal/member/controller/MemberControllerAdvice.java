@@ -55,7 +55,7 @@ public class MemberControllerAdvice {
     public ResponseDto<String> invalidTokenException(InvalidTokenException e) {
         log.error("이메일 인증 확인 에러 발생", e);
 
-        return new ResponseDto(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());
+        return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());
     }
 
     /**
@@ -64,17 +64,17 @@ public class MemberControllerAdvice {
      */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseDto<String> methodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseDto<Map<String, String>> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
         Map<String, String> errorData = new HashMap<>();
 
-        fieldErrors.stream().forEach(x -> {
+        fieldErrors.forEach(x -> {
             errorData.put(x.getField(), x.getDefaultMessage());
         });
 
-        return new ResponseDto(HttpStatus.BAD_REQUEST.value(), errorData, "");
+        return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), errorData, "");
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -82,6 +82,6 @@ public class MemberControllerAdvice {
     public ResponseDto<String> loginException(LoginException e) {
         log.info(e.getMessage());
 
-        return new ResponseDto(HttpStatus.BAD_REQUEST.value(), null, "아이디 또는 비밀번호가 틀렸습니다.");
+        return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, "아이디 또는 비밀번호가 틀렸습니다.");
     }
 }

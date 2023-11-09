@@ -22,6 +22,8 @@ import java.time.Duration;
 import java.util.*;
 import static com.project.animal.global.common.constant.ExpirationTime.ACCESS_TOKEN_EXPIRATION_TIME;
 import static com.project.animal.global.common.constant.ExpirationTime.REFRESH_TOKEN_EXPIRATION_TIME;
+import static com.project.animal.global.common.constant.TokenTypeValue.USER_ID;
+import static com.project.animal.global.common.constant.TokenTypeValue.USER_ROLE;
 
 /**
  * [참고] JWT 토큰 구조
@@ -86,8 +88,8 @@ public class JwtTokenProvider {
 
         // Claim 생성
         Map<String, String> claims = new HashMap<>();
-        claims.put("uid", String.valueOf(member.getId()));
-        claims.put("role", member.getRole().name());
+        claims.put(USER_ID, String.valueOf(member.getId()));
+        claims.put(USER_ROLE, member.getRole().name());
 
         // Access 토큰 생성
         String accessToken = Jwts.builder()
@@ -112,8 +114,8 @@ public class JwtTokenProvider {
 
         // Claim 생성
         Map<String, String> claims = new HashMap<>();
-        claims.put("uid", String.valueOf(member.getId()));
-        claims.put("role", member.getRole().name());
+        claims.put(USER_ID, String.valueOf(member.getId()));
+        claims.put(USER_ROLE, member.getRole().name());
 
         String refreshToken = Jwts.builder()
                 .setClaims(claims)                                                                  // 클레임 설정
@@ -184,13 +186,13 @@ public class JwtTokenProvider {
                 .getBody();
 
         member.setEmail(claims.getSubject());
-        member.setId(Long.parseLong(((String) claims.get("uid"))));
-        member.setRole(Role.valueOf(Role.class, (String) claims.get("role")));
+        member.setId(Long.parseLong(((String) claims.get(USER_ID))));
+        member.setRole(Role.valueOf(Role.class, (String) claims.get(USER_ROLE)));
 
         // Claim 생성
         Map<String, String> claim = new HashMap<>();
-        claim.put("uid", String.valueOf(member.getId()));
-        claim.put("role", member.getRole().name());
+        claim.put(USER_ID, String.valueOf(member.getId()));
+        claim.put(USER_ROLE, member.getRole().name());
 
         String newAccessToken = Jwts.builder()
                 .setClaims(claim)                                                                   // 클레임 설정
@@ -213,7 +215,7 @@ public class JwtTokenProvider {
                 .getBody();
 
         return new UsernamePasswordAuthenticationToken(claim.getSubject(), null,
-                List.of(new SimpleGrantedAuthority((String) claim.get("role"))));
+                List.of(new SimpleGrantedAuthority((String) claim.get(USER_ROLE))));
     }
 
     /**

@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import static com.project.animal.global.common.constant.ExpirationTime.ACCESS_TOKEN_COOKIE_EXPIRATION_TIME;
 import static com.project.animal.global.common.constant.ExpirationTime.REFRESH_TOKEN_COOKIE_EXPIRATION_TIME;
+import static com.project.animal.global.common.constant.TokenTypeValue.JWT_ACCESS_TOKEN;
+import static com.project.animal.global.common.constant.TokenTypeValue.JWT_REFRESH_TOKEN;
 
 @Slf4j
 @Controller
@@ -39,7 +41,7 @@ public class LoginController {
         TokenDto token = loginService.login(loginFormDto);
 
         // Access 토큰 쿠키
-        ResponseCookie accessToken = ResponseCookie.from("accessToken", token.getAccessToken())
+        ResponseCookie accessToken = ResponseCookie.from(JWT_ACCESS_TOKEN, token.getAccessToken())
                 .sameSite("Strict")                     // CSRF 방지
                 .secure(false)                          // HTTPS 설정
                 .httpOnly(false)
@@ -48,7 +50,7 @@ public class LoginController {
                 .build();
 
         // Refresh 토큰 쿠키 (httpOnly 설정 필수!)
-        ResponseCookie refreshToken = ResponseCookie.from("refreshToken", token.getRefreshToken())
+        ResponseCookie refreshToken = ResponseCookie.from(JWT_REFRESH_TOKEN, token.getRefreshToken())
                 .sameSite("Strict")                     // CSRF 방지
                 .secure(false)                          // HTTPS 설정
                 .httpOnly(true)                         // JS 조회 방지
