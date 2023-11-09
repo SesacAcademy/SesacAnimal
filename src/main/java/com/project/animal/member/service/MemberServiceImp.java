@@ -1,5 +1,6 @@
 package com.project.animal.member.service;
 
+import com.project.animal.global.common.constant.Role;
 import com.project.animal.global.common.provider.MailTokenProvider;
 import com.project.animal.member.domain.Member;
 import com.project.animal.member.dto.MemberFormDto;
@@ -8,22 +9,21 @@ import com.project.animal.member.exception.NestedEmailException;
 import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.member.service.inf.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService {
+public class MemberServiceImp implements MemberService {
 
     private final MemberRepository memberRepository;
 
     private final MailTokenProvider mailTokenProvider;
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+    private final PasswordEncoder encoder;
 
     @Override
     public void save(MemberFormDto memberFormDto) {
@@ -38,10 +38,10 @@ public class MemberServiceImpl implements MemberService {
         Member member = Member.builder()
                 .email(memberFormDto.getEmail())
                 .name(memberFormDto.getName())
-                .password(bCryptPasswordEncoder.encode(memberFormDto.getPassword()))
+                .password(encoder.encode(memberFormDto.getPassword()))
                 .phone(memberFormDto.getPhone())
                 .type("MAIL")
-                .grade(1)
+                .role(Role.ROLE_USER)
                 .isActive(1)
                 .createdAt(dateTime)
                 .updatedAt(dateTime)

@@ -49,12 +49,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 
     <title>새싹 애니멀</title>
-</head>
-    <body>
-        <th:block th:replace="../fragments/header/header :: header"></th:block>
+  </head>
+  <body>
+    <th:block th:replace="../fragments/header/header :: header"></th:block>
 
-        Hello 하이~~
-        <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
-    </body>
+    <span th:text="${member} ? ${member.email} : 'Anonymous'"></span>
+    <span>님 안녕하세요</span>
+    <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
+  </body>
 </html>
-

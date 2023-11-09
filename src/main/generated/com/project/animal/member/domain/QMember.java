@@ -23,8 +23,6 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath email = createString("email");
 
-    public final NumberPath<Integer> grade = createNumber("grade", Integer.class);
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final NumberPath<Integer> isActive = createNumber("isActive", Integer.class);
@@ -36,6 +34,8 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath password = createString("password");
 
     public final StringPath phone = createString("phone");
+
+    public final EnumPath<com.project.animal.global.common.constant.Role> role = createEnum("role", com.project.animal.global.common.constant.Role.class);
 
     public final StringPath type = createString("type");
 
