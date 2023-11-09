@@ -14,4 +14,6 @@ public class MissingCommentDeleteDto {
 
   @Min(1)
   long missingId;
+
+  Long parentId;
 }

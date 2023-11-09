@@ -5,15 +5,13 @@ import com.project.animal.missing.domain.MissingPost;
 import com.project.animal.missing.dto.comment.MissingCommentDeleteDto;
 import com.project.animal.missing.dto.comment.MissingCommentEditDto;
 import com.project.animal.missing.dto.comment.MissingCommentNewDto;
-import com.project.animal.missing.exception.CommentEditFailException;
-import com.project.animal.missing.exception.CommentNotFoundException;
-import com.project.animal.missing.exception.CommentSaveFailException;
-import com.project.animal.missing.exception.DetailNotFoundException;
+import com.project.animal.missing.exception.*;
 import com.project.animal.missing.repository.MissingCommentRepository;
 import com.project.animal.missing.repository.MissingPostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -54,7 +52,16 @@ public class MissingCommentService {
     }
   }
 
+  @Transactional
   public boolean deleteComment(MissingCommentDeleteDto dto) {
-    return true;
+    try {
+      // FIX: 대댓글 삭제 버그있음
+      missingCommentRepository.deleteByParentId(dto.getCommentId());
+      missingCommentRepository.deleteById(dto.getCommentId());
+      return true;
+    } catch (Exception ex) {
+      log.error("Error in deleteComment: >> " + dto.toString());
+      throw new CommentDeleteFailException(ex.getMessage(), ex.getCause(), dto);
+    }
   }
 }

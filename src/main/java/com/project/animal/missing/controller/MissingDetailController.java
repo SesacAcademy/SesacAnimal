@@ -129,7 +129,7 @@ public class MissingDetailController extends MissingController {
   public String handleCommentNotFoundException(CommentNotFoundException ex, RedirectAttributes redirectAttributes) {
 
     redirectAttributes.addFlashAttribute("error", "Fail to find comment");
-    redirectAttributes.addFlashAttribute("type", "detail");
+    redirectAttributes.addFlashAttribute("type", "comment");
 
     log.error("CommentNotFoundException: >> Fail to find comment id: >> " + ex.getCommentId());
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + ex.getMissingId();
@@ -138,9 +138,18 @@ public class MissingDetailController extends MissingController {
   @ExceptionHandler(CommentEditFailException.class)
   public String handleCommentEditFailException(CommentEditFailException ex, RedirectAttributes redirectAttributes) {
     redirectAttributes.addFlashAttribute("error", "Fail to edit comment");
-    redirectAttributes.addFlashAttribute("type", "detail");
+    redirectAttributes.addFlashAttribute("type", "comment");
 
     log.error("CommentNotFoundException: >> Fail to find comment id: >> " + ex.getInvalidForm().getCommentId());
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + ex.getInvalidForm().getMissingId();
+  }
+
+  @ExceptionHandler(CommentDeleteFailException.class)
+  public String handleCommentDeleteFailException(CommentDeleteFailException ex, RedirectAttributes redirectAttributes) {
+    redirectAttributes.addFlashAttribute("error", "Fail to delete comment");
+    redirectAttributes.addFlashAttribute("type", "comment");
+
+    log.error("CommentDeleteFailException: >> Fail to delete comment id: >> " + ex.getInvalidForm().getCommentId());
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + ex.getInvalidForm().getMissingId();
   }
 }
