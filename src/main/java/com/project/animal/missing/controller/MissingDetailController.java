@@ -5,6 +5,7 @@ import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
 import com.project.animal.missing.dto.MissingCommentNewDto;
 import com.project.animal.missing.dto.MissingDetailDto;
+import com.project.animal.missing.dto.comment.MissingCommentListEntryDto;
 import com.project.animal.missing.exception.CommentSaveFailException;
 import com.project.animal.missing.exception.DetailNotFoundException;
 import com.project.animal.missing.exception.InvalidCommentFormException;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 
@@ -36,14 +38,13 @@ public class MissingDetailController extends MissingController {
   @GetMapping(EndPoint.PATH_ID)
   public String getPostDetail(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
     MissingDetailDto detail = missingPostService.getPostDetail(postId);
-    String[] comments = {"test1", "comments2"};
-//    String[] comments = {};
+    List<MissingCommentListEntryDto> comments = detail.getComments();
 
     Map<String, String> endPoints = createLinkConstants("edit", "delete", "newComment");
 
     model.addAttribute("endPoints", endPoints);
     model.addAttribute("post", detail);
-    model.addAttribute("comments", null);
+    model.addAttribute("comments", comments);
 
     return ViewName.POST_DETAIL;
   }

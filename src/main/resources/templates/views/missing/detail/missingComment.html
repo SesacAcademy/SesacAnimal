@@ -12,10 +12,15 @@
             </form>
         </section>
 
-        <section th:each="comment : ${comments}">
-            comm
+        <section class="missing-comment-scroll">
+            <div class="missing-card-entry" th:each="comment : ${comments}">
+                <div class="missing-detail-comment-card-container">
+                    <div class="missing-comment-title">작성자</div>
+                    <div class="missing-comment-form">
+                        <div th:text="${comment.content}"></div>
+                    </div>
+                </div>
+            </div>
         </section>
-
-
 
 </div>

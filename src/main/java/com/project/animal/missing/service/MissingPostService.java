@@ -2,6 +2,7 @@ package com.project.animal.missing.service;
 
 import com.project.animal.missing.domain.MissingPost;
 import com.project.animal.missing.dto.*;
+import com.project.animal.missing.dto.comment.MissingCommentListEntryDto;
 import com.project.animal.missing.exception.DetailNotFoundException;
 import com.project.animal.missing.exception.PostDeleteFailException;
 import com.project.animal.missing.exception.PostEditFailException;
@@ -27,21 +28,27 @@ public class MissingPostService {
 
   private final DtoEntityConverter converter;
 
-  public ListResponseDto<MissingListResDto> getPostList(MissingFilterDto filter, Pageable pageable) {
+  public ListResponseDto<MissingListEntryDto> getPostList(MissingFilterDto filter, Pageable pageable) {
     Page<MissingPost> pages = missingPostRepository.findByFilter(filter, pageable);
 
     int count = (int) pages.getTotalElements();
-    List<MissingListResDto> posts = pages.stream()
-            .map((entity) -> MissingListResDto.fromMissingPost(entity))
+    List<MissingListEntryDto> posts = pages.stream()
+            .map((entity) -> MissingListEntryDto.fromMissingPost(entity))
             .collect(Collectors.toList());
 
     return new ListResponseDto<>(count, posts);
   }
 
   public MissingDetailDto getPostDetail(long postId) {
-    Optional<MissingPost> post =  missingPostRepository.findById(postId);
-    MissingPost postDetail = post.orElseThrow(() -> new DetailNotFoundException(postId));
-    MissingDetailDto detailDto = MissingDetailDto.fromMissingPost(postDetail);
+    Optional<MissingPost> maybePost =  missingPostRepository.findById(postId);
+    MissingPost post = maybePost.orElseThrow(() -> new DetailNotFoundException(postId));
+
+
+    List<MissingCommentListEntryDto> comments = post.getComments()
+            .stream().map((entity) -> MissingCommentListEntryDto.fromMissingComment(post.getMissingId(), entity))
+            .collect(Collectors.toList());
+
+    MissingDetailDto detailDto = MissingDetailDto.fromMissingPost(post, comments);
 
     return detailDto;
   }
