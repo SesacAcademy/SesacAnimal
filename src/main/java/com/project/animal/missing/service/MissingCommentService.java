@@ -2,6 +2,7 @@ package com.project.animal.missing.service;
 
 import com.project.animal.missing.domain.MissingComment;
 import com.project.animal.missing.domain.MissingPost;
+import com.project.animal.missing.dto.comment.MissingCommentDeleteDto;
 import com.project.animal.missing.dto.comment.MissingCommentEditDto;
 import com.project.animal.missing.dto.comment.MissingCommentNewDto;
 import com.project.animal.missing.exception.CommentEditFailException;
@@ -51,7 +52,9 @@ public class MissingCommentService {
       log.error("Error in editComment: >> " + dto.toString());
       throw new CommentEditFailException(ex.getMessage(), ex.getCause(), dto);
     }
+  }
 
-
+  public boolean deleteComment(MissingCommentDeleteDto dto) {
+    return true;
   }
 }

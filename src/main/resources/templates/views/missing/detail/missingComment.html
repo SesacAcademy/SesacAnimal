@@ -20,7 +20,14 @@
                         <div style="display:flex; flex-direction: row;">
                             <div class="missing-comment-button-new">reply</div>
                             <div class="missing-comment-button-edit">edit</div>
-                            <div class="missing-comment-button-delete">delete</div>
+                            <div class="missing-comment-button-delete">
+                                <form th:action="@{{actionPath}(actionPath=${endPoints.deleteComment})}" method="post">
+                                    <input name="missingId" th:value="${postId}" hidden />
+                                    <input name="commentId" th:value="${comment.commentId}" hidden />
+                                    <input type="hidden" name="_method" value="delete"/>
+                                    <button>delete</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <div class="missing-comment-form">
@@ -51,7 +58,15 @@
                                     <div>작성자</div>
                                     <div style="display:flex; flex-direction: row;">
                                         <div class="missing-recomment-button-edit">edit</div>
-                                        <div class="missing-recomment-button-delete">delete</div>
+                                        <div class="missing-recomment-button-delete">
+                                            <form th:action="@{{actionPath}(actionPath=${endPoints.deleteComment})}" method="post">
+                                                <input name="missingId" th:value="${postId}" hidden />
+                                                <input name="commentId" th:value="${comment.commentId}" hidden />
+                                                <input type="hidden" name="_method" value="delete"/>
+                                                <button>delete</button>
+                                            </form>
+                                        </div>
+
                                     </div>
                                 </div>
 
