@@ -14,13 +14,18 @@ recommentConatinerEdit.forEach((dom) => {
 });
 
 recommentConatinerEdit.forEach((dom) => {
-    const recommentEditButton = dom.querySelector(".missing-recomment-button-edit");
-    const recommentEditForm = dom.querySelector(".missing-recomment-edit-form");
-    const recommentContent = dom.querySelector(".missing-recomment-content");
 
-    recommentEditButton?.addEventListener('click', () => {
-        const isContentShowing = recommentContent.style.display === "block";
-        recommentContent.style.display = isContentShowing ? "none" : "block";
-        recommentEditForm.style.display = isContentShowing ? "block" : "none";
+    const recommentCard = dom.querySelectorAll(".missing-recomment-card");
+
+    recommentCard.forEach((recommentDom) => {
+        const recommentEditButton = recommentDom.querySelector(".missing-recomment-button-edit");
+        const recommentEditForm = recommentDom.querySelector(".missing-recomment-edit-form");
+        const recommentContent = recommentDom.querySelector(".missing-recomment-content");
+
+        recommentEditButton?.addEventListener('click', () => {
+            const isContentShowing = recommentContent.style.display === "block";
+            recommentContent.style.display = isContentShowing ? "none" : "block";
+            recommentEditForm.style.display = isContentShowing ? "block" : "none";
+        });
     });
 });
