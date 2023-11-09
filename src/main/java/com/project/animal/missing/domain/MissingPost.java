@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -74,8 +75,8 @@ public class MissingPost {
   @Column(name="updated_at")
   private LocalDateTime updatedAt;
 
-  // TODO: Comment 생성시 ManyToOne 으로 관계설정 하기
-  //  private List<Comment> comments;
+  @OneToMany(mappedBy = "missingPost")
+  private List<MissingComment> comments;
 
   public MissingPost(long memberId, String title, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, int missingStatus, int isActive) {
     this.memberId = memberId;
@@ -111,5 +112,9 @@ public class MissingPost {
   public void inactivatePost() {
     final int INACTIVE = 0;
     this.isActive = INACTIVE;
+  }
+
+  public void addComment(MissingComment comment) {
+    this.comments.add(comment);
   }
 }

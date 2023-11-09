@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,6 +18,8 @@ public class QMissingComment extends EntityPathBase<MissingComment> {
 
     private static final long serialVersionUID = 1944625835L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QMissingComment missingComment = new QMissingComment("missingComment");
 
     public final NumberPath<Long> comment_id = createNumber("comment_id", Long.class);
@@ -25,20 +28,29 @@ public class QMissingComment extends EntityPathBase<MissingComment> {
 
     public final NumberPath<Long> member_id = createNumber("member_id", Long.class);
 
+    public final QMissingPost missingPost;
+
     public final NumberPath<Long> parentId = createNumber("parentId", Long.class);
 
-    public final NumberPath<Long> post_id = createNumber("post_id", Long.class);
-
     public QMissingComment(String variable) {
-        super(MissingComment.class, forVariable(variable));
+        this(MissingComment.class, forVariable(variable), INITS);
     }
 
     public QMissingComment(Path<? extends MissingComment> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QMissingComment(PathMetadata metadata) {
-        super(MissingComment.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QMissingComment(PathMetadata metadata, PathInits inits) {
+        this(MissingComment.class, metadata, inits);
+    }
+
+    public QMissingComment(Class<? extends MissingComment> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.missingPost = inits.isInitialized("missingPost") ? new QMissingPost(forProperty("missingPost")) : null;
     }
 
 }
