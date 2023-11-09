@@ -130,7 +130,7 @@
 
 .adoption-board ul li .content-area{
     flex:60%;
-    text-indent: 15px;
+    padding: 15px;
 }
 
 .adoption-board ul li .info-area{

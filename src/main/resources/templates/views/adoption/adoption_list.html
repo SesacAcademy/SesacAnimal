@@ -84,13 +84,24 @@
                  <li th:each="adoption : ${list}">
                      <a th:href="@{'/v1/adoption/' + ${adoption.id}}">
                          <div class="image-area">
-                             <p>
-<!--                                 <span th:text="${adoption.adoptionImage.path}"></span>-->
-<!--                                 <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${adoption.adoptionImage.path}" alt="유기견 썸네일" />-->
-                                 <img th:src="${adoption.adoptionImage.path.equals('empty')} ?  '/img/dog-sample.jpg' : 'http://infra.shucloud.site:8007/adoption/' + ${adoption.adoptionImage.path}" alt="유기견 썸네일" />
-                             </p>
+                             <div th:each="image : ${adoption.adoptionImages}">
+                                 <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 -->
+                                 <p th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') }">
+                                     <img th:src="${image.path}" alt="유기동물 이미지"/>
+                                 </p>
+
+                                 <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 -->
+                                 <p th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') }">
+                                     <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
+                                 </p>
+
+                                 <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않고, image.path가 'empty'인 경우 -->
+                                 <p th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}">
+                                     <img th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>
+                                 </p>
+                             </div>
                              <p class="status-area">
-                                 <span th:text="${adoption.status}" >입양대기중</span>
+                                 <span th:text="${adoption.status}" >입양상태</span>
                                  <span class="material-symbols-outlined">heart_plus</span>
                              </p>
                          </div>
@@ -100,159 +111,12 @@
 
                          </div>
                          <div class="info-area">
-                             <p>공고일 : ㅇㅇㅇㅇㅇ</p>
-                             <p>작성자 : <span th:text="${adoption.member.getId()}"></span></p>
-                             <p>전화번호 : 11111</p>
+                             <p th:if="${adoption.noticeEdt != null}">공고종료일 : <span th:text="${adoption.noticeEdt}"></span></p>
+                             <p th:if="${adoption.happenPlace != null}">발견장소 : <span th:text="${adoption.happenPlace}"></span></p>
+                             <p  th:if="${adoption.member.getId() != null}">작성자 : <span th:text="${adoption.member.getId()}"></span></p>
                          </div>
                      </a>
                  </li>
-<!--                 <li>-->
-<!--                     <div class="image-area">-->
-<!--                         <p>-->
-<!--                             <img src="/img/dog-sample.jpg" alt="유기견 썸네일" />-->
-<!--                         </p>-->
-<!--                         <p class="status-area">-->
-<!--                             <span>입양대기중</span>-->
-<!--                             <span class="material-symbols-outlined">heart_plus</span>-->
-<!--                         </p>-->
-<!--                     </div>-->
-<!--                     <div class="content-area">-->
-<!--                         <p>제목 : ㅇㅇㅇ</p>-->
-<!--                         <p>공고 : ㅇㅇㅇㅇ</p>-->
-<!--                         <p>일시 : ㅇㅇㅇ</p>-->
-<!--                     </div>-->
-<!--                     <div class="info-area">-->
-<!--                         <p>공고일 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>작성자 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>전화번호 : 11111</p>-->
-<!--                     </div>-->
-<!--                 </li>-->
-<!--                 <li>-->
-<!--                     <div class="image-area">-->
-<!--                         <p>-->
-<!--                             <img src="/img/dog-sample.jpg" alt="유기견 썸네일" />-->
-<!--                         </p>-->
-<!--                         <p class="status-area">-->
-<!--                             <span>입양대기중</span>-->
-<!--                             <span class="material-symbols-outlined">heart_plus</span>-->
-<!--                         </p>-->
-<!--                     </div>-->
-<!--                     <div class="content-area">-->
-<!--                         <p>제목 : ㅇㅇㅇ</p>-->
-<!--                         <p>공고 : ㅇㅇㅇㅇ</p>-->
-<!--                         <p>일시 : ㅇㅇㅇ</p>-->
-<!--                     </div>-->
-<!--                     <div class="info-area">-->
-<!--                         <p>공고일 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>작성자 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>전화번호 : 11111</p>-->
-<!--                     </div>-->
-<!--                 </li>-->
-<!--                 <li>-->
-<!--                     <div class="image-area">-->
-<!--                         <p>-->
-<!--                             <img src="/img/dog-sample.jpg" alt="유기견 썸네일" />-->
-<!--                         </p>-->
-<!--                         <p class="status-area">-->
-<!--                             <span>입양대기중</span>-->
-<!--                             <span class="material-symbols-outlined">heart_plus</span>-->
-<!--                         </p>-->
-<!--                     </div>-->
-<!--                     <div class="content-area">-->
-<!--                         <p>제목 : ㅇㅇㅇ</p>-->
-<!--                         <p>공고 : ㅇㅇㅇㅇ</p>-->
-<!--                         <p>일시 : ㅇㅇㅇ</p>-->
-<!--                     </div>-->
-<!--                     <div class="info-area">-->
-<!--                         <p>공고일 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>작성자 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>전화번호 : 11111</p>-->
-<!--                     </div>-->
-<!--                 </li>-->
-<!--                 <li>-->
-<!--                     <div class="image-area">-->
-<!--                         <p>-->
-<!--                             <img src="/img/dog-sample.jpg" alt="유기견 썸네일" />-->
-<!--                         </p>-->
-<!--                         <p class="status-area">-->
-<!--                             <span>입양대기중</span>-->
-<!--                             <span class="material-symbols-outlined">heart_plus</span>-->
-<!--                         </p>-->
-<!--                     </div>-->
-<!--                     <div class="content-area">-->
-<!--                         <p>제목 : ㅇㅇㅇ</p>-->
-<!--                         <p>공고 : ㅇㅇㅇㅇ</p>-->
-<!--                         <p>일시 : ㅇㅇㅇ</p>-->
-<!--                     </div>-->
-<!--                     <div class="info-area">-->
-<!--                         <p>공고일 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>작성자 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>전화번호 : 11111</p>-->
-<!--                     </div>-->
-<!--                 </li>-->
-<!--                 <li>-->
-<!--                     <div class="image-area">-->
-<!--                         <p>-->
-<!--                             <img src="/img/dog-sample.jpg" alt="유기견 썸네일" />-->
-<!--                         </p>-->
-<!--                         <p class="status-area">-->
-<!--                             <span>입양대기중</span>-->
-<!--                             <span class="material-symbols-outlined">heart_plus</span>-->
-<!--                         </p>-->
-<!--                     </div>-->
-<!--                     <div class="content-area">-->
-<!--                         <p>제목 : ㅇㅇㅇ</p>-->
-<!--                         <p>공고 : ㅇㅇㅇㅇ</p>-->
-<!--                         <p>일시 : ㅇㅇㅇ</p>-->
-<!--                     </div>-->
-<!--                     <div class="info-area">-->
-<!--                         <p>공고일 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>작성자 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>전화번호 : 11111</p>-->
-<!--                     </div>-->
-<!--                 </li>-->
-<!--                 <li>-->
-<!--                     <div class="image-area">-->
-<!--                         <p>-->
-<!--                             <img src="/img/dog-sample.jpg" alt="유기견 썸네일" />-->
-<!--                         </p>-->
-<!--                         <p class="status-area">-->
-<!--                             <span>입양대기중</span>-->
-<!--                             <span class="material-symbols-outlined">heart_plus</span>-->
-<!--                         </p>-->
-<!--                     </div>-->
-<!--                     <div class="content-area">-->
-<!--                         <p>제목 : ㅇㅇㅇ</p>-->
-<!--                         <p>공고 : ㅇㅇㅇㅇ</p>-->
-<!--                         <p>일시 : ㅇㅇㅇ</p>-->
-<!--                     </div>-->
-<!--                     <div class="info-area">-->
-<!--                         <p>공고일 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>작성자 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>전화번호 : 11111</p>-->
-<!--                     </div>-->
-<!--                 </li>-->
-<!--                 <li>-->
-<!--                     <div class="image-area">-->
-<!--                         <p>-->
-<!--                             <img src="/img/dog-sample.jpg" alt="유기견 썸네일" />-->
-<!--                         </p>-->
-<!--                         <p class="status-area">-->
-<!--                             <span>입양대기중</span>-->
-<!--                             <span class="material-symbols-outlined">heart_plus</span>-->
-<!--                         </p>-->
-<!--                     </div>-->
-<!--                     <div class="content-area">-->
-<!--                         <p>제목 : ㅇㅇㅇ</p>-->
-<!--                         <p>공고 : ㅇㅇㅇㅇ</p>-->
-<!--                         <p>일시 : ㅇㅇㅇ</p>-->
-<!--                     </div>-->
-<!--                     <div class="info-area">-->
-<!--                         <p>공고일 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>작성자 : ㅇㅇㅇㅇㅇ</p>-->
-<!--                         <p>전화번호 : 11111</p>-->
-<!--                     </div>-->
-<!--                 </li>-->
              </ul>
          </section>
      </main>

@@ -6,10 +6,10 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name = "adoption_image")
 public class AdoptionImage {
@@ -19,14 +19,21 @@ public class AdoptionImage {
     @Column(name = "adoption_image_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name= "adoption_id")
     private Adoption adoption;
 
+//    @ElementCollection
+//    @CollectionTable(name = "adoption_image", joinColumns = @JoinColumn(name = "adoption_id"))
+//    @Column(name = "path")
     private String path;
 
     public AdoptionImage(String serverFileName, Adoption adoption) {
         this.adoption = adoption;
         this.path = serverFileName;
     }
+    public AdoptionImage( String serverFileName) {
+        this.path = serverFileName;
+    }
+
 }
