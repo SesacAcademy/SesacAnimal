@@ -10,7 +10,6 @@ import com.project.animal.member.service.inf.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +30,7 @@ public class MemberController {
 
     @ResponseBody
     @PostMapping(EndPoint.SIGNUP_API)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseDto<String> signup(@RequestBody @Validated MemberFormDto memberFormDto) {
         memberService.save(memberFormDto);
         return new ResponseDto<>(HttpStatus.OK.value(), "null", "회원가입 완료");

@@ -1,15 +1,27 @@
 package com.project.animal.member.domain;
 
+import com.project.animal.global.common.constant.Role;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * [참고] UserDetail
+ * - https://programmer93.tistory.com/68
+ */
 
 @Entity
 @Getter
 @Builder                // to do : Builder 관련 로직 제거 후, 이후에 제거
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Member implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -28,7 +40,8 @@ public class Member {
     private String phone;
 
     @Column
-    private Integer grade;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
     @Column(length = 20)
     private String type;
@@ -44,4 +57,48 @@ public class Member {
 
     @Column
     private LocalDateTime lastLoginAt;
+
+    // 계정의 고유한 값을 리턴 --> ex. DB PK값, 중복이 없는 이메일, 아이디 값
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    // 계정의 비밀번호를 리턴
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    // 계정의 권한 목록을 리턴
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.name()));
+        return authorities;
+    }
+
+    // 계정의 만료 여부 리턴 --> true (만료 안됨)
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    // 계정의 잠김 여부 리턴 --> true (잠기지 않음)
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    // 비밀번호 만료 여부 리턴 --> true (만료 안됨)
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    // 계정의 활성화 여부 리턴 --> true (활성화 됨)
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

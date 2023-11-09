@@ -5,15 +5,13 @@ import com.project.animal.member.exception.InvalidTokenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
-
 import java.time.Duration;
-import java.util.Optional;
 import java.util.Random;
+
+import static com.project.animal.global.common.constant.ExpirationTime.REDIS_MAIL_TOKEN_TIMEOUT;
 
 @Slf4j
 @Component
@@ -23,12 +21,9 @@ public class MailTokenProvider {
     @Value("${spring.mail.token.digit}")
     private int tokenDigit;
 
-    @Value("${spring.mail.token.validTime}")
-    private int tokenValidTime;                     //  Second 단위
-
     private final Random rd = new Random();
 
-    private final RedisTemplate<String, String> template;
+    private final RedisServiceProvider redisServiceProvider;
 
     private final MailSender mailSender;
 
@@ -47,7 +42,7 @@ public class MailTokenProvider {
         String value = createValue();
 
         // Redis에 토큰 저장
-        saveToken(key, value);
+        redisServiceProvider.save(key, value, Duration.ofSeconds(REDIS_MAIL_TOKEN_TIMEOUT));
 
         log.info("이메일 토큰 발급");
         log.info("Key : {}", key);
@@ -62,7 +57,7 @@ public class MailTokenProvider {
         String key = createKey(email);
 
         // 인증번호가 만료된 경우, 예외 발생
-        String findToken = getToken(key).orElseThrow(() -> {
+        String findToken = redisServiceProvider.get(key).orElseThrow(() -> {
             throw new InvalidTokenException("인증번호가 만료되었습니다.");
         });
 
@@ -81,18 +76,6 @@ public class MailTokenProvider {
             value += rd.nextInt(10);
         }
         return value;
-    }
-
-    private Optional<String> getToken(String key) {
-        ValueOperations<String, String> operation = template.opsForValue();
-        String token = operation.get(key);
-
-        return Optional.ofNullable(token);
-    }
-
-    private void saveToken(String key, String value) {
-        ValueOperations<String, String> operation = template.opsForValue();
-        operation.set(key, value, Duration.ofSeconds(tokenValidTime));
     }
 
     private void sendMail(String email, String token) {

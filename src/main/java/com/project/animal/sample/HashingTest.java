@@ -1,4 +1,4 @@
-package com.project.animal.Test;
+package com.project.animal.sample;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
