@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Table(name ="Missing")
 public class MissingPost {
 
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long missingId;
@@ -105,5 +106,10 @@ public class MissingPost {
     this.reward = reward;
     this.missingStatus = missingStatus;
     this.isActive = isActive;
+  }
+
+  public void inactivatePost() {
+    final int INACTIVE = 0;
+    this.isActive = INACTIVE;
   }
 }
