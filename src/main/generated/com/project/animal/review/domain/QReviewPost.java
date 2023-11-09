@@ -32,9 +32,7 @@ public class QReviewPost extends EntityPathBase<ReviewPost> {
 
     public final com.project.animal.member.domain.QMember member;
 
-    public final StringPath nickname = createString("nickname");
-
-    public final QReviewImage reviewImage;
+    public final ListPath<ReviewImage, QReviewImage> reviewImages = this.<ReviewImage, QReviewImage>createList("reviewImages", ReviewImage.class, QReviewImage.class, PathInits.DIRECT2);
 
     public final StringPath title = createString("title");
 
@@ -61,7 +59,6 @@ public class QReviewPost extends EntityPathBase<ReviewPost> {
     public QReviewPost(Class<? extends ReviewPost> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.member = inits.isInitialized("member") ? new com.project.animal.member.domain.QMember(forProperty("member")) : null;
-        this.reviewImage = inits.isInitialized("reviewImage") ? new QReviewImage(forProperty("reviewImage")) : null;
     }
 
 }

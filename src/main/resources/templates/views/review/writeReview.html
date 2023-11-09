@@ -45,9 +45,22 @@
   <div class="input-container">
     <label for="content">본문</label>
     <textarea id="content" name="content" placeholder="내용을 입력해주세요" required></textarea>
-    <i class="attachment-icon fas fa-paperclip" id="file-icon"></i>
-    <input type="file" id="file-input" name="imageFile" accept="image/*" style="display: none;">
+    <div id="image-preview"></div>
+
+    <div class="input-group mb-3">
+      <label class="input-group-text" for="inputGroupFile01">Upload</label>
+      <input type="file" class="form-control" id="inputGroupFile01" name="imageList" multiple>
+    </div>
+
+<!--    <i class="attachment-icon fas fa-paperclip" id="file-icon"></i>-->
+<!--    <input type="file" id="file-input" name="imageList" accept="image/*" style="display: none;" multiple>-->
+<!--    <input type="hidden" name="imageCount" id="imageCount">-->
+
   </div>
+<!--    <div class="input-group mb-3">-->
+<!--      <label class="input-group-text" for="inputGroupFile01">Upload</label>-->
+<!--      <input type="file" class="form-control" id="inputGroupFile01" multiple>-->
+<!--    </div>-->
   <div class="button-container">
     <button id="submit">작성</button>
     <button id="cancel">취소</button>
@@ -55,29 +68,39 @@
   </form>
 </div>
 <script>
-    const fileInput = document.getElementById('file-input');
-    const fileIcon = document.getElementById('file-icon');
+  const fileInput = document.getElementById('file-input');
+  const fileIcon = document.getElementById('file-icon');
+   const imagePreview = document.getElementById('image-preview');
 
-    fileIcon.addEventListener('click', function () {
-        fileInput.click(); // 아이콘 클릭 시 파일 업로드 필드 클릭
-    });
+  fileIcon.addEventListener('click', function () {
+    fileInput.click(); // 아이콘 클릭 시 파일 업로드 필드 클릭
+  });
 
-    fileInput.addEventListener('change', function () {
-        const file = fileInput.files[0];
+  fileInput.addEventListener('change', function () {
+    const files = fileInput.files;
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
         if (file) {
-            // 이미지가 선택되었을 때 본문에만 표시
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const image = new Image();
-                image.src = e.target.result;
-                image.style.maxWidth = '100%';
-                image.style.height = 'auto';
-                image.style.marginTop = '10px';
-                const content = document.getElementById('content');
-                content.appendChild(image);
-            };
-            reader.readAsDataURL(file);
+          // 이미지가 선택되었을 때 본문에 표시
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const image = new Image();
+            image.src = e.target.result;
+            image.style.maxWidth = '100%';
+            image.style.height = 'auto';
+            image.style.marginTop = '10px';
+            imagePreview.appendChild(image);
+          };
+          reader.readAsDataURL(file);
         }
+      }
+    }
+  });
+</script>
+<script>
+    document.getElementById('imageUpload').addEventListener('change', function (e) {
+        document.getElementById('imageCount').value = e.target.files.length;
     });
 </script>
 </body>

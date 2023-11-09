@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +24,7 @@ import javax.persistence.EntityTransaction;
 import java.util.Arrays;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@EnableJpaAuditing
 public class Application {
 
 	public static void main(String[] args) {

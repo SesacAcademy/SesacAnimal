@@ -1,120 +1,111 @@
 package com.project.animal.review.service;
 
 import com.project.animal.member.domain.Member;
-import com.project.animal.review.domain.ReviewImage;
 import com.project.animal.review.domain.ReviewPost;
-import com.project.animal.review.dto.CreateReviewPostDto;
-import com.project.animal.review.dto.ReadAllGeneric;
-import com.project.animal.review.dto.ReviewPostAllDto;
-import com.project.animal.review.repository.ReviewImageRepository;
+import com.project.animal.review.dto.*;
+import com.project.animal.review.exception.NotFoundException;
 import com.project.animal.review.repository.ReviewRepository;
-import io.minio.BucketExistsArgs;
 import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.errors.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 @Log4j2
 @Transactional
+//readOnly작성 필요
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final ReviewImageRepository reviewImageRepository;
     private MinioClient minioClient;
-    private final String bucketName = "review";
 
-
-    public void createReviewPost(CreateReviewPostDto createReviewPostDto, MultipartFile file, Member member) {
+    public ReviewPost createReviewPost(CreateReviewPostDto createReviewPostDto, Member member) {
         ReviewPost reviewPost = new ReviewPost(createReviewPostDto, member);
-        reviewRepository.save(reviewPost);
-        Long postId = reviewPost.getId();
-        saveImg(file, postId);
+        return reviewRepository.save(reviewPost);
     }
-    private void saveImg(MultipartFile file, Long postId){
-        if (checkImgEmpty(file)){
-            String url = getImgUrl(file.getName());
-            //이미지 레포지토리 저장
-            ReviewImage reviewImage = ReviewImage.builder()
-                    .url(url)
-                    .reviewPostId(postId)
-                    .build();
-            reviewImageRepository.save(reviewImage);
-        }
-    }
-    private String getImgUrl(String objectName){
-        String ee = "http://infra.shucloud.site:8006/browser/review";
-        return ee + "/" + bucketName + "/" +objectName;
-    }
-    private boolean checkBucket() {
-        try {
-            boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
-            return found;
-        } catch (MinioException | IOException | NoSuchAlgorithmException | InvalidKeyException e) {
-            log.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-    private Boolean checkImgEmpty(MultipartFile file) {
-        try {
-            if (checkBucket()) {
-                if (!file.isEmpty()) {
-                    InputStream is = file.getInputStream();
-                    minioClient.putObject(
-                            PutObjectArgs.builder()
-                                    .bucket("review")
-                                    .object(file.getName())
-                                    .stream(is, is.available(), 0)
-                                    .build()
-                    );
-                    is.close();
-                    return true;
-                }
-            }
-        } catch (MinioException | IOException | NoSuchAlgorithmException | InvalidKeyException e) {
-            log.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
-        return false;
-    }
-    // pagable 객체 작성
-    //entity 받은 거 리턴은 dto로 필요한 것만
-    //제너릭 타입에 카운트랑 dto list  형태로 리턴
-    public ReadAllGeneric readAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<ReviewPost> postList = reviewRepository.findAllByOrderByCreatedAtDescWithMember(pageable);
+    @Transactional(readOnly = true)
+    public ReadListGeneric readAll(int page, int size) {
+        Sort sortByDesc = Sort.by(Sort.Direction.DESC, "createdAt");
+        Pageable pageable = PageRequest.of(page, size, sortByDesc);
+//        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImage(pageable);
+        Page<ReviewPost> postList = reviewRepository.findAll(pageable);
         return entityToDtoByReadAll(postList);
     }
 
-    private ReadAllGeneric entityToDtoByReadAll(Page<ReviewPost> entity) {
-        int count =  entity.getTotalPages();
+    private ReadListGeneric entityToDtoByReadAll(Page<ReviewPost> entity) {
+        int totalPages =  entity.getTotalPages();
         int pageNum = entity.getNumber();
+        log.info("pageNum: => "+pageNum);
+        log.info("totalPages =>", totalPages);
         List<ReviewPostAllDto> dtoList = entity.getContent()
                 .stream()
                 .map(reviewPost -> new ReviewPostAllDto(reviewPost))
                 .collect(Collectors.toList());
-        return ReadAllGeneric.builder()
+        return ReadListGeneric.builder()
                 .list(dtoList)
-                .count(count)
+                .count(totalPages)
                 .pageNumber(pageNum)
                 .build();
     }
+    public ReadOneReviewDto readOne(Long reviewPostId) {
+        Optional<ReviewPost> reviewPost = reviewRepository.findByIdWithMemberAndImage(reviewPostId);
+        ReviewPost reviewEntity = checkOptional(reviewPost);
+        int viewCount = viewCountUp(reviewEntity);
+        return readOneEntityToDto(reviewEntity, viewCount);
+    }
+    private int viewCountUp(ReviewPost reviewPost){
+       return reviewPost.increaseViewCount();
+    }
+    private ReviewPost checkOptional(Optional<ReviewPost>reviewPost){
+        return reviewPost.orElseThrow(()-> new NotFoundException("게시물 상세보기 -> 해당 게시물이 존재하지 않습니다."));
+    }
+    private ReadOneReviewDto readOneEntityToDto(ReviewPost reviewPost, int viewCount){
+        ReadOneReviewDto readOneReviewDto = new ReadOneReviewDto(reviewPost, viewCount);
+        return readOneReviewDto;
+    }
 
+    public ReadListGeneric readByName(Integer page, int size, String name) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByName(name,pageable);
+        return entityToDtoByReadAll(postList);
+    }
+    public ReadListGeneric<ReadListGeneric> readBySearch(String type, String keyword, Integer page, int size) {
+        switch (type){
+            case "author":
+                return readByName(page ,size, keyword);
+            case "title":
+                return readByTitle(page,size,keyword);
+            case "content":
+                return readByContent(page, size, keyword);
+        }
+        return null;
+    }
 
+    private ReadListGeneric<ReadListGeneric> readByContent(Integer page, int size, String content) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByContent(content, pageable);
+        return entityToDtoByReadAll(postList);
+    }
 
+    private ReadListGeneric<ReadListGeneric> readByTitle(Integer page, int size, String title) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByTitle(title,pageable);
+        return entityToDtoByReadAll(postList);
+    }
+
+    //id list 이미지 아이디는 임시테이블로 이동
+    //
+    public void update(List<Long> imageIds, CreateReviewPostDto updatePostDto, Long reviewPostId) {
+
+    }
 }

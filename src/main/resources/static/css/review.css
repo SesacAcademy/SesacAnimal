@@ -2,6 +2,13 @@ body {
     margin: 0;
     padding: 0;
 }
+.thumbnail-image {
+    width: 300px; /* 원하는 가로 크기로 설정 */
+    height: auto; /* 높이를 자동으로 조절하여 원래 비율을 유지하도록 설정 */
+    text-align: right;
+        display: flex;
+}
+
 
 /* Global styles */
 body {

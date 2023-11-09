@@ -57,21 +57,40 @@
 </head>
 <body>
 <div class="container">
-  <h1 class="title">제목</h1>
+  <h1 class="title" th:text="${reviewDto.title}">제목</h1>
   <hr class="separator">
   <div class="author">
-    <div class="author-info">
+    <div class="author-info" th:text="'작성자: ' + ${reviewDto.name}">
       작성자: 닉네임
     </div>
-    <div class="timestamp">
-      2023.11.01
+
+    <div class="timestamp" th:text="${#temporals.format(reviewDto.updatedAt, 'yyyy-MM-dd HH:mm')}">
+
     </div>
+
+<!--    <img th:src="'http://infra.shucloud.site:8007/review' + ${reviewDto.url}" alt="유기견 썸네일" class="thumbnail-image" />-->
+<!--    <div th:each="url : ${reviewDto.urls}">-->
+<!--      <img th:src="@{'http://infra.shucloud.site:8007/review' + ${url}}" alt="유기견 썸네일" class="thumbnail-image" />-->
+<!--    </div>-->
+    <div th:each="image : ${reviewDto.urls}">
+      <img th:src="@{'http://infra.shucloud.site:8007/review' + ${image.value}}" alt="유기견 썸네일" class="thumbnail-image" />
+    </div>
+<!--      <button type="button" class="delete-button" data-image-id="${image.key}">이미지 삭제</button>-->
+<!--      <input type="hidden" name="deleteImageIds" value="${image.key}" disabled>-->
+<!--    </div>-->
+
+
   </div>
   <div class="buttons">
-    <button class="edit-button">수정</button>
+
+    <a th:href="@{/review/edit(reviewPostId=${reviewDto.reviewPostId})}" class="edit-button">수정</a>
+
     <button class="delete-button">삭제</button>
   </div>
-  <p class="text">이 곳에 텍스트를 입력하세요. 텍스트를 확장하였습니다.</p>
+  <p class="text" th:text="${reviewDto.content}">이 곳에 텍스트를 입력하세요. 텍스트를 확장하였습니다.</p>
+  <div class="view-count" th:text="'조회수: ' + ${reviewDto.viewCount}">
+    조회수: count
+  </div>
   <hr class="separator">
 </div>
 </body>
