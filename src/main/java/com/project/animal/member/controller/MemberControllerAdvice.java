@@ -64,7 +64,7 @@ public class MemberControllerAdvice {
      */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseDto<String> test(MethodArgumentNotValidException e) {
+    public ResponseDto<String> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 

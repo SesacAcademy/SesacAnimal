@@ -12,10 +12,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  *  [참고] Security Config 설정
@@ -66,21 +72,23 @@ public class SecurityConfig {
         http.authorizeRequests()
                 //.antMatchers("/static/**").permitAll()                      // 5. 정적 리소스 허용
                 //.antMatchers("/error/**").permitAll()                       // ignoring으로 대체 (자세한 이유는 위의 참고글)
-                .and()
-                .authorizeRequests()                                              // 6. 인증 필요 없는 페이지
+            .and()
+            .authorizeRequests()                                              // 6. 인증 필요 없는 페이지
                 .antMatchers("/v1/auth/**").permitAll()
                 .antMatchers("/v1/api/auth/**").permitAll()
-                .and()
-                .authorizeRequests()                                              // 7. 인증이 필요한 페이지
+            .and()
+            .authorizeRequests()                                              // 7. 인증이 필요한 페이지
                 .antMatchers("/test").authenticated()
-                .and()
-                .authorizeRequests()                                              // 8. 인가가 필요한 페이지
-                .antMatchers("/test2").hasRole("USER")
-                .and()
-                .authorizeRequests().anyRequest().permitAll()                 // 9. 그 외의 페이지는 모두 허용
-                .and()
-                .exceptionHandling()
-                .accessDeniedPage("/error/4xx");            // 10. 401 또는 403 코드 발생 시, 리다이렉트
+            .and()
+            .authorizeRequests()                                              // 8. 인가가 필요한 페이지
+                .antMatchers("/test2").hasRole("ADMIN")
+            .and()
+            .authorizeRequests()
+                .anyRequest().permitAll()                                     // 9. 그 외의 페이지는 모두 허용
+            .and()
+            .exceptionHandling()
+                .authenticationEntryPoint(CustomAuthenticationEntryPoint())
+                .accessDeniedPage("/error/403");                // 10. 401 또는 403 코드 발생 시, 리다이렉트
 
         // 11. Jwt 인증 필터 추가
         http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
@@ -95,5 +103,16 @@ public class SecurityConfig {
                         .toStaticResources()
                         .atCommonLocations()
                 );
+    }
+
+    @Bean
+    public AuthenticationEntryPoint CustomAuthenticationEntryPoint() {
+        return new AuthenticationEntryPoint() {
+            @Override
+            public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+                response.setCharacterEncoding("UTF-8");
+                response.sendError(401);
+            }
+        };
     }
 }

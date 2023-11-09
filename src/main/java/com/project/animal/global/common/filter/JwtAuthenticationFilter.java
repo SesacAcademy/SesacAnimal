@@ -1,19 +1,25 @@
 package com.project.animal.global.common.filter;
 
 import com.project.animal.global.common.provider.JwtTokenProvider;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Arrays;
 
 import static com.project.animal.global.common.constant.ExpirationTime.ACCESS_TOKEN_COOKIE_EXPIRATION_TIME;
 
@@ -54,36 +60,67 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String accessToken = jwtTokenProvider.resolveToken(request, "accessToken");
         String refreshToken = jwtTokenProvider.resolveToken(request, "refreshToken");
 
-        log.info("필터 적용 전");
+        log.info("JWT 필터 적용 전");
         log.info("Access Token : {}", accessToken);
         log.info("Refresh Token : {}", refreshToken);
 
-        try {
-            // Authentication 객체 선언
-            Authentication authentication = null;
+        // Authentication 객체 선언
+        Authentication authentication = null;
 
+        try {
             // Access 토큰 검증 (데이터 위변조 및 토큰 만료 검사)
             if (accessToken != null && jwtTokenProvider.validateToken(accessToken)) {
+                log.info("Access 토큰 검증 완료되어 Authentication 인증 객체 저장");
+
                 authentication = jwtTokenProvider.getAuthentication(accessToken);
             }
 
-            // Access 토큰 재발급 진행
+            // Access 토큰이 클라이언트 쿠키에서 삭제되어 Refresh 토큰만 있는 경우, Refresh 토큰 검증
+            else if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken) && jwtTokenProvider.matchRefreshToken(refreshToken)) {
+
+                // Access 토큰 재발급
+                String newAccessToken = jwtTokenProvider.newAccessToken(refreshToken);
+                authentication = jwtTokenProvider.getAuthentication(newAccessToken);
+
+                log.info("Access 토큰이 클라이언트 쿠키에서 삭제되어 Access 토큰 재발급 프로세스 진행! \n" +
+                         "Access 토큰 재발급 완료 : {}", newAccessToken);
+
+                // 재발급한 Access 토큰 HTTP 헤더에 추가 (쿠키)
+                saveAccessTokenInCookie(request, response, newAccessToken);
+            }
+            // SecurityContext에 Authentication 객체 저장 (인증 정보)
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        } catch (MalformedJwtException   | IllegalArgumentException | UnsupportedJwtException |
+                 BadCredentialsException | SignatureException invalidTokenException) {
+            
+            // JWT 토큰이 위변조된 경우 (잘못된 서명, 지원되지 않는 포맷, JWT 토큰 손상)
+            log.error("JWT 토큰이 위변조되거나 검증에 실패하였습니다.");
+            throw invalidTokenException;
+
+        } catch (ExpiredJwtException expiredJwtException) {
+
+            // Access 토큰이 클라이언트 쿠키에서 삭제되어 Refresh 토큰 검증 과정에서 Refresh 토큰이 만료된 경우, 그대로 예외 전달
+            if (accessToken == null) {
+                log.info("Access 토큰이 클라이언트 쿠키에서 삭제되어 Refresh 토큰 검증하였으나 Refresh 토큰 만료됨");
+                throw expiredJwtException;
+            }
+
+            // Access 토큰이 만료되어 ExpiredJwtException이 발생한 경우, Refresh 토큰 검증
             else if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken) && jwtTokenProvider.matchRefreshToken(refreshToken)) {
                 // Access 토큰 재발급
                 String newAccessToken = jwtTokenProvider.newAccessToken(refreshToken);
                 authentication = jwtTokenProvider.getAuthentication(newAccessToken);
 
-                log.info("Access 토큰 재발급 완료 : {}", newAccessToken);
+                log.info("Access 토큰이 만료되어 Access 토큰 재발급 프로세스 진행! \n" +
+                         "Access 토큰 재발급 완료 : {}", newAccessToken);
 
-                // 재발급한 Access 토큰 HTTP 헤더에 추가 (쿠키)
-                saveAccessTokenInCookie(response, newAccessToken);
+                // 재발급한 Access 토큰 HTTP 응답 헤더에 추가 (쿠키)
+                saveAccessTokenInCookie(request, response, newAccessToken);
+
+                // SecurityContext에 Authentication 객체 저장 (인증 정보)
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-            // SecurityContext에 Authentication 객체 저장 (인증 정보)
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        } catch (SignatureException signatureException) {       // 토큰이 위변조된 경우
-            log.error("JWT 토큰 위변조 발생");
-            throw signatureException;
         }
         filterChain.doFilter(request, response);
     }
@@ -93,8 +130,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @param response
      * @param newAccessToken
      */
-    private void saveAccessTokenInCookie(HttpServletResponse response, String newAccessToken) {
-        ResponseCookie refreshTokenCookie = ResponseCookie.from("accessToken", newAccessToken)
+    private void saveAccessTokenInCookie(HttpServletRequest request, HttpServletResponse response, String newAccessToken) {
+        ResponseCookie newAccessTokenCookie = ResponseCookie.from("accessToken", newAccessToken)
                 .sameSite("Strict")                     // CSRF 방지
                 .secure(false)                          // HTTPS 설정
                 .httpOnly(false)
@@ -102,6 +139,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .maxAge(Duration.ofMinutes(ACCESS_TOKEN_COOKIE_EXPIRATION_TIME))
                 .build();
 
-        response.setHeader("Set-Cookie", refreshTokenCookie.toString());
+        // 기존 쿠키에 저장되어 있는 만료된 AccessToken을 새로 발급받은 Token으로 교체
+        Arrays.stream(request.getCookies()).forEach(x -> {
+            if (x.getName().equals(newAccessTokenCookie.getName())) {
+                log.info("새로 발급한 Access Token을 Request 객체에 있는 쿠키와 바꿔치기!");
+                x.setValue(newAccessToken);
+            }
+        });
+        
+        // 만약, 기존에 쿠키에 AccessToken이 없는 경우, MethodResolver에서 사용할 수 있도록 request 영역에 저장
+        request.setAttribute("accessToken", newAccessToken);
+
+        // HTTP 응답 헤더에 새로 발급받은 Access 토큰 저장 (쿠키)
+        response.setHeader("Set-Cookie", newAccessTokenCookie.toString());
     }
 }

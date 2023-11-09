@@ -1,4 +1,4 @@
-package com.project.animal.member.controller;
+package com.project.animal.global.common.controller;
 
 import com.project.animal.global.common.annotation.Member;
 import com.project.animal.global.common.dto.MemberDto;

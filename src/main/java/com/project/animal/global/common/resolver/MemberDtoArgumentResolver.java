@@ -38,7 +38,11 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 
         String token = jwtTokenProvider.resolveToken(request, "accessToken");
 
-        // JWT 토큰이 있는 경우
+        // 기존 쿠키에 JWT Access 토큰이 없는 경우, Request 영역에 저장해둔 newAccessToken을 사용
+        if (token == null && request.getAttribute("accessToken") != null)
+            token = (String) request.getAttribute("accessToken");
+
+        // 기존 쿠키에 JWT Access 토큰이 있는 경우, JWT를 파싱하여 MemberDto 객체로 리턴
         if (token != null) {
             MemberDto member = new MemberDto();
 
@@ -54,6 +58,8 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 
             return member;
         }
+        
+        // 없으면 null 값 리턴
         return null;
     }
 }
