@@ -58,13 +58,13 @@ public class MailServiceProvider {
         // MailDto --> SimpleMailMessage 변환
         Arrays.stream(mails).forEach(mail -> {
             SimpleMailMessage msg = new SimpleMailMessage();
-            msg.setTo(emailList.toArray(new String[emailList.size()]));     // 수신자 설정
-            msg.setSubject(mail.getTitle());                                // 제목 설정
-            msg.setText(mail.getContent());                                 // 내용 설정
+            msg.setTo(emailList.toArray(String[]::new));        // 수신자 설정
+            msg.setSubject(mail.getTitle());                    // 제목 설정
+            msg.setText(mail.getContent());                     // 내용 설정
             mailList.add(msg);
         });
 
         // 메일 발송
-        mailSender.send(mailList.toArray(new SimpleMailMessage[mailList.size()]));
+        mailSender.send(mailList.toArray(SimpleMailMessage[]::new));
     }
 }
