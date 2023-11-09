@@ -13,7 +13,7 @@ let timerInterval = "";
 
 const authEmailButton = document.getElementById('member-auth-email-button');
 const authEmailCheckButton = document.getElementById('member-auth-check');
-const signupButton = document.getElementById('member-login');
+const signupButton = document.getElementById('member-signup');
 
 authEmailButton.addEventListener('click', createToken);
 authEmailCheckButton.addEventListener('click', checkToken);
@@ -25,15 +25,16 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
+function isValidPassword(password) {
+    let passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/
+
+    return passwordRegex.test(password);
+}
+
 function isValidPhone(phone) {
     let koreanPhoneNumberPattern = /^01[016789]-\d{3,4}-\d{4}$/;
 
-    // 정규 표현식을 사용하여 검증
-    if (koreanPhoneNumberPattern.test(phone)) {
-        return false;
-    } else {
-        return true;
-    }
+    return koreanPhoneNumberPattern.test(phone);
 }
 
 function createToken() {
@@ -145,8 +146,8 @@ function signup() {
         return;
     }
 
-    if (password === "") {
-        alert("비밀번호를 입력해주세요.");
+    if (!isValidPassword(password)) {
+        alert("비밀번호를 규칙에 맞추어 입력해주세요.");
         return;
     }
 
@@ -155,7 +156,7 @@ function signup() {
         return;
     }
 
-    if (isValidPhone(phone)) {
+    if (!isValidPhone(phone)) {
         alert("휴대폰 번호 형식이 틀렸습니다.");
         return;
     }
@@ -215,19 +216,3 @@ function signup() {
         alert('메일 인증에 실패하였습니다.');
     });
 }
-
-// const timerInterval = setInterval(function() {
-//     const minutes = Math.floor(remainingTime / 60);
-//     const seconds = remainingTime % 60;
-//     const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-//     timerElement.textContent = `${formattedTime}`;
-//     remainingTime--;
-//
-//     if (remainingTime < 0) {
-//         clearInterval(timerInterval);
-//         alert('인증시간이 종료되었습니다.');
-//         emailAuthBlock.style.display = 'none';
-//         // timerElement.textContent = "인증 시간이 종료되었습니다.";
-//         emailAuthButton.style.display = 'inline-block';
-//     }
-// }, 1000);
