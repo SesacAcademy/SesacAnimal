@@ -1,4 +1,4 @@
-package com.project.animal.Test;
+package com.project.animal.sample;
 
 import lombok.RequiredArgsConstructor;
 
