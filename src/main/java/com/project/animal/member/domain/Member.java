@@ -1,14 +1,12 @@
 package com.project.animal.member.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder                // to do : Builder 관련 로직 제거 후, 이후에 제거
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
@@ -29,14 +27,14 @@ public class Member {
     @Column(length = 50)
     private String phone;
 
-    @Column(length = 20)
-    private String grade;
+    @Column
+    private Integer grade;
 
     @Column(length = 20)
     private String type;
 
-    @Column(length = 1)
-    private String status;
+    @Column(name = "is_active" , length = 1)
+    private Integer isActive;
 
     @Column
     private LocalDateTime createdAt;

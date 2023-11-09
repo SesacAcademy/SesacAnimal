@@ -1,52 +1,66 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="newCard">
     <h3>등록하기</h3>
-    <form>
+    <form method="post" action="/missing" enctype="multipart/form-data" th:object="${post}">
 
     <section class="missing-new-page-content">
         <div style="display: flex; flex-direction:row; padding-right:30px;">
             <div class="missing-new-thumb-container">
-                <div>
-                    <div>사진을 등록해주세요</div>
-                    <input type="file" placeholder="사진을 등록해주세요"/>
-                </div>
+<!--                <div>-->
+<!--                    <div>사진을 등록해주세요</div>-->
+<!--                    <input type="file" placeholder="사진을 등록해주세요" name="images" />-->
+<!--                </div>-->
                 <div>
                     <button>생성하기</button>
                 </div>
             </div>
         </div>
         <section class="missing-new-info-container">
-            <div class="missing-new-info-content-container">
-                <div style="margin-right: 30px">
-                    <div class="missing-new-field">
-                        <label>종류</label>
-                        <input type="text"/>
-                    </div>
-                    <div class="missing-new-field">
-                        <label>실종장소</label>
-                        <input type="text"/>
-                    </div>
-                    <div class="missing-new-field">
-                        <label>사례금</label>
-                        <input type="text"/>
-                    </div>
-                </div>
+            <div>
                 <div>
+                    <label>제목</label>
+                    <input type="text" name="title" th:value="*{title}"/>
+                </div>
+                <div class="missing-new-info-content-container">
+                    <div style="margin-right: 30px">
+                        <div class="missing-new-field">
 
-                    <div class="missing-new-field">
-                        <label>색상</label>
-                        <input type="text"/>
-                    </div>
-                    <div class="missing-new-field">
-                        <label>실종시간</label>
-                        <input type="text"/>
-                    </div>
+                                <label>강아지/고양이</label>
+                                <select name="animalType" th:value="*{animalType}">
+                                    <option>강아지</option>
+                                    <option>고양이</option>
+                                </select>
 
+
+                        </div>
+                        <div class="missing-new-field">
+                            <label>종류</label>
+                            <input type="text" name="specifics" th:value="*{specifics}"/>
+                        </div>
+                        <div class="missing-new-field">
+                            <label>색상</label>
+                            <input type="text" name="color" th:value="*{color}" />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="missing-new-field">
+                            <label>실종장소</label>
+                            <input type="text" name="missingPlace" th:value="*{missingPlace}"/>
+                        </div>
+                        <div class="missing-new-field">
+                            <label>실종시간</label>
+                            <input type="date" name="missingTime" th:value="*{missingTime}"/>
+                        </div>
+                        <div class="missing-new-field">
+                            <label>사례금</label>
+                            <input type="text" name="reward" th:value="*{reward}"/>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="missing-new-field">
 
                     <div>설명</div>
-                    <textarea class="missing-new-textarea">awpfo</textarea>
+                    <textarea class="missing-new-textarea" name="description" th:value="*{description}">awpfo</textarea>
 
             </div>
         </section>

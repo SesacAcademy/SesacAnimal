@@ -55,11 +55,21 @@
 
         const _count = Number(__count);
         const _page = Number(params.get('page')) || 1;
-        const _limit = Number(params.get('limit')) || 10;
-        const _order = params.get('order') ?? 'desc';
-        const _sort = params.get('sort') ?? 'new';
+        const _size = Number(params.get('size')) || 10;
 
-        console.log("list", list);
+        const _search = params.get('search');
+        const _animalType = params.get('animalType');
+        const _specifics = params.get('specifics');
+        const _color = params.get('color');
+        const _fromDate = params.get('fromDate');
+        const _endDate = params.get('endDate');
+
+    </script>
+    <script th:inline="javascript" defer>
+        const _serverMsg = /*[[${serverMsg}]]*/ "";
+        if (_serverMsg) {
+            alert(_serverMsg);
+        }
     </script>
     <script th:src="@{/js/missing/list/utils.js}" type="module"></script>
     <script th:src="@{/js/missing/list/init.js}" type="module"></script>
@@ -74,17 +84,17 @@
         <div class="missing-list-page-content">
             <div class="missing-list-container">
                 <div th:each="post : ${list}">
-                    <th:block th:replace="./missing/list/missingCard :: missingCard(${post})" />
+                    <th:block th:replace="./missing/list/missingCard :: missingCard(${post}, ${endPoints.detail})" />
                 </div>
             </div>
             <div>
-                <th:block th:replace="./missing/list/missingListFilter :: filter" />
+                <th:block th:replace="./missing/list/missingListFilter :: filter(${endPoints.list})" />
             </div>
         </div>
 
 
             <div class="missing-list-indicator">
-                <th:block th:replace="./missing/list/missingIndicator :: indicator" />
+                <th:block th:replace="./missing/list/missingIndicator :: indicator(${endPoints.list})" />
             </div>
 
 

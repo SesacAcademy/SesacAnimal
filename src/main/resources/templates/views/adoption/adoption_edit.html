@@ -56,6 +56,94 @@
 <body>
  <th:block th:replace="../fragments/header/header :: header"></th:block>
      <section class="adoption-write">
+         <section class="adoption-write">
+             <form action="/v1/adoption/edit" method="POST" name="edit" accept-charset="utf-8" enctype="multipart/form-data">
+                 <legend>입양 게시판</legend>
+                 <div class="write-view-area">
+                     <p>
+                         <button type="reset" class="reset-button">취소</button>
+                         <button type="submit" class="write-button" title="글쓰기">
+                             <span class="material-symbols-outlined">edit_square</span>
+                             <span>글쓰기 저장</span>
+                         </button>
+                     </p>
+                 </div>
+                 <div class="contents-area">
+                     <p>
+                         <label for="author-input" class="title">작성자</label>
+                         <input id="author-input" type="text" class="desc"  name="author" />
+                     </p>
+                     <p>
+                         <label for="title-input-edit">제목</label>
+                         <input id="title-input-edit" type="text" name="title"/>
+                     </p>
+                     <p>
+                         <label for="status-select-edit">보호 상태</label>
+                         <select id="status-select-edit" name="status">
+                             <option value="보호중" selected>보호중</option>
+                             <option value="종료(입양완료)">입양 완료</option>
+                         </select>
+                     </p>
+                     <div class="col">
+                         <p class="title">
+                             <span class="title">이미지</span>
+                         </p>
+                         <p>
+                             <label for="image-file-edit">이미지 업로드 하기</label>
+                             <input type="file" id="image-file-edit" name="image" value="이미지 업로드" placeholder="이미지 업로드" accept="image/*"/><br/>
+
+                             <!--                         <img src="https://picsum.photos/id/237/200/300"  alt=""/><br/>-->
+                             <!--                         <button class="remove-image">이미지 삭제</button>-->
+                         </p>
+                     </div>
+                     <p>
+                         <label for="breed-input-edit">묘종/견종</label>
+                         <input id="breed-input-edit" type="text" name="breed" />
+                     </p>
+                     <p>
+                         <label for="gender-input-edit">성별</label>
+                         <input id="gender-input-edit" type="text" name="gender"/>
+                     </p>
+                     <p>
+                         <label for="age-input-edit">나이</label>
+                         <input id="age-input-edit" type="text" name="age" />
+                     </p>
+                     <p>
+                         <label for="center-select-edit">센터 유무</label>
+                         <select id="center-select-edit" name="center">
+                             <option value="N" selected>일반</option>
+                             <option value="Y">센터</option>
+                         </select>
+                     </p>
+                     <p>
+                         <label for="color-input">색상</label>
+                         <input id="color-input" type="text" name="color"/>
+                     </p>
+                     <p>
+                         <label for="happenPlace-input">발견장소</label>
+                         <input id="happenPlace-input" type="text" name="happenPlace"/>
+                     </p>
+                     <p>
+                         <label for="neutered-edit">중성화유무</label>
+                         <select id="neutered-edit" name="neutered">
+                             <option value="U" selected>모름</option>
+                             <option value="O">중성화 O</option>
+                             <option value="X">중성화 X</option>
+                         </select>
+                     </p>
+
+                     <p class="text-area">
+                         <label for="textarea-edit">내용</label>
+                         <textarea id="textarea-edit" name="content"></textarea>
+                     </p>
+
+                 </div>
+
+             </form>
+
+     </section>
+
+     <section class="adoption-write">
          <form action="/v1/adoption/edit" method="POST" name="edit" accept-charset="utf-8">
              <legend>입양 게시판</legend>
              <div class="write-view-area">
@@ -70,7 +158,7 @@
              <div class="contents-area">
                  <p class="col">
                      <span class="title">작성자</span>
-                     <span class="desc" aria-readonly="true">asdf</span>
+                     <span class="desc" aria-readonly="true"></span>
                  </p>
                  <p>
                      <label for="title-input">제목</label>

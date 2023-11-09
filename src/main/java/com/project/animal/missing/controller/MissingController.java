@@ -1,46 +1,26 @@
 package com.project.animal.missing.controller;
 
 import com.project.animal.missing.constant.EndPoint;
-import com.project.animal.missing.constant.ViewName;
-import com.project.animal.missing.dto.MissingListResDto;
-import com.project.animal.missing.dummy.MissingPostDummy;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.swing.text.View;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-@Slf4j
-@Controller
-@RequestMapping(EndPoint.MISSING)
 public class MissingController {
 
-  @GetMapping(EndPoint.LIST)
-  public String getPostList(Model model) {
-    List<MissingListResDto> list = MissingPostDummy.getDummyDto();
-    model.addAttribute("list", list);
+  public final int SUCCESS_FLAG = 1;
 
-    return ViewName.POST_LIST;
+  public final int FAIL_FLAG = 0;
+  public Map<String, String> createLinkConstants(String ...destinations) {
+    Map<String, String> endPoints = Map.of(
+            "edit", EndPoint.MISSING_BASE + EndPoint.EDIT,
+            "delete",  EndPoint.MISSING_BASE + EndPoint.DELETE,
+            "detail", EndPoint.MISSING_BASE + EndPoint.DETAIL,
+            "list",  EndPoint.MISSING_BASE + EndPoint.LIST,
+            "newComment", EndPoint.MISSING_BASE + EndPoint.DETAIL + EndPoint.COMMENT + EndPoint.NEW
+    );
+
+    return Arrays.stream(destinations).collect(
+            Collectors.toMap((d) -> d, (d) -> endPoints.get(d)));
   }
-
-  @GetMapping(EndPoint.DETAIL)
-  public String getPostDetail(Model model) {
-    List<MissingListResDto> list = MissingPostDummy.getDummyDto();
-    String[] comments = {"test1", "comments2"};
-
-    model.addAttribute("detail", list.get(0));
-    model.addAttribute("comments", comments);
-
-    return ViewName.POST_DETAIL;
-
-  }
-
-  @GetMapping(EndPoint.NEW)
-  public String getPostNew() {
-    return ViewName.POST_NEW;
-  }
-
 }
