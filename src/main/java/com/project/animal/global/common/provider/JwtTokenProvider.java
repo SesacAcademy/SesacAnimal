@@ -82,7 +82,7 @@ public class JwtTokenProvider {
      * Access 토큰 생성
      * @return
      */
-    public String createAccessToken(Member member) {
+    public String createAccessToken(MemberDto member) {
         Date now = new Date();
 
         // Claim 생성
@@ -108,7 +108,7 @@ public class JwtTokenProvider {
      * Refresh 토큰 생성
      * @return
      */
-    public String createRefreshToken(Member member) {
+    public String createRefreshToken(MemberDto member) {
         Date now = new Date();
 
         // Claim 생성
