@@ -30,7 +30,7 @@ public class MissingPost {
 
   @NotNull
   @Column(name="animal_type")
-  private char animalType;
+  private String animalType;
 
   @NotNull
   @Column(name="specifics")
@@ -61,11 +61,10 @@ public class MissingPost {
 
   @NotNull
   @Column(name="missing_status")
-  private char missingStatus;
+  private int missingStatus;
 
-  @NotNull
   @Column(name="is_active")
-  private boolean isActive;
+  private int isActive;
 
   @Column(name="created_at")
   private LocalDateTime createdAt;
@@ -76,7 +75,7 @@ public class MissingPost {
   // TODO: Comment 생성시 ManyToOne 으로 관계설정 하기
   //  private List<Comment> comments;
 
-  public MissingPost(long missingId, long memberId, String title, char animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, char missingStatus, boolean isActive) {
+  public MissingPost(long missingId, long memberId, String title, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, char missingStatus, int isActive) {
     this.missingId = missingId;
     this.memberId = memberId;
     this.title = title;

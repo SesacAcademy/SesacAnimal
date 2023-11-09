@@ -2,6 +2,7 @@ package com.project.animal.missing.controller;
 
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
+import com.project.animal.missing.dto.ListResponseDto;
 import com.project.animal.missing.dto.MissingFilterDto;
 import com.project.animal.missing.dto.MissingListResDto;
 import com.project.animal.missing.dummy.MissingPostDummy;
@@ -14,6 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -33,17 +35,15 @@ public class MissingController {
 
   @GetMapping(EndPoint.LIST)
   public String getPostList(
-          MissingFilterDto filterDto,
+          @ModelAttribute MissingFilterDto filterDto,
           @PageableDefault(sort="missing_id", direction = Sort.Direction.DESC)
           Pageable pageable,
           Model model) {
-    List<MissingListResDto> list = missingPostService.getPostList(filterDto, pageable);
 
-    log.info("filter: > " + filterDto);
-    log.info("pageable: > " + pageable);
+    ListResponseDto<MissingListResDto> result = missingPostService.getPostList(filterDto, pageable);
 
-    model.addAttribute("list", list);
-    model.addAttribute("count", 100);
+    model.addAttribute("list", result.getList());
+    model.addAttribute("count", result.getTotalCount());
 
     return ViewName.POST_LIST;
   }
