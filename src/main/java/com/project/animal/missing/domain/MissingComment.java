@@ -28,13 +28,6 @@ public class MissingComment {
 
   // TODO: relation
   private Long parentId;
-
-  public MissingComment(long member_id, MissingPost missingPost, String content) {
-    this.member_id = member_id;
-    this.missingPost = missingPost;
-    this.content = content;
-  }
-
   public MissingComment(long member_id, MissingPost missingPost, String content, Long parentId) {
     this.member_id = member_id;
     this.missingPost = missingPost;

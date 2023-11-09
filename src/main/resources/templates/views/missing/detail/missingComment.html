@@ -14,12 +14,23 @@
 
         <section class="missing-comment-scroll">
             <div class="missing-card-entry" th:each="comment : ${comments}">
-                <div class="missing-detail-comment-card-container">
-                    <div class="missing-comment-title">작성자</div>
+                <div class="missing-detail-recomment-card-container">
+                    <div style="display:flex; flex-direction: row; justify-content: space-between;">
+                        <div class="missing-comment-title">작성자</div>
+                        <button class="missing-recomment-button">대댓</button>
+                    </div>
                     <div class="missing-comment-form">
                         <div th:text="${comment.content}"></div>
                     </div>
+                    <div>
+                        <form class="missing-recomment-form" method="post" th:action="@{{actionPath}(actionPath=${actionPath})}">
+                            <input name="missingId" th:value="${postId}" hidden />
+                            <input name="memberId" th:value="${memberId}" hidden />
+                            <input name="parentId" th:value="${comment.commentId}" hidden />
+                        </form>
+                    </div>
                 </div>
+
             </div>
         </section>
 

@@ -33,7 +33,6 @@
 }
 
 .missing-comment-scroll {
-
     max-height: 620px;
     overflow: scroll;
 }
@@ -41,3 +40,4 @@
 .missing-card-entry {
     margin-top: 20px;
 }
+
