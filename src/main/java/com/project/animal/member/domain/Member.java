@@ -1,15 +1,13 @@
 package com.project.animal.member.domain;
 
-
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder                // to do : Builder 관련 로직 제거 후, 이후에 제거
+@NoArgsConstructor
 @AllArgsConstructor
 public class Member {
 

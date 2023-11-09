@@ -1,0 +1,333 @@
+.active {
+  border: 2px solid #000; /* 테두리 두께와 색상을 지정합니다. */
+  display: inline-block; /* 인라인 요소로 표시되도록 설정합니다. */
+  border-radius: 5px; /* 네모 박스의 모서리를 둥글게 만듭니다. */
+  background-color: #f0f0f0; /* 배경색을 지정합니다. */
+}
+
+.adoption {
+    width: 1200px;
+    margin: 150px auto;
+    padding:50px 100px;
+    /* background-color: #eee; */
+    border:1px solid #aaa;
+    font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+}
+
+/* 검색 영역 및 글쓰기 영역 */
+.adoption .search-area {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 25px;
+    padding-right:20px;
+}
+
+
+.adoption .search input {
+    /* height: 35px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; */
+    width:173px;
+    height:41px;
+    background-color: rgba(240,240,240,0.41);
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+
+}
+
+.adoption .search .search-button{
+    display: inline-block;
+    border:none;
+    background-color: #fff;
+    cursor: pointer;
+
+}
+
+.adoption .search .search-button span{
+    vertical-align: top;
+}
+
+
+.adoption .select select {
+    width:173px;
+    height:41px;
+    background-color: rgba(240,240,240,0.41);
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-indent: 10px;
+}
+
+.adoption .write .write-button{
+    border:none;
+    display: inline-block;
+    width:120px;
+    height:30px;
+    line-height: 30px;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.adoption .write .write-button span{
+    color:#f2d8b9;
+    vertical-align: middle;
+}
+
+
+/* 게시판 리스트 영역 */
+.adoption-board{
+    /* background-color: skyblue; */
+}
+
+.adoption-board ul {
+    margin:0;
+    padding:0;
+    margin-top:25px;
+
+}
+
+.adoption-board ul li{
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    border:1px solid #aaa;
+    border-bottom: none;
+    padding: 5px 15px;
+}
+
+.adoption-board ul li:last-child{
+    border-bottom: 1px solid #aaa;
+}
+.adoption-board ul li .image-area{
+    flex:20%;
+    font-size: 14px;
+}
+
+.adoption-board ul li .image-area img {
+    /* margin-left: 15px; */
+    width:200px;
+}
+
+
+.adoption-board ul li .content-area{
+    flex:60%;
+    text-indent: 15px;
+}
+
+.adoption-board ul li .info-area{
+    flex:20%;
+}
+
+/* ********************************** */
+
+/* 입양 글쓰기 페이지 */
+/* adoption-write */
+.adoption-write {
+    width:1200px;
+    margin:150px auto;
+    padding:50px;
+    border: 1px solid #ddd;
+    font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+}
+.adoption-write legend{
+    position: absolute;
+    left:-9999px;
+    display:none;
+    opacity: 1;
+    font-size: 1;
+}
+
+/* 글쓰기 저장 버튼 영역 */
+.adoption-write .write-button-area{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.adoption-write .write-button-area .write-button{
+    border:none;
+    display: inline-block;
+    /*width:120px;*/
+    height:30px;
+    line-height: 30px;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.adoption-write .write-button-area .write-button span{
+    color:#f0b062;
+    vertical-align: middle;
+}
+
+/* 글쓰기 게시판 내 영역 */
+
+.adoption-write .contents-area {
+    width:100%;
+    padding: 10px;
+}
+
+.adoption-write .contents-area label{
+    display: inline-block;
+    width:120px;
+    height:41px;
+    font-size:18px;
+    font-weight: 600;
+}
+
+.adoption-write .contents-area .text-area{
+    display: flex;
+    align-items: center;
+}
+
+.adoption-write .contents-area label[for="textarea"]{
+    display: inline-block;
+    width:120px;
+    height:400px;
+    line-height: 400px;
+    font-size:18px;
+    font-weight: 600;
+}
+
+.adoption-write .contents-area input{
+    width:800px;
+    height:41px;
+    background-color: rgba(240,240,240,0.41);
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-indent: 10px;
+}
+
+.adoption-write .contents-area select {
+    width:173px;
+    height:41px;
+    background-color: rgba(240,240,240,0.41);
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-indent: 10px;
+}
+
+.adoption-write .contents-area textarea {
+    width:800px;
+    height:400px;
+    background-color: rgba(240,240,240,0.41);
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-indent: 10px;
+    font-size:18px;
+    resize: none;
+}
+
+
+/* ************************************ */
+/* 입양 게시판 글 읽기 내용 */
+.adoption-read {
+    width:1200px;
+    margin:150px auto;
+    padding:50px;
+    border: 1px solid #ddd;
+    font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+}
+
+/* 글 수정 버튼 영역 */
+/* 글쓰기 저장 버튼 영역 */
+.adoption-read .edit-button-area{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.adoption-read .edit-button-area .edit-button{
+    border:none;
+    display: inline-block;
+    width:120px;
+    height:30px;
+    line-height: 30px;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.adoption-write .write-button-area .write-button span{
+    color:#f0b062;
+    vertical-align: middle;
+}
+
+
+/* 입양 게시판 Read 영역 */
+
+.adoption-read .contents-area {
+    width:100%;
+    padding: 10px;
+}
+
+.adoption-read .contents-area .title{
+    display: inline-block;
+    width:120px;
+    height:41px;
+    font-size:18px;
+    font-weight: 600;
+}
+
+.adoption-read .contents-area .text-area{
+    display: flex;
+    align-items: center;
+}
+
+.adoption-read .contents-area label[for="textarea"]{
+    display: inline-block;
+    width:120px;
+    height:400px;
+    line-height: 400px;
+    font-size:18px;
+    font-weight: 600;
+}
+
+.adoption-read .contents-area .desc{
+    display: inline-block;
+    width:800px;
+    height:41px;
+    /* background-color: rgba(240,240,240,0.41); */
+    /* box-shadow: 0px 4px 4px rgba(0,0,0,0.25); */
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-indent: 10px;
+}
+
+.adoption-read .contents-area select {
+    width:173px;
+    height:41px;
+    background-color: rgba(240,240,240,0.41);
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-indent: 10px;
+}
+
+.adoption-read .contents-area textarea {
+    width:800px;
+    height:400px;
+    /* background-color: rgba(240,240,240,0.41); */
+    /* box-shadow: 0px 4px 4px rgba(0,0,0,0.25); */
+    border:1px solid rgb(240,240,240);
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-indent: 10px;
+    font-size:18px;
+    resize: none;
+}

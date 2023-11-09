@@ -1,0 +1,67 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+.thumbnail-image {
+    width: 300px; /* 원하는 가로 크기로 설정 */
+    height: auto; /* 높이를 자동으로 조절하여 원래 비율을 유지하도록 설정 */
+    text-align: right;
+        display: flex;
+}
+
+
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Define class-specific styles */
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.title {
+    font-size: 24px;
+}
+
+.separator {
+    margin-top: 10px;
+    border: 1px solid #000;
+}
+
+.author {
+    display: flex;
+    align-items: center;
+}
+
+.author-info {
+    flex: 1;
+}
+
+.timestamp {
+    text-align: right;
+}
+
+.buttons {
+    display: flex;
+    align-items: center; /* 수정된 부분: 버튼 정렬을 가운데로 조정 */
+    margin-top: 10px; /* 수정된 부분: 버튼과 날짜 간격 조정 */
+}
+
+.edit-button, .delete-button {
+    background-color: #0074D9;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 10px; /* 수정된 부분: 버튼 간격 조정 */
+}
+
+.text {
+    margin-top: 20px;
+    font-size: 18px;
+    height: 200px; /* 텍스트 칸의 높이를 조정하세요. */
+}
+
