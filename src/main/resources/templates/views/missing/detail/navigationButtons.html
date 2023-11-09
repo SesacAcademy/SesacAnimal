@@ -1,0 +1,16 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="navButtons($detail)"
+        style="display:flex; flex-direction: row; margin-top: 30px;">
+    <div style="padding: 10px 40px; margin-right: 20px; border: 1px solid black; border-radius: 20px;">
+        <div>
+            <a th:href="@{/missing/edit/{id}(id=${detail.id})}">
+                수정
+            </a>
+        </div>
+    </div>
+    <div style="padding: 10px 40px; border: 1px solid black; border-radius: 20px;">
+        <form method="post" th:action="@{/missing/{id}(id=${detail.id})}">
+            <input type="hidden" name="_method" value="delete"/>
+            <button type="submit">삭제</button>
+        </form>
+    </div>
+</div>

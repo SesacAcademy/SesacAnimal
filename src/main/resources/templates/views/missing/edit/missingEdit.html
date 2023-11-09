@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <!-- user-scalable 을 사용하지 않는 디바이스를 위해, maximun-scale/minimum-scale 설정-->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="작성 예정" />
+    <meta name="keywords" content="1, 2, 3" />
+    <meta name="author" content="SungSoo Park" />
+
+
+    <!-- 일반적인 fabicon 설정 -->
+    <link rel="icon" th:href="@{/img/fabicon.ico}" />
+    <!-- 아이폰용 fabicon 설정 -->
+    <link rel="apple-touch-icon" th:href="@{/img/fabicon.ico}" />
+    <!-- 인터넷 익스플로어용 fabicon 설정 -->
+    <link rel="shortcut icon"  style="image/x-icon" th:href="@{/img/fabicon.ico}" />
+
+    <!-- Normalize 설정 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.css" />
+
+    <!-- 폰트 어썸 설정 -->
+    <script src="https://kit.fontawesome.com/8bfedc8e3a.js" crossorigin="anonymous"></script>
+    <!-- 폰트 설정 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Roboto&display=swap" rel="stylesheet">
+
+    <!-- 글꼴 설정 -->
+    <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet" type="text/css"/>
+
+    <!--아이콘 설정-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <!-- 기본 CSS 및 JS 설정-->
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <script th:src="@{/js/main.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/css/missing/edit/missingEdit.css}" />
+    <link rel="stylesheet" th:href="@{/css/missing/edit/missingEditCard.css}" />
+
+    <title>새싹 애니멀</title>
+    <script th:inline="javascript" defer>
+        const _detail = /*[[${detail}]]*/ {};
+        const _isRedirected = /*[[${isRedirected}]]*/ false;
+        const _isSuccess = /*[[${isSuccess}]]*/ false;
+    </script>
+    <script defer>
+        const showResult = (isSuccess) => {
+            if (isSuccess == null) return;
+
+            const msg = isSuccess ? "등록에 성공하였습니다." : "등록에 실패하였습니다.";
+            alert(msg);
+        }
+
+        showResult(_isSuccess);
+        if (_isSuccess) window.location.href="/missing/list";
+
+    </script>
+</head>
+<body>
+<th:block th:replace="../fragments/header/header :: header" />
+<section th:if="${detail}" class="missing-edit-page">
+    <th:block th:replace="./missing/edit/missingEditCard :: editCard(${detail})" />
+</section>
+<th:block th:replace="../fragments/footer/footer :: footer" />
+</body>
+</html>

@@ -4,10 +4,7 @@ import com.project.animal.global.common.utils.BindingResultParser;
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
 import com.project.animal.missing.dto.*;
-import com.project.animal.missing.exception.DetailNotFoundException;
-import com.project.animal.missing.exception.InvalidCreateFormException;
-import com.project.animal.missing.exception.PostDeleteFailException;
-import com.project.animal.missing.exception.PostSaveFailException;
+import com.project.animal.missing.exception.*;
 import com.project.animal.missing.service.MissingPostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,10 +82,25 @@ public class MissingController {
     return "redirect:" + EndPoint.MISSING + EndPoint.NEW;
   }
 
+  @GetMapping(EndPoint.EDIT)
+  public String showEditView(@PathVariable(EndPoint.ID) long postId, Model model) {
+    MissingDetailDto detail = missingPostService.getPostDetail(postId);
+    model.addAttribute("detail", detail);
+
+    return ViewName.POST_EDIT;
+  }
+
   @PutMapping(EndPoint.EDIT)
-  public String handleEditRequest(@PathVariable(EndPoint.ID) long id) {
-    log.info("id: >>> " + id);
-    return "index";
+  public String handleEditRequest(@Valid @ModelAttribute("detail") MissingEditDto dto, BindingResult br, RedirectAttributes redirectAttributes) {
+    if (!br.hasErrors()) {
+      throw new InvalidEditFormException(dto, br);
+    }
+
+    boolean isSuccess = missingPostService.editPost(dto);
+    redirectAttributes.addFlashAttribute("isSuccess", isSuccess ? SUCCESS_FLAG : FAIL_FLAG);
+    redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
+
+    return "redirect:" + EndPoint.MISSING + "/" + dto.getMissingId();
   }
 
   @DeleteMapping(EndPoint.DELETE)
@@ -100,49 +112,5 @@ public class MissingController {
     return "redirect:" + EndPoint.MISSING + EndPoint.LIST;
   }
 
-
-  @ExceptionHandler(DetailNotFoundException.class)
-  public String handleDetailNotFound(DetailNotFoundException ex, Model model) {
-    model.addAttribute("error", "Fail to find detail");
-    model.addAttribute("type", "detail");
-
-    return ViewName.POST_DETAIL;
-  }
-
-  @ExceptionHandler(InvalidCreateFormException.class)
-  public String handleInvalidCreateForm(InvalidCreateFormException ex, RedirectAttributes redirectAttributes) {
-
-    Map<String, String> errors = BindingResultParser.parse(ex.getBindingResult());
-
-    redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
-    redirectAttributes.addFlashAttribute("isSuccess", FAIL_FLAG);
-    redirectAttributes.addFlashAttribute("errors", errors);
-    redirectAttributes.addFlashAttribute("msg", "입력한 정보를 다시 확인해주세요.");
-    redirectAttributes.addFlashAttribute("post", ex.getInvalidForm());
-
-    log.error("handleInvalidCreateForm: >> Invalid Input " + errors.toString());
-    return "redirect:" + EndPoint.MISSING + EndPoint.NEW;
-  }
-
-  @ExceptionHandler(PostSaveFailException.class)
-  public String handlePostSaveFail(PostSaveFailException ex, RedirectAttributes redirectAttributes) {
-
-    redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
-    redirectAttributes.addFlashAttribute("isSuccess", FAIL_FLAG);
-    redirectAttributes.addFlashAttribute("errors", ex.getMessage());
-    redirectAttributes.addFlashAttribute("msg", "입력한 정보를 다시 확인해주세요.");
-    redirectAttributes.addFlashAttribute("post", ex.getInvalidForm());
-
-    log.error("handlePostSaveFail: >> Invalid Input " + ex.getMessage());
-    return "redirect:" + EndPoint.MISSING + EndPoint.NEW;
-  }
-
-  @ExceptionHandler(PostDeleteFailException.class)
-  public String handlePostDeleteFail(PostDeleteFailException ex, RedirectAttributes redirectAttributes) {
-    redirectAttributes.addFlashAttribute("error", "Fail to delete post");
-    redirectAttributes.addFlashAttribute("type", "delete");
-
-    return "redirect:" + EndPoint.MISSING + "/" + ex.getTargetId();
-  }
 
 }
