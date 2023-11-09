@@ -33,7 +33,7 @@ public class MailAuthCodeProvider implements AuthCodeProvider {
      * @version 0.1
      * @author 박성수
      * @param email (유저 이메일)
-     * @throws MailSendException - 메일 발송에 실패할 시, 예외 발생
+     * @throws MailSendException (메일 발송에 실패할 시, 예외 발생)
      */
     public void generateAuthCode(String email) {
         // Redis에 저장할 Key 생성 (ex. MAIL:test@naver.com)
@@ -67,7 +67,7 @@ public class MailAuthCodeProvider implements AuthCodeProvider {
      * @param email (유저 이메일)
      * @param token (이메일 인증번호)
      * @return true/false (인증번호가 일치하면 true, 일치하지 않으면 false 리턴)
-     * @throws InvalidCodeException - 인증번호가 만료된 경우, 예외 발생
+     * @throws InvalidCodeException (인증번호가 만료된 경우, 예외 발생)
      */
     public boolean validateAuthCode(String email, String token) {
         // Key 생성

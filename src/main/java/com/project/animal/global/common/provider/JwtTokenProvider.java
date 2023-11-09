@@ -4,9 +4,7 @@ import com.project.animal.global.common.constant.Role;
 import com.project.animal.global.common.constant.AuthType;
 import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.global.common.provider.inf.TokenProvider;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
@@ -45,6 +43,15 @@ public class JwtTokenProvider implements TokenProvider {
         this.redisServiceProvider = redisServiceProvider;
     }
 
+    /**
+     * JWT 토큰을 발급하는 메소드로 매개변수로 받는 타입에 따라 Access Token으로 생성할 지 Refresh Token으로 생성할 지 결정
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param member (토큰에 저장할 클레임 정보)
+     * @param type (토큰 타입 - Access 또는 Refresh)
+     * @return String (JWT 토큰)
+     */
     @Override
     public String generateToken(MemberDto member, String type) {
         Date now = new Date();
@@ -77,6 +84,14 @@ public class JwtTokenProvider implements TokenProvider {
         return token;
     }
 
+    /**
+     * Access Token이 만료되어 Refresh Token 검증한 다음 만료된 Access Token의 정보로 새로운 Access Token을 발급하는 메소드
+     * 
+     * @version 0.1
+     * @author 박성수
+     * @param token (만료된 JWT Access 토큰)
+     * @return String (새로 발급한 JWT Access 토큰)
+     */
     public String generateToken(String token) {
         Date now = new Date();
 
@@ -99,7 +114,12 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     /**
-     * Refresh 토큰 비교
+     * 사용자에게서 받은 Refresh 토큰과 서버에 저장된 Refresh 토큰이 일치하는지 비교하는 메소드
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param token (Refresh 토큰)
+     * @return true/false (토큰이 일치하면 true, 일치하지 않으면 false 리턴)
      */
     @Override
     public boolean matchToken(String token) {
@@ -109,6 +129,17 @@ public class JwtTokenProvider implements TokenProvider {
         return token.equals(findRefreshToken.orElse("None"));
     }
 
+    /**
+     * JWT 토큰을 파싱하여 사용자 객체인 MemberDto를 리턴하는 메소드
+     * 
+     * @version 0.1
+     * @author 박성수
+     * @param token (JWT 토큰)
+     * @return memberDto (JWT 토큰 파싱한 사용자 정보)
+     * @throws MalformedJwtException (JWT 토큰이 손상된 경우)
+     * @throws IllegalArgumentException (클레임이 유효하지 않은 경우)
+     * @throws SignatureException (서명이 위변조된 경우)
+     */
     @Override
     public MemberDto parseToken(String token) {
         Claims claims = Jwts.parserBuilder()
@@ -125,10 +156,13 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     /**
-     * JWT 토큰 파싱
-     * @param request
-     * @param type
-     * @return
+     * HTTP 요청에 포함된 쿠키에서 JWT 토큰을 가져오는 메소드
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param request (HttpServletRequest)
+     * @param type (토큰 타입 - Access 또는 Refresh)
+     * @return JWT 토큰
      */
     @Override
     public String resolveToken(HttpServletRequest request, String type) {
@@ -147,8 +181,13 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     /**
-     * JWT 토큰 검증
-     * @return
+     * JWT 토큰을 검증하는 메소드 (위변조 및 만료 검사)
+     *
+     * @param token (JWT 토큰)
+     * @return true/false (검증 완료 시, true 그렇지 않으면 false 리턴)
+     * @throws MalformedJwtException (JWT 토큰이 손상된 경우)
+     * @throws IllegalArgumentException (클레임이 유효하지 않은 경우)
+     * @throws SignatureException (서명이 위변조된 경우)
      */
     @Override
     public boolean validateToken(String token) {

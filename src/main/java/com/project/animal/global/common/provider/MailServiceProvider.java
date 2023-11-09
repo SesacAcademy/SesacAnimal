@@ -25,7 +25,7 @@ public class MailServiceProvider {
      * @author 박성수
      * @param email (메일 수신자)
      * @param mails (메일)
-     * @throws MailSendException - 메일 발송에 실패할 시, 예외 발생
+     * @throws MailSendException (메일 발송에 실패할 시, 예외 발생)
      */
     public void sendMail(String email, MailDto... mails) {
         List<SimpleMailMessage> mailList = new ArrayList<>();
@@ -50,7 +50,7 @@ public class MailServiceProvider {
      * @author 박성수
      * @param emailList (메일 수신자 목록)
      * @param mails (메일)
-     * @throws MailSendException - 메일 발송에 실패할 시, 예외 발생
+     * @throws MailSendException (메일 발송에 실패할 시, 예외 발생)
      */
     public void sendMail(List<String> emailList, MailDto... mails) {
         List<SimpleMailMessage> mailList = new ArrayList<>();
