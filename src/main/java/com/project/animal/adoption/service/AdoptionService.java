@@ -42,8 +42,6 @@ public class AdoptionService {
     public void save(AdoptionWriteDto adoptionWriteDto, List<MultipartFile> files) {
 
         String serverFileName = null;
-        System.out.println("multipart: service>>"+files);
-        System.out.println("multipart: service>>"+files.size());
         Adoption adoption = new Adoption(adoptionWriteDto.getTitle(), adoptionWriteDto.getBreed(), adoptionWriteDto.getGender(), adoptionWriteDto.getAge(), adoptionWriteDto.getCenter(), adoptionWriteDto.getNeutered(), adoptionWriteDto.getContent(), adoptionWriteDto.getColor(), adoptionWriteDto.getHappenPlace(), adoptionWriteDto.getSpecialMark());
 
         // 나머지 Adoption 엔티티 설정
@@ -62,18 +60,6 @@ public class AdoptionService {
 
    }
 
-    private void extracted(AdoptionWriteDto adoptionWriteDto, List<AdoptionImage> adoptionImages) {
-        Adoption adoption = new Adoption(adoptionWriteDto.getTitle(), adoptionWriteDto.getBreed(), adoptionWriteDto.getGender(), adoptionWriteDto.getAge(), adoptionWriteDto.getCenter(), adoptionWriteDto.getNeutered(), adoptionWriteDto.getContent(), adoptionWriteDto.getColor(), adoptionWriteDto.getHappenPlace(), adoptionWriteDto.getSpecialMark());
-
-        // 나머지 Adoption 엔티티 설정
-        Optional<Member> member = repository.findById(1L);
-        Member member1 = member.get();
-        adoption.setMember(member1);
-
-        adoption.setAdoptionImages(adoptionImages);
-        Adoption saved = adoptionRepository.save(adoption);
-
-    }
 
     private String getString(MultipartFile file) {
       String serverFileName;
@@ -100,12 +86,6 @@ public class AdoptionService {
         }
     }
 
-    
-    // 이미지 path 저장하는 영역
-    public void adoptionImageSave(AdoptionImage adoptionImage) {
-       adoptionImageRepository.save(adoptionImage);
-
-   }
 
     public Optional<Adoption> findById(Long id) {
 
@@ -161,7 +141,7 @@ public class AdoptionService {
             Adoption saved = adoptionRepository.save(adoption);
 
 
-            AdoptionImage adoptionImage = new AdoptionImage(openApiDto.getPopfile(), adoption);
+            AdoptionImage adoptionImage = new AdoptionImage(openApiDto.getPopfile(), saved);
 
             adoptionImageRepository.save(adoptionImage);
 
@@ -173,17 +153,13 @@ public class AdoptionService {
       return adoptionRepository.findByIdWithImage(id);
     }
 
-//    public List<Adoption> findAllWithImages() {
-//        return adoptionRepository.findAllWithImages();
-//    }
+    public List<Adoption> findAllWithImages() {
+        return adoptionRepository.findAllWithImages();
+    }
 
     public List<Adoption> findAllWithImagesAndMember() {
         return adoptionRepository.findAllWithImagesAndMember();
     }
-    public List<Adoption> findAllWithImagesSortedByCreatedAtDesc() {
-        // created_at 필드를 기준으로 최신순으로 정렬
-        Sort sortByCreatedAtDesc = Sort.by(Sort.Direction.DESC, "created_at");
-        return adoptionRepository.findAllWithImagesSortedByCreatedAtDesc(sortByCreatedAtDesc);
-    }
+
 
 }

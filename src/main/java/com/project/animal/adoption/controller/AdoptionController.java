@@ -31,26 +31,9 @@ public class AdoptionController {
     public String adoptionMain(Model model){
 
 //        List<Adoption> foundAdoptionList = adoptionService.findAll();
-//        List<Adoption> allWithImages = adoptionService.findAllWithImagesSortedByCreatedAtDesc();
         List<Adoption> allWithImages = adoptionService.findAllWithImagesAndMember();
-        System.out.println("allWithImages: list controller >> "+allWithImages);
-        System.out.println("allWithImages: list controller >> "+allWithImages.toString());
-        System.out.println("allWithImages: list controller >> "+allWithImages.iterator());
 
-//        for (Adoption allWithImage : allWithImages) {
-//            System.out.println("getAdoptionImages "+allWithImage.getAdoptionImages());
-//            System.out.println("getAdoptionImages "+allWithImage.getAdoptionImages().get(0).toString());
-//            System.out.println("getAge "+allWithImage.getAge());
-//            System.out.println("getCenter "+allWithImage.getCenter());
-//            System.out.println("getBreed "+allWithImage.getBreed());
-//            System.out.println("getColor "+allWithImage.getColor());
-//            System.out.println("getContent "+allWithImage.getContent());
-//            System.out.println("getGender "+allWithImage.getGender());
-//            System.out.println("getId "+allWithImage.getId());
-//            System.out.println("getMember "+allWithImage.getMember());
-//            System.out.println("getSpecialMark "+allWithImage.getSpecialMark());
-//
-//        }
+
         model.addAttribute("list",allWithImages);
 
         return "adoption/adoption_list";

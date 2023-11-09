@@ -60,18 +60,28 @@ public class Adoption {
     @NotBlank
     private String center; // 센터 유무
 
-    private String isActive;
-
+    @Column(name = "center_addr")
     private String centerAddr; // 센터 주소
+    @Column(name = "center_name")
     private String centerName; // 센터 이름
 
+    @Column(name = "happen_place")
     private String happenPlace; // 발견장소
-    private String desertionNo; // 공고 번호 (저장용)
-    private String noticeSdt; // 공고시작일
-    private String noticeEdt; // 공고종료일
-    private String noticeNo; // 게시번호 ex) "경남-합천-2023-00487"
-    private String specialMark; // 특징 ex) "마을배회"
 
+    @Column(name = "desertion_no")
+    private String desertionNo; // 공고 번호 (저장용)
+
+    @Column(name = "notice_sdt")
+    private String noticeSdt; // 공고시작일
+
+    @Column(name = "notice_edt")
+    private String noticeEdt; // 공고종료일
+
+    @Column(name = "notice_no")
+    private String noticeNo; // 게시번호 ex) "경남-합천-2023-00487"
+
+    @Column(name = "special_mark")
+    private String specialMark; // 특징 ex) "마을배회"
 
     @Column(name = "create_at")
     private LocalDateTime createdAt;
@@ -79,7 +89,16 @@ public class Adoption {
     @Column(name = "update_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "is_active")
+    private String isActive;
 
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public void setHit(int hit) {
+        this.hit = hit;
+    }
 
     // 입양 게시판 write시 생성자
     public Adoption(String title, String breed, String gender, String age, String center, String neutered, String content, String color, String happenPlace, String specialMark) {
@@ -94,8 +113,10 @@ public class Adoption {
         this.happenPlace=happenPlace;
         this.specialMark=specialMark;
         this.status="보호중";
+        this.isActive="Y";
         this.createdAt = LocalDateTime.now();
     }
+
 
 
     // openApi 센터에서 입력되는 DB 생성자

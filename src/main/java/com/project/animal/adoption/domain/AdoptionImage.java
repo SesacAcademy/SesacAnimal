@@ -2,11 +2,8 @@ package com.project.animal.adoption.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -23,9 +20,6 @@ public class AdoptionImage {
     @JoinColumn(name= "adoption_id")
     private Adoption adoption;
 
-//    @ElementCollection
-//    @CollectionTable(name = "adoption_image", joinColumns = @JoinColumn(name = "adoption_id"))
-//    @Column(name = "path")
     private String path;
 
     public AdoptionImage(String serverFileName, Adoption adoption) {
