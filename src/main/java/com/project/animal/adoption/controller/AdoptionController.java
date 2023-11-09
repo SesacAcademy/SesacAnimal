@@ -58,9 +58,6 @@ public class AdoptionController {
 
         }
 
-        System.out.println("multipart: controller>>"+file);
-        System.out.println("multipart: controller>>"+file.size());
-
         adoptionService.save(adoptionWriteDto, file);
 
 //        return "/adoption/adoption_list";
