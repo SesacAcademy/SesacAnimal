@@ -1,7 +1,7 @@
 package com.project.animal.member.controller;
 
 import com.project.animal.global.common.dto.ResponseDto;
-import com.project.animal.member.exception.InvalidTokenException;
+import com.project.animal.member.exception.InvalidCodeException;
 import com.project.animal.member.exception.LoginException;
 import com.project.animal.member.exception.NestedEmailException;
 import lombok.extern.slf4j.Slf4j;
@@ -51,8 +51,8 @@ public class MemberControllerAdvice {
      * - 이메일 인증 확인 과정에서 인증번호가 잘못되었거나 만료된 경우, 해당 예외 발생
      */
     @ResponseStatus(HttpStatus.OK)
-    @ExceptionHandler(InvalidTokenException.class)
-    public ResponseDto<String> invalidTokenException(InvalidTokenException e) {
+    @ExceptionHandler(InvalidCodeException.class)
+    public ResponseDto<String> invalidTokenException(InvalidCodeException e) {
         log.error("이메일 인증 확인 에러 발생", e);
 
         return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());

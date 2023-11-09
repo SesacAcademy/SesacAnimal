@@ -77,10 +77,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             // Access 토큰이 클라이언트 쿠키에서 삭제되어 Refresh 토큰만 있는 경우, Refresh 토큰 검증
-            else if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken) && jwtTokenProvider.matchRefreshToken(refreshToken)) {
+            else if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken) && jwtTokenProvider.matchToken(refreshToken)) {
 
                 // Access 토큰 재발급
-                String newAccessToken = jwtTokenProvider.newAccessToken(refreshToken);
+                String newAccessToken = jwtTokenProvider.generateToken(refreshToken);
                 authentication = jwtTokenProvider.getAuthentication(newAccessToken);
 
                 log.info("Access 토큰이 클라이언트 쿠키에서 삭제되어 Access 토큰 재발급 프로세스 진행! \n" +
@@ -108,9 +108,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             // Access 토큰이 만료되어 ExpiredJwtException이 발생한 경우, Refresh 토큰 검증
-            else if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken) && jwtTokenProvider.matchRefreshToken(refreshToken)) {
+            else if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken) && jwtTokenProvider.matchToken(refreshToken)) {
                 // Access 토큰 재발급
-                String newAccessToken = jwtTokenProvider.newAccessToken(refreshToken);
+                String newAccessToken = jwtTokenProvider.generateToken(refreshToken);
                 authentication = jwtTokenProvider.getAuthentication(newAccessToken);
 
                 log.info("Access 토큰이 만료되어 Access 토큰 재발급 프로세스 진행! \n" +

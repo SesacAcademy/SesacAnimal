@@ -2,7 +2,8 @@ package com.project.animal.global.common.provider;
 
 import com.project.animal.global.common.constant.AuthType;
 import com.project.animal.global.common.dto.MailDto;
-import com.project.animal.member.exception.InvalidTokenException;
+import com.project.animal.global.common.provider.inf.AuthCodeProvider;
+import com.project.animal.member.exception.InvalidCodeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,13 +11,12 @@ import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.Random;
-
 import static com.project.animal.global.common.constant.ExpirationTime.REDIS_MAIL_TOKEN_TIMEOUT;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class MailTokenProvider {
+public class MailAuthCodeProvider implements AuthCodeProvider {
 
     @Value("${spring.mail.token.digit}")
     private int tokenDigit;
@@ -35,7 +35,7 @@ public class MailTokenProvider {
      * @param email (유저 이메일)
      * @throws MailSendException - 메일 발송에 실패할 시, 예외 발생
      */
-    public void createToken(String email) {
+    public void generateAuthCode(String email) {
         // Redis에 저장할 Key 생성 (ex. MAIL:test@naver.com)
         String key = createKey(email);
 
@@ -67,19 +67,19 @@ public class MailTokenProvider {
      * @param email (유저 이메일)
      * @param token (이메일 인증번호)
      * @return true/false (인증번호가 일치하면 true, 일치하지 않으면 false 리턴)
-     * @throws InvalidTokenException - 인증번호가 만료된 경우, 예외 발생
+     * @throws InvalidCodeException - 인증번호가 만료된 경우, 예외 발생
      */
-    public boolean validateToken(String email, String token) {
+    public boolean validateAuthCode(String email, String token) {
         // Key 생성
         String key = createKey(email);
 
         // 인증번호가 만료된 경우, 예외 발생
-        String findToken = redisServiceProvider.get(key).orElseThrow(() -> {
-            throw new InvalidTokenException("인증번호가 만료되었습니다.");
+        String findAuthCode = redisServiceProvider.get(key).orElseThrow(() -> {
+            throw new InvalidCodeException("인증번호가 만료되었습니다.");
         });
 
         // 사용자가 보내온 토큰 값과 서버에 저장된 토큰 값을 비교
-        return findToken.equals(token);
+        return findAuthCode.equals(token);
     }
 
     private String createKey(String email) {

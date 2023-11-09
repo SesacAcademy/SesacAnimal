@@ -45,22 +45,9 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
             token = (String) request.getAttribute(JWT_ACCESS_TOKEN);
 
         // 기존 쿠키에 JWT Access 토큰이 있는 경우, JWT를 파싱하여 MemberDto 객체로 리턴
-        if (token != null) {
-            MemberDto member = new MemberDto();
+        if (token != null)
+            return jwtTokenProvider.parseToken(token);
 
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(jwtTokenProvider.getKey())
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-
-            member.setEmail(claims.getSubject());
-            member.setId(Long.parseLong(((String) claims.get(USER_ID))));
-            member.setRole(Enum.valueOf(Role.class, (String) claims.get(USER_ROLE)));
-
-            return member;
-        }
-        
         // 없으면 null 값 리턴
         return null;
     }

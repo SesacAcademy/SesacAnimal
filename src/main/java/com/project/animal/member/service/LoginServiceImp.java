@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.project.animal.global.common.constant.TokenTypeValue.JWT_ACCESS_TOKEN;
+import static com.project.animal.global.common.constant.TokenTypeValue.JWT_REFRESH_TOKEN;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -47,8 +50,8 @@ public class LoginServiceImp implements LoginService {
         MemberDto memberDto = new MemberDto(member);
 
         // Access 및 Refresh 토큰 생성 + Redis에 Refresh Token 저장
-        String accessToken = jwtTokenProvider.createAccessToken(memberDto);
-        String refreshToken = jwtTokenProvider.createRefreshToken(memberDto);
+        String accessToken = jwtTokenProvider.generateToken(memberDto, JWT_ACCESS_TOKEN);
+        String refreshToken = jwtTokenProvider.generateToken(memberDto, JWT_REFRESH_TOKEN);
 
         return new TokenDto(accessToken, refreshToken);
     }
