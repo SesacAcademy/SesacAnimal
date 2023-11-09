@@ -5,6 +5,7 @@ import com.project.animal.adoption.dto.AdoptionReadDto;
 import com.project.animal.adoption.dto.AdoptionWriteDto;
 import com.project.animal.adoption.service.AdoptionServiceImpl;
 import com.project.animal.global.common.constant.EndPoint;
+import com.project.animal.global.common.constant.ViewName;
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class AdoptionController {
     private final AdoptionServiceImpl adoptionService;
 
     //리스트 들어오기
-    @GetMapping(EndPoint.ADOPTION)
+    @GetMapping(EndPoint.ADOPTION_LIST)
     public String adoptionMain(Model model){
 
 //        List<Adoption> foundAdoptionList = adoptionService.findAll();
@@ -37,15 +38,15 @@ public class AdoptionController {
 
         model.addAttribute("list",allWithImages);
 
-        return "adoption/adoption_list";
+        return ViewName.ADOPTION_LIST;
     }
 
 
     // 글 쓰기 들어오기
-    @GetMapping(EndPoint.ADOPTION_EDIT)
+    @GetMapping(EndPoint.ADOPTION_WRITE)
     public String adoptionWrite(){
 
-        return "adoption/adoption_write";
+        return ViewName.ADOPTION_WRITE;
     }
 
 
@@ -61,15 +62,16 @@ public class AdoptionController {
 
         adoptionService.save(adoptionWriteDto, file);
 
-//        return "/adoption/adoption_list";
-        return "redirect:/v1/adoption";
+//        return "redirect:/v1/adoption";
+        return "redirect:"+EndPoint.ADOPTION_LIST;
     }
 
     // 수정 영역
     @GetMapping(EndPoint.ADOPTION_EDIT)
     public String adoptionEdit(){
 
-        return "redirect:/adoption/adoption_edit";
+//        return "redirect:/adoption/adoption_edit";
+        return "redirect:/"+ViewName.ADOPTION_EDIT;
     }
     
     
@@ -83,7 +85,7 @@ public class AdoptionController {
          AdoptionReadDto adoptionReadDto = new AdoptionReadDto(adoption);
          model.addAttribute("read", adoptionReadDto);
 
-        return "adoption/adoption_read";
+        return ViewName.ADOPTION_READ;
     }
 
 }
