@@ -1,5 +1,6 @@
 package com.project.animal.missing.dto;
 
+import com.project.animal.global.common.utils.CustomDateParser;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -25,13 +26,9 @@ public class MissingFilterDto {
     this.animalType = animalType;
     this.specifics = specifics;
     this.color = color;
-    this.fromDate = formatDate(fromDate);
-    this.endDate = formatDate(endDate);
+    this.fromDate = CustomDateParser.formatDate(fromDate);
+    this.endDate = CustomDateParser.formatDate(endDate);
     this.search = search;
   }
 
-  private LocalDateTime formatDate(String date) {
-    if (date == null || date.isEmpty() || date.isBlank()) return null;
-    return LocalDateTime.parse(date + DEFAULT_TIME);
-  }
 }
