@@ -5,7 +5,6 @@ import com.project.animal.global.common.dto.MemberDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import static com.project.animal.global.common.constant.ViewName.INDEX_VIEW;
 
 @Controller

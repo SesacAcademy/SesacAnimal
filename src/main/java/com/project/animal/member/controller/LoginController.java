@@ -17,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
-
 import static com.project.animal.global.common.constant.ExpirationTime.ACCESS_TOKEN_COOKIE_EXPIRATION_TIME;
 import static com.project.animal.global.common.constant.ExpirationTime.REFRESH_TOKEN_COOKIE_EXPIRATION_TIME;
 

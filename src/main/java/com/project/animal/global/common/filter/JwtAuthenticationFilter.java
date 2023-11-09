@@ -1,7 +1,6 @@
 package com.project.animal.global.common.filter;
 
 import com.project.animal.global.common.provider.JwtTokenProvider;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
