@@ -1,12 +1,13 @@
 package com.project.animal.global.common.provider;
 
 import com.project.animal.global.common.constant.TokenType;
+import com.project.animal.global.common.dto.MailDto;
 import com.project.animal.member.exception.InvalidTokenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.Random;
@@ -25,14 +26,15 @@ public class MailTokenProvider {
 
     private final RedisServiceProvider redisServiceProvider;
 
-    private final MailSender mailSender;
+    private final MailServiceProvider mailServiceProvider;
 
     /**
-     * 이메일 인증번호 생성하는 메소드
-     * @param email     (유저 이메일)
-     * @return String   (인증 번호)
-     * @Author sHu
-     * @Date 23.11.03
+     * 이메일 인증번호를 생성하고 Redis에 저장한 다음, 사용자에게 인증번호를 발송하는 메소드
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param email (유저 이메일)
+     * @throws MailSendException - 메일 발송에 실패할 시, 예외 발생
      */
     public void createToken(String email) {
         // Redis에 저장할 Key 생성 (ex. MAIL:test@naver.com)
@@ -48,10 +50,25 @@ public class MailTokenProvider {
         log.info("Key : {}", key);
         log.info("Value : {}", value);
 
-        // 유저에게 토큰 발송 (메일)
-        sendMail(email, value);
+        // MailDto 객체 생성
+        MailDto mail = MailDto.builder()
+                        .title("[새싹 애니멀] 이메일 인증 번호입니다.")
+                        .content("인증번호 : " + value)
+                        .build();
+
+        // 인증번호 메일 발송
+        mailServiceProvider.sendMail(email, mail);
     }
 
+    /**
+     * 사용자에게서 입력받은 인증번호가 서버에 저장된 인증번호와 일치하는지 확인하는 메소드
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param email (유저 이메일)
+     * @param token (이메일 인증번호)
+     * @throws InvalidTokenException - 인증번호가 일치하지 않는 경우, 예외 발생
+     */
     public boolean validateToken(String email, String token) {
         // Key 생성
         String key = createKey(email);
@@ -76,13 +93,5 @@ public class MailTokenProvider {
             value += rd.nextInt(10);
         }
         return value;
-    }
-
-    private void sendMail(String email, String token) {
-        SimpleMailMessage mail = new SimpleMailMessage();
-        mail.setTo(email);
-        mail.setSubject("[새싹 애니멀] 이메일 인증 번호입니다.");
-        mail.setText("인증번호 : " + token);
-        mailSender.send(mail);
     }
 }
