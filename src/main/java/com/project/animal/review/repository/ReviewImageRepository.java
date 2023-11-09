@@ -12,8 +12,5 @@ import java.util.List;
 
 @Repository
 public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long> {
-    @Modifying
-    @Transactional
-    @Query(value = "INSERT INTO temp_images (image_id, url) SELECT image_id, url FROM images WHERE image_id IN :imageIds", nativeQuery = true)
-    void copyImagesToTemporaryTable(@Param("imageIds") List<Long> imageIds);
+
 }

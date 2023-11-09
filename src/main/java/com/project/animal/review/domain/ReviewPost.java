@@ -32,7 +32,6 @@ public class ReviewPost {
     @Column(name = "view_count")
     private int viewCount;
 
-    //사진 여러장 받을 수 있을 시에 List로 만들고 @OneToMany로 작성
     @OneToMany(mappedBy = "reviewPost")
     private List<ReviewImage> reviewImages = new ArrayList<>();
 
@@ -61,5 +60,13 @@ public class ReviewPost {
 
     public int increaseViewCount() {
         return this.viewCount++;
+    }
+
+    public void update(CreateReviewPostDto dto) {
+        this.content = dto.getContent();
+        this.title = dto.getTitle();
+    }
+    public void changeStatus() {
+        this.isActive = 0;
     }
 }

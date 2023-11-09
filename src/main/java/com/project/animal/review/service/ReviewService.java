@@ -7,6 +7,7 @@ import com.project.animal.review.exception.NotFoundException;
 import com.project.animal.review.repository.ReviewRepository;
 import io.minio.MinioClient;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,14 +21,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Log4j2
 @Transactional
-//readOnly작성 필요
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private MinioClient minioClient;
 
     public ReviewPost createReviewPost(CreateReviewPostDto createReviewPostDto, Member member) {
         ReviewPost reviewPost = new ReviewPost(createReviewPostDto, member);
@@ -37,16 +36,12 @@ public class ReviewService {
     public ReadListGeneric readAll(int page, int size) {
         Sort sortByDesc = Sort.by(Sort.Direction.DESC, "createdAt");
         Pageable pageable = PageRequest.of(page, size, sortByDesc);
-//        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImage(pageable);
         Page<ReviewPost> postList = reviewRepository.findAll(pageable);
         return entityToDtoByReadAll(postList);
     }
-
     private ReadListGeneric entityToDtoByReadAll(Page<ReviewPost> entity) {
         int totalPages =  entity.getTotalPages();
         int pageNum = entity.getNumber();
-        log.info("pageNum: => "+pageNum);
-        log.info("totalPages =>", totalPages);
         List<ReviewPostAllDto> dtoList = entity.getContent()
                 .stream()
                 .map(reviewPost -> new ReviewPostAllDto(reviewPost))
@@ -57,6 +52,7 @@ public class ReviewService {
                 .pageNumber(pageNum)
                 .build();
     }
+    @Transactional(readOnly = true)
     public ReadOneReviewDto readOne(Long reviewPostId) {
         Optional<ReviewPost> reviewPost = reviewRepository.findByIdWithMemberAndImage(reviewPostId);
         ReviewPost reviewEntity = checkOptional(reviewPost);
@@ -73,8 +69,8 @@ public class ReviewService {
         ReadOneReviewDto readOneReviewDto = new ReadOneReviewDto(reviewPost, viewCount);
         return readOneReviewDto;
     }
-
-    public ReadListGeneric readByName(Integer page, int size, String name) {
+    @Transactional(readOnly = true)
+    private ReadListGeneric readByName(Integer page, int size, String name) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByName(name,pageable);
         return entityToDtoByReadAll(postList);
@@ -90,22 +86,31 @@ public class ReviewService {
         }
         return null;
     }
-
+    @Transactional(readOnly = true)
     private ReadListGeneric<ReadListGeneric> readByContent(Integer page, int size, String content) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByContent(content, pageable);
         return entityToDtoByReadAll(postList);
     }
-
+    @Transactional(readOnly = true)
     private ReadListGeneric<ReadListGeneric> readByTitle(Integer page, int size, String title) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByTitle(title,pageable);
         return entityToDtoByReadAll(postList);
     }
 
-    //id list 이미지 아이디는 임시테이블로 이동
-    //
+    // 이미지 데이터 어떻게 할 것인지 논의 필요
     public void update(List<Long> imageIds, CreateReviewPostDto updatePostDto, Long reviewPostId) {
-
+        ReviewPost reviewPost = findByIdAndCheckOptional(reviewPostId);
+        reviewPost.update(updatePostDto);
+    }
+    public void delete(Long reviewPostId) {
+        ReviewPost reviewPost = findByIdAndCheckOptional(reviewPostId);
+        reviewPost.changeStatus();
+    }
+    private ReviewPost findByIdAndCheckOptional(Long reviewPostId){
+        Optional<ReviewPost> reviewPostOptional = reviewRepository.findById(reviewPostId);
+        return reviewPostOptional.orElseThrow(
+                ()->new NotFoundException("해당 게시글의 id가 유효하지 않습니다 유효하지 않은 reviewPostId: "+reviewPostId));
     }
 }

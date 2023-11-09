@@ -15,7 +15,7 @@ import com.project.animal.review.service.ReviewService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +29,6 @@ import java.util.List;
 @Log4j2
 public class ReviewController {
 
-
     private final ReviewService reviewService;
 
     private final ReviewImageService reviewImageService;
@@ -40,7 +39,7 @@ public class ReviewController {
         return ViewName.WRITE_PAGE;
     }
     @PostMapping(EndPoint.WRITE)
-    public String createReview(@ModelAttribute CreateReviewPostDto createReviewPostDto,
+    public String createReviewPost(@ModelAttribute CreateReviewPostDto createReviewPostDto,
                                BindingResult bindingResult,
                                @RequestParam(name = "imageList") List<MultipartFile> imageFiles
     ){
@@ -53,11 +52,11 @@ public class ReviewController {
         ReviewPost reviewPost = reviewService.createReviewPost(createReviewPostDto, member);
         reviewImageService.saveImg(imageListDto, reviewPost);
 
-      return "redirect:/review";
+      return ViewName.HOME;
     }
     @GetMapping()
-    public String readByCreatedAt(@RequestParam(name = "page", defaultValue = "0") Integer page, Model model){
-
+    public String readByCreatedAt(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                  Model model){
         ReadListGeneric viewDto = reviewService.readAll(page, size);
         model.addAttribute("listDto", viewDto);
         return ViewName.REVIEW_LIST;
@@ -85,13 +84,24 @@ public class ReviewController {
         model.addAttribute("reviewDto", readOneReviewDto);
         return ViewName.EDIT_ONE;
     }
-    @Transactional
     @PostMapping(EndPoint.UPDATE)
     public String update(@RequestParam(name = "imageIds") List<Long> imageIds,
                          @ModelAttribute CreateReviewPostDto updatePostDto,
                          @RequestParam(name = "reviewPostId")Long reviewPostId){
         reviewService.update(imageIds, updatePostDto, reviewPostId);
-        return "redirect:/review";
+        return ViewName.HOME;
+    }
+    @GetMapping(EndPoint.DELETE)
+    public String delete(@RequestParam(name = "reviewPostId")Long reviewPostId){
+        reviewService.delete(reviewPostId);
+        return ViewName.HOME;
     }
 
+    @GetMapping()
+    //인자 검사
+    public String createReviewComment(BindingResult bindingResult){
+        //member 객체, reviewpost 객체 필
+        return "redirect";
+        // 해당페이지 리턴
+    }
 }

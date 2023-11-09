@@ -39,7 +39,6 @@ public class ImageUploadMinio {
             log.error(e.getMessage());
             throw new RuntimeException(e);
         }
-
     }
     public List<String> insertImageMinio(ImageListDto imageListDto, String type) {
         List<String> urls = new ArrayList<>();
@@ -64,7 +63,6 @@ public class ImageUploadMinio {
         }
         return urls;
     }
-
     private boolean imageDtoSizeCheck(ImageListDto imageListDto) throws MinioException {
         int userInputCount = imageListDto.getImageCount();
         int inputImageCount = imageListDto.getImageList().size();

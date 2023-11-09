@@ -18,7 +18,6 @@ public class ReviewImage {
 
     private String url;
 
-    //이미지 1장 이상 등록 가능한 경우, @ManyToOne 작성 필요
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
     private ReviewPost reviewPost;
