@@ -3,12 +3,11 @@ package com.project.animal.missing.controller;
 import com.project.animal.global.common.utils.BindingResultParser;
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
+import com.project.animal.missing.dto.comment.MissingCommentEditDto;
 import com.project.animal.missing.dto.comment.MissingCommentNewDto;
 import com.project.animal.missing.dto.MissingDetailDto;
 import com.project.animal.missing.dto.comment.MissingCommentListEntryDto;
-import com.project.animal.missing.exception.CommentSaveFailException;
-import com.project.animal.missing.exception.DetailNotFoundException;
-import com.project.animal.missing.exception.InvalidCommentFormException;
+import com.project.animal.missing.exception.*;
 import com.project.animal.missing.service.MissingCommentService;
 import com.project.animal.missing.service.MissingPostService;
 import lombok.RequiredArgsConstructor;
@@ -59,9 +58,13 @@ public class MissingDetailController extends MissingController {
   }
 
   @PutMapping(EndPoint.COMMENT + EndPoint.EDIT)
-  public String editComment() {
+  public String editComment(@Valid @ModelAttribute("comment") MissingCommentEditDto dto, BindingResult br) {
+    if (br.hasErrors()) {
+      throw new InvalidCommentEditFormException(dto, br);
+    }
 
-    return "index";
+    missingCommentService.editComment(dto);
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 
 
@@ -96,6 +99,36 @@ public class MissingDetailController extends MissingController {
     redirectAttributes.addFlashAttribute("type", "comment");
 
     log.error("CommentSaveFailException: >> Fail to DB save " + ex.getMessage());
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + ex.getInvalidForm().getMissingId();
+  }
+
+  @ExceptionHandler(InvalidCommentEditFormException.class)
+  public String handleInvalidCommentEditFormException(InvalidCommentEditFormException ex, RedirectAttributes redirectAttributes) {
+    Map<String, String> errors = BindingResultParser.parse(ex.getBindingResult());
+
+    redirectAttributes.addFlashAttribute("error", "Fail to edit comment");
+    redirectAttributes.addFlashAttribute("type", "comment");
+
+    log.error("InvalidCommentFormException: >> Invalid comment edit Input " + errors.toString());
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + ex.getInvalidForm().getMissingId();
+  }
+
+  @ExceptionHandler(CommentNotFoundException.class)
+  public String handleCommentNotFoundException(CommentNotFoundException ex, RedirectAttributes redirectAttributes) {
+
+    redirectAttributes.addFlashAttribute("error", "Fail to find comment");
+    redirectAttributes.addFlashAttribute("type", "detail");
+
+    log.error("CommentNotFoundException: >> Fail to find comment id: >> " + ex.getCommentId());
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + ex.getMissingId();
+  }
+
+  @ExceptionHandler(CommentEditFailException.class)
+  public String handleCommentEditFailException(CommentEditFailException ex, RedirectAttributes redirectAttributes) {
+    redirectAttributes.addFlashAttribute("error", "Fail to edit comment");
+    redirectAttributes.addFlashAttribute("type", "detail");
+
+    log.error("CommentNotFoundException: >> Fail to find comment id: >> " + ex.getInvalidForm().getCommentId());
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + ex.getInvalidForm().getMissingId();
   }
 }

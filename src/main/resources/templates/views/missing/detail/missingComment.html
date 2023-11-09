@@ -30,7 +30,7 @@
                             <input name="missingId" th:value="${postId}" hidden />
                             <input name="memberId" th:value="${memberId}" hidden />
                             <input name="commentId" th:value="${comment.commentId}" hidden />
-                            <input type="text" name="content" th:value="${comment.content}"/>
+                            <input type="text" name="comment" th:value="${comment.content}"/>
                             <button>수정</button>
                         </form>
 
@@ -58,8 +58,11 @@
                                 <div class="missing-recomment-content" th:text="${recomment.content}" />
                                 <form class="missing-recomment-edit-form" method="post" th:action="@{{actionPath}(actionPath=${endPoints.editComment})}">
                                     <input type="hidden" name="_method" value="put"/>
+                                    <input name="missingId" th:value="${postId}" hidden />
+                                    <input name="memberId" th:value="${memberId}" hidden />
+                                    <input name="commentId" th:value="${recomment.commentId}" hidden />
                                     <input type="hidden" name="parentId" th:value="${recomment.parentId}"/>
-                                    <input type="text" th:value="${recomment.content}" style="width: 70%;"/>
+                                    <input type="text" name="comment" th:value="${recomment.content}" style="width: 70%;"/>
                                     <button>수정</button>
                                 </form>
                             </div>

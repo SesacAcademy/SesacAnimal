@@ -35,18 +35,7 @@ public class MissingComment {
     this.parentId = parentId;
   }
 
-  public MissingComment(long comment_id, long member_id, MissingPost missingPost, String content) {
-    this.comment_id = comment_id;
-    this.member_id = member_id;
-    this.missingPost = missingPost;
-    this.content = content;
-  }
-
-  public MissingComment(long comment_id, long member_id, MissingPost missingPost, String content, Long parentId) {
-    this.comment_id = comment_id;
-    this.member_id = member_id;
-    this.missingPost = missingPost;
-    this.content = content;
-    this.parentId = parentId;
+  public void changeComment(String comment) {
+    this.content = comment;
   }
 }
