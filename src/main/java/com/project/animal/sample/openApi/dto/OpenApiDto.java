@@ -1,4 +1,4 @@
-package com.project.animal.global.common.dto;
+package com.project.animal.sample.openApi.dto;
 
 
 import lombok.Getter;

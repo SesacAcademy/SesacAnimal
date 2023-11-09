@@ -22,6 +22,9 @@ public class AdoptionImage {
 
     private String path;
 
+    @Column(name = "is_active")
+    private String isActive;
+
     public AdoptionImage(String serverFileName, Adoption adoption) {
         this.adoption = adoption;
         this.path = serverFileName;

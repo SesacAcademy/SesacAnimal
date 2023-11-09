@@ -1,5 +1,6 @@
 package com.project.animal.adoption.domain;
 
+import com.project.animal.global.common.entity.BaseEntity;
 import com.project.animal.member.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "adoption")
-public class Adoption {
+public class Adoption extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "adoption_id")
@@ -83,12 +84,7 @@ public class Adoption {
     @Column(name = "special_mark")
     private String specialMark; // 특징 ex) "마을배회"
 
-    @Column(name = "create_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "update_at")
-    private LocalDateTime updatedAt;
-
+    @NotNull
     @Column(name = "is_active")
     private String isActive;
 
@@ -114,7 +110,6 @@ public class Adoption {
         this.specialMark=specialMark;
         this.status="보호중";
         this.isActive="Y";
-        this.createdAt = LocalDateTime.now();
     }
 
 
@@ -136,7 +131,7 @@ public class Adoption {
         this.happenPlace=happenPlace;
         this.content=kindCd+"/"+colorCd+"/"+specialMark;
         this.center="Y";
+        this.isActive="Y";
         this.specialMark=specialMark;
-        this.createdAt = LocalDateTime.now();
     }
 }

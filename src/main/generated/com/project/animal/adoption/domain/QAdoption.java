@@ -22,6 +22,8 @@ public class QAdoption extends EntityPathBase<Adoption> {
 
     public static final QAdoption adoption = new QAdoption("adoption");
 
+    public final com.project.animal.global.common.entity.QBaseEntity _super = new com.project.animal.global.common.entity.QBaseEntity(this);
+
     public final ListPath<AdoptionImage, QAdoptionImage> adoptionImages = this.<AdoptionImage, QAdoptionImage>createList("adoptionImages", AdoptionImage.class, QAdoptionImage.class, PathInits.DIRECT2);
 
     public final StringPath age = createString("age");
@@ -38,7 +40,8 @@ public class QAdoption extends EntityPathBase<Adoption> {
 
     public final StringPath content = createString("content");
 
-    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final StringPath desertionNo = createString("desertionNo");
 
@@ -68,7 +71,8 @@ public class QAdoption extends EntityPathBase<Adoption> {
 
     public final StringPath title = createString("title");
 
-    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QAdoption(String variable) {
         this(Adoption.class, forVariable(variable), INITS);

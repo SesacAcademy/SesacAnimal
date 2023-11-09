@@ -5,14 +5,14 @@ import com.project.animal.adoption.domain.AdoptionImage;
 import com.project.animal.adoption.dto.AdoptionWriteDto;
 import com.project.animal.adoption.repository.AdoptionImageRepository;
 import com.project.animal.adoption.repository.AdoptionRepository;
-import com.project.animal.global.common.dto.OpenApiDto;
+import com.project.animal.adoption.service.inf.AdoptionService;
+import com.project.animal.sample.openApi.dto.OpenApiDto;
 import com.project.animal.member.domain.Member;
 import com.project.animal.member.repository.MemberRepository;
 import io.minio.*;
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +22,6 @@ import java.rmi.ServerException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,7 +30,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AdoptionService {
+public class AdoptionServiceImpl implements AdoptionService {
 
     private final AdoptionRepository adoptionRepository;
     private final AdoptionImageRepository adoptionImageRepository;
@@ -61,6 +60,7 @@ public class AdoptionService {
    }
 
 
+   //추후 minio 공통화 작업 후 삭제 예정
     private String getString(MultipartFile file) {
       String serverFileName;
         try {
@@ -124,7 +124,7 @@ public class AdoptionService {
         adoptionRepository.save(adoption);
 
     }
-    
+
     public void apiSave(List<OpenApiDto> openApiDtoList) {
         // 센터에서 받은 api를 담는 영역
         log.info("no1: >> " + openApiDtoList.size());

@@ -3,7 +3,8 @@ package com.project.animal.adoption.controller;
 import com.project.animal.adoption.domain.Adoption;
 import com.project.animal.adoption.dto.AdoptionReadDto;
 import com.project.animal.adoption.dto.AdoptionWriteDto;
-import com.project.animal.adoption.service.AdoptionService;
+import com.project.animal.adoption.service.AdoptionServiceImpl;
+import com.project.animal.global.common.constant.EndPoint;
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +25,10 @@ import java.util.List;
 @Slf4j
 public class AdoptionController {
 
-    private final AdoptionService adoptionService;
+    private final AdoptionServiceImpl adoptionService;
 
     //리스트 들어오기
-    @GetMapping("/v1/adoption")
+    @GetMapping(EndPoint.ADOPTION)
     public String adoptionMain(Model model){
 
 //        List<Adoption> foundAdoptionList = adoptionService.findAll();
@@ -41,7 +42,7 @@ public class AdoptionController {
 
 
     // 글 쓰기 들어오기
-    @GetMapping("/v1/adoption/edit")
+    @GetMapping(EndPoint.ADOPTION_EDIT)
     public String adoptionWrite(){
 
         return "adoption/adoption_write";
@@ -49,7 +50,7 @@ public class AdoptionController {
 
 
     //  글쓰기 쓰고 post 보내는 영역
-    @PostMapping("/v1/adoption/edit")
+    @PostMapping(EndPoint.ADOPTION_WRITE)
     public String adoptionWritePost(@ModelAttribute @Validated AdoptionWriteDto adoptionWriteDto, BindingResult bindingResult,
                                     @RequestParam(name="image") List<MultipartFile> file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
@@ -65,7 +66,7 @@ public class AdoptionController {
     }
 
     // 수정 영역
-    @GetMapping("/v1/adoption/edit/{id}")
+    @GetMapping(EndPoint.ADOPTION_EDIT)
     public String adoptionEdit(){
 
         return "redirect:/adoption/adoption_edit";
@@ -73,7 +74,7 @@ public class AdoptionController {
     
     
     // 읽기 영역
-    @GetMapping("/v1/adoption/{id}")
+    @GetMapping(EndPoint.ADOPTION_READ)
     public String adoptionRead(@PathVariable Long id, Model model){
         // 조회수 올리기
         adoptionService.plusView(id);
