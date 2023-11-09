@@ -1,16 +1,13 @@
 package com.project.animal.global.common.provider;
 
-import com.project.animal.member.exception.InvalidTokenException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
-import javax.annotation.Nullable;
 import java.time.Duration;
 import java.util.Optional;
-import static com.project.animal.global.common.constant.ExpirationTime.REDIS_MAIL_TOKEN_TIMEOUT;
 
 @Slf4j
 @Getter
@@ -29,9 +26,9 @@ public class RedisServiceProvider {
      * @param value
      * @param duration
      */
-    public void save(String key, String value, @Nullable Duration duration) {
+    public void save(String key, String value, Duration duration) {
         ValueOperations<String, String> operation = template.opsForValue();
-        operation.set(key, value, Duration.ofSeconds(REDIS_MAIL_TOKEN_TIMEOUT));
+        operation.set(key, value, duration);
     }
 
     /**
