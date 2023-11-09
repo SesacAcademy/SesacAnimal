@@ -1,9 +1,8 @@
 package com.project.animal.global.common.provider;
 
 import com.project.animal.global.common.constant.Role;
-import com.project.animal.global.common.constant.TokenType;
+import com.project.animal.global.common.constant.AuthType;
 import com.project.animal.global.common.dto.MemberDto;
-import com.project.animal.member.domain.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -229,7 +228,7 @@ public class JwtTokenProvider {
 
         String email = claims.getSubject();
 
-        Optional<String> findRefreshToken = redisServiceProvider.get(TokenType.JWT.name() + ":" + email);
+        Optional<String> findRefreshToken = redisServiceProvider.get(AuthType.JWT.name() + ":" + email);
 
         return refreshToken.equals(findRefreshToken.orElse("None"));
     }
@@ -240,6 +239,6 @@ public class JwtTokenProvider {
      * @param token
      */
     private void saveRefreshToken(String email, String token) {
-        redisServiceProvider.save(TokenType.JWT.name() + ":" + email, token, Duration.ofMillis(REFRESH_TOKEN_EXPIRATION_TIME));
+        redisServiceProvider.save(AuthType.JWT.name() + ":" + email, token, Duration.ofMillis(REFRESH_TOKEN_EXPIRATION_TIME));
     }
 }

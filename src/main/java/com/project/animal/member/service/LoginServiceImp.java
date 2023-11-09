@@ -1,6 +1,5 @@
 package com.project.animal.member.service;
 
-import com.project.animal.global.common.constant.TokenType;
 import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.global.common.provider.JwtTokenProvider;
 import com.project.animal.member.domain.Member;
@@ -11,8 +10,6 @@ import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.member.service.inf.LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

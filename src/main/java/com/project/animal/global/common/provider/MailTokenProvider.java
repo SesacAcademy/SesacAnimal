@@ -1,13 +1,12 @@
 package com.project.animal.global.common.provider;
 
-import com.project.animal.global.common.constant.TokenType;
+import com.project.animal.global.common.constant.AuthType;
 import com.project.animal.global.common.dto.MailDto;
 import com.project.animal.member.exception.InvalidTokenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailSendException;
-import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.Random;
@@ -67,7 +66,8 @@ public class MailTokenProvider {
      * @author 박성수
      * @param email (유저 이메일)
      * @param token (이메일 인증번호)
-     * @throws InvalidTokenException - 인증번호가 일치하지 않는 경우, 예외 발생
+     * @return true/false (인증번호가 일치하면 true, 일치하지 않으면 false 리턴)
+     * @throws InvalidTokenException - 인증번호가 만료된 경우, 예외 발생
      */
     public boolean validateToken(String email, String token) {
         // Key 생성
@@ -83,7 +83,7 @@ public class MailTokenProvider {
     }
 
     private String createKey(String email) {
-        return TokenType.MAIL + ":" + email;
+        return AuthType.MAIL + ":" + email;
     }
 
     private String createValue() {
