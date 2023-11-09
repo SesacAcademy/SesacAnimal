@@ -97,7 +97,7 @@ public class ReviewController {
         return ViewName.HOME;
     }
 
-    @GetMapping()
+//    @GetMapping()
     //인자 검사
     public String createReviewComment(BindingResult bindingResult){
         //member 객체, reviewpost 객체 필
