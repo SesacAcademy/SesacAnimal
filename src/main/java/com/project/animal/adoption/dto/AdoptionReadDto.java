@@ -11,7 +11,6 @@ import lombok.ToString;
 import java.util.List;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @ToString
 public class AdoptionReadDto {
@@ -46,19 +45,6 @@ public class AdoptionReadDto {
         this.status= adoption.getStatus();
         this.specialMark=adoption.getSpecialMark();
         this.path=adoption.getAdoptionImages();
-//        if (adoption.getAdoptionImages() != null && !adoption.getAdoptionImages().isEmpty()) {
-//            for(AdoptionImage adoptionImage : adoption.getAdoptionImages()){
-//                this.path.add(adoptionImage.getPath());
-//                System.out.println(this.path);
-//            }
-//        }
-
-//        this.path= (adoption.getAdoptionImages().get(0).getPath().toString());
-//        for(AdoptionImage adoptionImage : adoption.getAdoptionImages()){
-//                this.path.add(adoptionImage.getPath());
-//                System.out.println(this.path);
-//            }
-
 
         this.hit = adoption.getHit();
     }
