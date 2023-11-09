@@ -1,13 +1,9 @@
 package com.project.animal.adoption.controller;
 
 import com.project.animal.adoption.domain.Adoption;
-import com.project.animal.adoption.domain.AdoptionImage;
 import com.project.animal.adoption.dto.AdoptionReadDto;
 import com.project.animal.adoption.dto.AdoptionWriteDto;
-import com.project.animal.adoption.repository.AdoptionRepository;
-import com.project.animal.adoption.service.AdoptionImageService;
 import com.project.animal.adoption.service.AdoptionService;
-import io.minio.MinioClient;
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +18,6 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,16 +25,14 @@ import java.util.Optional;
 public class AdoptionController {
 
     private final AdoptionService adoptionService;
-    private final AdoptionImageService adoptionImageService;
-    private final AdoptionRepository adoptionRepository;
-
 
     //리스트 들어오기
     @GetMapping("/v1/adoption")
     public String adoptionMain(Model model){
 
 //        List<Adoption> foundAdoptionList = adoptionService.findAll();
-        List<Adoption> allWithImages = adoptionRepository.findAllWithImages();
+        List<Adoption> allWithImages = adoptionService.findAllWithImagesAndMember();
+
 
         model.addAttribute("list",allWithImages);
 
@@ -57,7 +50,8 @@ public class AdoptionController {
 
     //  글쓰기 쓰고 post 보내는 영역
     @PostMapping("/v1/adoption/edit")
-    public String adoptionWritePost(@Validated @ModelAttribute AdoptionWriteDto adoptionWriteDto, BindingResult bindingResult, @RequestParam(name="image") MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public String adoptionWritePost(@ModelAttribute @Validated AdoptionWriteDto adoptionWriteDto, BindingResult bindingResult,
+                                    @RequestParam(name="image") List<MultipartFile> file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
         if(bindingResult.hasErrors()){
             log.info("errors2222={}", bindingResult);
@@ -84,8 +78,7 @@ public class AdoptionController {
         // 조회수 올리기
         adoptionService.plusView(id);
 
-
-         Adoption adoption = adoptionRepository.findByIdWithImage(id);
+         Adoption adoption = adoptionService.findByIdWithImage(id);
          AdoptionReadDto adoptionReadDto = new AdoptionReadDto(adoption);
          model.addAttribute("read", adoptionReadDto);
 
@@ -93,4 +86,5 @@ public class AdoptionController {
     }
 
 }
+
 

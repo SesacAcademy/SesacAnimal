@@ -1,5 +1,6 @@
 package com.project.animal;
 
+import com.project.animal.global.common.api.OpenApiData;
 import com.project.animal.member.domain.Member;
 import com.project.animal.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.Arrays;
+import java.util.function.IntPredicate;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class Application {
