@@ -20,12 +20,6 @@
     border-radius: 10px;
 }
 
-.missing-detail-comment-container {
-    border: 1px solid green;
-    margin-left: 30px;
-    margin-top: 100px;
-}
-
 .missing-detail-info-container {
     border-radius: 10px;
     border: 1px solid black;

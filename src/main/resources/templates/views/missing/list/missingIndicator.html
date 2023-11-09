@@ -1,4 +1,5 @@
- <div xmlns:th="http://www.thymeleaf.org" th:fragment="indicator" class="indicator-container" >
+ <div xmlns:th="http://www.thymeleaf.org" th:fragment="indicator(href)" class="indicator-container" >
+     <div th:text="${href}" id="list-href" hidden />
         <button class="prev"> < </button>
         <div class="page-container"></div>
         <button class="next"> > </button>

@@ -3,8 +3,9 @@
   export const createFilterUrl = ({
         page, size, search, animalType, specifics, color, fromDate, endDate
     }) => {
+            const href = document.getElementById("list-href").textContent;
             const dummyUrl = "http://www.dummy.com";
-            const url = new URL(`${dummyUrl}/missing/list`);
+            const url = new URL(`${dummyUrl}${href}`);
             url.searchParams.append("page", page);
             url.searchParams.append("limit", size);
             if (search) url.searchParams.append("search", search);
