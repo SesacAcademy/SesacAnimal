@@ -55,97 +55,13 @@
 </head>
 <body>
  <th:block th:replace="../fragments/header/header :: header"></th:block>
-     <section class="adoption-write">
-         <section class="adoption-write">
-             <form action="/v1/adoption/edit" method="POST" name="edit" accept-charset="utf-8" enctype="multipart/form-data">
-                 <legend>입양 게시판</legend>
-                 <div class="write-view-area">
-                     <p>
-                         <button type="reset" class="reset-button">취소</button>
-                         <button type="submit" class="write-button" title="글쓰기">
-                             <span class="material-symbols-outlined">edit_square</span>
-                             <span>글쓰기 저장</span>
-                         </button>
-                     </p>
-                 </div>
-                 <div class="contents-area">
-                     <p>
-                         <label for="author-input" class="title">작성자</label>
-                         <input id="author-input" type="text" class="desc"  name="author" />
-                     </p>
-                     <p>
-                         <label for="title-input-edit">제목</label>
-                         <input id="title-input-edit" type="text" name="title"/>
-                     </p>
-                     <p>
-                         <label for="status-select-edit">보호 상태</label>
-                         <select id="status-select-edit" name="status">
-                             <option value="보호중" selected>보호중</option>
-                             <option value="종료(입양완료)">입양 완료</option>
-                         </select>
-                     </p>
-                     <div class="col">
-                         <p class="title">
-                             <span class="title">이미지</span>
-                         </p>
-                         <p>
-                             <label for="image-file-edit">이미지 업로드 하기</label>
-                             <input type="file" id="image-file-edit" name="image" value="이미지 업로드" placeholder="이미지 업로드" accept="image/*"/><br/>
-
-                             <!--                         <img src="https://picsum.photos/id/237/200/300"  alt=""/><br/>-->
-                             <!--                         <button class="remove-image">이미지 삭제</button>-->
-                         </p>
-                     </div>
-                     <p>
-                         <label for="breed-input-edit">묘종/견종</label>
-                         <input id="breed-input-edit" type="text" name="breed" />
-                     </p>
-                     <p>
-                         <label for="gender-input-edit">성별</label>
-                         <input id="gender-input-edit" type="text" name="gender"/>
-                     </p>
-                     <p>
-                         <label for="age-input-edit">나이</label>
-                         <input id="age-input-edit" type="text" name="age" />
-                     </p>
-                     <p>
-                         <label for="center-select-edit">센터 유무</label>
-                         <select id="center-select-edit" name="center">
-                             <option value="N" selected>일반</option>
-                             <option value="Y">센터</option>
-                         </select>
-                     </p>
-                     <p>
-                         <label for="color-input">색상</label>
-                         <input id="color-input" type="text" name="color"/>
-                     </p>
-                     <p>
-                         <label for="happenPlace-input">발견장소</label>
-                         <input id="happenPlace-input" type="text" name="happenPlace"/>
-                     </p>
-                     <p>
-                         <label for="neutered-edit">중성화유무</label>
-                         <select id="neutered-edit" name="neutered">
-                             <option value="U" selected>모름</option>
-                             <option value="O">중성화 O</option>
-                             <option value="X">중성화 X</option>
-                         </select>
-                     </p>
-
-                     <p class="text-area">
-                         <label for="textarea-edit">내용</label>
-                         <textarea id="textarea-edit" name="content"></textarea>
-                     </p>
-
-                 </div>
-
-             </form>
-
-     </section>
 
      <section class="adoption-write">
-         <form action="/v1/adoption/edit" method="POST" name="edit" accept-charset="utf-8">
+         <form th:object="${edit}" th:action="@{'/v1/adoption/edit/' + ${edit.postId}}" method="POST" name="edit" accept-charset="utf-8" enctype="multipart/form-data">
+<!--         <form th:object="${edit}" action="/v1/adoption/edit/{id}" method="POST" name="edit" accept-charset="utf-8" enctype="multipart/form-data">-->
              <legend>입양 게시판</legend>
+             <input type="hidden" name="_method" value="PUT">
+
              <div class="write-view-area">
                  <p>
                      <button type="reset" class="reset-button">취소</button>
@@ -156,66 +72,106 @@
                  </p>
              </div>
              <div class="contents-area">
-                 <p class="col">
-                     <span class="title">작성자</span>
-                     <span class="desc" aria-readonly="true"></span>
+                 <p>
+                     <label for="author-input" class="title">작성자</label>
+                     <input id="author-input" type="text" class="desc" name="author" th:value="${edit.author}" readonly />
                  </p>
                  <p>
-                     <label for="title-input">제목</label>
-                     <input id="title-input" type="text" name="title"/>
+                     <label for="title-input-edit">제목</label>
+                     <input id="title-input-edit" type="text" name="title" th:value="${edit.title}"/>
                  </p>
-                 <div class="col">
+                 <p>
+                     <label for="status-select-edit">보호 상태</label>
+                     <select id="status-select-edit" name="status" th:value="${edit.status}">
+                         <option value="보호중" selected>보호중</option>
+                         <option value="종료(입양완료)">입양 완료</option>
+                     </select>
+                 </p>
+                 <div class="image-area">
                      <p class="title">
                          <span class="title">이미지</span>
                      </p>
-                     <p>
-                         <label for="image-file">이미지 업로드 하기</label>
-                         <input type="file" id="image-file" name="image-file" value="이미지 업로드" placeholder="이미지 업로드"/><br/>
+                     <div>
+                         <p class="upload">
+                            <label for="image-file">이미지 업로드 하기</label>
+                            <input type="file" id="image-file" name="image" value="이미지 업로드" placeholder="이미지 업로드" accept="image/*" multiple />
+                         </p>
+                         <div class="image-container">
+                             <div class="image-list" th:each="image : ${edit.path}">
 
-                         <img src="https://picsum.photos/id/237/200/300" alt=""/><br/>
-                         <button class="remove-image">이미지 삭제</button>
-                     </p>
+                                 <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 -->
+                                 <p th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') }">
+                                     <img th:src="${image.path}" alt="유기동물 이미지"/>
+                                     <button class="remove-image">이미지 삭제</button>
+                                 </p>
+
+                                 <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 -->
+                                 <p th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') }">
+                                     <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
+                                     <button class="remove-image">이미지 삭제</button>
+                                 </p>
+
+                                 <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않고, image.path가 'empty'인 경우 -->
+                                 <p th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}">
+                                     <img th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>
+                                     <button class="remove-image">이미지 삭제</button>
+                                 </p>
+                             </div>
+                         </div>
+                     </div>
                  </div>
                  <p>
-                     <label for="breed-input">묘종/견종</label>
-                     <input id="breed-input" type="text" name="breed" />
+                     <label for="breed-input-edit">묘종/견종</label>
+                     <input id="breed-input-edit" type="text" name="breed" th:value="${edit.breed}"/>
                  </p>
                  <p>
-                     <label for="gender-input">성별</label>
-                     <input id="gender-input" type="text" name="gender"/>
+                     <label for="gender-input-edit">성별</label>
+                     <input id="gender-input-edit" type="text" name="gender" th:value="${edit.gender}"/>
                  </p>
                  <p>
-                     <label for="age-input">나이</label>
-                     <input id="age-input" type="text" name="age" />
+                     <label for="age-input-edit">나이</label>
+                     <input id="age-input-edit" type="text" name="age" th:value="${edit.age}"/>
                  </p>
                  <p>
-                     <label for="center-select">센터 유무</label>
-                     <select id="center-select" name="center">
-                         <option value="user">일반</option>
-                         <option value="center">센터</option>
+                     <label for="center-select-edit">센터 유무</label>
+                     <select id="center-select-edit" name="center" th:value="${edit.center}">
+                         <option value="N" selected>일반</option>
+                         <option value="Y">센터</option>
                      </select>
                  </p>
-                 <!-- <p>
-                     <label for="">공고번호</label>
-                     <input />
-                 </p> -->
                  <p>
-                     <label for="neutered">중성화유무</label>
-                     <select id="neutered" name="neutered">
-                         <option value="">모름</option>
-                         <option value="o">중성화 O</option>
-                         <option value="x">중성화 X</option>
+                     <label for="color-input">색상</label>
+                     <input id="color-input" type="text" name="color" th:value="${edit.color}"/>
+                 </p>
+                 <p>
+                     <label for="happenPlace-input">발견장소</label>
+                     <input id="happenPlace-input" type="text" name="happenPlace" th:value="${edit.happenPlace}" />
+                 </p>
+                 <p>
+                     <label for="neutered-edit">중성화유무</label>
+                     <select id="neutered-edit" name="neutered" th:value="${edit.neutered}">
+                         <option value="U" selected>모름</option>
+                         <option value="O">중성화 O</option>
+                         <option value="X">중성화 X</option>
                      </select>
                  </p>
+                 <p>
+                     <label for="specialMark-input-edit">특이사항</label>
+                     <input id="specialMark-input-edit" type="text" name="specialMark" th:value="${edit.specialMark}" />
+                 </p>
+
                  <p class="text-area">
-                     <label for="textarea">내용</label>
-                     <textarea id="textarea" name="textarea"></textarea>
+                     <label for="textarea-edit">내용</label>
+                     <textarea id="textarea-edit" name="content" th:text="${edit.content}"></textarea>
                  </p>
+
              </div>
 
          </form>
 
-     </section>
+ </section>
+
+
 
  <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
 </body>

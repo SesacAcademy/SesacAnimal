@@ -1,11 +1,13 @@
 package com.project.animal.adoption.domain;
 
+import com.project.animal.adoption.dto.AdoptionEditDto;
 import com.project.animal.global.common.entity.BaseEntity;
 import com.project.animal.member.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
@@ -18,6 +20,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "adoption")
+@Setter
 public class Adoption extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +36,7 @@ public class Adoption extends BaseEntity {
     private String title; // 제목
 
     @OneToMany(mappedBy = "adoption")
+    @BatchSize(size = 100)
     private List<AdoptionImage> adoptionImages;
 
     @NotNull
@@ -95,6 +99,22 @@ public class Adoption extends BaseEntity {
     public void setHit(int hit) {
         this.hit = hit;
     }
+
+    public void updateAdoption(AdoptionEditDto adoptionEditDto){
+        this.title= adoptionEditDto.getTitle();
+        this.content=adoptionEditDto.getContent();
+        this.status=adoptionEditDto.getStatus();
+        this.breed=adoptionEditDto.getBreed();
+        this.color=adoptionEditDto.getColor();
+        this.gender=adoptionEditDto.getGender();
+        this.age=adoptionEditDto.getAge();
+        this.neutered=adoptionEditDto.getNeutered();
+        this.center=adoptionEditDto.getCenter();
+        this.happenPlace=adoptionEditDto.getHappenPlace();
+        this.specialMark=adoptionEditDto.getSpecialMark();
+//        this.adoptionImages=adoptionEditDto.getImage();
+    }
+
 
     // 입양 게시판 write시 생성자
     public Adoption(String title, String breed, String gender, String age, String center, String neutered, String content, String color, String happenPlace, String specialMark) {

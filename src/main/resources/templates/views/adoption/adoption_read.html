@@ -63,7 +63,8 @@
                  <span class="material-symbols-outlined">visibility</span> <span>조회수</span> <span th:text="${read.hit}">11</span>
              </p>
              <p>
-                 <a href="/v1/adoption/edit" class="edit-button" title="글쓰기">
+                 <a th:href="@{'/v1/adoption/edit/' + ${read.postId}}" class="edit-button" title="글수정">
+<!--                 <a href="/v1/adoption/edit/{id}" class="edit-button" title="글수정">-->
                      <span class="material-symbols-outlined">edit</span>
                      <span>글 수정</span>
                  </a>

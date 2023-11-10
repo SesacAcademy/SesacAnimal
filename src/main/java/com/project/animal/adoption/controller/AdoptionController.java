@@ -1,12 +1,12 @@
 package com.project.animal.adoption.controller;
 
 import com.project.animal.adoption.domain.Adoption;
+import com.project.animal.adoption.dto.AdoptionEditDto;
 import com.project.animal.adoption.dto.AdoptionReadDto;
 import com.project.animal.adoption.dto.AdoptionWriteDto;
 import com.project.animal.adoption.service.AdoptionServiceImpl;
 import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
-import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -15,10 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Controller
@@ -32,7 +28,6 @@ public class AdoptionController {
     @GetMapping(EndPoint.ADOPTION_LIST)
     public String adoptionMain(Model model){
 
-//        List<Adoption> foundAdoptionList = adoptionService.findAll();
         List<Adoption> allWithImages = adoptionService.findAllWithImagesAndMember();
 
 
@@ -53,11 +48,10 @@ public class AdoptionController {
     //  글쓰기 쓰고 post 보내는 영역
     @PostMapping(EndPoint.ADOPTION_WRITE)
     public String adoptionWritePost(@ModelAttribute @Validated AdoptionWriteDto adoptionWriteDto, BindingResult bindingResult,
-                                    @RequestParam(name="image") List<MultipartFile> file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+                                    @RequestParam(name="image") List<MultipartFile> file) {
 
         if(bindingResult.hasErrors()){
-            log.info("errors2222={}", bindingResult);
-
+            log.info("adoption_write binding error = {}", bindingResult);
         }
 
         adoptionService.save(adoptionWriteDto, file);
@@ -66,23 +60,44 @@ public class AdoptionController {
         return "redirect:"+EndPoint.ADOPTION_LIST;
     }
 
-    // 수정 영역
+    // 수정 하기 위해 들어오는 쓰기 영역
     @GetMapping(EndPoint.ADOPTION_EDIT)
-    public String adoptionEdit(){
+    public String adoptionEditGet(@PathVariable Long id, Model model){
 
-//        return "redirect:/adoption/adoption_edit";
-        return "redirect:/"+ViewName.ADOPTION_EDIT;
+
+        Adoption adoption = adoptionService.findByIdWidhImageAndMember(id);
+        AdoptionEditDto adoptionEditDto = new AdoptionEditDto(adoption,id);
+        model.addAttribute("edit", adoptionEditDto);
+
+        return ViewName.ADOPTION_EDIT;
+    }
+
+
+    // 수정 하고 PUT 보내는 영역
+    @PutMapping(EndPoint.ADOPTION_EDIT)
+    public String adoptionEditPut(@ModelAttribute @Validated AdoptionEditDto adoptionEditDto, BindingResult bindingResult,
+                               @RequestParam(name="image") List<MultipartFile> file,
+                                  @PathVariable Long id){
+
+        if(bindingResult.hasErrors()){
+            log.info("adoption_edit binding error = {}", bindingResult);
+        }
+
+        adoptionService.update(adoptionEditDto, file, id);
+
+
+        return "redirect:"+EndPoint.ADOPTION_LIST;
     }
     
     
-    // 읽기 영역
+    // 게시글 상세 읽기 영역
     @GetMapping(EndPoint.ADOPTION_READ)
     public String adoptionRead(@PathVariable Long id, Model model){
         // 조회수 올리기
         adoptionService.plusView(id);
 
-         Adoption adoption = adoptionService.findByIdWithImage(id);
-         AdoptionReadDto adoptionReadDto = new AdoptionReadDto(adoption);
+         Adoption adoption = adoptionService.findByIdWidhImageAndMember(id);
+         AdoptionReadDto adoptionReadDto = new AdoptionReadDto(adoption, id);
          model.addAttribute("read", adoptionReadDto);
 
         return ViewName.ADOPTION_READ;

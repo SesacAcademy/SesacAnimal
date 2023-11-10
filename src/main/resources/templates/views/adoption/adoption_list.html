@@ -116,7 +116,7 @@
                          <div class="info-area">
                              <p id="noticeEdt" th:if="${adoption.noticeEdt != null}">공고종료일 : <span th:text="${adoption.noticeEdt}"></span></p>
                              <p th:if="${adoption.happenPlace != null}">발견장소 : <span th:text="${adoption.happenPlace}"></span></p>
-                             <p  th:if="${adoption.member.getId() != null}">작성자 : <span th:text="${adoption.member.getId()}"></span></p>
+                             <p  th:if="${adoption.member.getName() != null}">작성자 : <span th:text="${adoption.member.getId()}"></span></p>
                              <p  th:if="${adoption.specialMark != null and adoption.center != 'Y'}">특이사항 : <span th:text="${adoption.specialMark}"></span></p>
                          </div>
                      </a>

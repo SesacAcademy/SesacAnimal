@@ -13,8 +13,11 @@ import java.util.List;
 public interface AdoptionRepository extends JpaRepository<Adoption, Long> {
 
 
-    @Query("SELECT a FROM Adoption a JOIN FETCH a.adoptionImages WHERE a.id = :id")
+    @Query("SELECT a FROM Adoption a LEFT JOIN FETCH a.adoptionImages WHERE a.id = :id")
     Adoption findByIdWithImage(@Param("id") Long id);
+
+    @Query("SELECT a FROM Adoption a LEFT JOIN FETCH a.adoptionImages JOIN FETCH a.member WHERE a.id = :id")
+    Adoption findByIdWithImageAndMember(@Param("id") Long id);
 
     @Query("SELECT a FROM Adoption a LEFT JOIN FETCH a.adoptionImages")
     List<Adoption> findAllWithImages();

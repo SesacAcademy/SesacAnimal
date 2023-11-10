@@ -2,10 +2,12 @@ package com.project.animal.adoption.service;
 
 import com.project.animal.adoption.domain.Adoption;
 import com.project.animal.adoption.domain.AdoptionImage;
+import com.project.animal.adoption.dto.AdoptionEditDto;
 import com.project.animal.adoption.dto.AdoptionWriteDto;
 import com.project.animal.adoption.repository.AdoptionImageRepository;
 import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.adoption.service.inf.AdoptionService;
+import com.project.animal.global.common.minioserviceprovider.ImageUploadMinio;
 import com.project.animal.sample.openApi.dto.OpenApiDto;
 import com.project.animal.member.domain.Member;
 import com.project.animal.member.repository.MemberRepository;
@@ -13,9 +15,11 @@ import io.minio.*;
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.ServerException;
@@ -43,30 +47,30 @@ public class AdoptionServiceImpl implements AdoptionService {
         String serverFileName = null;
         Adoption adoption = new Adoption(adoptionWriteDto.getTitle(), adoptionWriteDto.getBreed(), adoptionWriteDto.getGender(), adoptionWriteDto.getAge(), adoptionWriteDto.getCenter(), adoptionWriteDto.getNeutered(), adoptionWriteDto.getContent(), adoptionWriteDto.getColor(), adoptionWriteDto.getHappenPlace(), adoptionWriteDto.getSpecialMark());
 
-        // 나머지 Adoption 엔티티 설정
+        // 나머지 Adoption 엔티티 설정 (멤버 강제주입 추후 변경 필요)
         Optional<Member> member = repository.findById(2L);
         Member member1 = member.get();
         adoption.setMember(member1);
         Adoption saved = adoptionRepository.save(adoption);
 
         for (MultipartFile file : files) {
-            serverFileName = getString(file); // 미니오에 저장하는 영역
+            serverFileName = saveMinio(file); // 미니오에 저장하는 영역
             AdoptionImage adoptionImage = new AdoptionImage(serverFileName, saved);
 
             adoptionImageRepository.save(adoptionImage);
         }
-
-
    }
 
 
    //추후 minio 공통화 작업 후 삭제 예정
-    private String getString(MultipartFile file) {
+    private String saveMinio(MultipartFile file) {
       String serverFileName;
         try {
             if (file.isEmpty()) {
                 return "empty";
             } else {
+//                ImageUploadMinio imageUploadMinio = new ImageUploadMinio();
+//                imageUploadMinio.insertImageMinio()
                 serverFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
                 InputStream is = file.getInputStream();
 
@@ -87,6 +91,37 @@ public class AdoptionServiceImpl implements AdoptionService {
     }
 
 
+    @Transactional
+    public void update (AdoptionEditDto adoptionEditDto, List<MultipartFile> files, Long id) {
+        String serverFileName = null;
+        Adoption adoption = adoptionRepository.findById(id).get();
+        System.out.println("service files:>>"+files);
+        System.out.println("service files:>>"+files.size());
+
+        adoption.updateAdoption(adoptionEditDto);
+//        adoption.changeAdoptionImages(adoptionEditDto.getImage());
+
+
+        // 나머지 Adoption 엔티티 설정 (멤버 강제주입 추후 변경 필요)
+        Optional<Member> member = repository.findById(2L);
+        Member member1 = member.get();
+        adoption.setMember(member1);
+
+//        Adoption saved = adoptionRepository.save(adoption);
+
+
+        for (MultipartFile file : files) {
+            serverFileName = saveMinio(file); // 미니오에 저장하는 영역
+//            AdoptionImage adoptionImage = new AdoptionImage(serverFileName, adoption);
+            AdoptionImage adoptionImage = new AdoptionImage();
+            adoptionImage.changeAdoption(adoption);
+            adoptionImage.changePath(serverFileName);
+
+//            adoptionImageRepository.save(adoptionImage);
+        }
+    }
+
+
     public Optional<Adoption> findById(Long id) {
 
         Optional<Adoption> foundAdoptionId = adoptionRepository.findById(id);
@@ -101,6 +136,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 
         return foundAdoptionId;
     }
+
 
     public List<Adoption> findAll() {
 
@@ -151,6 +187,10 @@ public class AdoptionServiceImpl implements AdoptionService {
 
     public Adoption findByIdWithImage(Long id){
       return adoptionRepository.findByIdWithImage(id);
+    }
+
+    public Adoption findByIdWidhImageAndMember(Long id){
+        return adoptionRepository.findByIdWithImageAndMember(id);
     }
 
     public List<Adoption> findAllWithImages() {
