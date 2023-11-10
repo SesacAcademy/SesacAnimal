@@ -5,14 +5,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
 @ToString
-public class MemberFormDto {
+public class SignupFormDto {
     @Email(message = "이메일 형식이 틀렸습니다.")
     private String email;
 

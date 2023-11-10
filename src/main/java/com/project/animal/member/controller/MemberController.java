@@ -5,7 +5,7 @@ import com.project.animal.global.common.constant.ViewName;
 import com.project.animal.global.common.dto.ResponseDto;
 import com.project.animal.global.common.provider.MailAuthCodeProvider;
 import com.project.animal.member.dto.CheckMailTokenDto;
-import com.project.animal.member.dto.MemberFormDto;
+import com.project.animal.member.dto.SignupFormDto;
 import com.project.animal.member.service.inf.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +31,8 @@ public class MemberController {
     @ResponseBody
     @PostMapping(EndPoint.SIGNUP_API)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto<String> signup(@RequestBody @Validated MemberFormDto memberFormDto) {
-        memberService.save(memberFormDto);
+    public ResponseDto<String> signup(@RequestBody @Validated SignupFormDto signupFormDto) {
+        memberService.save(signupFormDto);
         return new ResponseDto<>(HttpStatus.OK.value(), "null", "회원가입 완료");
     }
 
