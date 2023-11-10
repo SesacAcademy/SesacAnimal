@@ -1,6 +1,7 @@
 package com.project.animal.missing.repository;
 
 import com.project.animal.missing.domain.MissingPost;
+import com.project.animal.missing.domain.QMissingPostImage;
 import com.project.animal.missing.dto.MissingFilterDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -28,6 +29,7 @@ public class CustomMissingPostRepositoryImpl implements CustomMissingPostReposit
   @Override
   public Page<MissingPost> findByFilter(MissingFilterDto filter, Pageable pageable) {
     QMissingPost qMissing = QMissingPost.missingPost;
+    QMissingPostImage qImage = QMissingPostImage.missingPostImage;
 
     BooleanBuilder builder = new BooleanBuilder();
 
@@ -52,8 +54,9 @@ public class CustomMissingPostRepositoryImpl implements CustomMissingPostReposit
     }
 
     List<MissingPost> results = queryFactory
-            .selectFrom(qMissing)
+            .selectFrom(qMissing).distinct()
             .where(builder)
+            .innerJoin(qMissing.images, qImage)
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .orderBy()
