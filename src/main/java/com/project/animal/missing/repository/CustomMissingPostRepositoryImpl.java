@@ -54,7 +54,7 @@ public class CustomMissingPostRepositoryImpl implements CustomMissingPostReposit
     }
 
     List<MissingPost> results = queryFactory
-            .selectFrom(qMissing)
+            .selectFrom(qMissing).distinct()
             .where(builder)
             .innerJoin(qMissing.images, qImage)
             .offset(pageable.getOffset())

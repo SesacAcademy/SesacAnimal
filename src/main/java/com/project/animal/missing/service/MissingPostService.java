@@ -2,6 +2,7 @@ package com.project.animal.missing.service;
 
 import com.project.animal.missing.domain.MissingComment;
 import com.project.animal.missing.domain.MissingPost;
+import com.project.animal.missing.domain.MissingPostImage;
 import com.project.animal.missing.dto.*;
 import com.project.animal.missing.dto.comment.MissingCommentListEntryDto;
 import com.project.animal.missing.dto.image.MissingPostImageDto;
@@ -55,15 +56,28 @@ public class MissingPostService {
     return entry;
   }
 
+  /*
+  *  Question
+  *  findById 로 가져올 때 양방향 매핑이 되어있으니까 images에 대한 레퍼런스도 가지고있다.
+  *  이후에 findById 로 가져온 post에서 images에 접근하면, Images중에 외래키로 Postid를 가진애를
+  *  다시 쿼리해서 가져오는건가요?
+  * */
   public MissingDetailDto getPostDetail(long postId) {
     Optional<MissingPost> maybePost =  missingPostRepository.findById(postId);
     MissingPost post = maybePost.orElseThrow(() -> new DetailNotFoundException(postId));
 
     List<MissingCommentListEntryDto> comments =  createCommentList(post.getMissingId(), post.getComments());
+    List<MissingPostImageDto> images = createImageList(post.getImages());
 
-    MissingDetailDto detailDto = MissingDetailDto.fromMissingPost(post, comments);
+    MissingDetailDto detailDto = MissingDetailDto.fromMissingPost(post, comments, images);
 
     return detailDto;
+  }
+
+  private List<MissingPostImageDto> createImageList(List<MissingPostImage> images) {
+    return images.stream()
+            .map(image -> new MissingPostImageDto(image.getImage_id(), image.getPath()))
+            .collect(Collectors.toList());
   }
 
   private  List<MissingCommentListEntryDto> createCommentList(long postId, List<MissingComment> comments) {
