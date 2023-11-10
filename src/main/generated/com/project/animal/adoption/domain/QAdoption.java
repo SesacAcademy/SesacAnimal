@@ -53,7 +53,7 @@ public class QAdoption extends EntityPathBase<Adoption> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath isActive = createString("isActive");
+    public final NumberPath<Integer> isActive = createNumber("isActive", Integer.class);
 
     public final com.project.animal.member.domain.QMember member;
 

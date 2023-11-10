@@ -36,7 +36,6 @@ public class Adoption extends BaseEntity {
     private String title; // 제목
 
     @OneToMany(mappedBy = "adoption")
-    @BatchSize(size = 100)
     private List<AdoptionImage> adoptionImages;
 
     @NotNull
@@ -90,7 +89,7 @@ public class Adoption extends BaseEntity {
 
     @NotNull
     @Column(name = "is_active")
-    private String isActive;
+    private int isActive;
 
     public void setMember(Member member) {
         this.member = member;
@@ -113,6 +112,7 @@ public class Adoption extends BaseEntity {
         this.happenPlace=adoptionEditDto.getHappenPlace();
         this.specialMark=adoptionEditDto.getSpecialMark();
 //        this.adoptionImages=adoptionEditDto.getImage();
+
     }
 
 
@@ -129,7 +129,7 @@ public class Adoption extends BaseEntity {
         this.happenPlace=happenPlace;
         this.specialMark=specialMark;
         this.status="보호중";
-        this.isActive="Y";
+        this.isActive=1;
     }
 
 
@@ -151,7 +151,7 @@ public class Adoption extends BaseEntity {
         this.happenPlace=happenPlace;
         this.content=kindCd+"/"+colorCd+"/"+specialMark;
         this.center="Y";
-        this.isActive="Y";
+        this.isActive=1;
         this.specialMark=specialMark;
     }
 }

@@ -23,7 +23,7 @@ public class AdoptionImage {
     private String path;
 
     @Column(name = "is_active")
-    private String isActive;
+    private int isActive;
 
     public void changeAdoption(Adoption adoption) {
         this.adoption = adoption;
@@ -36,9 +36,11 @@ public class AdoptionImage {
     public AdoptionImage(String serverFileName, Adoption adoption) {
         this.adoption = adoption;
         this.path = serverFileName;
+        this.isActive=1;
     }
     public AdoptionImage( String serverFileName) {
         this.path = serverFileName;
+        this.isActive=1;
     }
 
 }

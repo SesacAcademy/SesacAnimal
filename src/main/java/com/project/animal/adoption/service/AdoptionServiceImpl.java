@@ -69,8 +69,7 @@ public class AdoptionServiceImpl implements AdoptionService {
             if (file.isEmpty()) {
                 return "empty";
             } else {
-//                ImageUploadMinio imageUploadMinio = new ImageUploadMinio();
-//                imageUploadMinio.insertImageMinio()
+
                 serverFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
                 InputStream is = file.getInputStream();
 
