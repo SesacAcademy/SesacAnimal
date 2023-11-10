@@ -4,6 +4,7 @@ import com.project.animal.global.common.dto.ResponseDto;
 import com.project.animal.member.exception.InvalidCodeException;
 import com.project.animal.member.exception.LoginException;
 import com.project.animal.member.exception.NestedEmailException;
+import com.project.animal.member.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailSendException;
@@ -80,8 +81,21 @@ public class MemberControllerAdvice {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(LoginException.class)
     public ResponseDto<String> loginException(LoginException e) {
-        log.info(e.getMessage());
+        log.error(e.getMessage());
 
         return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, "아이디 또는 비밀번호가 틀렸습니다.");
+    }
+
+    /**
+     * 아이디 찾기 --> 해당 정보로 가입된 아이디가 없는 경우
+     * @param e
+     * @return
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseDto<String> NotFoundException(NotFoundException e) {
+        log.error(e.getMessage());
+
+        return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());
     }
 }

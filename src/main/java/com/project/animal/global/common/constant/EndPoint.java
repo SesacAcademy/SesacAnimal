@@ -7,4 +7,6 @@ public abstract class EndPoint {
     public static final String SIGNUP = "/v1/auth/signup";
     public static final String SIGNUP_API = "/v1/api/auth/signup";
     public static final String EMAIL_API = "/v1/api/auth/email";
+    public static final String FIND_EMAIL_API = "/v1/api/find/email";
+    public static final String FIND_PWD_API = "/v1/api/find/password";
 }

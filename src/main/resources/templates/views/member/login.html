@@ -120,18 +120,22 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text member-model-span">이름</span>
-                                <input type="text" class="form-control" placeholder="홍길동" aria-label="Username" aria-describedby="basic-addon1">
+                            <div id="member-find-appear" class="input-group mb-3">
+                                <span class="input-group-text member-model-span">이메일</span>
+                                <input id="member-find-email" type="text" class="form-control" placeholder="홍길동" aria-label="Username" aria-describedby="basic-addon1" disabled>
                             </div>
-                            <div class="input-group mb-3">
+                            <div class="input-group mb-3 member-find-hide">
+                                <span class="input-group-text member-model-span">이름</span>
+                                <input id="member-find-email-name" type="text" class="form-control" placeholder="홍길동" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3 member-find-hide">
                                 <span class="input-group-text member-model-span">휴대폰 번호</span>
-                                <input type="text" class="form-control" placeholder="010-0000-0000" aria-label="Username" aria-describedby="basic-addon1">
+                                <input id="member-find-email-phone" type="text" class="form-control" placeholder="010-0000-0000" aria-label="Username" aria-describedby="basic-addon1">
                             </div>
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">아이디 찾기</button>
+                            <button id="member-find-email-button" class="btn btn-primary member-find-hide" type="button">아이디 찾기</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                         </div>
                     </div>
