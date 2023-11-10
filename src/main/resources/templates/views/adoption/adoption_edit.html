@@ -15,7 +15,7 @@
     <!-- 아이폰용 fabicon 설정 -->
     <link rel="apple-touch-icon" th:href="@{/img/fabicon.ico}" />
     <!-- 인터넷 익스플로어용 fabicon 설정 -->
-    <link rel="shortcut icon"  style="image/x-icon" th:href="@{/img/fabicon.ico}" />
+    <link rel="shortcut icon"  type="image/x-icon" th:href="@{/img/fabicon.ico}" />
 
     <!-- Normalize 설정 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.css" />
@@ -59,6 +59,7 @@
      <section class="adoption-edit">
          <form th:object="${edit}" th:action="@{'/v1/adoption/edit/' + ${edit.postId}}" method="POST" name="edit" accept-charset="utf-8" enctype="multipart/form-data">
 <!--         <form th:object="${edit}" action="/v1/adoption/edit/{id}" method="POST" name="edit" accept-charset="utf-8" enctype="multipart/form-data">-->
+             <fieldset>
              <legend>입양 게시판</legend>
              <input type="hidden" name="_method" value="PUT">
 
@@ -171,7 +172,7 @@
                  </p>
 
              </div>
-
+             </fieldset>
          </form>
 
  </section>
