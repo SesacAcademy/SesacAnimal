@@ -31,7 +31,7 @@
 }
 
 .missing-recomment-card-container {
-    margin-top: 20px;
+    margin: 20px 0;
     display: none;
 }
 
@@ -65,4 +65,13 @@
     padding: 10px 10px;
     font-size: 1rem;
     border-radius: 25px;
+}
+.missing-recomment-content {
+    display: block;
+}
+
+.missing-recomment-edit-form {
+    flex: display;
+    flex-direction: row;
+    display: none;
 }

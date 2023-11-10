@@ -1,7 +1,7 @@
 const containers = document.querySelectorAll('.missing-detail-recomment-card-container');
 
 containers.forEach((dom) => {
-    const recommentButton = dom.querySelector(".missing-recomment-button-new");
+    const recommentButton = dom.querySelector(".missing-comment-button-new");
     const recommentForm = dom.querySelector(".missing-recomment-form");
     const mainCommentInputForm = dom.querySelector(".missing-comment-form");
     let isFirst = true;
@@ -16,6 +16,7 @@ containers.forEach((dom) => {
         const title = document.createElement('div');
         title.textContent = "대댓글 작성";
         title.style.marginBottom = "10px";
+        title.style.fontSize = "1.2rem";
 
 
         const div = document.createElement('div');
@@ -30,7 +31,7 @@ containers.forEach((dom) => {
         input.style.marginRight = "10px";
         input.style.borderRadius = "4px";
 
-        const button = document.createElement('div');
+        const button = document.createElement('button');
         button.textContent = '작성';
         button.style.fontSize = "1rem";
         button.style.display = "flex";
@@ -52,7 +53,6 @@ containers.forEach((dom) => {
 
 
     recommentButton.addEventListener("click", () => {
-
         drawRecommentInput();
     });
 });

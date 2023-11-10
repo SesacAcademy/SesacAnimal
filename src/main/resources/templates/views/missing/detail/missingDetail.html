@@ -41,8 +41,9 @@
         <link rel="stylesheet" th:href="@{/css/header.css}" />
         <link rel="stylesheet" th:href="@{/css/footer.css}" />
         <script th:src="@{/js/main.js}"></script>
-        <script th:src="@{/js/missing/detail/recommentInput.js}" defer></script>
-        <script th:src="@{/js/missing/detail/recomments.js}" defer></script>
+        <script th:src="@{/js/missing/detail/showRecommentInput.js}" defer></script>
+        <script th:src="@{/js/missing/detail/showRecomments.js}" defer></script>
+        <script th:src="@{/js/missing/detail/showCommentEdit.js}" defer></script>
 
         <link rel="stylesheet" th:href="@{/css/missing/detail/missingDetail.css}" />
         <link rel="stylesheet" th:href="@{/css/missing/detail/missingDetailCard.css}" />
@@ -82,7 +83,7 @@
                     </div>
                     <div>
                         <th:block th:replace="./missing/detail/missingComment :: comments(
-                       ${post.memberId}, ${post.id}, ${comments}, ${endPoints.newComment}, null)" />
+                       ${post.memberId}, ${post.id}, ${comments}, ${endPoints}, null)" />
                     </div>
                 </div>
             </div>
