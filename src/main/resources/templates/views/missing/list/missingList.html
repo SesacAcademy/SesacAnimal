@@ -78,9 +78,14 @@
 <body>
     <th:block th:replace="../fragments/header/header :: header" />
     <div class="missing-list-page">
-        <h3 class="missing-list-title">
-            실종 동물들이 가족의 품으로 돌아갈 수 있게 도와주세요
-        </h3>
+        <div style="display: flex; flex-direction: row; align-items: center;">
+            <h3 class="missing-list-title">
+                실종 동물들이 가족의 품으로 돌아갈 수 있게 도와주세요
+            </h3>
+            <a th:href="${endPoints.new}" class="missing-list-new">
+                게시글 작성하기
+            </a>
+        </div>
         <div class="missing-list-page-content">
             <div class="missing-list-container">
                 <div th:each="post : ${list}">

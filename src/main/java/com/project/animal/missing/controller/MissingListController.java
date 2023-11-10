@@ -37,7 +37,7 @@ public class MissingListController extends MissingController {
           Model model) {
 
     ListResponseDto<MissingListEntryDto> result = missingPostService.getPostList(filterDto, pageable);
-    Map<String, String> endPoints = createLinkConstants("detail", "list");
+    Map<String, String> endPoints = createLinkConstants("detail", "list", "new");
 
     model.addAttribute("endPoints", endPoints);
     model.addAttribute("list", result.getList());

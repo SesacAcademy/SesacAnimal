@@ -1,16 +1,21 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="newCard">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="newCard(actionPath)">
     <h3>등록하기</h3>
-    <form method="post" action="/missing" enctype="multipart/form-data" th:object="${post}">
+
+    <form></form>
+
+    <form method="post" th:action="@{{actionPath}(actionPath=${actionPath})}" enctype="multipart/form-data" th:object="${post}">
 
     <section class="missing-new-page-content">
         <div style="display: flex; flex-direction:row; padding-right:30px;">
             <div class="missing-new-thumb-container">
-<!--                <div>-->
-<!--                    <div>사진을 등록해주세요</div>-->
-<!--                    <input type="file" placeholder="사진을 등록해주세요" name="images" />-->
-<!--                </div>-->
-                <div>
-                    <button>생성하기</button>
+                <div class="missing-new-image-container">
+                    <div style="display: flex; flex-direction: row; align-items:center; margin-bottom: 20px;">
+                        <div>사진을 등록해주세요</div>
+                        <div class="missing-add-image-button">추가하기</div>
+                    </div>
+                    <div class="missing-new-image-box">
+                        <input class="missing-new-image" type="file" placeholder="사진을 등록해주세요" name="images" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,5 +70,8 @@
             </div>
         </section>
     </section>
+        <div style="margin-top:20px;">
+            <button type="submit">생성하기</button>
+        </div>
     </form>
 </div>

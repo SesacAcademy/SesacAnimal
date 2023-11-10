@@ -9,6 +9,7 @@ import com.project.animal.missing.exception.PostSaveFailException;
 import com.project.animal.missing.service.MissingPostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -26,8 +27,11 @@ public class MissingCreateController extends MissingController {
     this.missingPostService = missingPostService;
   }
 
-  @GetMapping
-  public String getPostNew(@Valid @ModelAttribute("post") MissingNewDto dto, BindingResult br) {
+  @GetMapping(EndPoint.CREATE)
+  public String getPostNew(@Valid @ModelAttribute("post") MissingNewDto dto, BindingResult br, Model model) {
+    Map<String, String> endPoints = createLinkConstants("new", "list");
+
+    model.addAttribute("endPoints", endPoints);
     return ViewName.POST_NEW;
   }
 
@@ -41,7 +45,7 @@ public class MissingCreateController extends MissingController {
     redirectAttributes.addFlashAttribute("isSuccess", isSuccess ? SUCCESS_FLAG : FAIL_FLAG);
     redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
 
-    return "redirect:" + EndPoint.MISSING + EndPoint.NEW;
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.NEW;
   }
 
   @ExceptionHandler(PostSaveFailException.class)
@@ -53,8 +57,8 @@ public class MissingCreateController extends MissingController {
     redirectAttributes.addFlashAttribute("msg", "입력한 정보를 다시 확인해주세요.");
     redirectAttributes.addFlashAttribute("post", ex.getInvalidForm());
 
-    log.error("handlePostSaveFail: >> Invalid Input " + ex.getMessage());
-    return "redirect:" + EndPoint.MISSING + EndPoint.NEW;
+    log.error("handlePostSaveFail: >> save fail: >> " + ex.getMessage());
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.NEW;
   }
 
   @ExceptionHandler(InvalidCreateFormException.class)
@@ -69,7 +73,7 @@ public class MissingCreateController extends MissingController {
     redirectAttributes.addFlashAttribute("post", ex.getInvalidForm());
 
     log.error("handleInvalidCreateForm: >> Invalid Input " + errors.toString());
-    return "redirect:" + EndPoint.MISSING + EndPoint.NEW;
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.NEW;
   }
 
 
