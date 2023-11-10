@@ -26,7 +26,7 @@ public class MissingDeleteController {
 
   @DeleteMapping(EndPoint.PATH_ID)
   public String handleDeleteRequest(@PathVariable(EndPoint.ID_KEY) long id, RedirectAttributes redirectAttributes) {
-
+    // TODO: id 없는 경우 검증
     boolean result = missingPostService.deletePost(id);
     redirectAttributes.addFlashAttribute("serverMsg", "Success to delete the post");
 

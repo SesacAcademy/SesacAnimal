@@ -1,4 +1,4 @@
-package com.project.animal.missing.dto;
+package com.project.animal.missing.dto.comment;
 
 import lombok.Data;
 import lombok.ToString;
@@ -19,4 +19,6 @@ public class MissingCommentNewDto {
 
   @NotBlank
   private String comment;
+
+  private Long parentId;
 }

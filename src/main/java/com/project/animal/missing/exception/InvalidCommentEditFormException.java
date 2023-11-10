@@ -1,15 +1,16 @@
 package com.project.animal.missing.exception;
 
+import com.project.animal.missing.dto.comment.MissingCommentEditDto;
 import com.project.animal.missing.dto.comment.MissingCommentNewDto;
 import lombok.Getter;
 import org.springframework.validation.BindingResult;
 
 @Getter
-public class InvalidCommentFormException extends RuntimeException {
+public class InvalidCommentEditFormException extends RuntimeException {
   private final BindingResult bindingResult;
-  private final MissingCommentNewDto invalidForm;
+  private final MissingCommentEditDto invalidForm;
 
-  public InvalidCommentFormException(MissingCommentNewDto invalidForm, BindingResult br) {
+  public InvalidCommentEditFormException(MissingCommentEditDto invalidForm, BindingResult br) {
     this.invalidForm = invalidForm;
     this.bindingResult = br;
   }
