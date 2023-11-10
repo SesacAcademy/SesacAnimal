@@ -93,7 +93,7 @@ public class SecurityConfig {
             .and()
             .exceptionHandling()
                 .authenticationEntryPoint(CustomAuthenticationEntryPoint())
-                .accessDeniedPage("/error/403");                // 10. 401 또는 403 코드 발생 시, 리다이렉트
+                .accessDeniedPage("/error/403.html");           // 10. 401 또는 403 코드 발생 시, 리다이렉트
 
         // 11. Jwt 인증 필터 및 예외 핉터 추가 (순서 꼭 지켜야함)
         http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

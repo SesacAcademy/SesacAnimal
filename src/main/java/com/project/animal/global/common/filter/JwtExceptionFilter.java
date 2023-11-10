@@ -18,6 +18,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import static com.project.animal.global.common.constant.TokenTypeValue.JWT_ACCESS_TOKEN;
 import static com.project.animal.global.common.constant.TokenTypeValue.JWT_REFRESH_TOKEN;
 
@@ -57,7 +60,8 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 
             // Cookie에서 토큰 삭제 및 에러 페이지 호출
             if (e instanceof JwtException) {
-                removeTokenInCookie(response);
+                log.info("사용자 Access Token 및 Refresh Token 삭제");
+                removeTokenInCookie(request, response);
                 response.sendError(HttpStatus.UNAUTHORIZED.value());
             }
         }
@@ -70,14 +74,17 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
      * @author 박성수
      * @param response
      */
-    private void removeTokenInCookie(HttpServletResponse response) {
-        Cookie accessToken = new Cookie(JWT_ACCESS_TOKEN, "");
-        Cookie refreshToken = new Cookie(JWT_REFRESH_TOKEN, "");
+    private void removeTokenInCookie(HttpServletRequest request, HttpServletResponse response) {
+        // request 객체에서 JWT Token이 담긴 Cookie를 List 형태로 가져 온다.
+        List<Cookie> cookielist = Arrays.stream(request.getCookies())
+                .filter(cookie -> {
+                    return cookie.getName().equals(JWT_ACCESS_TOKEN) || cookie.getName().equals(JWT_REFRESH_TOKEN);})
+                .toList();
 
-        accessToken.setMaxAge(0);
-        refreshToken.setMaxAge(0);
-
-        response.addCookie(accessToken);
-        response.addCookie(refreshToken);
+        // cookie의 라이프 사이클을 0으로 만들고 다시 response 객체에 저장한다.
+        cookielist.forEach(cookie -> {
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+        });
     }
 }
