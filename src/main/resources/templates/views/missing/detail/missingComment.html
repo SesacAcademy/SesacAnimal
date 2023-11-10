@@ -12,10 +12,48 @@
             </form>
         </section>
 
-        <section th:each="comment : ${comments}">
-            comm
+        <section class="missing-comment-scroll">
+            <div class="missing-card-entry" th:each="comment : ${comments}">
+                <div class="missing-detail-recomment-card-container">
+                    <div style="display:flex; flex-direction: row; justify-content: space-between;">
+                        <div class="missing-comment-title">작성자</div>
+                        <div style="display:flex; flex-direction: row;">
+                            <div class="missing-recomment-button-new">reply</div>
+                            <div class="missing-recomment-button-edit">edit</div>
+                            <div class="missing-recomment-button-delete">delete</div>
+                        </div>
+                    </div>
+                    <div class="missing-comment-form">
+                        <div th:text="${comment.content}"></div>
+                    </div>
+                    <div>
+                        <form class="missing-recomment-form" method="post" th:action="@{{actionPath}(actionPath=${actionPath})}">
+                            <input name="missingId" th:value="${postId}" hidden />
+                            <input name="memberId" th:value="${memberId}" hidden />
+                            <input name="parentId" th:value="${comment.commentId}" hidden />
+                        </form>
+
+                        <div th:if="${comment.comments}" class="show-more-recomment">
+                            <div>댓글 더보기</div>
+                        </div>
+                        <section class="missing-recomment-card-container">
+                            <div class="missing-recomment-card" th:if="${comment.comments}" th:each="recomment:${comment.comments}">
+                                <div style="display:flex; flex-direction: row; justify-content: space-between">
+                                    <div>작성자</div>
+                                    <div style="display:flex; flex-direction: row;">
+                                        <div class="missing-recomment-button-edit">edit</div>
+                                        <div class="missing-recomment-button-delete">delete</div>
+                                    </div>
+                                </div>
+
+
+                                <div th:text="${recomment.content}" />
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+            </div>
         </section>
-
-
 
 </div>

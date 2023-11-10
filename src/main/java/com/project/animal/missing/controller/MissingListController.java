@@ -4,7 +4,7 @@ import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
 import com.project.animal.missing.dto.ListResponseDto;
 import com.project.animal.missing.dto.MissingFilterDto;
-import com.project.animal.missing.dto.MissingListResDto;
+import com.project.animal.missing.dto.MissingListEntryDto;
 import com.project.animal.missing.service.MissingPostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -38,7 +36,7 @@ public class MissingListController extends MissingController {
           Pageable pageable,
           Model model) {
 
-    ListResponseDto<MissingListResDto> result = missingPostService.getPostList(filterDto, pageable);
+    ListResponseDto<MissingListEntryDto> result = missingPostService.getPostList(filterDto, pageable);
     Map<String, String> endPoints = createLinkConstants("detail", "list");
 
     model.addAttribute("endPoints", endPoints);

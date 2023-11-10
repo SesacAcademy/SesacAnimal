@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -22,6 +23,8 @@ public class QMissingPost extends EntityPathBase<MissingPost> {
     public final StringPath animalType = createString("animalType");
 
     public final StringPath color = createString("color");
+
+    public final ListPath<MissingComment, QMissingComment> comments = this.<MissingComment, QMissingComment>createList("comments", MissingComment.class, QMissingComment.class, PathInits.DIRECT2);
 
     public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 

@@ -1,10 +1,13 @@
-.missing-detail-comment-container {
-    margin-left: 30px;
-    margin-top: 100px;
 
+.missing-recomment-form {
+    margin-top:20px;
+    padding: 20px 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: none;
 }
 
-.missing-detail-comment-card-container {
+.missing-detail-recomment-card-container {
     border: 1px solid black;
     width: 350px;
 
@@ -12,34 +15,27 @@
     padding: 30px 20px;
 }
 
-.missing-comment-title {
-    margin-bottom: 10px;
-}
-
-.missing-comment-form {
-    display: flex;
-    flex-direction: row;
-}
-
-
-.missing-comment-input {
-    margin-right: 10px;
-    border-radius: 4px;
-}
-
-
-.missing-comment-scroll {
-    max-height: 620px;
-    overflow: scroll;
-}
-
-.missing-card-entry {
+.show-more-recomment {
     margin-top: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    color: blue;
 }
 
+.missing-recomment-card {
+        border: 1px solid black;
+        width: 300px;
+        border-radius: 10px;
+        padding: 10px 20px;
+        margin-top: 20px;
+}
 
+.missing-recomment-card-container {
+    margin-top: 20px;
+    display: none;
+}
 
-.missing-comment-button-new {
+.missing-recomment-button-new {
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -50,7 +46,7 @@
     border-radius: 25px;
 }
 
-.missing-comment-button-edit {
+.missing-recomment-button-edit {
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -60,7 +56,7 @@
     font-size: 1rem;
     border-radius: 25px;}
 
-.missing-comment-button-delete {
+.missing-recomment-button-delete {
     cursor: pointer;
     display: flex;
     justify-content: center;
