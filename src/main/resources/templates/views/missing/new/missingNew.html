@@ -50,6 +50,7 @@
     <script th:inline="javascript" defer>
         const _isRedirected = /*[[${isRedirected}]]*/ false;
         const _isSuccess = /*[[${isSuccess}]]*/ false;
+        const _endPoints = /*[[${endPoints}]]*/ {};
     </script>
     <script defer>
         const showResult = (isSuccess) => {
@@ -60,7 +61,7 @@
         }
 
         showResult(_isSuccess);
-        if (_isSuccess) window.location.href="/missing/list";
+        if (_isSuccess) window.location.href= _endPoints.list;
 
     </script>
 </head>

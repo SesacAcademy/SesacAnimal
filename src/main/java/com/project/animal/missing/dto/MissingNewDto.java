@@ -38,6 +38,7 @@ public class MissingNewDto {
   @NotBlank
   private String description;
 
+  private MultipartFile[] images;
 
   public void setMissingTime (String missingTime) {
     this.missingTime = CustomDateParser.formatDate(missingTime);

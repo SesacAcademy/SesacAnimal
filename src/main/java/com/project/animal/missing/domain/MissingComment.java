@@ -22,7 +22,7 @@ public class MissingComment {
   private long member_id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name= "post_id")
+  @JoinColumn(name = "post_id")
   private MissingPost missingPost;
   private String content;
 

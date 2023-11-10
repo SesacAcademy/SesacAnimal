@@ -2,19 +2,23 @@ package com.project.animal.missing.service;
 
 import com.project.animal.missing.domain.MissingComment;
 import com.project.animal.missing.domain.MissingPost;
+import com.project.animal.missing.domain.MissingPostImage;
 import com.project.animal.missing.dto.*;
 import com.project.animal.missing.dto.comment.MissingCommentListEntryDto;
 import com.project.animal.missing.exception.DetailNotFoundException;
 import com.project.animal.missing.exception.PostDeleteFailException;
 import com.project.animal.missing.exception.PostEditFailException;
 import com.project.animal.missing.exception.PostSaveFailException;
+import com.project.animal.missing.repository.MissingPostImageRepository;
 import com.project.animal.missing.repository.MissingPostRepository;
 import com.project.animal.missing.service.converter.DtoEntityConverter;
+import com.project.animal.missing.service.inf.MissingPostImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,8 @@ import java.util.stream.Collectors;
 public class MissingPostService {
 
   private final MissingPostRepository missingPostRepository;
+
+  private final MissingPostImageService missingPostImageService;
 
   private final DtoEntityConverter converter;
 
@@ -77,11 +83,13 @@ public class MissingPostService {
 
   }
 
+  @Transactional
   public boolean createPost(MissingNewDto dto) {
     try {
       MissingPost post = converter.toMissingPost(dto);
       MissingPost result = missingPostRepository.save(post);
 
+      missingPostImageService.createImage(dto.getImages(), post);
       if (result == null) throw new Exception("no save result");
       return true;
 
