@@ -3,6 +3,7 @@ package com.project.animal.missing.controller;
 import com.project.animal.global.common.utils.BindingResultParser;
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
+import com.project.animal.missing.dto.comment.MissingCommentDeleteDto;
 import com.project.animal.missing.dto.comment.MissingCommentEditDto;
 import com.project.animal.missing.dto.comment.MissingCommentNewDto;
 import com.project.animal.missing.dto.MissingDetailDto;
@@ -38,7 +39,7 @@ public class MissingDetailController extends MissingController {
     MissingDetailDto detail = missingPostService.getPostDetail(postId);
     List<MissingCommentListEntryDto> comments = detail.getComments();
 
-    Map<String, String> endPoints = createLinkConstants("edit", "delete", "newComment", "editComment");
+    Map<String, String> endPoints = createLinkConstants("edit", "delete", "newComment", "editComment", "deleteComment");
 
     model.addAttribute("endPoints", endPoints);
     model.addAttribute("post", detail);
@@ -64,6 +65,17 @@ public class MissingDetailController extends MissingController {
     }
 
     missingCommentService.editComment(dto);
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
+  }
+
+  @DeleteMapping(EndPoint.COMMENT + EndPoint.DELETE)
+  public String deleteComment(@Valid @ModelAttribute("comment") MissingCommentDeleteDto dto, BindingResult br) {
+    if (br.hasErrors()) {
+      throw new InvalidCommentDeleteFormException(dto, br);
+    }
+
+    missingCommentService.deleteComment(dto);
+
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 
@@ -117,7 +129,7 @@ public class MissingDetailController extends MissingController {
   public String handleCommentNotFoundException(CommentNotFoundException ex, RedirectAttributes redirectAttributes) {
 
     redirectAttributes.addFlashAttribute("error", "Fail to find comment");
-    redirectAttributes.addFlashAttribute("type", "detail");
+    redirectAttributes.addFlashAttribute("type", "comment");
 
     log.error("CommentNotFoundException: >> Fail to find comment id: >> " + ex.getCommentId());
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + ex.getMissingId();
@@ -126,9 +138,18 @@ public class MissingDetailController extends MissingController {
   @ExceptionHandler(CommentEditFailException.class)
   public String handleCommentEditFailException(CommentEditFailException ex, RedirectAttributes redirectAttributes) {
     redirectAttributes.addFlashAttribute("error", "Fail to edit comment");
-    redirectAttributes.addFlashAttribute("type", "detail");
+    redirectAttributes.addFlashAttribute("type", "comment");
 
     log.error("CommentNotFoundException: >> Fail to find comment id: >> " + ex.getInvalidForm().getCommentId());
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + ex.getInvalidForm().getMissingId();
+  }
+
+  @ExceptionHandler(CommentDeleteFailException.class)
+  public String handleCommentDeleteFailException(CommentDeleteFailException ex, RedirectAttributes redirectAttributes) {
+    redirectAttributes.addFlashAttribute("error", "Fail to delete comment");
+    redirectAttributes.addFlashAttribute("type", "comment");
+
+    log.error("CommentDeleteFailException: >> Fail to delete comment id: >> " + ex.getInvalidForm().getCommentId());
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + ex.getInvalidForm().getMissingId();
   }
 }
