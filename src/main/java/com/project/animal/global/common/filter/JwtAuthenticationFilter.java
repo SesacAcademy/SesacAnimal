@@ -94,9 +94,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } catch (MalformedJwtException   | IllegalArgumentException | UnsupportedJwtException |
                  BadCredentialsException | SignatureException invalidTokenException) {
-            
-            // JWT 토큰이 위변조된 경우 (잘못된 서명, 지원되지 않는 포맷, JWT 토큰 손상)
-            log.error("JWT 토큰이 위변조되거나 검증에 실패하였습니다.");
+            // JWT 토큰이 위변조된 경우, Jwt 예외 필터로 예외 전달 (잘못된 서명, 지원되지 않는 포맷, JWT 토큰 손상)
             throw invalidTokenException;
 
         } catch (ExpiredJwtException expiredJwtException) {
