@@ -39,7 +39,7 @@
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" th:href="@{/css/header.css}" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
-    <link rel="stylesheet" th:href="@{/css/adoption.css}" />
+    <link rel="stylesheet" th:href="@{/css/adoption/adoption_edit.css}" />
 
     <!-- reset.css cdn 설정 -->
     <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">-->
@@ -56,18 +56,18 @@
 <body>
  <th:block th:replace="../fragments/header/header :: header"></th:block>
 
-     <section class="adoption-write">
+     <section class="adoption-edit">
          <form th:object="${edit}" th:action="@{'/v1/adoption/edit/' + ${edit.postId}}" method="POST" name="edit" accept-charset="utf-8" enctype="multipart/form-data">
 <!--         <form th:object="${edit}" action="/v1/adoption/edit/{id}" method="POST" name="edit" accept-charset="utf-8" enctype="multipart/form-data">-->
              <legend>입양 게시판</legend>
              <input type="hidden" name="_method" value="PUT">
 
-             <div class="write-view-area">
+             <div class="edit-view-area">
                  <p>
                      <button type="reset" class="reset-button">취소</button>
                      <button type="submit" class="write-button" title="글쓰기">
                          <span class="material-symbols-outlined">edit_square</span>
-                         <span>글쓰기 저장</span>
+                         <span>글수정 저장</span>
                      </button>
                  </p>
              </div>
@@ -115,6 +115,11 @@
                                  <p th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}">
                                      <img th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>
                                      <button class="remove-image">이미지 삭제</button>
+                                 </p>
+                                 <p>
+                                     <span th:text="${image.adoption}"></span>
+                                     <span th:text="${image.id}"></span>
+                                     <span th:text="${image.path}"></span>
                                  </p>
                              </div>
                          </div>
