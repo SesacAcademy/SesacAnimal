@@ -13,6 +13,7 @@ public class MissingController {
   public final int FAIL_FLAG = 0;
   public Map<String, String> createLinkConstants(String ...destinations) {
     Map<String, String> endPoints = Map.of(
+            "new", EndPoint.MISSING_BASE + EndPoint.NEW,
             "edit", EndPoint.MISSING_BASE + EndPoint.EDIT,
             "delete",  EndPoint.MISSING_BASE + EndPoint.DELETE,
             "detail", EndPoint.MISSING_BASE + EndPoint.DETAIL,

@@ -60,9 +60,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String accessToken = jwtTokenProvider.resolveToken(request, "accessToken");
         String refreshToken = jwtTokenProvider.resolveToken(request, "refreshToken");
 
-        log.info("JWT 필터 적용 전");
-        log.info("Access Token : {}", accessToken);
-        log.info("Refresh Token : {}", refreshToken);
+//        log.info("JWT 필터 적용 전");
+//        log.info("Access Token : {}", accessToken);
+//        log.info("Refresh Token : {}", refreshToken);
 
         // Authentication 객체 선언
         Authentication authentication = null;
