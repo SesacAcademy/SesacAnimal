@@ -29,7 +29,7 @@ public class MissingCreateController extends MissingController {
 
   @GetMapping(EndPoint.CREATE)
   public String getPostNew(@Valid @ModelAttribute("post") MissingNewDto dto, BindingResult br, Model model) {
-    Map<String, String> endPoints = createLinkConstants("new");
+    Map<String, String> endPoints = createLinkConstants("new", "list");
 
     model.addAttribute("endPoints", endPoints);
     return ViewName.POST_NEW;
@@ -37,9 +37,6 @@ public class MissingCreateController extends MissingController {
 
   @PostMapping(EndPoint.CREATE)
   public String handleCreateRequest(@Valid @ModelAttribute("post") MissingNewDto dto, BindingResult br, RedirectAttributes redirectAttributes) {
-    log.info("hihi: >> " + dto.toString());
-//    log.info("iamge: >> " + dto.getImages().length);
-
     if (br.hasErrors()) {
       throw new InvalidCreateFormException(dto, br);
     }
@@ -60,7 +57,7 @@ public class MissingCreateController extends MissingController {
     redirectAttributes.addFlashAttribute("msg", "입력한 정보를 다시 확인해주세요.");
     redirectAttributes.addFlashAttribute("post", ex.getInvalidForm());
 
-    log.error("handlePostSaveFail: >> Invalid Input " + ex.getMessage());
+    log.error("handlePostSaveFail: >> save fail: >> " + ex.getMessage());
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.NEW;
   }
 

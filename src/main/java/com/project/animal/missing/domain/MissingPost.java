@@ -1,5 +1,6 @@
 package com.project.animal.missing.domain;
 
+import com.project.animal.global.common.entity.BaseEntity;
 import com.project.animal.missing.dto.MissingNewDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,9 +16,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name ="Missing")
-public class MissingPost {
-
-
+public class MissingPost extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long missingId;
@@ -69,14 +68,11 @@ public class MissingPost {
   @Column(name="is_active")
   private int isActive;
 
-  @Column(name="created_at")
-  private LocalDateTime createdAt;
-
-  @Column(name="updated_at")
-  private LocalDateTime updatedAt;
-
   @OneToMany(mappedBy = "missingPost")
   private List<MissingComment> comments;
+
+  @OneToMany(mappedBy = "missingPost")
+  private List<MissingPostImage> images;
 
   public MissingPost(long memberId, String title, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, int missingStatus, int isActive) {
     this.memberId = memberId;
@@ -117,4 +113,5 @@ public class MissingPost {
   public void addComment(MissingComment comment) {
     this.comments.add(comment);
   }
+
 }
