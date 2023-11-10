@@ -3,7 +3,7 @@ package com.project.animal.member.controller;
 import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
 import com.project.animal.global.common.dto.ResponseDto;
-import com.project.animal.global.common.provider.MailTokenProvider;
+import com.project.animal.global.common.provider.MailAuthCodeProvider;
 import com.project.animal.member.dto.CheckMailTokenDto;
 import com.project.animal.member.dto.MemberFormDto;
 import com.project.animal.member.service.inf.MemberService;
@@ -21,7 +21,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    private final MailTokenProvider mailTokenProvider;
+    private final MailAuthCodeProvider mailTokenProvider;
 
     @GetMapping(EndPoint.SIGNUP)
     public String signupForm() {

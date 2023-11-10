@@ -1,7 +1,7 @@
 package com.project.animal.member.controller;
 
 import com.project.animal.global.common.dto.ResponseDto;
-import com.project.animal.member.exception.InvalidTokenException;
+import com.project.animal.member.exception.InvalidCodeException;
 import com.project.animal.member.exception.LoginException;
 import com.project.animal.member.exception.NestedEmailException;
 import lombok.extern.slf4j.Slf4j;
@@ -51,11 +51,11 @@ public class MemberControllerAdvice {
      * - 이메일 인증 확인 과정에서 인증번호가 잘못되었거나 만료된 경우, 해당 예외 발생
      */
     @ResponseStatus(HttpStatus.OK)
-    @ExceptionHandler(InvalidTokenException.class)
-    public ResponseDto<String> invalidTokenException(InvalidTokenException e) {
+    @ExceptionHandler(InvalidCodeException.class)
+    public ResponseDto<String> invalidTokenException(InvalidCodeException e) {
         log.error("이메일 인증 확인 에러 발생", e);
 
-        return new ResponseDto(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());
+        return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());
     }
 
     /**
@@ -64,17 +64,17 @@ public class MemberControllerAdvice {
      */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseDto<String> methodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseDto<Map<String, String>> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
         Map<String, String> errorData = new HashMap<>();
 
-        fieldErrors.stream().forEach(x -> {
+        fieldErrors.forEach(x -> {
             errorData.put(x.getField(), x.getDefaultMessage());
         });
 
-        return new ResponseDto(HttpStatus.BAD_REQUEST.value(), errorData, "");
+        return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), errorData, "");
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -82,6 +82,6 @@ public class MemberControllerAdvice {
     public ResponseDto<String> loginException(LoginException e) {
         log.info(e.getMessage());
 
-        return new ResponseDto(HttpStatus.BAD_REQUEST.value(), null, "아이디 또는 비밀번호가 틀렸습니다.");
+        return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, "아이디 또는 비밀번호가 틀렸습니다.");
     }
 }

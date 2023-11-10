@@ -1,10 +1,10 @@
 package com.project.animal.member.service;
 
 import com.project.animal.global.common.constant.Role;
-import com.project.animal.global.common.provider.MailTokenProvider;
+import com.project.animal.global.common.provider.MailAuthCodeProvider;
 import com.project.animal.member.domain.Member;
 import com.project.animal.member.dto.MemberFormDto;
-import com.project.animal.member.exception.InvalidTokenException;
+import com.project.animal.member.exception.InvalidCodeException;
 import com.project.animal.member.exception.NestedEmailException;
 import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.member.service.inf.MemberService;
@@ -21,7 +21,7 @@ public class MemberServiceImp implements MemberService {
 
     private final MemberRepository memberRepository;
 
-    private final MailTokenProvider mailTokenProvider;
+    private final MailAuthCodeProvider mailTokenProvider;
 
     private final PasswordEncoder encoder;
 
@@ -58,14 +58,14 @@ public class MemberServiceImp implements MemberService {
         checkNestedEmail(email);
 
         // 토큰 발급
-        mailTokenProvider.createToken(email);
+        mailTokenProvider.generateAuthCode(email);
     }
 
     @Override
     public void checkMailToken(String email, String token) {
         // 이메일 토큰 체크
-        if(!mailTokenProvider.validateToken(email, token)) {
-            throw new InvalidTokenException("유효하지 않은 인증번호입니다.");
+        if(!mailTokenProvider.validateAuthCode(email, token)) {
+            throw new InvalidCodeException("유효하지 않은 인증번호입니다.");
         }
     }
 

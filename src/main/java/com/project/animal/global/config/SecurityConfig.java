@@ -1,6 +1,7 @@
 package com.project.animal.global.config;
 
 import com.project.animal.global.common.filter.JwtAuthenticationFilter;
+import com.project.animal.global.common.filter.JwtExceptionFilter;
 import com.project.animal.global.common.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +49,8 @@ import java.io.IOException;
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
     // JWT를 사용하기 위해서는 기본적으로 패스워드 인코딩이 필요하기에 패스워드 인코딩 전용 빈을 등록한다. (Bcrypt encoder)
     @Bean
@@ -88,10 +93,11 @@ public class SecurityConfig {
             .and()
             .exceptionHandling()
                 .authenticationEntryPoint(CustomAuthenticationEntryPoint())
-                .accessDeniedPage("/error/403");                // 10. 401 또는 403 코드 발생 시, 리다이렉트
+                .accessDeniedPage("/error/403.html");           // 10. 401 또는 403 코드 발생 시, 리다이렉트
 
-        // 11. Jwt 인증 필터 추가
+        // 11. Jwt 인증 필터 및 예외 핉터 추가 (순서 꼭 지켜야함)
         http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
 
         return http.build();
     }
