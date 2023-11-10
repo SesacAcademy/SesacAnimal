@@ -2,14 +2,13 @@ package com.project.animal.missing.service;
 
 import com.project.animal.missing.domain.MissingComment;
 import com.project.animal.missing.domain.MissingPost;
-import com.project.animal.missing.domain.MissingPostImage;
 import com.project.animal.missing.dto.*;
 import com.project.animal.missing.dto.comment.MissingCommentListEntryDto;
+import com.project.animal.missing.dto.image.MissingPostImageDto;
 import com.project.animal.missing.exception.DetailNotFoundException;
 import com.project.animal.missing.exception.PostDeleteFailException;
 import com.project.animal.missing.exception.PostEditFailException;
 import com.project.animal.missing.exception.PostSaveFailException;
-import com.project.animal.missing.repository.MissingPostImageRepository;
 import com.project.animal.missing.repository.MissingPostRepository;
 import com.project.animal.missing.service.converter.DtoEntityConverter;
 import com.project.animal.missing.service.inf.MissingPostImageService;
@@ -20,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,10 +40,19 @@ public class MissingPostService {
 
     int count = (int) pages.getTotalElements();
     List<MissingListEntryDto> posts = pages.stream()
-            .map((entity) -> MissingListEntryDto.fromMissingPost(entity))
+            .map(this ::convertToMissingListEntryDto)
             .collect(Collectors.toList());
 
     return new ListResponseDto<>(count, posts);
+  }
+
+  private MissingListEntryDto convertToMissingListEntryDto(MissingPost entity) {
+    MissingListEntryDto entry = MissingListEntryDto.fromMissingPost(entity);
+    List<MissingPostImageDto> images = entity.getImages().stream()
+            .map(image -> new MissingPostImageDto(image.getImage_id(), image.getPath()))
+            .collect(Collectors.toList());
+    entry.addImages(images);
+    return entry;
   }
 
   public MissingDetailDto getPostDetail(long postId) {
