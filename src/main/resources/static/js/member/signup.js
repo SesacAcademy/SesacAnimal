@@ -19,6 +19,12 @@ authEmailButton.addEventListener('click', createToken);
 authEmailCheckButton.addEventListener('click', checkToken);
 signupButton.addEventListener('click', signup);
 
+function isVaildName(name) {
+    let nameRegex = /^[가-힣]{2,4}$/;
+
+    return nameRegex.test(name);
+}
+
 function isValidEmail(email) {
     let emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
@@ -182,7 +188,7 @@ function signup() {
                 alert("새로고침하여 다시 진행해주세요.");
             }
 
-            // 값이 틀린 경우
+            // 값 형식이 틀린 경우
             else {
                 const errorData = response.data.context;
 
