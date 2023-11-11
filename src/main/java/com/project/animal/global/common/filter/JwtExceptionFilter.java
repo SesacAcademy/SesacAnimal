@@ -59,7 +59,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             }
 
             // Cookie에서 토큰 삭제 및 에러 페이지 호출
-            if (e instanceof JwtException) {
+            if (e instanceof JwtException || e instanceof IllegalArgumentException) {
                 log.info("사용자 Access Token 및 Refresh Token 삭제");
                 removeTokenInCookie(request, response);
                 response.sendError(HttpStatus.UNAUTHORIZED.value());
@@ -84,6 +84,8 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         // cookie의 라이프 사이클을 0으로 만들고 다시 response 객체에 저장한다.
         cookielist.forEach(cookie -> {
             cookie.setMaxAge(0);
+            cookie.setPath("/");
+            cookie.setValue(null);
             response.addCookie(cookie);
         });
     }
