@@ -1,5 +1,6 @@
 package com.project.animal.review.domain;
 
+import com.project.animal.global.common.entity.BaseEntity;
 import com.project.animal.member.domain.Member;
 import com.project.animal.review.dto.CreateReviewPostDto;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.List;
 @Table(name = "Review")
 @Getter
 @NoArgsConstructor
-public class ReviewPost {
+public class ReviewPost extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
@@ -38,12 +39,6 @@ public class ReviewPost {
     @Column(name = "is_active")
     private int isActive;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
 // TODO: comment 생성시 활성화
 //    @OneToMany(mappedBy = "reviewPost")
 //    private List<ReviewComment> comments;
@@ -51,15 +46,13 @@ public class ReviewPost {
     public ReviewPost(CreateReviewPostDto createReviewPostDto, Member member) {
         this.content = createReviewPostDto.getContent();
         this.title = createReviewPostDto.getTitle();
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
         this.member = member;
         this.viewCount = 0;
         this.isActive = 1;
     }
 
-    public int increaseViewCount() {
-        return this.viewCount++;
+    public void increaseViewCount() {
+        this.viewCount++;
     }
 
     public void update(CreateReviewPostDto dto) {

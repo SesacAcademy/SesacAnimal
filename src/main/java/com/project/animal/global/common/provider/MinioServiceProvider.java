@@ -1,6 +1,7 @@
-package com.project.animal.global.common.minioserviceprovider;
+package com.project.animal.global.common.provider;
 
 import com.project.animal.global.common.dto.ImageListDto;
+import com.project.animal.global.common.providrerror.minioException;
 import io.minio.BucketExistsArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Log4j2
 @RequiredArgsConstructor
 @Component
-public class ImageUploadMinio {
+public class MinioServiceProvider {
     @Autowired
     private MinioClient minioClient;
     public final String REVIEW = "review";

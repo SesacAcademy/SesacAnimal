@@ -22,9 +22,12 @@ public class QReviewPost extends EntityPathBase<ReviewPost> {
 
     public static final QReviewPost reviewPost = new QReviewPost("reviewPost");
 
+    public final com.project.animal.global.common.entity.QBaseEntity _super = new com.project.animal.global.common.entity.QBaseEntity(this);
+
     public final StringPath content = createString("content");
 
-    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -36,7 +39,8 @@ public class QReviewPost extends EntityPathBase<ReviewPost> {
 
     public final StringPath title = createString("title");
 
-    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public final NumberPath<Integer> viewCount = createNumber("viewCount", Integer.class);
 

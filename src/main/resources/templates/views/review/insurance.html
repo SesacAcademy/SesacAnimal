@@ -55,60 +55,106 @@
 
 
 </head>
-
 <body>
 <div class="container">
-  <h1 class="title" th:text="${reviewDto.title}">제목</h1>
+
+  <!--  <h1 class="title">-->
+  <!--    <input type="text" name="title" th:value="${reviewDto.title}" />-->
+  <!--  </h1>-->
   <hr class="separator">
   <div class="author">
     <div class="author-info" th:text="'작성자: ' + ${reviewDto.name}">
       작성자: 닉네임
     </div>
+
     <div class="timestamp" th:text="${#temporals.format(reviewDto.updatedAt, 'yyyy-MM-dd HH:mm')}">
+
     </div>
+
+
 
     <div th:each="image : ${reviewDto.urls}">
       <img th:src="@{'http://infra.shucloud.site:8007/review' + ${image.value}}" alt="유기견 썸네일" class="thumbnail-image" />
+      <button type="button" class="delete-button" data-image-id="${image.key}">이미지 삭제</button>
+      <input type="hidden" name="reviewImageIds" value="${image.key}">
     </div>
   </div>
-  <div class="buttons">
-    <a th:href="@{/review/edit(reviewPostId=${reviewDto.reviewPostId})}" class="edit-button">수정</a>
-    <a th:href="@{/review/delete(reviewPostId=${reviewDto.reviewPostId})}" class="delete-button">삭제</a>
+  <div class="input-group mb-3">
+    <label class="input-group-text" for="inputGroupFile01">Upload</label>
+    <input type="file" class="form-control" id="inputGroupFile01" name="imageList" multiple>
   </div>
-  <p class="text" th:text="${reviewDto.content}">이 곳에 텍스트를 입력하세요. 텍스트를 확장하였습니다.</p>
+
+  <div class="buttons">
+    <form id="updateForm" action="/review/update" method="post">
+
+      <h1 class="title">
+        <input type="text" name="title" th:value="${reviewDto.title}" />
+      </h1>
+
+      <!--        <p class="text">-->
+      <!--          <textarea name="content" th:text="${reviewDto.content}"></textarea>-->
+      <!--        </p>-->
+      <!--        -->
+      <input type="hidden" name="reviewPostId" th:value="${reviewDto.reviewPostId}" />
+      <button type="submit" class="edit-button">작성</button>
+    </form>
+  </div>
+  <p class="text">
+    <textarea name="content" th:text="${reviewDto.content}"></textarea>
+  </p>
   <div class="view-count" th:text="'조회수: ' + ${reviewDto.viewCount}">
     조회수: count
   </div>
-  <hr class="separator">
 </div>
-<div class="comment-section">
-  <h2>댓글</h2>
-  <!-- 댓글 입력 폼 -->
-  <form th:action="@{/comment/add}" method="post">
-    <input type="hidden" th:value="${reviewDto.reviewPostId}" name="reviewPostId" />
-    <textarea name="comment" placeholder="댓글을 입력하세요." class="comment-input"></textarea>
-    <button type="submit" class="comment-submit-button">
-      <i class="fas fa-pencil-alt"></i>
-    </button>
-  </form>
-  <!-- 댓글 목록 -->
-  <div th:each="comment : ${comments}">
-    <div th:if="${comment.parentId == null}">
-      <div class="comment">
-        <div class="comment-author" th:text="${comment.author}"></div>
-        <div class="comment-text" th:text="${comment.text}"></div>
-      </div>
-      <!-- 대댓글 목록 -->
-      <div th:each="childComment : ${comments}">
-        <div th:if="${childComment.parentId == comment.id}">
-          <div class="child-comment">
-            <div class="child-comment-author" th:text="${childComment.author}"></div>
-            <div class="child-comment-text" th:text="${childComment.text}"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<hr class="separator">
 </div>
+<script>
+    var imageIdList = [];
+$(document).ready(function() {
+
+
+    $('.delete-button').click(function() {
+        var imageId = $(this).data('image-id');
+        imageIdList.push(imageId); // 이미지 ID를 배열에 추가
+        $(this).parent().remove(); // 이미지와 버튼 삭제
+    });
+
+    $('.edit-button').click(function(event) {
+        event.preventDefault(); // 기본 submit 이벤트 방지
+
+        var updateForm = $('#updateForm'); // id를 통해 form을 선택
+        for (var i = 0; i < imageIdList.length; i++) {
+            // 이미지 ID를 input 태그로 추가
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'reviewImageIds',
+                value: imageIdList[i]
+            }).appendTo(updateForm);
+        }
+
+        updateForm.submit(); // form 제출
+    });
+});
+</script>
 </body>
 </html>
+<!--    <form action="/review/update" method="post">-->
+<!--      <input type="hidden" name="reviewPostId" value="${reviewDto.reviewPostId}" />-->
+
+<!--      <div th:each="image : ${reviewDto.urls}">-->
+<!--        <div>-->
+<!--          <img th:src="@{'http://infra.shucloud.site:8007/review' + ${image.value}}" alt="유기견 썸네일" class="thumbnail-image" />-->
+<!--          <button type="button" class="delete-button" data-image-id="${image.key}">이미지 삭제</button>-->
+<!--          <input type="hidden" name="reviewImageIds" value="${image.key}" />-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="input-group mb-3">-->
+<!--        <label class="input-group-text" for="inputGroupFile01">Upload</label>-->
+<!--        <input type="file" class="form-control" id="inputGroupFile01" name="imageList" multiple>-->
+<!--      </div>-->
+
+<!--      <div class="buttons">-->
+<!--        <button type="submit" class="edit-button">작성</button>-->
+<!--      </div>-->
+<!--    </form>-->

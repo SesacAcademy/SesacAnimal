@@ -33,5 +33,6 @@ public interface ReviewRepository extends JpaRepository<ReviewPost, Long> {
     @Query(value = "SELECT p FROM ReviewPost p JOIN FETCH p.member m LEFT JOIN FETCH p.reviewImages i WHERE p.isActive = 1",
             countQuery = "SELECT count(p.id) FROM ReviewPost p WHERE p.isActive = 1")
     Page<ReviewPost> findAll(Pageable pageable);
+
     Optional<ReviewPost> findById(Long reviewPostId);
 }

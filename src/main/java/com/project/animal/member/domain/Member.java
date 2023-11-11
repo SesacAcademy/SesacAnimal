@@ -1,6 +1,7 @@
 package com.project.animal.member.domain;
 
 import com.project.animal.global.common.constant.Role;
+import com.project.animal.global.common.entity.BaseEntity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,7 +22,7 @@ import java.util.List;
 @Builder                // to do : Builder 관련 로직 제거 후, 이후에 제거
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member implements UserDetails {
+public class Member extends BaseEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -48,12 +49,6 @@ public class Member implements UserDetails {
 
     @Column(name = "is_active" , length = 1)
     private Integer isActive;
-
-    @Column
-    private LocalDateTime createdAt;
-
-    @Column
-    private LocalDateTime updatedAt;
 
     @Column
     private LocalDateTime lastLoginAt;

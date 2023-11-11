@@ -4,6 +4,7 @@ import com.project.animal.member.domain.Member;
 import com.project.animal.review.domain.ReviewPost;
 import com.project.animal.review.dto.*;
 import com.project.animal.review.exception.NotFoundException;
+import com.project.animal.review.exception.ReviewDtoNullException;
 import com.project.animal.review.repository.ReviewRepository;
 import io.minio.MinioClient;
 import lombok.AllArgsConstructor;
@@ -29,14 +30,19 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
 
     public ReviewPost createReviewPost(CreateReviewPostDto createReviewPostDto, Member member) {
+        dtoCheck(createReviewPostDto);
         ReviewPost reviewPost = new ReviewPost(createReviewPostDto, member);
         return reviewRepository.save(reviewPost);
     }
+    private Pageable createPageByCreatedAt(int page, int size){
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        return PageRequest.of(page, size, sort);
+    }
     @Transactional(readOnly = true)
     public ReadListGeneric readAll(int page, int size) {
-        Sort sortByDesc = Sort.by(Sort.Direction.DESC, "createdAt");
-        Pageable pageable = PageRequest.of(page, size, sortByDesc);
+        Pageable pageable = createPageByCreatedAt(page,size);
         Page<ReviewPost> postList = reviewRepository.findAll(pageable);
+
         return entityToDtoByReadAll(postList);
     }
     private ReadListGeneric entityToDtoByReadAll(Page<ReviewPost> entity) {
@@ -52,26 +58,24 @@ public class ReviewService {
                 .pageNumber(pageNum)
                 .build();
     }
-    @Transactional(readOnly = true)
     public ReadOneReviewDto readOne(Long reviewPostId) {
         Optional<ReviewPost> reviewPost = reviewRepository.findByIdWithMemberAndImage(reviewPostId);
         ReviewPost reviewEntity = checkOptional(reviewPost);
-        int viewCount = viewCountUp(reviewEntity);
-        return readOneEntityToDto(reviewEntity, viewCount);
+        reviewEntity.increaseViewCount();
+        return readOneEntityToDto(reviewEntity);
     }
-    private int viewCountUp(ReviewPost reviewPost){
-       return reviewPost.increaseViewCount();
-    }
+
     private ReviewPost checkOptional(Optional<ReviewPost>reviewPost){
         return reviewPost.orElseThrow(()-> new NotFoundException("게시물 상세보기 -> 해당 게시물이 존재하지 않습니다."));
     }
-    private ReadOneReviewDto readOneEntityToDto(ReviewPost reviewPost, int viewCount){
-        ReadOneReviewDto readOneReviewDto = new ReadOneReviewDto(reviewPost, viewCount);
+    private ReadOneReviewDto readOneEntityToDto(ReviewPost reviewPost
+    ){
+        ReadOneReviewDto readOneReviewDto = new ReadOneReviewDto(reviewPost);
         return readOneReviewDto;
     }
     @Transactional(readOnly = true)
     private ReadListGeneric readByName(Integer page, int size, String name) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = createPageByCreatedAt(page,size);
         Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByName(name,pageable);
         return entityToDtoByReadAll(postList);
     }
@@ -88,21 +92,29 @@ public class ReviewService {
     }
     @Transactional(readOnly = true)
     private ReadListGeneric<ReadListGeneric> readByContent(Integer page, int size, String content) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = createPageByCreatedAt(page,size);
         Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByContent(content, pageable);
         return entityToDtoByReadAll(postList);
     }
     @Transactional(readOnly = true)
     private ReadListGeneric<ReadListGeneric> readByTitle(Integer page, int size, String title) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = createPageByCreatedAt(page,size);
         Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByTitle(title,pageable);
         return entityToDtoByReadAll(postList);
     }
 
-    // 이미지 데이터 어떻게 할 것인지 논의 필요
-    public void update(List<Long> imageIds, CreateReviewPostDto updatePostDto, Long reviewPostId) {
+    public ReviewPost updateReviewPost( CreateReviewPostDto updatePostDto, Long reviewPostId) {
+        dtoCheck(updatePostDto);
         ReviewPost reviewPost = findByIdAndCheckOptional(reviewPostId);
         reviewPost.update(updatePostDto);
+        return reviewPost;
+    }
+    private void dtoCheck(CreateReviewPostDto updatePostDto) {
+        String title = updatePostDto.getTitle();
+        String content = updatePostDto.getContent();
+        if (title==null || content ==null){
+            throw new ReviewDtoNullException("필수 입력 값을 입력하지 않았습니다. 제목은 필수 입니다. 입력 받은 제목: "+title+ "입력 받은 내용: "+content);
+        }
     }
     public void delete(Long reviewPostId) {
         ReviewPost reviewPost = findByIdAndCheckOptional(reviewPostId);
@@ -111,6 +123,6 @@ public class ReviewService {
     private ReviewPost findByIdAndCheckOptional(Long reviewPostId){
         Optional<ReviewPost> reviewPostOptional = reviewRepository.findById(reviewPostId);
         return reviewPostOptional.orElseThrow(
-                ()->new NotFoundException("해당 게시글의 id가 유효하지 않습니다 유효하지 않은 reviewPostId: "+reviewPostId));
+                ()-> new NotFoundException("해당 게시글의 id가 유효하지 않습니다 유효하지 않은 reviewPostId: "+reviewPostId));
     }
 }

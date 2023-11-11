@@ -1,6 +1,6 @@
 package com.project.animal.global.common.dto;
 
-import com.project.animal.global.common.minioserviceprovider.minioException;
+import com.project.animal.global.common.providrerror.minioException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
