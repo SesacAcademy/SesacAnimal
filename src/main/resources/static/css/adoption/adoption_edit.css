@@ -21,10 +21,17 @@
 .adoption-edit .edit-view-area{
     display: flex;
     justify-content: flex-end;
+
+}
+
+.adoption-edit fieldset {
+    margin: 0;
+    padding: 0;
+    border:none;
 }
 
 
-.adoption-edit .edit-view-area .write-button{
+.adoption-edit .edit-view-area .edit-button{
     border:none;
     display: inline-block;
     /*width:120px;*/
@@ -47,7 +54,7 @@
     margin-right: 20px;
 }
 
-.adoption-edit .write-view-area .write-button span{
+.adoption-edit .edit-view-area .edit-button span{
     color:#f0b062;
     vertical-align: middle;
 }

@@ -8,10 +8,24 @@ document.addEventListener('DOMContentLoaded', function () {
     // console.log("element classList.length :>>",element.classList.length);
 
     let container = document.querySelector(".adoption-edit .image-container");
+    let buttons = document.querySelectorAll(".adoption-edit .image-container button");
     console.log("container children:>>",container.children);
     console.log("container childrenLength:>>",container.children.length);
     console.log("container childElementCount:>>",container.childElementCount);
     console.log("container classList:>>",container.classList);
+
+    console.log("button :>>",buttons.length);
+
+    // console.log("button input:>>",button.closest('input').querySelector('input[type="hidden"]').value);
+
+    buttons.forEach(function(button) {
+        button.addEventListener("click", function () {
+            let dataIndex = button.closest('p').querySelector('input[type="hidden"]').value;
+            console.log("이미지 인덱스: " + dataIndex);
+            // 여기에서 AJAX를 사용하여 서버에 데이터 업데이트 요청 및 로직 추가
+            // updateAdoptionStatus(dataIndex);
+        });
+    });
 
     // console.log("element",element.);
     /* 삭제 버튼 클릭 이벤트 리스너 등록 */

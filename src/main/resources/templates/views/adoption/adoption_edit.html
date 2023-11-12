@@ -67,7 +67,7 @@
              <div class="edit-view-area">
                  <p>
                      <button type="reset" class="reset-button">취소</button>
-                     <button type="submit" class="write-button" title="글쓰기">
+                     <button type="submit" class="edit-button" title="글 수정하기">
                          <span class="material-symbols-outlined">edit_square</span>
                          <span>글수정 저장</span>
                      </button>
@@ -101,25 +101,28 @@
                          <div class="image-container">
 <!--                             <div class="image-list" th:each="image, index : ${edit.path}" data-edit-index="${index}">-->
 
-                                 <p class="image" th:each="image, index : ${edit.path}" data-edit-index="${index}" id="image" th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') }">
+                                 <p class="image" th:each="image, index : ${edit.path}" data-edit-index="${index.index}" id="image" th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') }">
                                      <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 -->
                                      <img th:src="${image.path}" alt="유기동물 이미지"/>
                                      <span th:text="${index.index}"></span>
                                      <button th:id="'remove-button'+${index.index}" type="button" class="remove-image">이미지 삭제</button>
+                                     <input type="hidden" th:value="${index.index}"/>
                                  </p>
 
                                  <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 -->
-                                 <p class="image" th:each="image, index : ${edit.path}" data-edit-index="${index}" th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') }">
+                                 <p class="image" th:each="image, index : ${edit.path}" data-edit-index="${index.index}" th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') }">
                                      <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
                                      <span th:text="${index.index}"></span>
                                      <button th:id="'remove-button'+${index.index}" type="button" class="remove-image">이미지 삭제</button>
+                                     <input type="hidden" th:value="${index.index}"/>
                                  </p>
 
                                  <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않고, image.path가 'empty'인 경우 -->
                                  <p class="image" th:each="image, index : ${edit.path}" data-edit-index="${index}" th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}">
                                      <img th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>
                                      <span th:text="${index.index}"></span>
-                                     <button th:id="'remove-button'+${index.index}" type="button" class="remove-image">이미지 삭제</button>
+                                     <input type="hidden" th:value="${index.index}"/>
+<!--                                     <button th:id="'remove-button'+${index.index}" type="button" class="remove-image" value="${index.index}">이미지 삭제</button>-->
                                  </p>
 <!--                                 <p>-->
 <!--                                     <span th:text="${image.adoption}"></span>-->
