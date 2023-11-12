@@ -9,6 +9,11 @@
     border: 1px solid #ddd;
     font-family: 'Noto Sans KR', 'Roboto', sans-serif;
 }
+
+.adoption-write fieldset{
+    border:none;
+}
+
 .adoption-write legend{
     position: absolute;
     left:-9999px;

@@ -6,6 +6,7 @@ import com.project.animal.adoption.domain.AdoptionImage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class AdoptionEditDto {
     private String title;
 
     private List<AdoptionImage> path;
+    private List<MultipartFile> adoptionImages;
 
     private String breed;
 
@@ -40,7 +42,12 @@ public class AdoptionEditDto {
 
     private String status;
 
+    private int isActive;
+
     private Long postId;
+
+    private String deleteImageId;
+
 
     public AdoptionEditDto(Adoption adoption, Long postId){
         this.author = adoption.getMember().getName();
@@ -56,6 +63,7 @@ public class AdoptionEditDto {
         this.specialMark=adoption.getSpecialMark();
         this.content=adoption.getContent();
         this.status=adoption.getStatus();
+        this.isActive=1;
         this.postId=postId;
     }
 
@@ -73,6 +81,7 @@ public class AdoptionEditDto {
         this.specialMark=adoption.getSpecialMark();
         this.content=adoption.getContent();
         this.status=adoption.getStatus();
+        this.isActive=1;
     }
 
 }

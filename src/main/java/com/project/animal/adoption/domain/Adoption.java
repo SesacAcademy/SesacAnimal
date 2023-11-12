@@ -99,6 +99,10 @@ public class Adoption extends BaseEntity {
         this.hit = hit;
     }
 
+    public void changeIsActive(int isActive) {
+        this.isActive = isActive;
+    }
+
     public void updateAdoption(AdoptionEditDto adoptionEditDto){
         this.title= adoptionEditDto.getTitle();
         this.content=adoptionEditDto.getContent();

@@ -138,11 +138,12 @@
 
 .adoption-board ul li .content-area{
     flex:60%;
-    padding: 15px;
+    padding: 0px 15px 15px 20px;
 }
 
 .adoption-board ul li .info-area{
     flex:20%;
+    font-size: 19px;
 }
 
 

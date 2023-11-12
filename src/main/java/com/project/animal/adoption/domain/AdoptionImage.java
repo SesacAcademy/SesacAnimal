@@ -38,6 +38,10 @@ public class AdoptionImage {
         this.path = path;
     }
 
+    public void changeIsActive(int isActive) {
+        this.isActive=isActive;
+    }
+
 
     public AdoptionImage(String serverFileName, Adoption adoption) {
         this.adoption = adoption;

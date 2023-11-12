@@ -1,14 +1,19 @@
 package com.project.animal.adoption.controller;
 
 import com.project.animal.adoption.domain.Adoption;
+import com.project.animal.adoption.domain.AdoptionImage;
 import com.project.animal.adoption.dto.AdoptionEditDto;
 import com.project.animal.adoption.dto.AdoptionReadDto;
 import com.project.animal.adoption.dto.AdoptionWriteDto;
+import com.project.animal.adoption.repository.AdoptionImageRepository;
+import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.adoption.service.AdoptionServiceImpl;
 import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +21,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,6 +30,8 @@ import java.util.List;
 public class AdoptionController {
 
     private final AdoptionServiceImpl adoptionService;
+    private final AdoptionRepository adoptionRepository;
+    private final AdoptionImageRepository adoptionImageRepository;
 
     //리스트 들어오기
     @GetMapping(EndPoint.ADOPTION_LIST)
@@ -79,6 +88,7 @@ public class AdoptionController {
 
         Adoption adoption = adoptionService.findByIdWidhImageAndMember(id);
         AdoptionEditDto adoptionEditDto = new AdoptionEditDto(adoption,id);
+
         model.addAttribute("edit", adoptionEditDto);
 
         return ViewName.ADOPTION_EDIT;
@@ -89,16 +99,72 @@ public class AdoptionController {
     @PutMapping(EndPoint.ADOPTION_EDIT)
     public String adoptionEditPut(@ModelAttribute @Validated AdoptionEditDto adoptionEditDto, BindingResult bindingResult,
                                @RequestParam(name="image") List<MultipartFile> file,
-                                  @PathVariable Long id){
+                                  @PathVariable Long id, @RequestParam(name="deleteIndex") String deleteImageId){
 
         if(bindingResult.hasErrors()){
             log.info("adoption_edit binding error = {}", bindingResult);
+            return "redirect:"+EndPoint.ADOPTION_EDIT;
         }
+
+
+
+        // 이미지 리스트와 추가 이미지 리스트를 합칩니다.
+//        List<MultipartFile> allImages = new ArrayList<>();
+//        if (adoptionEditDto.getImages() != null) {
+//            allImages.addAll(adoptionEditDto.getImages());
+//        }
+//        if (adoptionEditDto.getAdditionalImages() != null) {
+//            allImages.addAll(adoptionEditDto.getAdditionalImages());
+//        }
 
         adoptionService.update(adoptionEditDto, file, id);
 
 
         return "redirect:"+EndPoint.ADOPTION_LIST;
+    }
+
+    @CrossOrigin(origins = {"http://localhost:8080", "http://infra.shucloud.site"})
+    @PostMapping(EndPoint.ADOPTION_EDIT )
+    public ResponseEntity<String> handleImageDeleteRequest(@RequestBody Map<String, String> requestBody, @PathVariable Long id) {
+        
+        try{
+            // 이미지, 게시글 삭제 로직
+            Adoption adoption = adoptionService.findByIdWidhImageAndMember(id);
+
+            // deleteImageId를 사용하여 이미지 삭제 (status 0으로 변경)
+            if(requestBody.get("deleteImageIndex") != null) {
+                String deleteImageIndex = requestBody.get("deleteImageIndex");
+
+                adoption.getAdoptionImages().get(Integer.parseInt(deleteImageIndex)).changeIsActive(0);
+                adoptionRepository.save(adoption);
+            }else if (requestBody.get("deletePostId") != null){
+                // deletePostId 사용하여 게시글 삭제 (status 0으로 변경)
+                String deletePostId = requestBody.get("deletePostId");
+
+                adoption.changeIsActive(0);
+                for (AdoptionImage adoptionImage : adoption.getAdoptionImages()) {
+                    adoptionImage.changeIsActive(0);
+                }
+                adoptionRepository.save(adoption);
+
+                return ResponseEntity.ok().body(EndPoint.ADOPTION_LIST);
+            }else{
+                System.out.println("에러??");
+                log.info("이미지 및 게시글 삭제 에러");
+
+            }
+        }catch (Exception e){
+            new RuntimeException(e);
+            System.out.println("이미지 삭제 및 게시글 삭제 에러" + e.getMessage());
+        }
+        
+
+
+
+
+
+        // 삭제 결과에 따라 적절한 응답 반환
+        return ResponseEntity.ok("success delete");
     }
     
     
