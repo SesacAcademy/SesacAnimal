@@ -5,14 +5,11 @@ import com.project.animal.adoption.domain.AdoptionImage;
 import com.project.animal.adoption.dto.AdoptionEditDto;
 import com.project.animal.adoption.dto.AdoptionReadDto;
 import com.project.animal.adoption.dto.AdoptionWriteDto;
-import com.project.animal.adoption.repository.AdoptionImageRepository;
-import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.adoption.service.AdoptionServiceImpl;
 import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,10 +26,8 @@ import java.util.Optional;
 public class AdoptionController {
 
     private final AdoptionServiceImpl adoptionService;
-    private final AdoptionRepository adoptionRepository;
-    private final AdoptionImageRepository adoptionImageRepository;
 
-    //리스트 들어오기
+    // 메인 리스트 입장
     @GetMapping(EndPoint.ADOPTION_LIST)
     public String adoptionMain(Model model){
 
@@ -57,8 +51,6 @@ public class AdoptionController {
     // 글 쓰기 들어오기
     @GetMapping(EndPoint.ADOPTION_WRITE)
     public String adoptionWrite(){
-
-
 
         return ViewName.ADOPTION_WRITE;
     }
@@ -99,23 +91,12 @@ public class AdoptionController {
     @PutMapping(EndPoint.ADOPTION_EDIT)
     public String adoptionEditPut(@ModelAttribute @Validated AdoptionEditDto adoptionEditDto, BindingResult bindingResult,
                                @RequestParam(name="image") List<MultipartFile> file,
-                                  @PathVariable Long id, @RequestParam(name="deleteIndex") String deleteImageId){
+                                  @PathVariable Long id){
 
         if(bindingResult.hasErrors()){
             log.info("adoption_edit binding error = {}", bindingResult);
             return "redirect:"+EndPoint.ADOPTION_EDIT;
         }
-
-
-
-        // 이미지 리스트와 추가 이미지 리스트를 합칩니다.
-//        List<MultipartFile> allImages = new ArrayList<>();
-//        if (adoptionEditDto.getImages() != null) {
-//            allImages.addAll(adoptionEditDto.getImages());
-//        }
-//        if (adoptionEditDto.getAdditionalImages() != null) {
-//            allImages.addAll(adoptionEditDto.getAdditionalImages());
-//        }
 
         adoptionService.update(adoptionEditDto, file, id);
 
@@ -136,22 +117,19 @@ public class AdoptionController {
                 String deleteImageIndex = requestBody.get("deleteImageIndex");
 
                 adoption.getAdoptionImages().get(Integer.parseInt(deleteImageIndex)).changeIsActive(0);
-                adoptionRepository.save(adoption);
+                adoptionService.simpleSave(adoption);
             }else if (requestBody.get("deletePostId") != null){
                 // deletePostId 사용하여 게시글 삭제 (status 0으로 변경)
-                String deletePostId = requestBody.get("deletePostId");
 
                 adoption.changeIsActive(0);
                 for (AdoptionImage adoptionImage : adoption.getAdoptionImages()) {
                     adoptionImage.changeIsActive(0);
                 }
-                adoptionRepository.save(adoption);
+                adoptionService.simpleSave(adoption);
 
                 return ResponseEntity.ok().body(EndPoint.ADOPTION_LIST);
             }else{
-                System.out.println("에러??");
-                log.info("이미지 및 게시글 삭제 에러");
-
+                log.info("입양 게시판 이미지 및 게시글 삭제 둘다 안된 경우");
             }
         }catch (Exception e){
             new RuntimeException(e);

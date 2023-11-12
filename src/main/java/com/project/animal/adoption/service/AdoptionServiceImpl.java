@@ -54,12 +54,15 @@ public class AdoptionServiceImpl implements AdoptionService {
         Adoption saved = adoptionRepository.save(adoption);
 
         for (MultipartFile file : files) {
+
             serverFileName = saveMinio(file); // 미니오에 저장하는 영역
             AdoptionImage adoptionImage = new AdoptionImage(serverFileName, saved);
 
             adoptionImageRepository.save(adoptionImage);
         }
    }
+
+
 
 
    //추후 minio 공통화 작업 후 삭제 예정
@@ -89,11 +92,15 @@ public class AdoptionServiceImpl implements AdoptionService {
         }
     }
 
+    public void simpleSave(Adoption adoption){
+        adoptionRepository.save(adoption);
+    }
+
 
     @Transactional
     public void update (AdoptionEditDto adoptionEditDto, List<MultipartFile> files, Long id) {
         String serverFileName = null;
-        Adoption adoption = adoptionRepository.findById(id).get();
+        Adoption adoption = adoptionRepository.findByIdWithImageAndMember(id);
         System.out.println("service files:>>"+files);
         System.out.println("service files:>>"+files.size());
 
@@ -109,14 +116,21 @@ public class AdoptionServiceImpl implements AdoptionService {
 //        Adoption saved = adoptionRepository.save(adoption);
 
 
+//        for(int i=0; i<files.size(); i++){
+//            serverFileName = saveMinio(files.get(i));
+//            adoption.getAdoptionImages().add(serverFileName);
+//
+//        }
+
         for (MultipartFile file : files) {
             serverFileName = saveMinio(file); // 미니오에 저장하는 영역
+
 //            AdoptionImage adoptionImage = new AdoptionImage(serverFileName, adoption);
             AdoptionImage adoptionImage = new AdoptionImage();
             adoptionImage.changeAdoption(adoption);
             adoptionImage.changePath(serverFileName);
 
-//            adoptionImageRepository.save(adoptionImage);
+            adoptionImageRepository.save(adoptionImage);
         }
     }
 

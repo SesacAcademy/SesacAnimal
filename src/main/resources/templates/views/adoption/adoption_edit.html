@@ -62,11 +62,9 @@
 
      <section class="adoption-edit">
          <form th:object="${edit}" th:action="@{'/v1/adoption/edit/' + ${edit.postId}}" method="POST" name="edit" accept-charset="utf-8" enctype="multipart/form-data">
-<!--         <form th:object="${edit}" action="/v1/adoption/edit/{id}" method="POST" name="edit" accept-charset="utf-8" enctype="multipart/form-data">-->
+             <input type="hidden" name="_method" value="PUT">
              <fieldset>
              <legend>입양 게시판</legend>
-             <input type="hidden" name="_method" value="PUT">
-
              <div class="edit-view-area">
                  <p>
                      <button id="delete-post-button" type="button" class="delete-post-button">게시글 삭제</button>
