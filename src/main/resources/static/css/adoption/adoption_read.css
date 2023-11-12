@@ -70,10 +70,9 @@
     display: flex;
 }
 
-
 .adoption-read .contents-area .image img{
-    width:350px;
-    /* height: 300px; */
+    width:250px;
+    height: 250px;
     margin-left:5px;
     border-radius: 10px;
     overflow: hidden;

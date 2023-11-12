@@ -84,30 +84,47 @@
 
          <section class="adoption-board">
              <ul id="adoption-list">
-                 <li th:each="adoption : ${list}" data-center="${adoption.center}" data-has-notice="${adoption.noticeEdt != null}">
+                 <li th:each="adoption : ${list}" >
                      <a th:href="@{'/v1/adoption/' + ${adoption.id}}">
                          <div class="image-area">
-                             <div th:each="image : ${adoption.adoptionImages}">
+<!--                             <div >-->
+
+                             <p class="image"th:each="image : ${adoption.adoptionImages}" >
                                  <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 -->
-                                 <p th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') }">
-                                     <img th:src="${image.path}" alt="유기동물 이미지"/>
-                                 </p>
-
+                                 <img th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') }" th:src="${image.path}" alt="유기동물 이미지"/>
                                  <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 -->
-                                 <p th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') }">
-                                     <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
-                                 </p>
-
+                                 <img th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') }" th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
                                  <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않고, image.path가 'empty'인 경우 -->
-                                 <p th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}">
-                                     <img th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>
-                                 </p>
-                             </div>
+                                 <img th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}" th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>
+                             </p>
+
+<!--                             </div>-->
                              <p class="status-area">
                                  <span th:text="${adoption.status}" >입양상태</span>
                                  <span class="material-symbols-outlined">heart_plus</span>
                              </p>
                          </div>
+<!--                             <div th:each="image : ${adoption.adoptionImages}">-->
+<!--                                 &lt;!&ndash; 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 &ndash;&gt;-->
+<!--                                 <p th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') }">-->
+<!--                                     <img th:src="${image.path}" alt="유기동물 이미지"/>-->
+<!--                                 </p>-->
+
+<!--                                 &lt;!&ndash; 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 &ndash;&gt;-->
+<!--                                 <p th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') }">-->
+<!--                                     <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>-->
+<!--                                 </p>-->
+
+<!--                                 &lt;!&ndash; 조건: image.path가 'www.animal.go.kr/'로 끝나지 않고, image.path가 'empty'인 경우 &ndash;&gt;-->
+<!--                                 <p th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}">-->
+<!--                                     <img th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>-->
+<!--                                 </p>-->
+<!--                             </div>-->
+<!--                             <p class="status-area">-->
+<!--                                 <span th:text="${adoption.status}" >입양상태</span>-->
+<!--                                 <span class="material-symbols-outlined">heart_plus</span>-->
+<!--                             </p>-->
+<!--                         </div>-->
                          <div class="content-area">
                              <p>제목 : <span th:text="${adoption.title}"></span></p>
                              <p>내용 : <span th:text="${adoption.content}"></span></p>
@@ -115,8 +132,8 @@
                          </div>
                          <div class="info-area">
                              <p id="noticeEdt" th:if="${adoption.noticeEdt != null}">공고종료일 : <span th:text="${adoption.noticeEdt}"></span></p>
+                             <p  th:if="${adoption.member.getName() != null}">작성자 : <span th:text="${adoption.member.getName()}"></span></p>
                              <p th:if="${adoption.happenPlace != null}">발견장소 : <span th:text="${adoption.happenPlace}"></span></p>
-                             <p  th:if="${adoption.member.getName() != null}">작성자 : <span th:text="${adoption.member.getId()}"></span></p>
                              <p  th:if="${adoption.specialMark != null and adoption.center != 'Y'}">특이사항 : <span th:text="${adoption.specialMark}"></span></p>
                          </div>
                      </a>

@@ -121,6 +121,8 @@
 .adoption-board ul li .image-area img {
     /* margin-left: 15px; */
     width:200px;
+    height: 200px;
+    object-fit: cover;
 }
 
 .adoption-board ul li .status-area {

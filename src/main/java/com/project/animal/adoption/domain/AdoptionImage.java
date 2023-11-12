@@ -33,6 +33,12 @@ public class AdoptionImage {
         this.path = path;
     }
 
+    public void changeImage(String path, Adoption adoption) {
+        this.adoption=adoption;
+        this.path = path;
+    }
+
+
     public AdoptionImage(String serverFileName, Adoption adoption) {
         this.adoption = adoption;
         this.path = serverFileName;

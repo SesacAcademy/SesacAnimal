@@ -29,7 +29,15 @@ public class AdoptionController {
     public String adoptionMain(Model model){
 
         List<Adoption> allWithImages = adoptionService.findAllWithImagesAndMember();
+        System.out.println("list:>>:"+allWithImages);
+        System.out.println("list:>>:"+allWithImages.toString());
+        for (Adoption allWithImage : allWithImages) {
+            System.out.println("list age:>>:"+allWithImage.getAge());
+            System.out.println("list images:>>:"+allWithImage.getAdoptionImages().stream().toList());
+            System.out.println("list title:>>:"+allWithImage.getTitle());
+            System.out.println("list:>>:"+allWithImage.getMember());
 
+        }
 
         model.addAttribute("list",allWithImages);
 
@@ -40,6 +48,8 @@ public class AdoptionController {
     // 글 쓰기 들어오기
     @GetMapping(EndPoint.ADOPTION_WRITE)
     public String adoptionWrite(){
+
+
 
         return ViewName.ADOPTION_WRITE;
     }
@@ -52,6 +62,8 @@ public class AdoptionController {
 
         if(bindingResult.hasErrors()){
             log.info("adoption_write binding error = {}", bindingResult);
+
+            return "redirect:"+EndPoint.ADOPTION_WRITE;
         }
 
         adoptionService.save(adoptionWriteDto, file);
