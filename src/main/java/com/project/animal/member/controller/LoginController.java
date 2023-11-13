@@ -1,11 +1,15 @@
 package com.project.animal.member.controller;
 
+import com.project.animal.global.common.annotation.Member;
 import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
+import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.global.common.dto.ResponseDto;
 import com.project.animal.member.dto.LoginFormDto;
 import com.project.animal.member.dto.TokenDto;
 import com.project.animal.member.service.inf.LoginService;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -28,11 +32,26 @@ import static com.project.animal.global.common.constant.TokenTypeValue.JWT_REFRE
 public class LoginController {
     private final LoginService loginService;
 
+    /**
+     * 로그인 페이지로 이동
+     *
+     * @version 0.1
+     * @author 박성수
+     * @return String (로그인 페이지 뷰 이름)
+     */
     @GetMapping(EndPoint.LOGIN)
     public String loginForm() {
         return ViewName.LOGIN_VIEW;
     }
 
+    /**
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param loginFormDto
+     * @param response
+     * @return
+     */
     @ResponseBody
     @PostMapping(EndPoint.LOGIN_API)
     @ResponseStatus(HttpStatus.OK)
@@ -70,5 +89,20 @@ public class LoginController {
         return ResponseEntity.ok()
                 .headers(responseHeaders)
                 .body(new ResponseDto<>(HttpStatus.OK.value(), "null", "로그인 되었습니다."));
+    }
+
+    /**
+     * 로그아웃 후, 로그인 페이지로 이동
+     *
+     * @version 0.1
+     * @author 박성수
+     * @return String (로그인 페이지 뷰 이름)
+     */
+    @GetMapping(EndPoint.LOGOUT)
+    public String logout(@Member MemberDto member, HttpServletResponse response) {
+        // 로그아웃
+        loginService.logout(member, response);
+
+        return ViewName.LOGIN_VIEW;
     }
 }

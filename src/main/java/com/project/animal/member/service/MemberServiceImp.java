@@ -7,6 +7,7 @@ import com.project.animal.member.dto.FindMemberEmailFormDto;
 import com.project.animal.member.dto.SignupFormDto;
 import com.project.animal.member.exception.InvalidCodeException;
 import com.project.animal.member.exception.NestedEmailException;
+import com.project.animal.member.exception.NestedNicknameException;
 import com.project.animal.member.exception.NotFoundException;
 import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.member.service.inf.MemberService;
@@ -33,6 +34,9 @@ public class MemberServiceImp implements MemberService {
         // 이메일 중복 여부 체크
         checkNestedEmail(signupFormDto.getEmail());
 
+        // 닉네임 중복 여부 체크
+        checkNestedNickname(signupFormDto.getNickname());
+        
         // 이메일 토큰 체크
         checkMailToken(signupFormDto.getEmail(), signupFormDto.getToken());
 
@@ -40,6 +44,7 @@ public class MemberServiceImp implements MemberService {
 
         Member member = Member.builder()
                 .email(signupFormDto.getEmail())
+                .nickname(signupFormDto.getNickname())
                 .name(signupFormDto.getName())
                 .password(encoder.encode(signupFormDto.getPassword()))
                 .phone(signupFormDto.getPhone())
@@ -83,6 +88,13 @@ public class MemberServiceImp implements MemberService {
         memberRepository.findByEmail(email)
                 .ifPresent((x) -> {
                     throw new NestedEmailException("중복된 이메일입니다.");
+                });
+    }
+
+    private void checkNestedNickname(String nickname) {
+        memberRepository.findByNickname(nickname)
+                .ifPresent((x) -> {
+                    throw new NestedNicknameException("중복된 닉네임입니다.");
                 });
     }
 }

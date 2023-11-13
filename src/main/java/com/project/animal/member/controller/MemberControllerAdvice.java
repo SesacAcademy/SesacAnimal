@@ -1,10 +1,7 @@
 package com.project.animal.member.controller;
 
 import com.project.animal.global.common.dto.ResponseDto;
-import com.project.animal.member.exception.InvalidCodeException;
-import com.project.animal.member.exception.LoginException;
-import com.project.animal.member.exception.NestedEmailException;
-import com.project.animal.member.exception.NotFoundException;
+import com.project.animal.member.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailSendException;
@@ -18,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.project.animal.global.common.constant.TokenTypeValue.USER_EMAIL;
+import static com.project.animal.global.common.constant.TokenTypeValue.USER_NICKNAME;
+
 @Slf4j
 @RestControllerAdvice(assignableTypes = {MemberController.class, LoginController.class})
 public class MemberControllerAdvice {
@@ -28,7 +28,7 @@ public class MemberControllerAdvice {
      */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(MailSendException.class)
-    public ResponseDto<String> mailParseException2(MailSendException e) {
+    public ResponseDto<String> mailParseException(MailSendException e) {
         log.error("이메일 파싱 에러 발생");
 
         return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, "이메일 발송에 실패하였습니다.");
@@ -44,7 +44,20 @@ public class MemberControllerAdvice {
     public ResponseDto<String> nestedEmailException(NestedEmailException e) {
         log.error("이메일 중복 에러 발생!", e);
 
-        return new ResponseDto<>(HttpStatus.CONFLICT.value(), null, e.getMessage());
+        return new ResponseDto<>(HttpStatus.CONFLICT.value(), USER_EMAIL, e.getMessage());
+    }
+
+    /**
+     *
+     * @param e
+     * @return
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(NestedNicknameException.class)
+    public ResponseDto<String> nestedNicknameException(NestedNicknameException e) {
+        log.error("닉네임 중복 에러 발생!", e);
+
+        return new ResponseDto<>(HttpStatus.CONFLICT.value(), USER_NICKNAME, e.getMessage());
     }
 
     /**
