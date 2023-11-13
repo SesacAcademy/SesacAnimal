@@ -13,6 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static com.project.animal.global.common.constant.TokenTypeValue.JWT_ACCESS_TOKEN;
@@ -54,5 +58,26 @@ public class LoginServiceImp implements LoginService {
         String refreshToken = jwtTokenProvider.generateToken(memberDto, JWT_REFRESH_TOKEN);
 
         return new TokenDto(accessToken, refreshToken);
+    }
+
+    @Override
+    public void logout(MemberDto memberDto, HttpServletResponse response) {
+        // Redis 서버에 저장된 Refresh 토큰 삭제
+        jwtTokenProvider.removeToken(memberDto);
+        log.info("로그아웃 - Redis에 저장된 Refresh 토큰 삭제!");
+
+        // 클라이언트 쿠키에 저장된 Access 토큰 삭제
+        Cookie accessCookie = new Cookie(JWT_ACCESS_TOKEN, null);
+        accessCookie.setMaxAge(0);
+        accessCookie.setPath("/");
+
+        // 클라이언트 쿠키에 저장된 Refresh 토큰 삭제
+        Cookie refreshCookie = new Cookie(JWT_REFRESH_TOKEN, null);
+        refreshCookie.setMaxAge(0);
+        refreshCookie.setPath("/");
+
+        response.addCookie(accessCookie);
+        response.addCookie(refreshCookie);
+        log.info("로그아웃 - 클라이언트 쿠키에 저장된 Access, Refresh 토큰 삭제!");
     }
 }

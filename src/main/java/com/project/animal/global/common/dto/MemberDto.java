@@ -15,11 +15,14 @@ public class MemberDto {
 
     private String email;
 
+    private String nickname;
+
     private Role role;
 
     public MemberDto(Member member) {
         this.id = member.getId();
         this.email = new String(member.getEmail());
+        this.nickname = new String(member.getNickname());
         this.role = member.getRole();
     }
 }

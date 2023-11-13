@@ -8,6 +8,8 @@ public abstract class TokenTypeValue {
 
     // JWT Claim Value
     public static final String USER_ID = "uid";
+    public static final String USER_EMAIL = "email";
+    public static final String USER_NICKNAME = "nickname";
     public static final String USER_ROLE = "role";
 
 
