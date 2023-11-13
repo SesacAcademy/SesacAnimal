@@ -19,6 +19,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
 
+import static com.project.animal.global.common.constant.AuthType.JWT;
+import static com.project.animal.global.common.constant.AuthType.MAIL;
+
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImp implements MemberService {
@@ -30,6 +33,7 @@ public class MemberServiceImp implements MemberService {
     private final PasswordEncoder encoder;
 
     @Override
+    @Transactional
     public void save(SignupFormDto signupFormDto) {
         // 이메일 중복 여부 체크
         checkNestedEmail(signupFormDto.getEmail());
@@ -48,7 +52,7 @@ public class MemberServiceImp implements MemberService {
                 .name(signupFormDto.getName())
                 .password(encoder.encode(signupFormDto.getPassword()))
                 .phone(signupFormDto.getPhone())
-                .type("MAIL")
+                .type(MAIL.name())
                 .role(Role.ROLE_USER)
                 .isActive(1)
                 .createdAt(dateTime)
@@ -85,7 +89,7 @@ public class MemberServiceImp implements MemberService {
     }
 
     private void checkNestedEmail(String email) {
-        memberRepository.findByEmail(email)
+        memberRepository.findByEmailAndType(email, MAIL.name())
                 .ifPresent((x) -> {
                     throw new NestedEmailException("중복된 이메일입니다.");
                 });

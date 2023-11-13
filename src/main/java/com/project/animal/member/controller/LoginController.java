@@ -21,6 +21,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
+
+import static com.project.animal.global.common.constant.EndPoint.KAKAO_LOGIN;
 import static com.project.animal.global.common.constant.ExpirationTime.ACCESS_TOKEN_COOKIE_EXPIRATION_TIME;
 import static com.project.animal.global.common.constant.ExpirationTime.REFRESH_TOKEN_COOKIE_EXPIRATION_TIME;
 import static com.project.animal.global.common.constant.TokenTypeValue.JWT_ACCESS_TOKEN;
@@ -59,6 +61,49 @@ public class LoginController {
                                                      HttpServletResponse response) {
         TokenDto token = loginService.login(loginFormDto);
 
+        HttpHeaders responseHeaders = addTokenInCookie(token);
+
+        log.info("Response 객체에 JWT 토큰 추가");
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(new ResponseDto<>(HttpStatus.OK.value(), "null", "로그인 되었습니다."));
+    }
+
+    @GetMapping(KAKAO_LOGIN)
+    @ResponseBody
+    public ResponseEntity kakaoLogin(@RequestParam String code, HttpServletResponse response) {
+        TokenDto token = loginService.kakaoLogin(code);
+
+        HttpHeaders responseHeaders = addTokenInCookie(token);
+        responseHeaders.add("Location", "/");
+
+        log.info("Response 객체에 JWT 토큰 추가");
+
+        return new ResponseEntity<>(responseHeaders, HttpStatus.FOUND);
+    }
+
+    /**
+     * 로그아웃 후, 로그인 페이지로 이동
+     *
+     * @version 0.1
+     * @author 박성수
+     * @return String (로그인 페이지 뷰 이름)
+     */
+    @GetMapping(EndPoint.LOGOUT)
+    public String logout(@Member MemberDto member, HttpServletResponse response) {
+        // 로그아웃
+        loginService.logout(member, response);
+
+        return ViewName.LOGIN_VIEW;
+    }
+
+    /**
+     *
+     * @param token
+     * @return
+     */
+    private HttpHeaders addTokenInCookie(TokenDto token) {
         // Access 토큰 쿠키
         ResponseCookie accessToken = ResponseCookie.from(JWT_ACCESS_TOKEN, token.getAccessToken())
                 .sameSite("Strict")                     // CSRF 방지
@@ -82,27 +127,6 @@ public class LoginController {
         responseHeaders.add(HttpHeaders.SET_COOKIE, accessToken.toString());
         responseHeaders.add(HttpHeaders.SET_COOKIE, refreshToken.toString());
 
-        log.info("Response 객체에 JWT 토큰 추가");
-
-        log.info("토큰 {}, {}", accessToken.toString(), refreshToken.toString());
-
-        return ResponseEntity.ok()
-                .headers(responseHeaders)
-                .body(new ResponseDto<>(HttpStatus.OK.value(), "null", "로그인 되었습니다."));
-    }
-
-    /**
-     * 로그아웃 후, 로그인 페이지로 이동
-     *
-     * @version 0.1
-     * @author 박성수
-     * @return String (로그인 페이지 뷰 이름)
-     */
-    @GetMapping(EndPoint.LOGOUT)
-    public String logout(@Member MemberDto member, HttpServletResponse response) {
-        // 로그아웃
-        loginService.logout(member, response);
-
-        return ViewName.LOGIN_VIEW;
+        return responseHeaders;
     }
 }
