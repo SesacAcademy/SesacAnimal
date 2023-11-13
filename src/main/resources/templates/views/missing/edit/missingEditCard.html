@@ -8,7 +8,7 @@
         <section class="missing-edit-page-content">
             <div style="display: flex; flex-direction:row; padding-right:30px;">
                 <div class="missing-edit-thumb-container">
-                    <div th:each="imagePath : ${detail.images}" style="border: 1px solid black; border-radius: 8px; padding: 5px;">
+                    <div th:each="imagePath : ${detail.images}" style="border: 1px solid black; border-radius: 8px; padding: 5px; margin-right:20px;">
                         <div style="position: relative;">
                             <button class="image-delete-button" type="button" name="deleteImageIds" th:value="${imagePath.imageId}">x</button>
                             <figure>
@@ -17,7 +17,17 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="missing-new-thumb-container" style="margin-top: 20px;">
+                <div class="missing-new-image-container">
+                    <div style="display: flex; flex-direction: row; align-items:center; margin-bottom: 20px;">
+                        <div>사진을 등록해주세요</div>
+                        <div class="missing-add-image-button">추가하기</div>
+                    </div>
+                    <div class="missing-new-image-box">
+                        <input class="missing-new-image" type="file" placeholder="사진을 등록해주세요" name="images" />
+                    </div>
+                </div>
             </div>
             <section class="missing-edit-info-container">
                 <div>

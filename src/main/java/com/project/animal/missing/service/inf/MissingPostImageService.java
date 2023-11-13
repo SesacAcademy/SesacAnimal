@@ -8,4 +8,8 @@ import java.util.List;
 
 public interface MissingPostImageService {
   List<MissingPostImage> createImage(MultipartFile[] images, MissingPost post);
+
+  void deleteImages(List<Long> ids);
+
+  void editImages(MultipartFile[] images, MissingPost post, List<Long> ids);
 }

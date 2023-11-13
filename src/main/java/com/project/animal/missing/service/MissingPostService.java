@@ -50,7 +50,7 @@ public class MissingPostService {
   private MissingListEntryDto convertToMissingListEntryDto(MissingPost entity) {
     MissingListEntryDto entry = MissingListEntryDto.fromMissingPost(entity);
     List<MissingPostImageDto> images = entity.getImages().stream()
-            .map(image -> new MissingPostImageDto(image.getImage_id(), image.getPath()))
+            .map(image -> new MissingPostImageDto(image.getImageId(), image.getPath()))
             .collect(Collectors.toList());
     entry.addImages(images);
     return entry;
@@ -76,7 +76,8 @@ public class MissingPostService {
 
   private List<MissingPostImageDto> createImageList(List<MissingPostImage> images) {
     return images.stream()
-            .map(image -> new MissingPostImageDto(image.getImage_id(), image.getPath()))
+            .filter((image) -> image.getIsActive() == 1)
+            .map(image -> new MissingPostImageDto(image.getImageId(), image.getPath()))
             .collect(Collectors.toList());
   }
 
@@ -135,11 +136,16 @@ public class MissingPostService {
     }
   }
 
+  // TODO: find로 post 가져온 후에 값 변경후 dirty check로 commit 가능
+
+  @Transactional
   public boolean editPost(MissingEditDto dto) {
-    
+
     try {
+
       MissingPost post = converter.toMissingPost(dto);
       MissingPost result = missingPostRepository.save(post);
+      missingPostImageService.editImages(dto.getImages(), post, dto.getDeletedIds());
 
       if (result == null) throw new Exception("no edit result");
       return true;

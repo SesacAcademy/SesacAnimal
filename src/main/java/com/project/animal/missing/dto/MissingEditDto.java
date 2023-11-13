@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -48,6 +49,8 @@ public class MissingEditDto {
   private String description;
 
   private List<Long> deletedIds;
+
+  private MultipartFile[] images;
 
   public void setMissingTime (String missingTime) {
     this.missingTime = CustomDateParser.formatDate(missingTime);
