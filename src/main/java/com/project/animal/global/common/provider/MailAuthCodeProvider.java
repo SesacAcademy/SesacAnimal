@@ -73,9 +73,9 @@ public class MailAuthCodeProvider implements AuthCodeProvider {
         // Key 생성
         String key = createKey(email);
 
-        // 인증번호가 만료된 경우, 예외 발생
+        // 인증 번호가 만료되거나 이메일 토큰 발급 시, 사용한 이메일이 아닌 경우, 해당 예외 발생 
         String findAuthCode = redisServiceProvider.get(key).orElseThrow(() -> {
-            throw new InvalidCodeException("인증번호가 만료되었습니다.");
+            throw new InvalidCodeException("유효하지 않은 인증번호입니다.");
         });
 
         // 사용자가 보내온 토큰 값과 서버에 저장된 토큰 값을 비교

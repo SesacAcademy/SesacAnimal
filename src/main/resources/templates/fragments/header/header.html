@@ -35,10 +35,8 @@
             <a th:if="${member != null}" href="/v1/auth/logout" title="로그아웃" class="material-symbols-outlined">move_item</a>
         </p>
         <p>
-            <a href="/v1/auth/signup" title="회원가입" class="material-symbols-outlined">person_add</a>
+            <a th:if="${member == null}" href="/v1/auth/signup" title="회원가입" class="material-symbols-outlined">person_add</a>
+            <a th:if="${member != null}" href="/v1/auth/signup" title="회원가입" class="material-symbols-outlined">Settings</a>
         </p>
     </div>
-
-
-
 </header>
