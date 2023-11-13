@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 public class AdoptionWriteDto {
 
     private String author;
@@ -35,6 +34,7 @@ public class AdoptionWriteDto {
     private String content;
 
     private String status;
+
 
 
 }

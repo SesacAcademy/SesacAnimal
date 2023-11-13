@@ -1,11 +1,15 @@
 package com.project.animal.member.controller;
 
+import com.project.animal.global.common.annotation.Member;
 import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
+import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.global.common.dto.ResponseDto;
 import com.project.animal.member.dto.LoginFormDto;
 import com.project.animal.member.dto.TokenDto;
 import com.project.animal.member.service.inf.LoginService;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import static com.project.animal.global.common.constant.ExpirationTime.ACCESS_TOKEN_COOKIE_EXPIRATION_TIME;
 import static com.project.animal.global.common.constant.ExpirationTime.REFRESH_TOKEN_COOKIE_EXPIRATION_TIME;
+import static com.project.animal.global.common.constant.TokenTypeValue.JWT_ACCESS_TOKEN;
+import static com.project.animal.global.common.constant.TokenTypeValue.JWT_REFRESH_TOKEN;
 
 @Slf4j
 @Controller
@@ -26,11 +32,26 @@ import static com.project.animal.global.common.constant.ExpirationTime.REFRESH_T
 public class LoginController {
     private final LoginService loginService;
 
+    /**
+     * 로그인 페이지로 이동
+     *
+     * @version 0.1
+     * @author 박성수
+     * @return String (로그인 페이지 뷰 이름)
+     */
     @GetMapping(EndPoint.LOGIN)
     public String loginForm() {
         return ViewName.LOGIN_VIEW;
     }
 
+    /**
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param loginFormDto
+     * @param response
+     * @return
+     */
     @ResponseBody
     @PostMapping(EndPoint.LOGIN_API)
     @ResponseStatus(HttpStatus.OK)
@@ -39,7 +60,7 @@ public class LoginController {
         TokenDto token = loginService.login(loginFormDto);
 
         // Access 토큰 쿠키
-        ResponseCookie accessToken = ResponseCookie.from("accessToken", token.getAccessToken())
+        ResponseCookie accessToken = ResponseCookie.from(JWT_ACCESS_TOKEN, token.getAccessToken())
                 .sameSite("Strict")                     // CSRF 방지
                 .secure(false)                          // HTTPS 설정
                 .httpOnly(false)
@@ -48,7 +69,7 @@ public class LoginController {
                 .build();
 
         // Refresh 토큰 쿠키 (httpOnly 설정 필수!)
-        ResponseCookie refreshToken = ResponseCookie.from("refreshToken", token.getRefreshToken())
+        ResponseCookie refreshToken = ResponseCookie.from(JWT_REFRESH_TOKEN, token.getRefreshToken())
                 .sameSite("Strict")                     // CSRF 방지
                 .secure(false)                          // HTTPS 설정
                 .httpOnly(true)                         // JS 조회 방지
@@ -68,5 +89,20 @@ public class LoginController {
         return ResponseEntity.ok()
                 .headers(responseHeaders)
                 .body(new ResponseDto<>(HttpStatus.OK.value(), "null", "로그인 되었습니다."));
+    }
+
+    /**
+     * 로그아웃 후, 로그인 페이지로 이동
+     *
+     * @version 0.1
+     * @author 박성수
+     * @return String (로그인 페이지 뷰 이름)
+     */
+    @GetMapping(EndPoint.LOGOUT)
+    public String logout(@Member MemberDto member, HttpServletResponse response) {
+        // 로그아웃
+        loginService.logout(member, response);
+
+        return ViewName.LOGIN_VIEW;
     }
 }

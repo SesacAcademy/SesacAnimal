@@ -1,5 +1,5 @@
 package com.project.animal.global.common.constant;
 
-public enum TokenType {
+public enum AuthType {
     MAIL, PHONE, JWT, GOOGLE, NAVER, KAKAO
 }

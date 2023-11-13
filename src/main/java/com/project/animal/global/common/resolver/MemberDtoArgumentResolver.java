@@ -16,6 +16,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 
+import static com.project.animal.global.common.constant.TokenTypeValue.*;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -36,29 +38,16 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
 
-        String token = jwtTokenProvider.resolveToken(request, "accessToken");
+        String token = jwtTokenProvider.resolveToken(request, JWT_ACCESS_TOKEN);
 
         // 기존 쿠키에 JWT Access 토큰이 없는 경우, Request 영역에 저장해둔 newAccessToken을 사용
-        if (token == null && request.getAttribute("accessToken") != null)
-            token = (String) request.getAttribute("accessToken");
+        if (token == null && request.getAttribute(JWT_ACCESS_TOKEN) != null)
+            token = (String) request.getAttribute(JWT_ACCESS_TOKEN);
 
         // 기존 쿠키에 JWT Access 토큰이 있는 경우, JWT를 파싱하여 MemberDto 객체로 리턴
-        if (token != null) {
-            MemberDto member = new MemberDto();
+        if (token != null)
+            return jwtTokenProvider.parseToken(token);
 
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(jwtTokenProvider.getKey())
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-
-            member.setEmail(claims.getSubject());
-            member.setId(Long.parseLong(((String) claims.get("uid"))));
-            member.setRole(Enum.valueOf(Role.class, (String) claims.get("role")));
-
-            return member;
-        }
-        
         // 없으면 null 값 리턴
         return null;
     }
