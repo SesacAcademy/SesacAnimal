@@ -6,6 +6,7 @@ import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.review.constant.EndPoint;
 import com.project.animal.review.constant.ViewName;
 import com.project.animal.review.domain.ReviewPost;
+import com.project.animal.review.dto.CreateReviewComment;
 import com.project.animal.review.dto.CreateReviewPostDto;
 import com.project.animal.review.dto.ReadListGeneric;
 
@@ -45,11 +46,11 @@ public class ReviewController {
         return member.get();
     }
 
-    @GetMapping(EndPoint.WRITE)
+    @GetMapping(EndPoint.REVIEW_WRITE)
     public String writeReviewPage(){
         return ViewName.WRITE_PAGE;
     }
-    @PostMapping(EndPoint.WRITE)
+    @PostMapping(EndPoint.REVIEW_WRITE)
     public String createReviewPost(@ModelAttribute @Valid CreateReviewPostDto createReviewPostDto,
                                BindingResult bindingResult,
                                @RequestParam(name = "imageList") List<MultipartFile> imageFiles
@@ -71,14 +72,15 @@ public class ReviewController {
         return ViewName.REVIEW_LIST;
     }
     // 단일로 하나 보기
-    @GetMapping(EndPoint.ONE)
+    // 게시판 읽어올 때 comment에 관한 내용도 던져야 함 id, parentId, content, CreatedAt, updatedAt
+    @GetMapping(EndPoint.REVIEW_READ_ONE)
     public String readOne(@RequestParam(name = "reviewPostId") Long reviewPostId, Model model){
          ReadOneReviewDto readOneReviewDto = reviewService.readOne(reviewPostId);
          model.addAttribute("reviewDto", readOneReviewDto);
          return ViewName.READ_ONE;
     }
     // 검색
-    @GetMapping(EndPoint.SEARCH)
+    @GetMapping(EndPoint.REVIEW_SEARCH)
     public String readBySearch(@RequestParam(name = "type") String type,
                                @RequestParam(name = "keyword") String keyword,
                                @RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -87,13 +89,13 @@ public class ReviewController {
         model.addAttribute("listDto", viewDto);
         return ViewName.REVIEW_LIST;
     }
-    @GetMapping(EndPoint.EDIT)
+    @GetMapping(EndPoint.REVIEW_EDIT)
     public String edit(@RequestParam(name = "reviewPostId") Long reviewPostId, Model model){
         ReadOneReviewDto readOneReviewDto = reviewService.readOne(reviewPostId);
         model.addAttribute("reviewDto", readOneReviewDto);
         return ViewName.EDIT_ONE;
     }
-    @PostMapping(EndPoint.UPDATE)
+    @PostMapping(EndPoint.REVIEW_UPDATE)
     public String update(@RequestParam(name = "reviewImageIds", required = false) List<Long> reviewImageIds,
                          @ModelAttribute @Valid CreateReviewPostDto updatePostDto,
                          @RequestParam(name = "reviewPostId")Long reviewPostId,
@@ -112,17 +114,10 @@ public class ReviewController {
         reviewImageService.saveImg(imageFiles,reviewPost);
         return ViewName.HOME;
     }
-    @GetMapping(EndPoint.DELETE)
+    @GetMapping(EndPoint.REVIEW_DELETE)
     public String delete(@RequestParam(name = "reviewPostId")Long reviewPostId){
         reviewService.delete(reviewPostId);
         return ViewName.HOME;
     }
 
-//    @GetMapping()
-    //인자 검사
-    public String createReviewComment(BindingResult bindingResult){
-        //member 객체, reviewpost 객체 필
-        return "redirect";
-        // 해당페이지 리턴
-    }
 }

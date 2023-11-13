@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class ReadOneReviewDto {
     private String title;
-    private String name;
+    private String nickname;
     private LocalDateTime updatedAt;
     private String content;
     private int viewCount;
@@ -27,7 +27,7 @@ public class ReadOneReviewDto {
     public ReadOneReviewDto(ReviewPost reviewPost) {
         this.title = reviewPost.getTitle();
         this.reviewPostId = reviewPost.getId();
-        this.name = reviewPost.getMember().getName();
+        this.nickname = reviewPost.getMember().getNickname();
         this.updatedAt = reviewPost.getUpdatedAt();
         this.content = reviewPost.getContent();
         this.viewCount = reviewPost.getViewCount();

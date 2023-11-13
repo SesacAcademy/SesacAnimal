@@ -74,9 +74,9 @@ public class ReviewService {
         return readOneReviewDto;
     }
     @Transactional(readOnly = true)
-    private ReadListGeneric readByName(Integer page, int size, String name) {
+    private ReadListGeneric readByName(Integer page, int size, String nickname) {
         Pageable pageable = createPageByCreatedAt(page,size);
-        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByName(name,pageable);
+        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByNickame(nickname,pageable);
         return entityToDtoByReadAll(postList);
     }
     public ReadListGeneric<ReadListGeneric> readBySearch(String type, String keyword, Integer page, int size) {
@@ -105,9 +105,14 @@ public class ReviewService {
 
     public ReviewPost updateReviewPost( CreateReviewPostDto updatePostDto, Long reviewPostId) {
         dtoCheck(updatePostDto);
-        ReviewPost reviewPost = findByIdAndCheckOptional(reviewPostId);
+        ReviewPost reviewPost = findReviewPostCheckOptional(reviewPostId);
         reviewPost.update(updatePostDto);
         return reviewPost;
+    }
+    //
+    private ReviewPost findReviewPostCheckOptional(Long reviewPostId){
+        Optional<ReviewPost> reviewPostOptional = reviewRepository.findById(reviewPostId);
+        return postCheckOptional(reviewPostOptional, reviewPostId);
     }
     private void dtoCheck(CreateReviewPostDto updatePostDto) {
         String title = updatePostDto.getTitle();
@@ -117,12 +122,15 @@ public class ReviewService {
         }
     }
     public void delete(Long reviewPostId) {
-        ReviewPost reviewPost = findByIdAndCheckOptional(reviewPostId);
+        ReviewPost reviewPost = findReviewPostCheckOptional(reviewPostId);
         reviewPost.changeStatus();
     }
-    private ReviewPost findByIdAndCheckOptional(Long reviewPostId){
-        Optional<ReviewPost> reviewPostOptional = reviewRepository.findById(reviewPostId);
-        return reviewPostOptional.orElseThrow(
+    private ReviewPost postCheckOptional(Optional<ReviewPost> reviewPost, Long reviewPostId){
+        return reviewPost.orElseThrow(
                 ()-> new NotFoundException("해당 게시글의 id가 유효하지 않습니다 유효하지 않은 reviewPostId: "+reviewPostId));
+    }
+    public ReviewPost findPostAndMember(Long reviewPostId){
+        Optional<ReviewPost> reviewPost = reviewRepository.findByIdWithMember(reviewPostId);
+        return postCheckOptional(reviewPost, reviewPostId);
     }
 }

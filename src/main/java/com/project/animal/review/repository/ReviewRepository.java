@@ -18,9 +18,9 @@ public interface ReviewRepository extends JpaRepository<ReviewPost, Long> {
     @Query("SELECT p FROM ReviewPost p JOIN FETCH p.member m LEFT JOIN FETCH p.reviewImages i WHERE p.id = :id AND p.isActive = 1")
     Optional<ReviewPost> findByIdWithMemberAndImage(@Param("id") Long id);
 
-    @Query(value = "SELECT p FROM ReviewPost p JOIN FETCH p.member m LEFT JOIN FETCH p.reviewImages i WHERE m.name = :name AND p.isActive = 1",
-            countQuery = "SELECT count(p.id) FROM ReviewPost p JOIN p.member m WHERE m.name = :name AND p.isActive = 1")
-    Page<ReviewPost> findAllWithMemberAndImageByName(@Param("name") String name, Pageable pageable);
+    @Query(value = "SELECT p FROM ReviewPost p JOIN FETCH p.member m LEFT JOIN FETCH p.reviewImages i WHERE m.nickname = :nickname AND p.isActive = 1",
+            countQuery = "SELECT count(p.id) FROM ReviewPost p JOIN p.member m WHERE m.nickname = :nickname AND p.isActive = 1")
+    Page<ReviewPost> findAllWithMemberAndImageByNickame(@Param("nickname") String nickname, Pageable pageable);
 
     @Query(value = "SELECT p FROM ReviewPost p JOIN FETCH p.member m LEFT JOIN FETCH p.reviewImages i WHERE p.title LIKE %:title% AND p.isActive = 1",
             countQuery = "SELECT count(p.id) FROM ReviewPost p WHERE p.title LIKE %:title% AND p.isActive = 1")
@@ -35,4 +35,6 @@ public interface ReviewRepository extends JpaRepository<ReviewPost, Long> {
     Page<ReviewPost> findAll(Pageable pageable);
 
     Optional<ReviewPost> findById(Long reviewPostId);
+    @Query("SELECT p FROM ReviewPost p JOIN FETCH p.member WHERE p.isActive = 1 AND p.id = :id")
+    Optional<ReviewPost> findByIdWithMember(@Param("id")Long reviewPostId);
 }

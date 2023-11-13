@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Log4j2
 @NoArgsConstructor
 public class ReviewPostAllDto {
 
@@ -37,17 +38,17 @@ public class ReviewPostAllDto {
         this.memberName = reviewPost.getMember().getName();
         this.url = getActiveImage(reviewPost.getReviewImages());
     }
-//    private String setList(List<ReviewImage> images) {
-//
-//        if (images.isEmpty()){
-//            return null;
-//        }
-//        for (ReviewImage reviewImage:images) {
-//            if (reviewImage.getIsActiveToDto()==1){
-//                return reviewImage.getUrl();
-//            }
-//        } return null;
-//    }
+    private String setList(List<ReviewImage> images) {
+
+        if (images.isEmpty()){
+            return null;
+        }
+        for (ReviewImage reviewImage:images) {
+            if (reviewImage.getIsActiveToDto()==1){
+                return reviewImage.getUrl();
+            }
+        } return null;
+    }
     private String getActiveImage(List<ReviewImage> images) {
         return images.stream()
                 .filter(image -> image.getIsActiveToDto() == 1)

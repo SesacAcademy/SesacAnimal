@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Review_image")
@@ -25,6 +26,7 @@ public class ReviewImage extends BaseEntity {
     private ReviewPost reviewPost;
     @Column(name = "is_active")
     private int isActive;
+
     public String getUrl(){
         return this.url;
     }

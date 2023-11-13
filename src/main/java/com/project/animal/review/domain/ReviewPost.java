@@ -33,15 +33,15 @@ public class ReviewPost extends BaseEntity {
     @Column(name = "view_count")
     private int viewCount;
 
-    @OneToMany(mappedBy = "reviewPost")
+    @OneToMany(mappedBy = "reviewPost", cascade = CascadeType.REMOVE)
     private List<ReviewImage> reviewImages = new ArrayList<>();
 
     @Column(name = "is_active")
     private int isActive;
 
-// TODO: comment 생성시 활성화
-//    @OneToMany(mappedBy = "reviewPost")
-//    private List<ReviewComment> comments;
+    @OneToMany(mappedBy = "reviewPost")
+    private List<ReviewComment> comments = new ArrayList<>();
+
 
     public ReviewPost(CreateReviewPostDto createReviewPostDto, Member member) {
         this.content = createReviewPostDto.getContent();

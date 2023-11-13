@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +26,7 @@ public class ReviewImageService {
     private final ReviewImageRepository reviewImageRepository;
 
         public void saveImg(List<MultipartFile> imageFiles, ReviewPost reviewPost){
+//            List<ReviewImage> reviewImageList = new ArrayList<>();
             List<String> urls = uploadMinio(imageFiles);
             for (String url : urls) {
                 ReviewImage reviewImage = ReviewImage.builder()
@@ -33,7 +35,9 @@ public class ReviewImageService {
                         .isActive(1)
                         .build();
                 reviewImageRepository.save(reviewImage);
+//                reviewImageList.add(reviewImage);
             }
+//            return reviewImageList; 추후 튜닝예정
         }
         private List<String> uploadMinio(List<MultipartFile> imageFiles){
             ImageListDto imageListDto = new ImageListDto(imageFiles);
