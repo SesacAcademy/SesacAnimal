@@ -136,7 +136,7 @@ public class MissingPostService {
   }
 
   public boolean editPost(MissingEditDto dto) {
-    log.info("dto:>> " + dto.toString());
+    
     try {
       MissingPost post = converter.toMissingPost(dto);
       MissingPost result = missingPostRepository.save(post);

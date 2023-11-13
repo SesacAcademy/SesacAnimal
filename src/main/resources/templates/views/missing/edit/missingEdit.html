@@ -41,6 +41,7 @@
     <link rel="stylesheet" th:href="@{/css/header.css}" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
     <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/missing/edit/deleteImage.js}" defer></script>
 
     <link rel="stylesheet" th:href="@{/css/missing/edit/missingEdit.css}" />
     <link rel="stylesheet" th:href="@{/css/missing/edit/missingEditCard.css}" />
@@ -67,7 +68,7 @@
 <body>
 <th:block th:replace="../fragments/header/header :: header" />
 <section th:if="${detail}" class="missing-edit-page">
-    <th:block th:replace="./missing/edit/missingEditCard :: editCard(${detail})" />
+    <th:block th:replace="./missing/edit/missingEditCard :: editCard(${detail}, ${endPoints.edit})" />
 </section>
 <th:block th:replace="../fragments/footer/footer :: footer" />
 </body>
