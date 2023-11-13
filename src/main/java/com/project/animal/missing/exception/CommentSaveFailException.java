@@ -1,6 +1,6 @@
 package com.project.animal.missing.exception;
 
-import com.project.animal.missing.dto.MissingCommentNewDto;
+import com.project.animal.missing.dto.comment.MissingCommentNewDto;
 import lombok.Getter;
 
 @Getter

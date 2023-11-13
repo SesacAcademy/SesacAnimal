@@ -1,11 +1,15 @@
 package com.project.animal.missing.dto;
 
 
+import com.project.animal.missing.domain.MissingComment;
 import com.project.animal.missing.domain.MissingPost;
+import com.project.animal.missing.dto.comment.MissingCommentListEntryDto;
+import com.project.animal.missing.dto.image.MissingPostImageDto;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @ToString
@@ -39,7 +43,25 @@ public class MissingDetailDto {
 
   private LocalDateTime updatedAt;
 
-  private MissingDetailDto(long id, String title, long memberId, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, int reward, int missingStatus, LocalDateTime updatedAt, String description) {
+  private List<MissingCommentListEntryDto> comments;
+
+  private List<MissingPostImageDto> images;
+
+  private MissingDetailDto(
+          long id, String title,
+          long memberId, String animalType,
+          String specifics,
+          String color,
+          int viewCount,
+          String missingPlace,
+          LocalDateTime missingTime,
+          int reward,
+          int missingStatus,
+          LocalDateTime updatedAt,
+          String description,
+          List<MissingCommentListEntryDto> comments,
+          List<MissingPostImageDto> images
+  ) {
     this.id = id;
     this.title = title;
     this.memberId = memberId;
@@ -53,9 +75,11 @@ public class MissingDetailDto {
     this.missingStatus = missingStatus;
     this.updatedAt = updatedAt;
     this.description = description;
+    this.comments = comments;
+    this.images = images;
   }
 
-  public static MissingDetailDto fromMissingPost(MissingPost post) {
+  public static MissingDetailDto fromMissingPost(MissingPost post, List<MissingCommentListEntryDto> comments, List<MissingPostImageDto> images) {
     long id = post.getMissingId();
     String title = post.getTitle();
     long memberId = post.getMemberId();
@@ -70,9 +94,10 @@ public class MissingDetailDto {
     LocalDateTime updatedAt = post.getUpdatedAt();
     String description = post.getDescription();
 
+
     return new MissingDetailDto(
             id, title, memberId, animalType, specifics, color, viewCount, missingPlace,
-            missingTime, reward, missingStatus, updatedAt, description);
+            missingTime, reward, missingStatus, updatedAt, description, comments, images);
   }
 }
 

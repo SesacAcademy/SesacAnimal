@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -19,13 +20,20 @@ public class QMissingPost extends EntityPathBase<MissingPost> {
 
     public static final QMissingPost missingPost = new QMissingPost("missingPost");
 
+    public final com.project.animal.global.common.entity.QBaseEntity _super = new com.project.animal.global.common.entity.QBaseEntity(this);
+
     public final StringPath animalType = createString("animalType");
 
     public final StringPath color = createString("color");
 
-    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
+    public final ListPath<MissingComment, QMissingComment> comments = this.<MissingComment, QMissingComment>createList("comments", MissingComment.class, QMissingComment.class, PathInits.DIRECT2);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final StringPath description = createString("description");
+
+    public final ListPath<MissingPostImage, QMissingPostImage> images = this.<MissingPostImage, QMissingPostImage>createList("images", MissingPostImage.class, QMissingPostImage.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> isActive = createNumber("isActive", Integer.class);
 
@@ -45,7 +53,8 @@ public class QMissingPost extends EntityPathBase<MissingPost> {
 
     public final StringPath title = createString("title");
 
-    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public final NumberPath<Integer> viewCount = createNumber("viewCount", Integer.class);
 

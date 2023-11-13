@@ -1,12 +1,10 @@
 package com.project.animal.global.common.provider;
 
 import com.project.animal.global.common.constant.Role;
-import com.project.animal.global.common.constant.TokenType;
+import com.project.animal.global.common.constant.AuthType;
 import com.project.animal.global.common.dto.MemberDto;
-import com.project.animal.member.domain.Member;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.project.animal.global.common.provider.inf.TokenProvider;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
@@ -23,45 +21,12 @@ import java.time.Duration;
 import java.util.*;
 import static com.project.animal.global.common.constant.ExpirationTime.ACCESS_TOKEN_EXPIRATION_TIME;
 import static com.project.animal.global.common.constant.ExpirationTime.REFRESH_TOKEN_EXPIRATION_TIME;
-
-/**
- * [참고] JWT 토큰 구조
- * - JWT는 하나의 문자열로 구성되어 있으며 크게 "HEADER.PAYLOAD.SIGNATURE"로 구성되어 있다. (구분자 Dot)
- *
- * - 헤더에는 보통 해시 알고리즘과 토큰의 타입이 들어간다.
- *
- * ex)
- * {
- *     "alg" : "HS256",
- *     "typ" : "JWT"
- * }
- *
- * - 페이로드에는 저장하고자 하는 데이터를 담는데, 각각의 Key를 Claim 이라고 부른다.
- *
- * - claim은 사용자가 원하는 key와 value로 구성할 수 있으며 Claim에는 3가지 종류가 있다.
- *
- * - registerd Claim (등록된 클레임)
- * 컴팩트하게 3글자로 정의하며, 필수는 아니나 사용이 권장된다.
- *
- * ex)
- * {
- *     "sub"    : "test",
- *     "iss"    : "Sesac Animal"
- *     "name"   : "sHu",
- *     "iat"    : "1516239022"
- * }
- *
- * - public Claim (공개 클레임)
- * 사용자가 자유롭게 정의할 수 있다.
- *
- * - private Claim (비공개 클레임)
- * 이는 등록된 또는 공개 클레임이 아닌 클레임이며, 정보를 공유하기 위해 만들어진 커스터마이징된 클레임이다.
- */
+import static com.project.animal.global.common.constant.TokenTypeValue.*;
 
 @Slf4j
 @Getter
 @Component
-public class JwtTokenProvider {
+public class JwtTokenProvider implements TokenProvider {
 
     private SecretKey key;                                                  // 대칭키
 
@@ -79,65 +44,127 @@ public class JwtTokenProvider {
     }
 
     /**
-     * Access 토큰 생성
-     * @return
+     * JWT 토큰을 발급하는 메소드로 매개변수로 받는 타입에 따라 Access Token으로 생성할 지 Refresh Token으로 생성할 지 결정
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param member (토큰에 저장할 클레임 정보)
+     * @param type (토큰 타입 - Access 또는 Refresh)
+     * @return String (JWT 토큰)
      */
-    public String createAccessToken(Member member) {
+    @Override
+    public String generateToken(MemberDto member, String type) {
         Date now = new Date();
 
         // Claim 생성
         Map<String, String> claims = new HashMap<>();
-        claims.put("uid", String.valueOf(member.getId()));
-        claims.put("role", member.getRole().name());
+        claims.put(USER_ID, String.valueOf(member.getId()));
+        claims.put(USER_ROLE, member.getRole().name());
 
-        // Access 토큰 생성
-        String accessToken = Jwts.builder()
-                .setClaims(claims)                                                                  // 클레임 설정
-                .setHeaderParam("typ", "JWT")                                           // 토큰 타입 설정
-                .setSubject(member.getEmail())                                                      // 이메일로 설정
-                .setIssuer(issuer)                                                                  // 토큰 발급자 설정
-                .setIssuedAt(now)                                                                   // 토큰 발급일자 설정
-                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION_TIME))              // 토큰 만료기간 설정
-                .signWith(key, SignatureAlgorithm.HS256)                                            // 서명
+        // 만료 기간 설정
+        Long expirationTime = type.equals(JWT_ACCESS_TOKEN) ?
+                ACCESS_TOKEN_EXPIRATION_TIME : REFRESH_TOKEN_EXPIRATION_TIME;
+        
+        // JWT 토큰 생성
+        String token = Jwts.builder()
+                .setClaims(claims)                                               // 클레임 설정
+                .setHeaderParam("typ", "JWT")                        // 토큰 타입 설정
+                .setSubject(member.getEmail())                                   // 이메일로 설정
+                .setIssuer(issuer)                                               // 토큰 발급자 설정
+                .setIssuedAt(now)                                                // 토큰 발급일자 설정
+                .setExpiration(new Date(now.getTime() + expirationTime))         // 토큰 만료기간 설정
+                .signWith(key, SignatureAlgorithm.HS256)                         // 서명
                 .compact();
 
-        return accessToken;
+        // Refresh 토큰인 경우, Redis에 저장
+        if (type.equals(JWT_REFRESH_TOKEN))
+            redisServiceProvider.save(AuthType.JWT.name() + ":" + member.getEmail(),
+                    token, Duration.ofMillis(REFRESH_TOKEN_EXPIRATION_TIME));
+
+        return token;
     }
 
     /**
-     * Refresh 토큰 생성
-     * @return
+     * Access Token이 만료되어 Refresh Token 검증한 다음 만료된 Access Token의 정보로 새로운 Access Token을 발급하는 메소드
+     * 
+     * @version 0.1
+     * @author 박성수
+     * @param token (만료된 JWT Access 토큰)
+     * @return String (새로 발급한 JWT Access 토큰)
      */
-    public String createRefreshToken(Member member) {
+    public String generateToken(String token) {
         Date now = new Date();
 
+        MemberDto member = parseToken(token);
+
         // Claim 생성
-        Map<String, String> claims = new HashMap<>();
-        claims.put("uid", String.valueOf(member.getId()));
-        claims.put("role", member.getRole().name());
+        Map<String, String> claim = new HashMap<>();
+        claim.put(USER_ID, String.valueOf(member.getId()));
+        claim.put(USER_ROLE, member.getRole().name());
 
-        String refreshToken = Jwts.builder()
-                .setClaims(claims)                                                                  // 클레임 설정
-                .setHeaderParam("typ", "JWT")                                           // 토큰 타입 설정
-                .setSubject(member.getEmail())                                                      // 이메일로 설정
-                .setIssuer(issuer)                                                                  // 토큰 발급자 설정
-                .setIssuedAt(now)                                                                   // 토큰 발급일자 설정
-                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_EXPIRATION_TIME))             // 토큰 만료기간 설정
-                .signWith(key, SignatureAlgorithm.HS256)                                            // 서명
+        return Jwts.builder()
+                .setClaims(claim)
+                .setHeaderParam("typ", "JWT")
+                .setSubject(member.getEmail())
+                .setIssuer(issuer)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION_TIME))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-
-        // Redis에 저장
-        saveRefreshToken(member.getEmail(), refreshToken);
-
-        return refreshToken;
     }
 
     /**
-     * JWT 토큰 파싱
-     * @param request
-     * @param type
-     * @return
+     * 사용자에게서 받은 Refresh 토큰과 서버에 저장된 Refresh 토큰이 일치하는지 비교하는 메소드
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param token (Refresh 토큰)
+     * @return true/false (토큰이 일치하면 true, 일치하지 않으면 false 리턴)
      */
+    @Override
+    public boolean matchToken(String token) {
+        MemberDto member = parseToken(token);
+        Optional<String> findRefreshToken = redisServiceProvider.get(AuthType.JWT.name() + ":" + member.getEmail());
+
+        return token.equals(findRefreshToken.orElse("None"));
+    }
+
+    /**
+     * JWT 토큰을 파싱하여 사용자 객체인 MemberDto를 리턴하는 메소드
+     * 
+     * @version 0.1
+     * @author 박성수
+     * @param token (JWT 토큰)
+     * @return memberDto (JWT 토큰 파싱한 사용자 정보)
+     * @throws MalformedJwtException (JWT 토큰이 손상된 경우)
+     * @throws IllegalArgumentException (클레임이 유효하지 않은 경우)
+     * @throws SignatureException (서명이 위변조된 경우)
+     */
+    @Override
+    public MemberDto parseToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)                             // 위변조 검사 (위변조 시, 예외 발생)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return MemberDto.builder()
+                .id(Long.parseLong(((String) claims.get(USER_ID))))
+                .email(claims.getSubject())
+                .role(Role.valueOf(Role.class, (String) claims.get(USER_ROLE)))
+                .build();
+    }
+
+    /**
+     * HTTP 요청에 포함된 쿠키에서 JWT 토큰을 가져오는 메소드
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param request (HttpServletRequest)
+     * @param type (토큰 타입 - Access 또는 Refresh)
+     * @return JWT 토큰
+     */
+    @Override
     public String resolveToken(HttpServletRequest request, String type) {
         Cookie[] cookieArr = request.getCookies();
 
@@ -145,7 +172,7 @@ public class JwtTokenProvider {
         if (cookieArr == null)
             return null;
 
-        // 쿠키에 저장된 Access 토큰 조회 --> 없으면 null 리턴
+        // 쿠키에 저장된 JWT 토큰 조회 --> 없으면 null 리턴
         Cookie cookie = Arrays.stream(cookieArr)
                 .filter(c -> c.getName().equals(type))
                 .findFirst().orElse(null);
@@ -154,9 +181,15 @@ public class JwtTokenProvider {
     }
 
     /**
-     * JWT 토큰 검증
-     * @return
+     * JWT 토큰을 검증하는 메소드 (위변조 및 만료 검사)
+     *
+     * @param token (JWT 토큰)
+     * @return true/false (검증 완료 시, true 그렇지 않으면 false 리턴)
+     * @throws MalformedJwtException (JWT 토큰이 손상된 경우)
+     * @throws IllegalArgumentException (클레임이 유효하지 않은 경우)
+     * @throws SignatureException (서명이 위변조된 경우)
      */
+    @Override
     public boolean validateToken(String token) {
         return !Jwts.parserBuilder()
                 .setSigningKey(key)                         // 위변조 검사 (위변조 시, 예외 발생)
@@ -167,79 +200,10 @@ public class JwtTokenProvider {
                 .before(new Date());                        // 만료일 체크
     }
 
-    /**
-     * AceessToken 재발급
-     * @param accessToken
-     * @return
-     */
-    public String newAccessToken(String accessToken) {
-
-        Date now = new Date();
-
-        MemberDto member = new MemberDto();
-
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(accessToken)
-                .getBody();
-
-        member.setEmail(claims.getSubject());
-        member.setId(Long.parseLong(((String) claims.get("uid"))));
-        member.setRole(Role.valueOf(Role.class, (String) claims.get("role")));
-
-        // Claim 생성
-        Map<String, String> claim = new HashMap<>();
-        claim.put("uid", String.valueOf(member.getId()));
-        claim.put("role", member.getRole().name());
-
-        String newAccessToken = Jwts.builder()
-                .setClaims(claim)                                                                   // 클레임 설정
-                .setHeaderParam("typ", "JWT")                                           // 토큰 타입 설정
-                .setSubject(member.getEmail())                                                      // 이메일로 설정
-                .setIssuer(issuer)                                                                  // 토큰 발급자 설정
-                .setIssuedAt(now)                                                                   // 토큰 발급일자 설정
-                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION_TIME))              // 토큰 만료기간 설정
-                .signWith(key, SignatureAlgorithm.HS256)                                            // 서명
-                .compact();
-
-        return newAccessToken;
-    }
-
     public Authentication getAuthentication(String token) {
-        Claims claim = Jwts.parserBuilder()
-                .setSigningKey(key)                         // 위변조 검사 (위변조 시, 예외 발생)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        MemberDto member = parseToken(token);
 
-        return new UsernamePasswordAuthenticationToken(claim.getSubject(), null,
-                List.of(new SimpleGrantedAuthority((String) claim.get("role"))));
-    }
-
-    /**
-     * Refresh 토큰 비교
-     */
-    public boolean matchRefreshToken(String refreshToken) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(refreshToken)
-                .getBody();
-
-        String email = claims.getSubject();
-
-        Optional<String> findRefreshToken = redisServiceProvider.get(TokenType.JWT.name() + ":" + email);
-
-        return refreshToken.equals(findRefreshToken.orElse("None"));
-    }
-
-    /**
-     * 리프레시 토큰을 Redis에 저장함
-     * @param email
-     * @param token
-     */
-    private void saveRefreshToken(String email, String token) {
-        redisServiceProvider.save(TokenType.JWT.name() + ":" + email, token, Duration.ofMillis(REFRESH_TOKEN_EXPIRATION_TIME));
+        return new UsernamePasswordAuthenticationToken(member.getEmail(), null,
+                List.of(new SimpleGrantedAuthority(member.getRole().name())));
     }
 }

@@ -1,0 +1,77 @@
+
+.missing-recomment-form {
+    margin-top:20px;
+    padding: 20px 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: none;
+}
+
+.missing-detail-recomment-card-container {
+    border: 1px solid black;
+    width: 350px;
+
+    border-radius: 10px;
+    padding: 30px 20px;
+}
+
+.show-more-recomment {
+    margin-top: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    color: blue;
+}
+
+.missing-recomment-card {
+        border: 1px solid black;
+        width: 300px;
+        border-radius: 10px;
+        padding: 10px 20px;
+        margin-top: 20px;
+}
+
+.missing-recomment-card-container {
+    margin: 20px 0;
+    display: none;
+}
+
+.missing-recomment-button-new {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    padding: 10px 10px;
+    font-size: 1rem;
+    border-radius: 25px;
+}
+
+.missing-recomment-button-edit {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    padding: 10px 10px;
+    font-size: 1rem;
+    border-radius: 25px;}
+
+.missing-recomment-button-delete {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    padding: 10px 10px;
+    font-size: 1rem;
+    border-radius: 25px;
+}
+.missing-recomment-content {
+    display: block;
+}
+
+.missing-recomment-edit-form {
+    flex: display;
+    flex-direction: row;
+    display: none;
+}

@@ -4,6 +4,7 @@ import com.project.animal.global.common.utils.CustomDateParser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -37,7 +38,7 @@ public class MissingNewDto {
   @NotBlank
   private String description;
 
-
+  private MultipartFile[] images;
 
   public void setMissingTime (String missingTime) {
     this.missingTime = CustomDateParser.formatDate(missingTime);

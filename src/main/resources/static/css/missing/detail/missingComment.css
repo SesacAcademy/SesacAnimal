@@ -1,20 +1,19 @@
 .missing-detail-comment-container {
-    border: 1px solid green;
     margin-left: 30px;
     margin-top: 100px;
+
 }
 
 .missing-detail-comment-card-container {
-    border: 1px solid green;
+    border: 1px solid black;
     width: 350px;
 
     border-radius: 10px;
     padding: 30px 20px;
-    margin-bottom: 20px;
 }
 
 .missing-comment-title {
-    margin-bottom: 10px;
+
 }
 
 .missing-comment-form {
@@ -28,6 +27,52 @@
     border-radius: 4px;
 }
 
-.missing-comment-button {
 
+.missing-comment-scroll {
+    max-height: 620px;
+    overflow: scroll;
+}
+
+.missing-card-entry {
+    margin-top: 20px;
+}
+
+
+
+.missing-comment-button-new {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    padding: 10px 10px;
+    font-size: 1rem;
+    border-radius: 25px;
+}
+
+.missing-comment-button-edit {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    padding: 10px 10px;
+    font-size: 1rem;
+    border-radius: 25px;}
+
+.missing-comment-button-delete {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    padding: 10px 10px;
+    font-size: 1rem;
+    border-radius: 25px;
+}
+
+.missing-comment-edit-form {
+    flex: display;
+    flex-direction: row;
+    display: none;
 }

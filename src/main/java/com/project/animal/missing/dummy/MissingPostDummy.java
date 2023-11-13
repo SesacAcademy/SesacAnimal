@@ -1,7 +1,7 @@
 package com.project.animal.missing.dummy;
 
 import com.project.animal.missing.domain.MissingPost;
-import com.project.animal.missing.dto.MissingListResDto;
+import com.project.animal.missing.dto.MissingListEntryDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +27,7 @@ public class MissingPostDummy {
     return dummyPost;
   }
 
-  public static List<MissingListResDto> getDummyDto() {
-   return dummyPost.stream().map((entity) -> MissingListResDto.fromMissingPost(entity)).collect(Collectors.toList());
+  public static List<MissingListEntryDto> getDummyDto() {
+   return dummyPost.stream().map((entity) -> MissingListEntryDto.fromMissingPost(entity)).collect(Collectors.toList());
   }
 }

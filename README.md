@@ -19,6 +19,7 @@
           src="https://avatars.githubusercontent.com/u/55624470?s=400&u=ce4242f40204eaf9a56687b9a2e510e3e805e505&v=4"
           width="100px;"
         /><br />박성수(BE)</a><br />
+		팀장
     </td>
 	<td align="center">
       <a href="https://github.com/devsince2021">
@@ -26,6 +27,7 @@
           src="https://avatars.githubusercontent.com/u/77978026?v=4"    
           width="100px;" 
         /><br />류명한(BE)</a><br />
+		팀원
     </td>
     <td align="center">
       <a href="https://github.com/dev-lkj">
@@ -33,6 +35,7 @@
           src="https://avatars.githubusercontent.com/u/96426410?v=4"
           width="100px;"
         /><br />이경진(BE)</a><br />
+	    	팀원
     </td>
     <td align="center">
       <a href="https://github.com/sonnbeom">
@@ -40,6 +43,7 @@
           src="https://avatars.githubusercontent.com/u/127067296?v=4"
           width="100px;"
         /><br />손승범(BE)</a><br />
+	    	팀원
     </td>
   </tr>
 </table>
@@ -99,30 +103,426 @@
 
 ## 🔨 시스템 아키텍처
 
-
+![image](https://github.com/SesacAcademy/SesacAnimal/assets/55624470/c1acf282-d9b6-4e11-811c-b13bb9c34484)
 
 <br/>
 
 ## 🗒️ ERD 설계
+
+- [ERD 링크]()
+
+![image](https://github.com/SesacAcademy/SesacAnimal/assets/55624470/3574c649-eea8-4932-83ad-f772b691c36c)
 
 
 <br/>
 
 ## 💡 주요 기능
 
+#### 👩‍👧 회원 (박성수)
+
+- 이메일 인증을 통한 회원가입 기능 📌 [[코드 확인 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L61) [[코드 확인 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/MailAuthCodeProvider.java#L38)
+
+- (JWT) 토큰 기반 방식의 로그인 기능 (Spring Security를 활용한 인증/인가) 📌 [[코드 확인 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/LoginController.java#L39) [[코드 확인 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtExceptionFilter.java#L62) [[코드 확인 3]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtAuthenticationFilter.java#L73) [[코드 확인 4]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtExceptionFilter.java#L62)
+
+- 네이버, 구글 플랫폼을 이용한 소셜 로그인 기능 (구현 예정)
+  
+- 사용자 정보를 통한 아이디 찾기, SMS 문자 인증을 통한 비밀번호 찾기 기능 (구현 예정)
+
+- 장기간 미접속 시, 휴먼 계정 알림 기능 (Spring Batch 활용) (구현 예정)
+
+#### 🚨 실종 (류명한)
+
+#### 🐈 입양/임보 (이경진)
+
+#### ✏️ 입양 후기 (손승범)
 
 
 <br/>
 
 ## 🌟 트러블 슈팅
 
+<details>
+<summary>박성수</summary>
+<hr/>
+
+- 📌 [[코드 확인]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtExceptionFilter.java#L87)
+<table>
+  	<tr>
+  		<td align="center">
+      			문제 상황
+    		</td>
+		<td>
+      			JWT 리프레시 토큰 만료 시, 토큰이 담긴 쿠키가 삭제되지 않음
+    		</td>
+  	</tr>
+	<tr>
+		<td align="center">
+			원인
+		</td>
+		<td>
+   			HttpServletRequest 객체에 담긴 쿠키는 단순히 Key-Value 값만을 가지고 있기 Cookie 객체에 setMaxAge() 외에 추가적인 설정 필요
+    		</td>
+	</tr>
+ 	<tr>
+     		<td align="center">
+			해결
+		</td>
+		<td>
+      			만료 날짜 (setMaxage), 경로 (setPath), 값 (setValue)을 지정하여 쿠키를 삭제
+    		</td>
+      	</tr>
+</table>
+
+
+<pre>
+<code>[Before]
+private void removeTokenInCookie(HttpServletRequest request, HttpServletResponse response) {
+	// request 객체에서 JWT Token이 담긴 Cookie를 List 형태로 가져 온다.
+	List<Cookie> cookielist = Arrays.stream(request.getCookies())
+			.filter(cookie -> {
+				return cookie.getName().equals(JWT_ACCESS_TOKEN) || cookie.getName().equals(JWT_REFRESH_TOKEN);})
+			.toList();
+
+	// cookie의 타임 아웃을 0으로 만들고 다시 response 객체에 저장한다.
+	cookielist.forEach(cookie -> {
+		cookie.setMaxAge(0);
+		response.addCookie(cookie);
+	});
+}
+</code>
+</pre>
+
+<pre>
+<code>[After]
+private void removeTokenInCookie(HttpServletRequest request, HttpServletResponse response) {
+	// request 객체에서 JWT Token이 담긴 Cookie를 List 형태로 가져 온다.
+	List<Cookie> cookielist = Arrays.stream(request.getCookies())
+			.filter(cookie -> {
+				return cookie.getName().equals(JWT_ACCESS_TOKEN) || cookie.getName().equals(JWT_REFRESH_TOKEN);})
+			.toList();
+
+	// cookie의 타임 아웃을 0으로 만들고 다시 response 객체에 저장한다.
+	cookielist.forEach(cookie -> {
+		cookie.setMaxAge(0);
+		cookie.setPath("/");
+            	cookie.setValue(null);
+		response.addCookie(cookie);
+	});
+}
+</code>
+</pre>
+
+<hr/>
+<table>
+  	<tr>
+  		<td align="center">
+      			문제 상황  
+    		</td>
+		<td>
+      			Controller에서 Redirect 시, 브라우저에서 Redirect된 주소로 이동하지 못함
+    		</td>
+  	</tr>
+	<tr>
+		<td align="center">
+			원인
+		</td>
+		<td>
+   			HTTP 요청은 로드밸런서를 통해 Tomcat으로 전달되고 외부 통신은 HTTPS, 내부 통신은 HTTP를 이용하기 때문에 Controller에서 Redirect 시, Location 헤더에는 "http://~~" 값이 들어가기 때문
+    		</td>
+	</tr>
+ 	<tr>
+     		<td align="center">
+			해결
+		</td>
+		<td>
+      			내부 통신도 Self-Signed Key를 생성하여 HTTPS 통신을 해도 되지만 HTTP(80)으로 요청 시, HTTPS(443)으로 Redirect 하도록 HAProxy 설정을 추가
+    		</td>
+      	</tr>
+</table>
+
+
+<pre>
+<code>[Before]
+#---------------------------------------------------------------------
+# main frontend which proxys to the backends
+#---------------------------------------------------------------------
+frontend main
+    bind *:443 ssl crt /etc/haproxy/server.pem
+    log 127.0.0.1:514 local1
+    default_backend             app
+
+#---------------------------------------------------------------------
+# round robin balancing between the various backends
+#---------------------------------------------------------------------
+backend app
+    balance     roundrobin
+    server  was01 192.168.0.105:8001 check
+    server  was02 192.168.0.105:8002 check
+    server  was03 192.168.0.105:8003 check
+</code>
+</pre>
+
+<pre>
+<code>[After]
+#---------------------------------------------------------------------
+# main frontend which proxys to the backends
+#---------------------------------------------------------------------
+frontend main
+    bind *:80
+    bind *:443 ssl crt /etc/haproxy/server.pem
+    http-request redirect scheme https unless { ssl_fc }
+    log 127.0.0.1:514 local1
+    default_backend             app
+
+#---------------------------------------------------------------------
+# round robin balancing between the various backends
+#---------------------------------------------------------------------
+backend app
+    balance     roundrobin
+    server  was01 192.168.0.105:8001 check
+    server  was02 192.168.0.105:8002 check
+    server  was03 192.168.0.105:8003 check
+</code>
+</pre>
+
+<hr/>
+ 
+</details>
+
+<details>
+<summary>류명한</summary>
+
+<table>
+  	<tr>
+  		<td align="center">
+      			문제 상황  
+    		</td>
+		<td>
+      			작성 예정
+    		</td>
+  	</tr>
+	<tr>
+		<td align="center">
+			원인
+		</td>
+		<td>
+   			작성 예정
+    		</td>
+	</tr>
+ 	<tr>
+     		<td align="center">
+			해결
+		</td>
+		<td>
+      			작성 예정
+    		</td>
+      	</tr>
+</table>
+</details>
+
+<details>
+<summary>이경진</summary>
+
+<table>
+  	<tr>
+  		<td align="center">
+      			문제 상황  
+    		</td>
+		<td>
+      			작성 예정
+    		</td>
+  	</tr>
+	<tr>
+		<td align="center">
+			원인
+		</td>
+		<td>
+   			작성 예정
+    		</td>
+	</tr>
+ 	<tr>
+     		<td align="center">
+			해결
+		</td>
+		<td>
+      			작성 예정
+    		</td>
+      	</tr>
+</table>
+</details>
+
+<details>
+<summary>손승범</summary>
+
+<table>
+  	<tr>
+  		<td align="center">
+      			문제 상황  
+    		</td>
+		<td>
+      			작성 예정
+    		</td>
+  	</tr>
+	<tr>
+		<td align="center">
+			원인
+		</td>
+		<td>
+   			작성 예정
+    		</td>
+	</tr>
+ 	<tr>
+     		<td align="center">
+			해결
+		</td>
+		<td>
+      			작성 예정
+    		</td>
+      	</tr>
+</table>
+</details>
 
 
 <br/>
 
 ## 👩‍💻 리팩토링
 
+<details>
+<summary>박성수</summary>
 
+<hr/>
+
+- 📌 [[코드 확인]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/resolver/MemberDtoArgumentResolver.java#L37)
+
+<table>
+  	<tr>
+  		<td align="center">
+      			Before
+    		</td>
+		<td>
+      			도메인별 Controller에서 사용자 정보 (MemberDto)를 얻기 위해, JWT 토큰에 담긴 클레임을 직접 파싱
+    		</td>
+  	</tr>
+	<tr>
+		<td align="center">
+			After
+		</td>
+		<td>
+   			MemberDto에 맞는 ArgumentResolver를 추가하여 Controller에서 직접 파싱하지 않도록 변경 (중복 코드 제거)
+    		</td>
+	</tr>
+</table>
+
+<pre>
+@Slf4j
+@Component
+@RequiredArgsConstructor
+public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver {
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @Override
+    public boolean supportsParameter(MethodParameter parameter) {
+        boolean hasMemberAnnotation = parameter.hasParameterAnnotation(Member.class);
+        boolean hasMemberType = MemberDto.class.isAssignableFrom(parameter.getParameterType());
+
+        return hasMemberAnnotation && hasMemberType;
+    }
+
+    @Override
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+
+        HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
+
+        String token = jwtTokenProvider.resolveToken(request, JWT_ACCESS_TOKEN);
+
+        // 기존 쿠키에 JWT Access 토큰이 없는 경우, Request 영역에 저장해둔 newAccessToken을 사용
+        if (token == null && request.getAttribute(JWT_ACCESS_TOKEN) != null)
+            token = (String) request.getAttribute(JWT_ACCESS_TOKEN);
+
+        // 기존 쿠키에 JWT Access 토큰이 있는 경우, JWT를 파싱하여 MemberDto 객체로 리턴
+        if (token != null)
+            return jwtTokenProvider.parseToken(token);
+
+        // 없으면 null 값 리턴
+        return null;
+    }
+}
+</code>
+</pre>
+
+<hr/>
+
+</details>
+
+<details>
+<summary>류명한</summary>
+
+<table>
+  	<tr>
+  		<td align="center">
+      			Before
+    		</td>
+		<td>
+      			작성 예정
+    		</td>
+  	</tr>
+	<tr>
+		<td align="center">
+			After
+		</td>
+		<td>
+   			작성 예정
+    		</td>
+	</tr>
+</table>
+</details>
+
+<details>
+<summary>이경진</summary>
+
+<table>
+  	<tr>
+  		<td align="center">
+      			Before
+    		</td>
+		<td>
+      			작성 예정
+    		</td>
+  	</tr>
+	<tr>
+		<td align="center">
+			After
+		</td>
+		<td>
+   			작성 예정
+    		</td>
+	</tr>
+</table>
+</details>
+
+<details>
+<summary>손승범</summary>
+
+<table>
+  	<tr>
+  		<td align="center">
+      			Before
+    		</td>
+		<td>
+      			작성 예정
+    		</td>
+  	</tr>
+	<tr>
+		<td align="center">
+			After
+		</td>
+		<td>
+   			작성 예정
+    		</td>
+	</tr>
+</table>
+</details>
 
 
 <br/>

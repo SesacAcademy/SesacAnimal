@@ -2,8 +2,8 @@
     <h3 th:text="${post.title}" />
     <section class="missing-detail-page-content">
         <div class="missing-detail-thumb-container">
-            <figure class="missing-detail-thumb">
-                <img th:src="@{/img/sample.jpeg}" alt="head" width="100%" height="100%" style="border-radius:10px" />
+            <figure class="missing-detail-thumb" th:each="imagePath : ${post.images}">
+                <img th:src="${imagePath.path}" alt="head" width="100%" height="100%" style="border-radius:10px" />
             </figure>
         </div>
         <section class="missing-detail-info-container">
