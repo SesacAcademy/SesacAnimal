@@ -22,9 +22,7 @@ public interface AdoptionRepository extends JpaRepository<Adoption, Long> {
     @Query("SELECT a FROM Adoption a LEFT JOIN FETCH a.adoptionImages ORDER BY a.createdAt DESC")
     List<Adoption> findAllWithImages();
 
-//    @Query("SELECT a FROM Adoption a JOIN FETCH a.adoptionImages JOIN FETCH a.member")
-    @Query("SELECT a FROM Adoption a LEFT JOIN FETCH a.adoptionImages JOIN FETCH a.member ORDER BY a.createdAt DESC")
+    @Query("SELECT distinct a FROM Adoption a LEFT JOIN FETCH a.adoptionImages JOIN FETCH a.member ORDER BY a.createdAt DESC")
     List<Adoption> findAllWithImagesAndMember();
-
 
 }

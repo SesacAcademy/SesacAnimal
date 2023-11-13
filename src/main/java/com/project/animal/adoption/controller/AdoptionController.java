@@ -30,17 +30,7 @@ public class AdoptionController {
     // 메인 리스트 입장
     @GetMapping(EndPoint.ADOPTION_LIST)
     public String adoptionMain(Model model){
-
         List<Adoption> allWithImages = adoptionService.findAllWithImagesAndMember();
-        System.out.println("list:>>:"+allWithImages.get(0).getAdoptionImages().toString());
-        System.out.println("list:>>:"+allWithImages.get(0).toString());
-//        for (Adoption allWithImage : allWithImages) {
-//            System.out.println("list age:>>:"+allWithImage.getAge());
-//            System.out.println("list images:>>:"+allWithImage.getAdoptionImages().stream().toList());
-//            System.out.println("list title:>>:"+allWithImage.getTitle());
-//            System.out.println("list:>>:"+allWithImage.getMember());
-//
-//        }
 
         model.addAttribute("list",allWithImages);
 
@@ -88,7 +78,7 @@ public class AdoptionController {
 
 
     // 수정 하고 PUT 보내는 영역
-    @PutMapping (EndPoint.ADOPTION_EDIT)
+    @PostMapping (EndPoint.ADOPTION_EDIT)
     public String adoptionEditPut(@ModelAttribute @Validated AdoptionEditDto adoptionEditDto, BindingResult bindingResult,
                                @RequestParam(name="image") List<MultipartFile> file,
                                   @PathVariable Long id){
@@ -106,8 +96,10 @@ public class AdoptionController {
 //        return EndPoint.ADOPTION_LIST;
     }
 
+
     @CrossOrigin(origins = {"http://localhost:8080", "http://infra.shucloud.site"})
-    @PostMapping(EndPoint.ADOPTION_EDIT )
+    @PutMapping(EndPoint.ADOPTION_EDIT )
+    @ResponseBody
     public ResponseEntity<String> handleImageDeleteRequest(@RequestBody Map<String, String> requestBody, @PathVariable Long id) {
         
         try{
@@ -137,12 +129,6 @@ public class AdoptionController {
             new RuntimeException(e);
             System.out.println("이미지 삭제 및 게시글 삭제 에러" + e.getMessage());
         }
-        
-
-
-
-
-
         // 삭제 결과에 따라 적절한 응답 반환
         return ResponseEntity.ok("success delete");
     }

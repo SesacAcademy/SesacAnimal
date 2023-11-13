@@ -27,7 +27,7 @@ public class Adoption extends BaseEntity {
     @Column(name = "adoption_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) //희정수정
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -35,7 +35,7 @@ public class Adoption extends BaseEntity {
     @NotBlank
     private String title; // 제목
 
-    @OneToMany(mappedBy = "adoption")
+    @OneToMany(mappedBy = "adoption" )
     private List<AdoptionImage> adoptionImages;
 
     @NotNull

@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 button.closest('p').style.display='none';
 
                 $.ajax({
-                    type: 'POST',
+                    type: 'PUT',
                     url: '/v1/adoption/edit/' + postId,
                     contentType: 'application/json',
                     data: JSON.stringify({ deleteImageIndex: deleteIndex }),
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
         postModalOk.addEventListener("click", function () {
 
             $.ajax({
-                type: 'POST',
+                type: 'PUT',
                 url: '/v1/adoption/edit/' + postId,
                 contentType: 'application/json',
                 data: JSON.stringify({ deletePostId: postId }),

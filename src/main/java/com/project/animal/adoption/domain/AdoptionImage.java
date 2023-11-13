@@ -16,7 +16,7 @@ public class AdoptionImage {
     @Column(name = "adoption_image_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) //희정수정
     @JoinColumn(name= "adoption_id")
     private Adoption adoption;
 

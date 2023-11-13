@@ -223,7 +223,24 @@ public class AdoptionServiceImpl implements AdoptionService {
 
     public List<Adoption> findAllWithImagesAndMember() {
         return adoptionRepository.findAllWithImagesAndMember();
+
     }
+
+//    public  List<Adoption> test() {
+       // return adoptionRepository.findAllWithImagesAndMember();
+      //  List<Adoption>  list =   adoptionRepository.findAll();
+      //  return list;
+
+//        List<Adoption>  list =  adoptionRepository.findAllWithImagesAndMember();
+//        for(Adoption a: list){
+//           // adoptionImageRepository.findBy a.getId()
+//            a.setAdoptionImages(adoptionImageRepository. test( a.getId() ) );
+//        }
+//
+//       return adoptionRepository.test2();
+
+
+//    }
 
 
 }
