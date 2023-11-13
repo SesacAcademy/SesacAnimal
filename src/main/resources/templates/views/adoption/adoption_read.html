@@ -153,17 +153,24 @@
                  <label for="comment-contents" class="author">sdf</label><textarea id="comment-contents" class="comment-contents" name="read-comment-contents" readonly>aasdfasfd</textarea>
              </p>
          </div>
-
      </div>
 
+
+ <form th:object="${comment}" th:action="@{'/v1/adoption/comment/'}" method="POST" name="comment" accept-charset="utf-8">
+     <!--             <input type="hidden" name="_method" value="PUT">-->
+     <fieldset>
+     <legend>입양게시판 댓글</legend>
      <div class="adoption-comments-write">
          <h4 class="comment-write-title">댓글 쓰기</h4>
 
          <div class="comments-write">
-             <label ><input class="author" type="text" value="" name="author" placeholder="작성자"/></label><label for="comment-contents"><textarea id="write-comment-contents" class="comment-contents" name="comment-contents">aasdfasfd</textarea></label>
-             <button>댓글달기</button>
+             <label for="author"><input id="author" class="author" type="text" name="author" placeholder="작성자"/></label><label for="comment-contents"><textarea id="write-comment-contents" class="comment-contents" name="comment-contents"></textarea></label>
+             <button type="submit">댓글달기</button>
          </div>
      </div>
+
+     </fieldset>
+ </form>
  <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
 </body>
 </html>

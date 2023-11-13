@@ -182,6 +182,16 @@
     font-family: 'Noto Sans KR', 'Roboto', sans-serif;
 }
 
+.adoption-comments-write fieldset{
+    border: none;
+}
+
+.adoption-comments-write legend{
+    font-size: 1px;
+    display: none;
+    opacity: 1;
+}
+
 .adoption-comments-write h4{
     width:1200px;
     margin:0 auto;

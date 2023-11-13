@@ -30,15 +30,22 @@ public class AdoptionComment extends BaseEntity {
 
     private String content;
 
-    private int group_num;
-    private int tab;
+    @Column(name = "parent_id")
+    private Long parentId;
 
+    public void setMember(Member member) {
+        this.member = member;
+    }
 
-//    @Column(name = "create_at")
-//    private LocalDateTime createdAt;
-//
-//    @Column(name = "update_at")
-//    private LocalDateTime updatedAt;
+    public void setAdoption(Adoption adoption) {
+        this.adoption = adoption;
+    }
+
+    //    생성자
+    public AdoptionComment(String content){
+        this.content = content;
+    }
+
 
 
 }
