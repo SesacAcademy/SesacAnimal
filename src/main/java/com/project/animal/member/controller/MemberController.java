@@ -26,8 +26,16 @@ public class MemberController {
 
     private final MailAuthCodeProvider mailTokenProvider;
 
+    /**
+     * 회원가입 페이지로 이동
+     *
+     * @version 0.1
+     * @author 박성수
+     * @return String (회원가입 페이지 뷰 이름)
+     */
     @GetMapping(EndPoint.SIGNUP)
     public String signupForm() {
+        // 회원가입 폼으로 이동
         return ViewName.SIGNUP_VIEW;
     }
 
@@ -35,7 +43,9 @@ public class MemberController {
     @PostMapping(EndPoint.SIGNUP_API)
     @ResponseStatus(HttpStatus.OK)
     public ResponseDto<String> signup(@RequestBody @Validated SignupFormDto signupFormDto) {
+        // 회원가입 진행
         memberService.save(signupFormDto);
+
         return new ResponseDto<>(HttpStatus.OK.value(), "null", "회원가입 완료");
     }
 

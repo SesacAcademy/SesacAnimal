@@ -59,6 +59,7 @@ public class JwtTokenProvider implements TokenProvider {
         // Claim 생성
         Map<String, String> claims = new HashMap<>();
         claims.put(USER_ID, String.valueOf(member.getId()));
+        claims.put(USER_NICKNAME, member.getNickname());
         claims.put(USER_ROLE, member.getRole().name());
 
         // 만료 기간 설정
@@ -100,6 +101,7 @@ public class JwtTokenProvider implements TokenProvider {
         // Claim 생성
         Map<String, String> claim = new HashMap<>();
         claim.put(USER_ID, String.valueOf(member.getId()));
+        claim.put(USER_NICKNAME, member.getNickname());
         claim.put(USER_ROLE, member.getRole().name());
 
         return Jwts.builder()
@@ -111,6 +113,18 @@ public class JwtTokenProvider implements TokenProvider {
                 .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    /**
+     * Redis 서버에 저장된 Refresh 토큰을 삭제하기 위한 메소드
+     * 
+     * @version 0.1
+     * @author 박성수
+     * @param member (토큰에 저장된 클레임 정보)
+     */
+    public void removeToken(MemberDto member) {
+        redisServiceProvider.remove(AuthType.JWT.name() + ":" + member.getEmail());
+        redisServiceProvider.remove(AuthType.KAKAO.name() + ":" + member.getEmail());
     }
 
     /**
@@ -151,6 +165,7 @@ public class JwtTokenProvider implements TokenProvider {
         return MemberDto.builder()
                 .id(Long.parseLong(((String) claims.get(USER_ID))))
                 .email(claims.getSubject())
+                .nickname((String) claims.get(USER_NICKNAME))
                 .role(Role.valueOf(Role.class, (String) claims.get(USER_ROLE)))
                 .build();
     }

@@ -78,12 +78,13 @@ public class SecurityConfig {
                 //.antMatchers("/static/**").permitAll()                      // 5. 정적 리소스 허용
                 //.antMatchers("/error/**").permitAll()                       // ignoring으로 대체 (자세한 이유는 위의 참고글)
             .and()
-            .authorizeRequests()                                              // 6. 인증 필요 없는 페이지
+            /*.authorizeRequests()                                              // 6. 인증 필요 없는 페이지
                 .antMatchers("/v1/auth/**").permitAll()
                 .antMatchers("/v1/api/auth/**").permitAll()
-            .and()
+            .and()*/
             .authorizeRequests()                                              // 7. 인증이 필요한 페이지
                 .antMatchers("/test").authenticated()
+                .antMatchers("/v1/auth/logout").authenticated()
             .and()
             .authorizeRequests()                                              // 8. 인가가 필요한 페이지
                 .antMatchers("/test2").hasRole("ADMIN")

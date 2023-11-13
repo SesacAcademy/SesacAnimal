@@ -31,6 +31,12 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
+function isValidNickName(nickname) {
+    let nicknameRegex = /^[가-힣a-zA-Z0-9]{5,12}$/;
+
+    return nicknameRegex.test(nickname);
+}
+
 function isValidPassword(password) {
     let passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/
 
@@ -131,6 +137,7 @@ function checkToken() {
 
 function signup() {
     const email = document.getElementById('member-email').value;
+    const nickname = document.getElementById('member-nickname').value;
     const token = document.getElementById('member-auth-token').value;
     const name = document.getElementById('member-name').value;
     const password = document.getElementById('member-password').value;
@@ -147,7 +154,12 @@ function signup() {
         return;
     }
 
-    if (name === "") {
+    if (!isValidNickName(nickname)) {
+        alert("이름을 입력해주세요.");
+        return;
+    }
+
+    if (!isVaildName(name)) {
         alert("이름을 입력해주세요.");
         return;
     }
@@ -171,6 +183,7 @@ function signup() {
 
     axios.post("/v1/api/auth/signup", {
         'email': email,
+        'nickname': nickname,
         'token': token,
         'name': name,
         'password': password,
@@ -194,6 +207,10 @@ function signup() {
 
                 console.log(response.data);
 
+                if (errorData.nickname !== undefined) {
+                    alert(response.data.context.nickname);
+                }
+
                 if (errorData.name !== undefined) {
                     alert(response.data.context.name);
                 }
@@ -211,11 +228,20 @@ function signup() {
                 }
             }
         }
-        // 이메일이 중복된 경우 (회원가입 도중, 해당 이메일로 가입된 경우)
         else if (response.data.statusCode === 409) {
-            console.log(response.data);
-            alert(response.data.message);
-            alert("새로고침하여 다시 진행해주세요.");
+
+            // 이메일이 중복된 경우 (회원가입 도중, 해당 이메일로 가입된 경우)
+            if (response.data.context === "email") {
+                console.log(response.data);
+                alert(response.data.message);
+                alert("새로고침하여 다시 진행해주세요.");
+            }
+        
+            // 닉네임이 중복된 경우
+            if (response.data.context === "nickname") {
+                console.log(response.data);
+                alert(response.data.message);
+            }
         }
     }).catch(function (error) {
         console.log(error);
