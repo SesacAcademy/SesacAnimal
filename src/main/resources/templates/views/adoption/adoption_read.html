@@ -15,7 +15,7 @@
     <!-- 아이폰용 fabicon 설정 -->
     <link rel="apple-touch-icon" th:href="@{/img/fabicon.ico}" />
     <!-- 인터넷 익스플로어용 fabicon 설정 -->
-    <link rel="shortcut icon"  style="image/x-icon" th:href="@{/img/fabicon.ico}" />
+    <link rel="shortcut icon"  type="image/x-icon" th:href="@{/img/fabicon.ico}" />
 
     <!-- Normalize 설정 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.css" />
@@ -40,7 +40,7 @@
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" th:href="@{/css/header.css}" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
-    <link rel="stylesheet" th:href="@{/css/adoption.css}" />
+    <link rel="stylesheet" th:href="@{/css/adoption/adoption_read.css}" />
 
     <!-- reset.css cdn 설정 -->
     <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">-->
@@ -60,10 +60,11 @@
      <section class="adoption-read">
          <div class="view-button-area" th:object="${read}">
              <p class="view-area">
-                 <span class="material-symbols-outlined">visibility</span> <span>조회수</span> <span th:text="${read.hit}">11</span>
+                 <span class="material-symbols-outlined">visibility</span> <span>조회수</span> <span th:text="${read.hit}">0</span>
              </p>
              <p>
-                 <a href="/v1/adoption/edit" class="edit-button" title="글쓰기">
+                 <a th:href="@{'/v1/adoption/edit/' + ${read.postId}}" class="edit-button" title="글수정">
+<!--                 <a href="/v1/adoption/edit/{id}" class="edit-button" title="글수정">-->
                      <span class="material-symbols-outlined">edit</span>
                      <span>글 수정</span>
                  </a>
@@ -76,6 +77,10 @@
                  <span class="desc" th:text="${read.author}"></span>
              </p>
              <p>
+                 <span class="title">제목</span>
+                 <span class="desc" th:text="${read.title}"></span>
+             </p>
+             <p>
                  <span class="title">입양상태</span>
                  <span class="desc" th:text="${read.title}"></span>
              </p>
@@ -83,28 +88,16 @@
                  <p>
                      <span class="title">이미지</span>
                  </p>
-                 <div class="image" th:each="image : ${read.path}">
+
+                 <p class="image" th:each="image, index : ${read.path}" >
                      <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 -->
-                     <p th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') }">
-                         <img th:src="${image.path}" alt="유기동물 이미지"/>
-                     </p>
-
+                     <img th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') and image.isActive==1 }" th:src="${image.path}" alt="유기동물 이미지"/>
                      <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 -->
-                     <p th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') }">
-                         <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
-                     </p>
-
+                     <img th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') and image.isActive==1 }" th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
                      <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않고, image.path가 'empty'인 경우 -->
-                     <p th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}">
-                         <img th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>
-                     </p>
-                 </div>
-
+                     <img th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}" th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>
+                 </p>
              </div>
-             <p>
-                 <span class="title">제목</span>
-                 <span class="desc" th:text="${read.title}"></span>
-             </p>
              <p>
                  <span class="title">묘종/견종</span>
                  <span class="desc" th:text="${read.breed}"></span>

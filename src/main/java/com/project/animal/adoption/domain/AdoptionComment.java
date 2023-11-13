@@ -1,5 +1,6 @@
 package com.project.animal.adoption.domain;
 
+import com.project.animal.global.common.entity.BaseEntity;
 import com.project.animal.member.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Table(name = "adoption_comment")
-public class AdoptionComment {
+public class AdoptionComment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,11 +34,11 @@ public class AdoptionComment {
     private int tab;
 
 
-    @Column(name = "create_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "update_at")
-    private LocalDateTime updatedAt;
+//    @Column(name = "create_at")
+//    private LocalDateTime createdAt;
+//
+//    @Column(name = "update_at")
+//    private LocalDateTime updatedAt;
 
 
 }

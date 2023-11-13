@@ -1,19 +1,14 @@
-package com.project.animal.global.common.api;
+package com.project.animal.sample.openApi.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.animal.adoption.service.AdoptionService;
-import com.project.animal.global.common.dto.OpenApiDto;
+import com.project.animal.adoption.service.AdoptionServiceImpl;
+import com.project.animal.sample.openApi.dto.OpenApiDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,8 +24,10 @@ import java.util.Map;
 @RestController
 public class OpenApiData {
 
-    private final AdoptionService adoptionService;
+    private final AdoptionServiceImpl adoptionService;
 
+    // 해당 URL을 통해 DB에서 가져올 수 있도록 코드 작성
+    // 추후 삭제 예정
     @GetMapping("/migration/open")
     public void test() throws URISyntaxException, JsonProcessingException {
 
