@@ -32,15 +32,15 @@ public class AdoptionController {
     public String adoptionMain(Model model){
 
         List<Adoption> allWithImages = adoptionService.findAllWithImagesAndMember();
-        System.out.println("list:>>:"+allWithImages);
-        System.out.println("list:>>:"+allWithImages.toString());
-        for (Adoption allWithImage : allWithImages) {
-            System.out.println("list age:>>:"+allWithImage.getAge());
-            System.out.println("list images:>>:"+allWithImage.getAdoptionImages().stream().toList());
-            System.out.println("list title:>>:"+allWithImage.getTitle());
-            System.out.println("list:>>:"+allWithImage.getMember());
-
-        }
+        System.out.println("list:>>:"+allWithImages.get(0).getAdoptionImages().toString());
+        System.out.println("list:>>:"+allWithImages.get(0).toString());
+//        for (Adoption allWithImage : allWithImages) {
+//            System.out.println("list age:>>:"+allWithImage.getAge());
+//            System.out.println("list images:>>:"+allWithImage.getAdoptionImages().stream().toList());
+//            System.out.println("list title:>>:"+allWithImage.getTitle());
+//            System.out.println("list:>>:"+allWithImage.getMember());
+//
+//        }
 
         model.addAttribute("list",allWithImages);
 
@@ -88,20 +88,22 @@ public class AdoptionController {
 
 
     // 수정 하고 PUT 보내는 영역
-    @PutMapping(EndPoint.ADOPTION_EDIT)
+    @PutMapping (EndPoint.ADOPTION_EDIT)
     public String adoptionEditPut(@ModelAttribute @Validated AdoptionEditDto adoptionEditDto, BindingResult bindingResult,
                                @RequestParam(name="image") List<MultipartFile> file,
                                   @PathVariable Long id){
 
         if(bindingResult.hasErrors()){
             log.info("adoption_edit binding error = {}", bindingResult);
-            return "redirect:"+EndPoint.ADOPTION_EDIT;
+//            return "redirect:"+EndPoint.ADOPTION_EDIT;
+            return EndPoint.ADOPTION_LIST;
         }
 
         adoptionService.update(adoptionEditDto, file, id);
 
 
         return "redirect:"+EndPoint.ADOPTION_LIST;
+//        return EndPoint.ADOPTION_LIST;
     }
 
     @CrossOrigin(origins = {"http://localhost:8080", "http://infra.shucloud.site"})

@@ -60,7 +60,7 @@
      <section class="adoption-read">
          <div class="view-button-area" th:object="${read}">
              <p class="view-area">
-                 <span class="material-symbols-outlined">visibility</span> <span>조회수</span> <span th:text="${read.hit}">11</span>
+                 <span class="material-symbols-outlined">visibility</span> <span>조회수</span> <span th:text="${read.hit}">0</span>
              </p>
              <p>
                  <a th:href="@{'/v1/adoption/edit/' + ${read.postId}}" class="edit-button" title="글수정">

@@ -7,7 +7,6 @@ import com.project.animal.adoption.dto.AdoptionWriteDto;
 import com.project.animal.adoption.repository.AdoptionImageRepository;
 import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.adoption.service.inf.AdoptionService;
-import com.project.animal.global.common.minioserviceprovider.ImageUploadMinio;
 import com.project.animal.sample.openApi.dto.OpenApiDto;
 import com.project.animal.member.domain.Member;
 import com.project.animal.member.repository.MemberRepository;
@@ -15,7 +14,6 @@ import io.minio.*;
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +34,7 @@ import java.util.UUID;
 @Slf4j
 public class AdoptionServiceImpl implements AdoptionService {
 
+
     private final AdoptionRepository adoptionRepository;
     private final AdoptionImageRepository adoptionImageRepository;
     private final MinioClient minioClient;
@@ -44,7 +43,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 
     public void save(AdoptionWriteDto adoptionWriteDto, List<MultipartFile> files) {
 
-        String serverFileName = null;
+        String serverFileName;
         Adoption adoption = new Adoption(adoptionWriteDto.getTitle(), adoptionWriteDto.getBreed(), adoptionWriteDto.getGender(), adoptionWriteDto.getAge(), adoptionWriteDto.getCenter(), adoptionWriteDto.getNeutered(), adoptionWriteDto.getContent(), adoptionWriteDto.getColor(), adoptionWriteDto.getHappenPlace(), adoptionWriteDto.getSpecialMark());
 
         // 나머지 Adoption 엔티티 설정 (멤버 강제주입 추후 변경 필요)
@@ -99,12 +98,13 @@ public class AdoptionServiceImpl implements AdoptionService {
 
     @Transactional
     public void update (AdoptionEditDto adoptionEditDto, List<MultipartFile> files, Long id) {
-        String serverFileName = null;
+        String serverFileName;
         Adoption adoption = adoptionRepository.findByIdWithImageAndMember(id);
         System.out.println("service files:>>"+files);
         System.out.println("service files:>>"+files.size());
 
         adoption.updateAdoption(adoptionEditDto);
+        System.out.println("service adoption update :>>"+adoption.toString());
 //        adoption.changeAdoptionImages(adoptionEditDto.getImage());
 
 
@@ -113,25 +113,36 @@ public class AdoptionServiceImpl implements AdoptionService {
         Member member1 = member.get();
         adoption.setMember(member1);
 
-//        Adoption saved = adoptionRepository.save(adoption);
+        Adoption saved = adoptionRepository.save(adoption);
 
+        int size = adoption.getAdoptionImages().size();
+        for(int i=0; i<files.size(); i++){
+            serverFileName = saveMinio(files.get(i));// 미니오에 저장하는 영역
+            System.out.println("service serverfileName:>>"+serverFileName);
+//            adoption.getAdoptionImages().add();
+//            adoption.getAdoptionImages().get(size+i).changePath(serverFileName);
+//            System.out.println(adoption.getAdoptionImages().get(size+i));
 
-//        for(int i=0; i<files.size(); i++){
-//            serverFileName = saveMinio(files.get(i));
-//            adoption.getAdoptionImages().add(serverFileName);
-//
-//        }
-
-        for (MultipartFile file : files) {
-            serverFileName = saveMinio(file); // 미니오에 저장하는 영역
-
-//            AdoptionImage adoptionImage = new AdoptionImage(serverFileName, adoption);
-            AdoptionImage adoptionImage = new AdoptionImage();
+            AdoptionImage adoptionImage = new AdoptionImage( serverFileName, saved );
             adoptionImage.changeAdoption(adoption);
-            adoptionImage.changePath(serverFileName);
+//            adoptionImage.changePath(serverFileName);
 
+//            adoption.getAdoptionImages().add((size+i+1), adoptionImage);
             adoptionImageRepository.save(adoptionImage);
+
         }
+
+//        for (MultipartFile file : files) {
+//            serverFileName = saveMinio(file); // 미니오에 저장하는 영역
+//            log.info("1.serverFileName====완료======"+serverFileName);
+//            log.info("1.serverFileName====완료======={}",serverFileName);
+////            AdoptionImage adoptionImage = new AdoptionImage(serverFileName, adoption);
+//            AdoptionImage adoptionImage = new AdoptionImage();
+//            adoptionImage.changeAdoption(adoption);
+//            adoptionImage.changePath(serverFileName);
+//
+//            adoptionImageRepository.save(adoptionImage);
+//        }
     }
 
 

@@ -20,7 +20,7 @@ public class AdoptionEditDto {
     private String title;
 
     private List<AdoptionImage> path;
-    private List<MultipartFile> adoptionImages;
+//    private List<MultipartFile> adoptionImages;
 
     private String breed;
 
