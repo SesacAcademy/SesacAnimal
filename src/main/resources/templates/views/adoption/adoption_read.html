@@ -156,11 +156,11 @@
      </div>
 
 
- <form th:object="${comment}" th:action="@{'/v1/adoption/comment/'}" method="POST" name="comment" accept-charset="utf-8">
+ <form class="adoption-comments-write" th:object="${comment}" th:action="@{'/v1/adoption/comment/'}" method="POST" name="comment" accept-charset="utf-8">
      <!--             <input type="hidden" name="_method" value="PUT">-->
      <fieldset>
      <legend>입양게시판 댓글</legend>
-     <div class="adoption-comments-write">
+     <div>
          <h4 class="comment-write-title">댓글 쓰기</h4>
 
          <div class="comments-write">

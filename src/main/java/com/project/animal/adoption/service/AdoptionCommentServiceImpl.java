@@ -5,6 +5,7 @@ import com.project.animal.adoption.dto.AdoptionCommentDto;
 import com.project.animal.adoption.repository.AdoptionCommentRepository;
 import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.member.domain.Member;
+import com.project.animal.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +17,16 @@ public class AdoptionCommentServiceImpl {
 
     private final AdoptionRepository adoptionRepository;
     private final AdoptionCommentRepository adoptionCommentRepository;
-    public AdoptionComment saveComment(AdoptionCommentDto adoptionCommentDto){
+    private final MemberRepository repository;
+    public void saveComment(AdoptionCommentDto adoptionCommentDto){
 
         AdoptionComment adoptionComment = new AdoptionComment(adoptionCommentDto.getContent());
 
         Optional<Member> member = repository.findById(2L);
         Member member1 = member.get();
-        adoption.setMember(member1);
+        adoptionComment.setMember(member1);
 
+        adoptionCommentRepository.save(adoptionComment);
 
     }
 }

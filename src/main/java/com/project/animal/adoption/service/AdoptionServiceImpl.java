@@ -48,7 +48,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 
         // 나머지 Adoption 엔티티 설정 (멤버 강제주입 추후 변경 필요)
         Optional<Member> member = repository.findById(2L);
-        Member member1 = member.get();
+        Member member1 = member.orElseThrow();
         adoption.setMember(member1);
         Adoption saved = adoptionRepository.save(adoption);
 

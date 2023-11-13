@@ -184,6 +184,8 @@
 
 .adoption-comments-write fieldset{
     border: none;
+    margin:0;
+    padding:0;
 }
 
 .adoption-comments-write legend{
@@ -193,12 +195,13 @@
 }
 
 .adoption-comments-write h4{
-    width:1200px;
-    margin:0 auto;
+    /*width:1200px;*/
+    margin:0;
     font-size: 20px;
 }
 
 .adoption-comments-write .comments-write{
+    /*width:1200px;*/
     border: 1px solid #ddd;
     padding:50px;
 }
