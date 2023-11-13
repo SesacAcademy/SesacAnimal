@@ -12,7 +12,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@ToString
 public class AdoptionReadDto {
 
     private String author;
@@ -31,7 +30,9 @@ public class AdoptionReadDto {
     private List<AdoptionImage> path;
     private int hit;
 
-    public AdoptionReadDto(Adoption adoption){
+    private Long postId;
+
+    public AdoptionReadDto(Adoption adoption, Long postId){
         this.author=adoption.getMember().getName();
         this.title = adoption.getTitle();
         this.breed = adoption.getBreed();
@@ -47,5 +48,6 @@ public class AdoptionReadDto {
         this.path=adoption.getAdoptionImages();
 
         this.hit = adoption.getHit();
+        this.postId=postId;
     }
 }

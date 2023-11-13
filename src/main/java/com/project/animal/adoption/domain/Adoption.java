@@ -1,10 +1,13 @@
 package com.project.animal.adoption.domain;
 
+import com.project.animal.adoption.dto.AdoptionEditDto;
+import com.project.animal.global.common.entity.BaseEntity;
 import com.project.animal.member.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
@@ -17,13 +20,14 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "adoption")
-public class Adoption {
+@Setter
+public class Adoption extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "adoption_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) //희정수정
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -31,7 +35,7 @@ public class Adoption {
     @NotBlank
     private String title; // 제목
 
-    @OneToMany(mappedBy = "adoption")
+    @OneToMany(mappedBy = "adoption" )
     private List<AdoptionImage> adoptionImages;
 
     @NotNull
@@ -83,14 +87,9 @@ public class Adoption {
     @Column(name = "special_mark")
     private String specialMark; // 특징 ex) "마을배회"
 
-    @Column(name = "create_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "update_at")
-    private LocalDateTime updatedAt;
-
+    @NotNull
     @Column(name = "is_active")
-    private String isActive;
+    private int isActive;
 
     public void setMember(Member member) {
         this.member = member;
@@ -99,6 +98,27 @@ public class Adoption {
     public void setHit(int hit) {
         this.hit = hit;
     }
+
+    public void changeIsActive(int isActive) {
+        this.isActive = isActive;
+    }
+
+    public void updateAdoption(AdoptionEditDto adoptionEditDto){
+        this.title= adoptionEditDto.getTitle();
+        this.content=adoptionEditDto.getContent();
+        this.status=adoptionEditDto.getStatus();
+        this.breed=adoptionEditDto.getBreed();
+        this.color=adoptionEditDto.getColor();
+        this.gender=adoptionEditDto.getGender();
+        this.age=adoptionEditDto.getAge();
+        this.neutered=adoptionEditDto.getNeutered();
+        this.center=adoptionEditDto.getCenter();
+        this.happenPlace=adoptionEditDto.getHappenPlace();
+        this.specialMark=adoptionEditDto.getSpecialMark();
+//        this.adoptionImages=adoptionEditDto.getImage();
+
+    }
+
 
     // 입양 게시판 write시 생성자
     public Adoption(String title, String breed, String gender, String age, String center, String neutered, String content, String color, String happenPlace, String specialMark) {
@@ -113,8 +133,7 @@ public class Adoption {
         this.happenPlace=happenPlace;
         this.specialMark=specialMark;
         this.status="보호중";
-        this.isActive="Y";
-        this.createdAt = LocalDateTime.now();
+        this.isActive=1;
     }
 
 
@@ -136,7 +155,7 @@ public class Adoption {
         this.happenPlace=happenPlace;
         this.content=kindCd+"/"+colorCd+"/"+specialMark;
         this.center="Y";
+        this.isActive=1;
         this.specialMark=specialMark;
-        this.createdAt = LocalDateTime.now();
     }
 }

@@ -1,14 +1,16 @@
 package com.project.animal.missing.dto;
 
 import com.project.animal.missing.domain.MissingPost;
+import com.project.animal.missing.dto.image.MissingPostImageDto;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @ToString
-public class MissingListResDto {
+public class MissingListEntryDto {
 
   private long id;
 
@@ -36,7 +38,9 @@ public class MissingListResDto {
 
   private LocalDateTime updatedAt;
 
-  private MissingListResDto(long id, String title, long memberId, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, int reward, int missingStatus, LocalDateTime updatedAt) {
+  private List<MissingPostImageDto> images;
+
+  private MissingListEntryDto(long id, String title, long memberId, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, int reward, int missingStatus, LocalDateTime updatedAt) {
     this.id = id;
     this.title = title;
     this.memberId = memberId;
@@ -51,7 +55,7 @@ public class MissingListResDto {
     this.updatedAt = updatedAt;
   }
 
-  public static MissingListResDto fromMissingPost(MissingPost post) {
+  public static MissingListEntryDto fromMissingPost(MissingPost post) {
     long id = post.getMissingId();
     String title = post.getTitle();
     long memberId = post.getMemberId();
@@ -65,10 +69,13 @@ public class MissingListResDto {
     int missingStatus = post.getMissingStatus();
     LocalDateTime updatedAt = post.getUpdatedAt();
 
-    return new MissingListResDto(
+
+    return new MissingListEntryDto(
             id, title, memberId, animalType, specifics, color, viewCount, missingPlace,
             missingTime, reward, missingStatus, updatedAt);
   }
 
-
+  public void addImages(List<MissingPostImageDto> images) {
+    this.images = images;
+  }
 }

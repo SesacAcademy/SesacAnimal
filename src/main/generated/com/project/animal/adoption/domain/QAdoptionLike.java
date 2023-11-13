@@ -22,9 +22,12 @@ public class QAdoptionLike extends EntityPathBase<AdoptionLike> {
 
     public static final QAdoptionLike adoptionLike = new QAdoptionLike("adoptionLike");
 
+    public final com.project.animal.global.common.entity.QBaseEntity _super = new com.project.animal.global.common.entity.QBaseEntity(this);
+
     public final QAdoption adoption;
 
-    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -32,7 +35,8 @@ public class QAdoptionLike extends EntityPathBase<AdoptionLike> {
 
     public final NumberPath<Integer> status = createNumber("status", Integer.class);
 
-    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QAdoptionLike(String variable) {
         this(AdoptionLike.class, forVariable(variable), INITS);

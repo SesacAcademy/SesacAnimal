@@ -21,39 +21,21 @@ public class MissingComment {
   // TODO: relation
   private long member_id;
 
-  // TODO: relation
-  private long post_id;
-
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "post_id")
+  private MissingPost missingPost;
   private String content;
 
   // TODO: relation
   private Long parentId;
-
-  public MissingComment(long member_id, long post_id, String content) {
+  public MissingComment(long member_id, MissingPost missingPost, String content, Long parentId) {
     this.member_id = member_id;
-    this.post_id = post_id;
-    this.content = content;
-  }
-
-  public MissingComment(long member_id, long post_id, String content, Long parentId) {
-    this.member_id = member_id;
-    this.post_id = post_id;
+    this.missingPost = missingPost;
     this.content = content;
     this.parentId = parentId;
   }
 
-  public MissingComment(long comment_id, long member_id, long post_id, String content) {
-    this.comment_id = comment_id;
-    this.member_id = member_id;
-    this.post_id = post_id;
-    this.content = content;
-  }
-
-  public MissingComment(long comment_id, long member_id, long post_id, String content, Long parentId) {
-    this.comment_id = comment_id;
-    this.member_id = member_id;
-    this.post_id = post_id;
-    this.content = content;
-    this.parentId = parentId;
+  public void changeComment(String comment) {
+    this.content = comment;
   }
 }

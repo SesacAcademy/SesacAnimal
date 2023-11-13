@@ -59,3 +59,17 @@
     width:100%;
     min-height: 150px;
 }
+
+.missing-card-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.missing-add-image-button {
+    padding: 5px 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-left: 20px;
+    cursor: pointer;
+}

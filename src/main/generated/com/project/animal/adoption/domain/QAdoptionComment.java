@@ -22,11 +22,14 @@ public class QAdoptionComment extends EntityPathBase<AdoptionComment> {
 
     public static final QAdoptionComment adoptionComment = new QAdoptionComment("adoptionComment");
 
+    public final com.project.animal.global.common.entity.QBaseEntity _super = new com.project.animal.global.common.entity.QBaseEntity(this);
+
     public final QAdoption adoption;
 
     public final StringPath content = createString("content");
 
-    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final NumberPath<Integer> group_num = createNumber("group_num", Integer.class);
 
@@ -36,7 +39,8 @@ public class QAdoptionComment extends EntityPathBase<AdoptionComment> {
 
     public final NumberPath<Integer> tab = createNumber("tab", Integer.class);
 
-    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QAdoptionComment(String variable) {
         this(AdoptionComment.class, forVariable(variable), INITS);

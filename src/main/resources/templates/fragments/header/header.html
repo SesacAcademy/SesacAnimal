@@ -29,9 +29,10 @@
     </menu>
 
     
-    <div class="login-area">
+    <div class="login-area" th:object="${member}">
         <p>
-            <a href="/v1/auth/login" title="로그인" class="material-symbols-outlined">login</a>
+            <a th:if="${member == null}" href="/v1/auth/login" title="로그인" class="material-symbols-outlined">login</a>
+            <a th:if="${member != null}" href="/v1/auth/logout" title="로그아웃" class="material-symbols-outlined">move_item</a>
         </p>
         <p>
             <a href="/v1/auth/signup" title="회원가입" class="material-symbols-outlined">person_add</a>

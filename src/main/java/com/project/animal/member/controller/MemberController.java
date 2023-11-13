@@ -3,9 +3,11 @@ package com.project.animal.member.controller;
 import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
 import com.project.animal.global.common.dto.ResponseDto;
-import com.project.animal.global.common.provider.MailTokenProvider;
+import com.project.animal.global.common.provider.MailAuthCodeProvider;
+import com.project.animal.member.domain.Member;
 import com.project.animal.member.dto.CheckMailTokenDto;
-import com.project.animal.member.dto.MemberFormDto;
+import com.project.animal.member.dto.FindMemberEmailFormDto;
+import com.project.animal.member.dto.SignupFormDto;
 import com.project.animal.member.service.inf.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import static com.project.animal.global.common.constant.EndPoint.FIND_EMAIL_API;
 
 @Slf4j
 @Controller
@@ -21,18 +24,28 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    private final MailTokenProvider mailTokenProvider;
+    private final MailAuthCodeProvider mailTokenProvider;
 
+    /**
+     * 회원가입 페이지로 이동
+     *
+     * @version 0.1
+     * @author 박성수
+     * @return String (회원가입 페이지 뷰 이름)
+     */
     @GetMapping(EndPoint.SIGNUP)
     public String signupForm() {
+        // 회원가입 폼으로 이동
         return ViewName.SIGNUP_VIEW;
     }
 
     @ResponseBody
     @PostMapping(EndPoint.SIGNUP_API)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto<String> signup(@RequestBody @Validated MemberFormDto memberFormDto) {
-        memberService.save(memberFormDto);
+    public ResponseDto<String> signup(@RequestBody @Validated SignupFormDto signupFormDto) {
+        // 회원가입 진행
+        memberService.save(signupFormDto);
+
         return new ResponseDto<>(HttpStatus.OK.value(), "null", "회원가입 완료");
     }
 
@@ -54,5 +67,15 @@ public class MemberController {
         memberService.checkMailToken(checkMailTokenDto.getEmail(), checkMailTokenDto.getToken());
 
         return new ResponseDto<>(HttpStatus.NO_CONTENT.value(), "null", "인증번호가 확인되었습니다.");
+    }
+
+    @ResponseBody
+    @PostMapping(FIND_EMAIL_API)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseDto<String> findMemberId(@RequestBody @Validated FindMemberEmailFormDto findMemberEmailFormDto) {
+        // 아이디 찾기
+        Member findMember = memberService.findEmail(findMemberEmailFormDto);
+
+        return new ResponseDto<>(HttpStatus.OK.value(), findMember.getEmail(), "아이디 찾기 Ok");
     }
 }

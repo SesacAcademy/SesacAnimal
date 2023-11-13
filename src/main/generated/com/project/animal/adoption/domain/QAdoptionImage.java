@@ -26,6 +26,8 @@ public class QAdoptionImage extends EntityPathBase<AdoptionImage> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final NumberPath<Integer> isActive = createNumber("isActive", Integer.class);
+
     public final StringPath path = createString("path");
 
     public QAdoptionImage(String variable) {
