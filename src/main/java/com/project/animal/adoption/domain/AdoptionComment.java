@@ -44,6 +44,10 @@ public class AdoptionComment extends BaseEntity {
         this.adoption = adoption;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     //    생성자
     public AdoptionComment(AdoptionCommentWriteDto adoptionCommentDto){
         this.content = adoptionCommentDto.getContent();

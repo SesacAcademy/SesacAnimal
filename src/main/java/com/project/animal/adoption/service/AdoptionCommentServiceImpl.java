@@ -10,6 +10,7 @@ import com.project.animal.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +31,18 @@ public class AdoptionCommentServiceImpl {
         adoptionComment.setMember(member1);
         Adoption adoption = adoptionRepository.findById(postId).orElseThrow();
         adoptionComment.setAdoption(adoption);
+
+        adoptionCommentRepository.save(adoptionComment);
+
+    }
+
+    public void updateComment(AdoptionCommentWriteDto adoptionCommentDto, Long commentId){
+
+        AdoptionComment adoptionComment = adoptionCommentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("댓글을 찾을 수 없습니다. ID: " + commentId));
+
+        // 기존 댓글 업데이트 로직 추가
+        adoptionComment.setContent(adoptionCommentDto.getContent());
 
         adoptionCommentRepository.save(adoptionComment);
 

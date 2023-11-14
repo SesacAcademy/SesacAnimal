@@ -202,8 +202,8 @@
 }
 
 .adoption-comments-read .comments-read .re-reply{
-    display: none;
-    /*display: flex;*/
+    /*display: none;*/
+    display: flex;
     margin-left:35px;
     align-items: flex-start;
 }

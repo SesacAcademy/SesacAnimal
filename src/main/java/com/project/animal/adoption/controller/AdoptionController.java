@@ -156,20 +156,27 @@ public class AdoptionController {
     @PostMapping(EndPoint.ADOPTION_READ)
     public String adoptionCommentPost(@ModelAttribute @Validated AdoptionCommentWriteDto adoptionCommentWriteDto, BindingResult bindingResult,
                                       @PathVariable(name = "id") Long postId,
-                                      @RequestParam(name="commentId") Long commentId){
+                                      @RequestParam(name="commentId", required = false) Long commentId){
 
         if(bindingResult.hasErrors()){
             log.info("adoption_read 영역 내 댓글 에러 ={}", bindingResult);
 
             return "redirect:"+EndPoint.ADOPTION_READ;
         }
+        System.out.println("comment Id :>>"+ commentId.toString());
 
         System.out.println("comment check: >>"+adoptionCommentWriteDto.toString());
         System.out.println("comment check: id>>"+adoptionCommentWriteDto.getId());
         System.out.println("comment check: author>>"+adoptionCommentWriteDto.getAuthor());
         System.out.println("comment check: content>>"+adoptionCommentWriteDto.getContent());
 
-        adoptionCommentService.saveComment(adoptionCommentWriteDto, postId);
+        if (commentId != null) {
+            // 기존 댓글 업데이트
+            adoptionCommentService.updateComment(adoptionCommentWriteDto, commentId);
+        } else {
+            // 새로운 댓글 생성
+            adoptionCommentService.saveComment(adoptionCommentWriteDto, postId);
+        }
 
         return "redirect:"+EndPoint.ADOPTION_READ;
     }
