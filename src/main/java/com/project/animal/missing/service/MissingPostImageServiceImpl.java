@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,4 +35,29 @@ public class MissingPostImageServiceImpl implements MissingPostImageService {
             .map(missingPostImageRepository :: save)
             .collect(Collectors.toList());
   }
+
+  public void deleteImages(List<Long> ids) {
+    long deletedImages = ids.stream()
+            .map(missingPostImageRepository :: findById)
+            .map((optional) -> optional.orElseGet(null))
+            .filter((img) -> img != null)
+            .map((img) -> {
+              img.inactivatePostImage();
+              return img;
+            })
+            .count();
+
+    if (deletedImages != ids.size()) {
+      throw new RuntimeException("이미지 삭제 실패");
+    }
+
+  }
+
+  @Override
+  public void editImages(MultipartFile[] images, MissingPost post, List<Long> ids) {
+    createImage(images, post);
+    if (ids != null && !ids.isEmpty()) deleteImages(ids);
+  }
+
+
 }
