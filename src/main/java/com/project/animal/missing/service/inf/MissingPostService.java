@@ -12,5 +12,5 @@ public interface MissingPostService {
 
   boolean deletePost(long postId);
 
-  boolean editPost(MissingEditDto dto);
+  boolean editPost(long memberId, MissingEditDto dto);
 }

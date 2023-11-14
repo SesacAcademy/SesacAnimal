@@ -49,11 +49,12 @@ public class MissingEditController extends MissingController {
 
   @PutMapping(EndPoint.PATH_ID)
   public String handleEditRequest(@Valid @ModelAttribute("detail") MissingEditDto dto, BindingResult br, RedirectAttributes redirectAttributes) {
+    long memberId = 1;
     if (br.hasErrors()) {
       throw new InvalidEditFormException(dto, br);
     }
 
-    boolean isSuccess = missingPostServiceImpl.editPost(dto);
+    boolean isSuccess = missingPostServiceImpl.editPost(memberId, dto);
     redirectAttributes.addFlashAttribute("isSuccess", isSuccess ? SUCCESS_FLAG : FAIL_FLAG);
     redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
 

@@ -113,14 +113,15 @@ public class MissingPostServiceImpl implements MissingPostService {
   @Transactional(propagation = Propagation.REQUIRED )
   public boolean createPost(long memberId, MissingNewDto dto) {
     try {
-      Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
-      maybeMember.orElseThrow(() -> new RuntimeException("일치하는 회원이 존재하지 않습니다."));
 
-//      MissingPost post = converter.toMissingPost(dto);
-//      MissingPost result = missingPostRepository.save(post);
-//
-//      missingPostImageService.createImage(dto.getImages(), post);
-//      if (result == null) throw new Exception("no save result");
+      Optional<Member> maybeMember = memberRepository.findById(memberId);
+      Member member = maybeMember.orElseThrow(() -> new RuntimeException("일치하는 회원이 존재하지 않습니다."));
+
+      MissingPost post = converter.toMissingPost(member, dto);
+      MissingPost result = missingPostRepository.save(post);
+
+      missingPostImageService.createImage(dto.getImages(), post);
+      if (result == null) throw new Exception("no save result");
       return true;
 
     } catch (Exception ex) {
@@ -147,15 +148,17 @@ public class MissingPostServiceImpl implements MissingPostService {
   // TODO: find로 post 가져온 후에 값 변경후 dirty check로 commit 가능
 
   @Transactional
-  public boolean editPost(MissingEditDto dto) {
+  public boolean editPost(long memberId, MissingEditDto dto) {
 
     try {
+      Optional<Member> maybeMember = memberRepository.findById(memberId);
+      Member member = maybeMember.orElseThrow(() -> new RuntimeException("일치하는 회원이 존재하지 않습니다."));
 
-//      MissingPost post = converter.toMissingPost(dto);
-//      MissingPost result = missingPostRepository.save(post);
-//      missingPostImageService.editImages(dto.getImages(), post, dto.getDeletedIds());
-//
-//      if (result == null) throw new Exception("no edit result");
+      MissingPost post = converter.toMissingPost(member, dto);
+      MissingPost result = missingPostRepository.save(post);
+      missingPostImageService.editImages(dto.getImages(), post, dto.getDeletedIds());
+
+      if (result == null) throw new Exception("no edit result");
       return true;
 
     } catch (Exception ex) {
