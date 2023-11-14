@@ -20,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
+
 import static com.project.animal.global.common.constant.EndPoint.KAKAO_LOGIN;
 import static com.project.animal.global.common.constant.ExpirationTime.ACCESS_TOKEN_COOKIE_EXPIRATION_TIME;
 import static com.project.animal.global.common.constant.ExpirationTime.REFRESH_TOKEN_COOKIE_EXPIRATION_TIME;
@@ -33,7 +34,8 @@ public class LoginController {
     private final LoginService loginService;
 
     /**
-     * 로그인 페이지로 이동하는 Controller
+     * 로그인 페이지로 이동하는 Controller이다.
+     *
      * @version 0.1
      * @author 박성수
      * @return String (로그인 페이지 뷰 이름)
@@ -45,12 +47,13 @@ public class LoginController {
 
     /**
      * 로그인 처리를 담당하는 Controller로 로그인 폼에서 입력받은 데이터를 검증하고 생성된 JWT 토큰을 쿠키에 담아준다.
+     *
      * @version 0.1
      * @author 박성수
-     * @param loginFormDto (로그인 폼 DTO)
-     * @param response (HttpServletResponse 객체)
+     * @param loginFormDto 로그인 폼 DTO
+     * @param response HttpServletResponse 객체
      * @return ResponseEntity<ResponseDto<String> (API 응답 DTO)
-     * @throws LoginException (로그인 실패 시, 해당 예외 발생)
+     * @throws LoginException 로그인 실패 시, 해당 예외 발생
      */
     @ResponseBody
     @PostMapping(EndPoint.LOGIN_API)
@@ -73,10 +76,11 @@ public class LoginController {
     /**
      * 소셜 로그인 (Kakao)을 담당하는 Controller로 카카오 인증 서버에서 전달받은 인증 코드를 서비스 계층에 넘겨주고
      * 생성된 JWT 토큰을 쿠키에 담아준다.
+     *
      * @version 0.1
      * @author 박성수
-     * @param code (카카오 인증 서버에서 발급한 인증 코드)
-     * @param response (HttpServletResponse 객체)
+     * @param code 카카오 인증 서버에서 발급한 인증 코드
+     * @param response HttpServletResponse 객체
      * @return ResponseEntity<HttpHeaders> 
      */
     @GetMapping(KAKAO_LOGIN)
@@ -94,12 +98,13 @@ public class LoginController {
     }
 
     /**
-     * 로그아웃을 담당하는 Controller로 쿠키 안에 저장된 JWT 토큰을 이용하여 Redis 서버에 저장된 Refresh 토큰과
-     * 사용자 브라우저 쿠키에 저장된 Access, Refresh 토큰 삭제를 담당한다.
+     * 로그아웃을 담당하는 Controller로 Redis 서버에 저장된 Refresh 토큰과 사용자 브라우저 쿠키에 저장된
+     * Access, Refresh 토큰 삭제를 담당한다.
+     *
      * @version 0.1
-     * @param member (JWT 토큰에서 파싱한 MemberDto)
-     * @param response (HttpServletResponse 객체)
      * @author 박성수
+     * @param member MemberDto 객체
+     * @param response HttpServletResponse 객체
      * @return String (로그인 페이지 뷰 이름)
      */
     @GetMapping(EndPoint.LOGOUT)
@@ -115,7 +120,10 @@ public class LoginController {
     /**
      * JWT 토큰을 쿠키에 저장하는 메소드로 Refresh 토큰의 경우, JS 참조를 막기 위해 httpOnly 속성을 설정한다.
      * 추가적으로 실 서버 배포 시, secure 옵션을 true로 바꿔주어야 한다.
-     * @param token (TokenDto 객체 / Access 및 Refresh 토큰 포함)
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param token TokenDto 객체 / Access 및 Refresh 토큰 포함
      * @return responseHeaders (HttpHeaders 객체)
      */
     private HttpHeaders addTokenInCookie(TokenDto token) {

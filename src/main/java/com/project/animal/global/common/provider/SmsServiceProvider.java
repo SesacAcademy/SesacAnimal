@@ -23,6 +23,14 @@ public class SmsServiceProvider {
         this.smsService = NurigoApp.INSTANCE.initialize(key, secret, url);
     }
 
+    /**
+     * 한 명의 사용자에게 문자 발송하는 메소드이다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param phone 유저 휴대폰 번호
+     * @param content 문자 내용
+     */
     public void sendSms(String phone, String content) {
 
         // Message 객체 생성

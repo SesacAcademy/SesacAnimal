@@ -74,7 +74,7 @@ public class SecurityConfig {
                 .antMatchers("/v1/auth/logout").authenticated()
             .and()
             .authorizeRequests()                                              // 8. 인가가 필요한 페이지
-                .antMatchers("/tttt").hasRole("ADMIN")
+                .antMatchers("/test2").hasRole("ADMIN")
             .and()
             .authorizeRequests()
                 .anyRequest().permitAll()                                     // 9. 그 외의 페이지는 모두 허용

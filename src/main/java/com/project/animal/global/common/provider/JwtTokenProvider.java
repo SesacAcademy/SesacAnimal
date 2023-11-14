@@ -6,6 +6,7 @@ import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.global.common.provider.inf.TokenProvider;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
 import java.util.*;
+
 import static com.project.animal.global.common.constant.ExpirationTime.ACCESS_TOKEN_EXPIRATION_TIME;
 import static com.project.animal.global.common.constant.ExpirationTime.REFRESH_TOKEN_EXPIRATION_TIME;
 import static com.project.animal.global.common.constant.TokenTypeValue.*;
@@ -28,15 +30,15 @@ import static com.project.animal.global.common.constant.TokenTypeValue.*;
 @Component
 public class JwtTokenProvider implements TokenProvider {
 
-    private SecretKey key;                                                  // 대칭키
+    private SecretKey key;
 
     @Value("${jwt.issuer}")
-    private String issuer;                                                  // 발급자
+    private String issuer;
 
     private final RedisServiceProvider redisServiceProvider;
 
     // JWT 토큰 서명에 사용할 SecretKey를 설정하는 부분으로 토큰 서명에는 대칭키 방식과 비대칭키 방식이 있는데
-    // 빠르게 구현하기 위해 대칭키 방식을 채택하였다.
+    // 빠르게 구현하기 위해 대칭키 방식을 채택하였다. (MSA 환경에서는 인증을 편리하게 하기 위해 비대칭키 방식 권장)
     public JwtTokenProvider(@Value("${jwt.secretKey}") String key,
                             RedisServiceProvider redisServiceProvider) {
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));
@@ -44,12 +46,12 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     /**
-     * JWT 토큰을 발급하는 메소드로 매개변수로 받는 타입에 따라 Access Token으로 생성할 지 Refresh Token으로 생성할 지 결정
+     * JWT 토큰을 발급 하는 메소드이며, 매개변수로 받는 타입에 따라 Access Token으로 생성할 지 Refresh Token으로 생성할 지 결정한다.
      *
      * @version 0.1
      * @author 박성수
-     * @param member (토큰에 저장할 클레임 정보)
-     * @param type (토큰 타입 - Access 또는 Refresh)
+     * @param member 토큰에 저장할 클레임 정보
+     * @param type 토큰 타입 (Access 또는 Refresh)
      * @return String (JWT 토큰)
      */
     @Override
@@ -86,12 +88,12 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     /**
-     * Access Token이 만료되어 Refresh Token 검증한 다음 만료된 Access Token의 정보로 새로운 Access Token을 발급하는 메소드
-     * 
+     * Access Token이 만료되어 Refresh Token으로 새로운 Access Token을 재발급하는 메소드이다.
+     *
      * @version 0.1
      * @author 박성수
-     * @param token (만료된 JWT Access 토큰)
-     * @return String (새로 발급한 JWT Access 토큰)
+     * @param token JWT Refresh 토큰
+     * @return String (JWT Access 토큰)
      */
     public String generateToken(String token) {
         Date now = new Date();
@@ -116,11 +118,11 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     /**
-     * Redis 서버에 저장된 Refresh 토큰을 삭제하기 위한 메소드
+     * Redis 서버에 저장된 Refresh 토큰을 삭제하기 위한 메소드이다.
      * 
      * @version 0.1
      * @author 박성수
-     * @param member (토큰에 저장된 클레임 정보)
+     * @param member MemberDto 객체
      */
     @Override
     public void removeToken(MemberDto member) {
@@ -128,12 +130,12 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     /**
-     * 사용자에게서 받은 Refresh 토큰과 서버에 저장된 Refresh 토큰이 일치하는지 비교하는 메소드
+     * 사용자에게서 받은 Refresh 토큰과 Redis 서버에 저장된 Refresh 토큰이 일치하는지 비교하는 메소드이다.
      *
      * @version 0.1
      * @author 박성수
-     * @param token (Refresh 토큰)
-     * @return true/false (토큰이 일치하면 true, 일치하지 않으면 false 리턴)
+     * @param token JWT Refresh 토큰
+     * @return Boolean (토큰이 유효하면 true, 유효하지 않으면 false 리턴)
      */
     @Override
     public boolean matchToken(String token) {
@@ -144,15 +146,16 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     /**
-     * JWT 토큰을 파싱하여 사용자 객체인 MemberDto를 리턴하는 메소드
+     * JWT 토큰을 파싱하여 MemberDto 객체를 리턴하는 메소드이다.
      * 
      * @version 0.1
      * @author 박성수
-     * @param token (JWT 토큰)
-     * @return memberDto (JWT 토큰 파싱한 사용자 정보)
-     * @throws MalformedJwtException (JWT 토큰이 손상된 경우)
-     * @throws IllegalArgumentException (클레임이 유효하지 않은 경우)
-     * @throws SignatureException (서명이 위변조된 경우)
+     * @param token JWT 토큰
+     * @return MemberDto 객체
+     * @throws UnsupportedJwtException if the claimsJws argument does not represent an Claims JWS
+     * @throws MalformedJwtException if the claimsJws string is not a valid JWS
+     * @throws IllegalArgumentException if the claimsJws string is null or empty or only whitespace
+     * @throws SignatureException if the claimsJws JWS signature validation fails
      */
     @Override
     public MemberDto parseToken(String token) {
@@ -171,13 +174,13 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     /**
-     * HTTP 요청에 포함된 쿠키에서 JWT 토큰을 가져오는 메소드
+     * HttpServletRequest 객체에 저장된 쿠키에서 JWT 토큰을 가져오는 메소드이다.
      *
      * @version 0.1
      * @author 박성수
-     * @param request (HttpServletRequest)
-     * @param type (토큰 타입 - Access 또는 Refresh)
-     * @return JWT 토큰
+     * @param request HttpServletRequest 객체
+     * @param type 토큰 타입 (Access 또는 Refresh)
+     * @return String (JWT 토큰) 또는 null
      */
     @Override
     public String resolveToken(HttpServletRequest request, String type) {
@@ -198,11 +201,14 @@ public class JwtTokenProvider implements TokenProvider {
     /**
      * JWT 토큰을 검증하는 메소드 (위변조 및 만료 검사)
      *
-     * @param token (JWT 토큰)
-     * @return true/false (검증 완료 시, true 그렇지 않으면 false 리턴)
-     * @throws MalformedJwtException (JWT 토큰이 손상된 경우)
-     * @throws IllegalArgumentException (클레임이 유효하지 않은 경우)
-     * @throws SignatureException (서명이 위변조된 경우)
+     * @version 0.1
+     * @author 박성수
+     * @param token JWT 토큰
+     * @return Boolean (토큰이 유효하면 true, 유효하지 않으면 false 리턴)
+     * @throws UnsupportedJwtException if the claimsJws argument does not represent an Claims JWS
+     * @throws MalformedJwtException if the claimsJws string is not a valid JWS
+     * @throws IllegalArgumentException if the claimsJws string is null or empty or only whitespace
+     * @throws SignatureException if the claimsJws JWS signature validation fails
      */
     @Override
     public boolean validateToken(String token) {
@@ -228,6 +234,14 @@ public class JwtTokenProvider implements TokenProvider {
         }
     }
 
+    /**
+     * JWT 토큰에 저장된 클레임 정보를 이용하여 Authentication 객체를 생성하는 메소드이다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param token JWT Access 토큰
+     * @return Authentication 객체
+     */
     public Authentication getAuthentication(String token) {
         MemberDto member = parseToken(token);
 

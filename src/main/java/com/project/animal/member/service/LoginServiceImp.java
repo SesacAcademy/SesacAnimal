@@ -50,6 +50,18 @@ public class LoginServiceImp implements LoginService {
     @Value("${oauth2.kakao.secret}")
     private String kakao_secret;
 
+    /**
+     * 로그인 처리를 담당하는 Service로 Controller에서 전달받은 LoginFormDto 객체를 이용하여 DB에 해당 사용자가 있는지 확인하고
+     * 사용자가 존재하면 JWT 토큰을 생성하여 리턴한다.
+     *
+     * 만약, DB에 해당 사용자가 없다면 LoginException 예외가 발생한다.
+     * 
+     * @version 0.1
+     * @author 박성수
+     * @param loginFormDto 로그인 폼 DTO
+     * @return TokenDto 객체
+     * @throws LoginException 로그인 실패 시, 해당 예외 발생
+     */
     @Override
     @Transactional
     public TokenDto login(LoginFormDto loginFormDto) {
@@ -81,6 +93,15 @@ public class LoginServiceImp implements LoginService {
         return new TokenDto(accessToken, refreshToken);
     }
 
+    /**
+     * 카카오 로그인을 담당하는 Service로 사업자 등록이 되어 있지 않아 필요로 하는 사용자 데이터를 받을 수 없기 때문에
+     * 별도의 DTO를 만들지 않고 테스트 용도로 작성하였습니다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param code 인증 코드
+     * @return TokenDto 객체
+     */
     @Override
     @Transactional
     public TokenDto kakaoLogin(String code) {
@@ -163,6 +184,15 @@ public class LoginServiceImp implements LoginService {
         return new TokenDto(accessToken, refreshToken);
     }
 
+    /**
+     * 로그아웃을 담당하는 Service로 Redis 서버에 저장된 Refresh 토큰과 사용자 브라우저 쿠키에 저장된
+     * Access, Refresh 토큰 삭제를 담당한다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param memberDto MemberDto 객체
+     * @param response HttpServletResponse 객체
+     */
     @Override
     public void logout(MemberDto memberDto, HttpServletResponse response) {
         // Redis 서버에 저장된 Refresh 토큰 삭제

@@ -1,6 +1,9 @@
 package com.project.animal.global.common.filter;
 
 import com.project.animal.global.common.provider.JwtTokenProvider;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;
@@ -61,27 +64,61 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             authentication = null;
         }
 
-        // SecurityContext에 Authentication 객체 저장 (인증 정보)
+        // Security Context에 Authentication 객체 저장 (인증 정보)
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 다음 필터 호출
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * Access Token이 유효한 상태인지 확인 하는 메소드이다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param accessToken JWT Access 토큰
+     * @return Boolean (토큰이 유효하면 true, 유효하지 않으면 false 리턴)
+     * @throws UnsupportedJwtException if the claimsJws argument does not represent an Claims JWS
+     * @throws MalformedJwtException if the claimsJws string is not a valid JWS
+     * @throws IllegalArgumentException if the claimsJws string is null or empty or only whitespace
+     * @throws SignatureException if the claimsJws JWS signature validation fails
+     */
     private boolean isValidAccessToken(String accessToken) {
         return jwtTokenProvider.validateToken(accessToken);
     }
 
+    /**
+     * Refresh Token이 유효한 상태인지 확인 하는 메소드이며, Access Token과 달리 Redis 서버에 저장된 Refresh Token과 일치하는지
+     * 확인 하는 로직이 추가적으로 포함되어 있다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param refreshToken JWT Refresh 토큰
+     * @return Boolean (토큰이 유효하면 true, 유효하지 않으면 false 리턴)
+     * @throws UnsupportedJwtException if the claimsJws argument does not represent an Claims JWS
+     * @throws MalformedJwtException if the claimsJws string is not a valid JWS
+     * @throws IllegalArgumentException if the claimsJws string is null or empty or only whitespace
+     * @throws SignatureException if the claimsJws JWS signature validation fails
+     */
     private boolean isValidRefreshToken(String refreshToken) {
         return jwtTokenProvider.validateToken(refreshToken) && jwtTokenProvider.matchToken(refreshToken);
     }
 
     /**
-     * HTTP 헤더에 새로 발급받은 Access Token을 저장
-     * @param response
-     * @param newAccessToken
+     * 새로 발급 받은 Access Token을 HTTP 응답에 쿠키로 저장하는 메소드이며, 추가적으로 기존 HttpServletRequest 객체의 쿠키 안에
+     * 저장되어 있던 만료된 Access Token을 새로 발급받은 Access Token으로 바꾼다.
+     *
+     * 만약, Access Token이 쿠키 안에 없다면 request.setAttribute() 메소드를 이용하여 request 영역에 Access Token을 저장한다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param request HttpServletRequest 객체
+     * @param response HttpServletResponse 객체
+     * @param newAccessToken JWT Access 토큰
      */
     private void saveAccessTokenInCookie(HttpServletRequest request, HttpServletResponse response, String newAccessToken) {
+        
+        // 새로 발급 받은 Access Token을 저장한 쿠키를 생성
         ResponseCookie newAccessTokenCookie = ResponseCookie.from(JWT_ACCESS_TOKEN, newAccessToken)
                 .sameSite("Strict")                     // CSRF 방지
                 .secure(false)                          // HTTPS 설정
@@ -90,19 +127,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .maxAge(Duration.ofMinutes(ACCESS_TOKEN_COOKIE_EXPIRATION_TIME))
                 .build();
 
-        // 기존 쿠키에 저장되어 있는 만료된 AccessToken을 새로 발급받은 Token으로 교체
-        Arrays.stream(request.getCookies()).forEach(x -> {
-            if (x.getName().equals(newAccessTokenCookie.getName())) {
-                log.info("새로 발급한 Access Token을 Request 객체에 있는 쿠키와 바꿔치기!");
-                x.setValue(newAccessToken);
+        // HTTP 응답 헤더에 쿠키 설정
+        response.setHeader("Set-Cookie", newAccessTokenCookie.toString());
+
+        // 기존에 만료된 Access Token을 새로 발급 받은 Access Token으로 교체
+        Arrays.stream(request.getCookies()).forEach(cookie -> {
+            if (cookie.getName().equals(JWT_ACCESS_TOKEN)) {
+                cookie.setValue(newAccessToken);
             }
         });
         
-        // 만약, 기존에 쿠키에 AccessToken이 없는 경우, MethodResolver에서 사용할 수 있도록 request 영역에 저장
+        // 만약, 기존 쿠키에 Access Token이 없는 경우, MethodResolver에서 사용할 수 있도록 request 영역에 저장
         request.setAttribute(JWT_ACCESS_TOKEN, newAccessToken);
-
-        // HTTP 응답 헤더에 새로 발급받은 Access 토큰 저장 (쿠키)
-        response.setHeader("Set-Cookie", newAccessTokenCookie.toString());
     }
 }
 

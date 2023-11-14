@@ -28,12 +28,12 @@ public class MailAuthCodeProvider implements AuthCodeProvider {
     private final MailServiceProvider mailServiceProvider;
 
     /**
-     * 이메일 인증 번호를 생성하고 Redis에 저장한 다음, 사용자에게 인증 번호를 발송하는 메소드
+     * 이메일 인증 번호를 생성하고 Redis 서버에 저장한 다음, 사용자에게 인증 번호 메일을 발송하는 메소드이다.
      *
      * @version 0.1
      * @author 박성수
-     * @param email (유저 이메일)
-     * @throws MailSendException (메일 발송에 실패할 시, 예외 발생)
+     * @param email 유저 이메일
+     * @throws MailSendException 메일 발송에 실패할 시, 예외 발생
      */
     public void generateAuthCode(String email) {
         // Redis에 저장할 Key 생성 (ex. MAIL:test@naver.com)
@@ -60,14 +60,14 @@ public class MailAuthCodeProvider implements AuthCodeProvider {
     }
 
     /**
-     * 사용자에게서 입력받은 인증 번호가 서버에 저장된 인증 번호와 일치하는지 확인하는 메소드
+     * 사용자에게서 입력 받은 인증 번호가 Redis 서버에 저장된 인증 번호와 일치하는지 비교하는 메소드이다.
      *
      * @version 0.1
      * @author 박성수
-     * @param email (유저 이메일)
-     * @param authCode (이메일 인증 번호)
-     * @return true/false (인증 번호가 일치하면 true, 일치하지 않으면 false 리턴)
-     * @throws InvalidCodeException (인증 번호가 만료된 경우, 예외 발생)
+     * @param email 유저 이메일
+     * @param authCode 이메일 인증 번호
+     * @return Boolean (인증 번호가 유효하면 true, 유효하지 않으면 false 리턴)
+     * @throws InvalidCodeException 인증 번호가 만료되거나 인증 번호 발급할 때 사용한 이메일이 아닌 경우, 해당 예외 발생
      */
     public boolean validateAuthCode(String email, String authCode) {
         // Key 생성
@@ -82,10 +82,25 @@ public class MailAuthCodeProvider implements AuthCodeProvider {
         return findAuthCode.equals(authCode);
     }
 
+    /**
+     * Redis 서버에 인증 번호를 저장할 때, 사용할 key를 생성하는 메소드이다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param email 유저 이메일
+     * @return String (Redis Key)
+     */
     private String createKey(String email) {
         return AuthType.MAIL + ":" + email;
     }
 
+    /**
+     * 이메일 인증 번호를 생성하는 메소드이다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @return String (AuthCode)
+     */
     private String createValue() {
         String value = "";
 

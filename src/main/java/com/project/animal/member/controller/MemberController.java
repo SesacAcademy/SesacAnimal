@@ -30,7 +30,8 @@ public class MemberController {
     private final MemberService memberService;
 
     /**
-     * 회원가입 페이지로 이동하는 Controller
+     * 회원가입 페이지로 이동하는 Controller이다.
+     *
      * @version 0.1
      * @author 박성수
      * @return String (회원가입 페이지 뷰 이름)
@@ -43,13 +44,14 @@ public class MemberController {
 
     /**
      * 회원 가입을 담당하는 Controller로 회원가입 폼에서 입력한 데이터가 유효한 지 검증합니다.
+     *
      * @version 0.1
      * @author 박성수
-     * @param signupFormDto (SignupFormDto 객체)
+     * @param signupFormDto SignupFormDto 객체
      * @return ResponseDto<String> (API 응답 DTO)
-     * @throws NestedEmailException (이메일이 중복된 경우, 해당 예외 발생)
-     * @throws NestedNicknameException (닉네임이 중복된 경우, 해당 예외 발생)
-     * @throws InvalidCodeException (이메일 인증 번호가 유효하지 않은 경우, 해당 예외 발생)
+     * @throws NestedEmailException 이메일이 중복된 경우, 해당 예외 발생
+     * @throws NestedNicknameException 닉네임이 중복된 경우, 해당 예외 발생
+     * @throws InvalidCodeException 이메일 인증 번호가 유효하지 않은 경우, 해당 예외 발생
      */
     @ResponseBody
     @PostMapping(EndPoint.SIGNUP_API)
@@ -65,12 +67,13 @@ public class MemberController {
 
     /**
      * 이메일 인증 번호 발급을 담당하는 Controller 입니다.
+     *
      * @version 0.1
      * @author 박성수
-     * @param email (이메일)
+     * @param email 이메일
      * @return ResponseDto<String> (API 응답 DTO)
-     * @throws NestedEmailException (이메일이 중복된 경우, 해당 예외 발생)
-     * @throws MailSendException (메일 발송에 실패할 시, 예외 발생)
+     * @throws NestedEmailException 이메일이 중복된 경우, 해당 예외 발생
+     * @throws MailSendException 메일 발송에 실패할 시, 예외 발생
      */
     @ResponseBody
     @GetMapping(EndPoint.EMAIL_API)
@@ -86,11 +89,12 @@ public class MemberController {
 
     /**
      * 이메일 인증 번호 확인을 담당하는 Controller로 이메일 인증 폼에서 입력받은 데이터가 형식에 맞는지 검증합니다.
+     *
      * @version 0.1
      * @author 박성수
-     * @param checkMailAuthCodeDto (CheckMailAuthCodeDto 객체)
+     * @param checkMailAuthCodeDto CheckMailAuthCodeDto 객체
      * @return ResponseDto<String> (API 응답 DTO)
-     * @throws InvalidCodeException (이메일 인증 번호가 유효하지 않은 경우, 해당 예외 발생)
+     * @throws InvalidCodeException 이메일 인증 번호가 유효하지 않은 경우, 해당 예외 발생
      */
     @ResponseBody
     @PostMapping(EndPoint.EMAIL_API)
@@ -106,11 +110,12 @@ public class MemberController {
 
     /**
      * 아이디 찾기를 처리하는 Controller로 아이디 찾기 폼에서 입력한 데이터가 형식에 맞는지 검증합니다.
+     *
      * @version 0.1
      * @author 박성수
-     * @param findMemberEmailFormDto (FindMemberEmailDto 객체)
+     * @param findMemberEmailFormDto FindMemberEmailDto 객체
      * @return ResponseDto<String> (API 응답 DTO)
-     * @throws NotFoundException (해당 정보로 가입된 아이디가 없는 경우, 해당 예외 발생)
+     * @throws NotFoundException 해당 정보로 가입된 아이디가 없는 경우, 해당 예외 발생
      */
     @ResponseBody
     @PostMapping(FIND_EMAIL_API)
