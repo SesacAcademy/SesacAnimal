@@ -20,4 +20,10 @@ public class TestController {
         System.out.println("예아!222");
         return "ok";
     }
+
+    @RequestMapping("/test3")
+    @ResponseBody
+    public String test3() {
+        throw new RuntimeException();
+    }
 }
