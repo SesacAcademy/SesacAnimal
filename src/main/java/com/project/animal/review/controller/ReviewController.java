@@ -97,7 +97,9 @@ public class ReviewController {
     @GetMapping(EndPoint.REVIEW_EDIT)
     public String edit(@RequestParam(name = "reviewPostId") Long reviewPostId, Model model){
         ReadOneReviewDto readOneReviewDto = reviewService.readOne(reviewPostId);
-        model.addAttribute("reviewDto", readOneReviewDto);
+        List<ReviewCommentResponseDto> dtoList = reviewCommentService.readByReviewPostId(reviewPostId);
+        ReadOneResponse readOneResponse = reviewRequestMapper.dtosToResponseDto(readOneReviewDto,dtoList);
+        model.addAttribute("reviewDto", readOneResponse);
         return ViewName.EDIT_ONE;
     }
     @PostMapping(EndPoint.REVIEW_UPDATE)

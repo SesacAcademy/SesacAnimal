@@ -28,7 +28,7 @@ public class ReviewCommentCustomRepository {
                 .leftJoin(reviewComment.parentComment)
                 .fetchJoin()
                 .where(reviewComment.reviewPost.id.eq(reviewPostId))
-                .orderBy(reviewComment.parentComment.id.asc().nullsFirst(), reviewComment.createdAt.asc())
+                .orderBy(reviewComment.parentComment.id.asc().nullsFirst(), reviewComment.createdAt.desc())
                 .fetch();
     }
 }

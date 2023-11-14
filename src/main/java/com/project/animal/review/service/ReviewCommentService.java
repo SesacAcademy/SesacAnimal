@@ -1,13 +1,11 @@
 package com.project.animal.review.service;
 
 
-import com.project.animal.member.domain.Member;
 import com.project.animal.review.domain.ReviewComment;
 import com.project.animal.review.domain.ReviewPost;
-import com.project.animal.review.dto.CreateReviewComment;
+import com.project.animal.review.dto.ReviewCommentDto;
 
 import com.project.animal.review.dto.ReviewCommentResponseDto;
-import com.project.animal.review.exception.NotFoundException;
 import com.project.animal.review.exception.ReviewCommentException;
 
 import com.project.animal.review.repository.ReviewCommentCustomRepository;
@@ -31,7 +29,7 @@ public class ReviewCommentService {
     private final ReviewCommentCustomRepository reviewCommentCustomRepository;
 
 
-    public void createComment(CreateReviewComment commentDto, ReviewPost reviewPost) {
+    public void createComment(ReviewCommentDto commentDto, ReviewPost reviewPost) {
         dtoCheck(commentDto);
         ReviewComment commentEntity = reviewCommentRequestMapper.dtoToReviewComment(commentDto, reviewPost);
         log.info("id null 체크"+commentDto.getParentId());
@@ -41,12 +39,11 @@ public class ReviewCommentService {
         }
         reviewCommentRepository.save(commentEntity);
     }
-    private void dtoCheck(CreateReviewComment dto){
+    private void dtoCheck(ReviewCommentDto dto){
         if (dto.getContent()==null){
             throw new ReviewCommentException("입력값이 없는 댓글은 생성할 수 없습니다.");
         }
     }
-
     private ReviewComment commentCheckOptional(Optional<ReviewComment> comment ,Long reviewCommentId){
         return comment.orElseThrow(
                 ()->new ReviewCommentException("해당 댓글의 아이디와 일치하는 댓글이 없습니다. 유효하지 않은 reviewCommentId: "+ reviewCommentId));
@@ -69,6 +66,12 @@ public class ReviewCommentService {
                 commentResponseList.add(reviewCommentResponseDto);
             }
         }); return commentResponseList;
+    }
+
+    public void update(Long reviewCommentId, ReviewCommentDto dto) {
+        dtoCheck(dto);
+        ReviewComment reviewComment = findReviewComment(reviewCommentId);
+        reviewComment.update(dto);
     }
 }
 
