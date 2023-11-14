@@ -41,10 +41,13 @@
   <div class="input-container">
     <label for="title">제목</label>
     <input type="text" id="title" name="title" placeholder="제목을 입력해주세요" required><br>
+<!--    <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</p>-->
   </div>
   <div class="input-container">
     <label for="content">본문</label>
     <textarea id="content" name="content" placeholder="내용을 입력해주세요" required></textarea>
+<!--    <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</p>-->
+
     <div id="image-preview"></div>
 
     <div class="input-group mb-3">
@@ -52,15 +55,7 @@
       <input type="file" class="form-control" id="inputGroupFile01" name="imageList" multiple>
     </div>
 
-<!--    <i class="attachment-icon fas fa-paperclip" id="file-icon"></i>-->
-<!--    <input type="file" id="file-input" name="imageList" accept="image/*" style="display: none;" multiple>-->
-<!--    <input type="hidden" name="imageCount" id="imageCount">-->
-
   </div>
-<!--    <div class="input-group mb-3">-->
-<!--      <label class="input-group-text" for="inputGroupFile01">Upload</label>-->
-<!--      <input type="file" class="form-control" id="inputGroupFile01" multiple>-->
-<!--    </div>-->
   <div class="button-container">
     <button id="submit">작성</button>
     <button id="cancel">취소</button>

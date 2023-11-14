@@ -1,17 +1,31 @@
-<div  xmlns:th="http://www.thymeleaf.org" th:fragment="editCard(detail)">
-    <h3>등록하기</h3>
-    <form method="post" th:action="@{/missing/edit/{id}(id=${detail.id})}" enctype="multipart/form-data" th:object="${detail}">
+<div  xmlns:th="http://www.thymeleaf.org" th:fragment="editCard(detail, editPath)">
+
+    <h3>수정하기</h3>
+    <form method="post" th:action="@{{editPath}/{id}(id=${detail.id}, editPath=${editPath})}" enctype="multipart/form-data" th:object="${detail}">
         <input type="hidden" name="_method" value="put"/>
         <input type="hidden" name="missingId" th:value="*{id}"/>
+        <input name="deletedIds" type="text" />
         <section class="missing-edit-page-content">
             <div style="display: flex; flex-direction:row; padding-right:30px;">
                 <div class="missing-edit-thumb-container">
-                    <!--                <div>-->
-                    <!--                    <div>사진을 등록해주세요</div>-->
-                    <!--                    <input type="file" placeholder="사진을 등록해주세요" name="images" />-->
-                    <!--                </div>-->
-                    <div>
-                        <button>수정하기</button>
+                    <div th:each="imagePath : ${detail.images}" style="border: 1px solid black; border-radius: 8px; padding: 5px; margin-right:20px;">
+                        <div style="position: relative;">
+                            <button class="image-delete-button" type="button" name="deleteImageIds" th:value="${imagePath.imageId}">x</button>
+                            <figure>
+                                <img th:src="${imagePath.path}" width="160px" height="160px" style="border-radius: 8px;"/>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="missing-new-thumb-container" style="margin-top: 20px;">
+                <div class="missing-new-image-container">
+                    <div style="display: flex; flex-direction: row; align-items:center; margin-bottom: 20px;">
+                        <div>사진을 등록해주세요</div>
+                        <div class="missing-add-image-button">추가하기</div>
+                    </div>
+                    <div class="missing-new-image-box">
+                        <input class="missing-new-image" type="file" placeholder="사진을 등록해주세요" name="images" />
                     </div>
                 </div>
             </div>
@@ -61,11 +75,14 @@
                 <div class="missing-edit-field">
 
                     <div>설명</div>
-                    <textarea class="missing-edit-textarea" name="description" th:value="*{description}">awpfo</textarea>
+                    <textarea class="missing-edit-textarea" name="description" th:text="${detail.description}" />
 
                 </div>
             </section>
         </section>
+        <div style="margin-top: 20px">
+            <button>수정하기</button>
+        </div>
     </form>
     <script th:src="@{/js/missing/edit/missingTimeFormatter.js}" defer></script>
 </div>

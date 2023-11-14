@@ -12,9 +12,11 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name ="Missing_image")
 public class MissingPostImage extends BaseEntity {
+
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long image_id;
+  private long imageId;
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
@@ -25,8 +27,18 @@ public class MissingPostImage extends BaseEntity {
   @Column(name = "path")
   private String path;
 
+  @Column(name ="is_active", columnDefinition = "1")
+  private int isActive = 1;
+
   public MissingPostImage(String path, MissingPost missingPost) {
+
     this.path = path;
     this.missingPost = missingPost;
+
+  }
+
+  public void inactivatePostImage() {
+    final int INACTIVE = 0;
+    this.isActive = INACTIVE;
   }
 }

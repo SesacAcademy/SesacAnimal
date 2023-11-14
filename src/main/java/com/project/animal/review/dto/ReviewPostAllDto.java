@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Log4j2
 @NoArgsConstructor
 public class ReviewPostAllDto {
 
@@ -34,14 +36,25 @@ public class ReviewPostAllDto {
         this.viewCount = reviewPost.getViewCount();
         this.updatedAt = reviewPost.getUpdatedAt();
         this.memberName = reviewPost.getMember().getName();
-        this.url = setList(reviewPost.getReviewImages());
+        this.url = getActiveImage(reviewPost.getReviewImages());
     }
     private String setList(List<ReviewImage> images) {
-        if (images.size()==0){
+
+        if (images.isEmpty()){
             return null;
         }
-        ReviewImage reviewImage = images.get(0);
-        return reviewImage.getUrl();
+        for (ReviewImage reviewImage:images) {
+            if (reviewImage.getIsActiveToDto()==1){
+                return reviewImage.getUrl();
+            }
+        } return null;
+    }
+    private String getActiveImage(List<ReviewImage> images) {
+        return images.stream()
+                .filter(image -> image.getIsActiveToDto() == 1)
+                .findFirst()
+                .map(ReviewImage::getUrl)
+                .orElse(null);
     }
 }
 

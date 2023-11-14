@@ -10,27 +10,34 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReadOneReviewDto {
     private String title;
-    private String name;
+    private String nickname;
     private LocalDateTime updatedAt;
     private String content;
     private int viewCount;
     private Map<Long,String> urls = new LinkedHashMap<>();
     private Long reviewPostId;
 
-    public ReadOneReviewDto(ReviewPost reviewPost, int viewCount) {
+    public ReadOneReviewDto(ReviewPost reviewPost) {
         this.title = reviewPost.getTitle();
         this.reviewPostId = reviewPost.getId();
-        this.name = reviewPost.getMember().getName();
+        this.nickname = reviewPost.getMember().getNickname();
         this.updatedAt = reviewPost.getUpdatedAt();
         this.content = reviewPost.getContent();
-        this.viewCount = viewCount;
-        this.urls = setIdAndUrl(reviewPost.getReviewImages());
+        this.viewCount = reviewPost.getViewCount();
+        this.urls = setIdAndUrlAndCheckActive(reviewPost.getReviewImages());
+    }
+
+    private Map<Long, String> setIdAndUrlAndCheckActive(List<ReviewImage> reviewImages) {
+        return reviewImages.stream().
+                filter(image->image.getIsActiveToDto()==1)
+                .collect(Collectors.toMap(ReviewImage::getIdForUpdate, ReviewImage::getUrl));
     }
 
     private Map<Long, String> setIdAndUrl(List<ReviewImage> images) {
