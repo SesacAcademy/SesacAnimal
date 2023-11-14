@@ -11,20 +11,18 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QReviewPost is a Querydsl query type for ReviewPost
+ * QReviewComment is a Querydsl query type for ReviewComment
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QReviewPost extends EntityPathBase<ReviewPost> {
+public class QReviewComment extends EntityPathBase<ReviewComment> {
 
-    private static final long serialVersionUID = 89169916L;
+    private static final long serialVersionUID = -782083709L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QReviewPost reviewPost = new QReviewPost("reviewPost");
+    public static final QReviewComment reviewComment = new QReviewComment("reviewComment");
 
     public final com.project.animal.global.common.entity.QBaseEntity _super = new com.project.animal.global.common.entity.QBaseEntity(this);
-
-    public final ListPath<ReviewComment, QReviewComment> comments = this.<ReviewComment, QReviewComment>createList("comments", ReviewComment.class, QReviewComment.class, PathInits.DIRECT2);
 
     public final StringPath content = createString("content");
 
@@ -33,38 +31,38 @@ public class QReviewPost extends EntityPathBase<ReviewPost> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Integer> isActive = createNumber("isActive", Integer.class);
-
     public final com.project.animal.member.domain.QMember member;
 
-    public final ListPath<ReviewImage, QReviewImage> reviewImages = this.<ReviewImage, QReviewImage>createList("reviewImages", ReviewImage.class, QReviewImage.class, PathInits.DIRECT2);
+    public final QReviewComment parentComment;
 
-    public final StringPath title = createString("title");
+    public final QReviewPost reviewPost;
+
+    public final ListPath<ReviewComment, QReviewComment> subReviewComments = this.<ReviewComment, QReviewComment>createList("subReviewComments", ReviewComment.class, QReviewComment.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
-    public final NumberPath<Integer> viewCount = createNumber("viewCount", Integer.class);
-
-    public QReviewPost(String variable) {
-        this(ReviewPost.class, forVariable(variable), INITS);
+    public QReviewComment(String variable) {
+        this(ReviewComment.class, forVariable(variable), INITS);
     }
 
-    public QReviewPost(Path<? extends ReviewPost> path) {
+    public QReviewComment(Path<? extends ReviewComment> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QReviewPost(PathMetadata metadata) {
+    public QReviewComment(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QReviewPost(PathMetadata metadata, PathInits inits) {
-        this(ReviewPost.class, metadata, inits);
+    public QReviewComment(PathMetadata metadata, PathInits inits) {
+        this(ReviewComment.class, metadata, inits);
     }
 
-    public QReviewPost(Class<? extends ReviewPost> type, PathMetadata metadata, PathInits inits) {
+    public QReviewComment(Class<? extends ReviewComment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.member = inits.isInitialized("member") ? new com.project.animal.member.domain.QMember(forProperty("member")) : null;
+        this.parentComment = inits.isInitialized("parentComment") ? new QReviewComment(forProperty("parentComment"), inits.get("parentComment")) : null;
+        this.reviewPost = inits.isInitialized("reviewPost") ? new QReviewPost(forProperty("reviewPost"), inits.get("reviewPost")) : null;
     }
 
 }
