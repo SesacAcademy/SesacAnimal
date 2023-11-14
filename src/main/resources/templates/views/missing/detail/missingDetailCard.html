@@ -1,5 +1,6 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="detailCard(post)">
     <h3 th:text="${post.title}" />
+    <h6 th:text="${post.author}" />
     <section class="missing-detail-page-content">
         <div class="missing-detail-thumb-container">
             <figure class="missing-detail-thumb" th:each="imagePath : ${post.images}">
@@ -9,11 +10,12 @@
         <section class="missing-detail-info-container">
             <div class="missing-detail-info-content-container">
                 <div style="margin-right: 30px">
-                    <div class="missing-detail-field" th:text="'종류: ' + ${post.specifics}" />
+                    <div class="missing-detail-field" th:text="'동물종류: ' + ${post.animalType}" />
                     <div class="missing-detail-field" th:text="'실종장소: ' + ${post.missingPlace}" />
                     <div class="missing-detail-field" th:text="'사례금: ' + ${post.reward}" />
                 </div>
                 <div>
+                    <div class="missing-detail-field" th:text="'세부종류: ' + ${post.specifics}" />
                     <div class="missing-detail-field" th:text="'색상: ' + ${post.color}" />
                     <div class="missing-detail-field" th:text="'실종시간: ' + ${post.missingTime}" />
                 </div>

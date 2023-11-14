@@ -110,7 +110,7 @@ public class MissingPostServiceImpl implements MissingPostService {
 
   }
 
-  @Transactional(propagation = Propagation.REQUIRED )
+  @Transactional(propagation = Propagation.REQUIRED)
   public boolean createPost(long memberId, MissingNewDto dto) {
     try {
 

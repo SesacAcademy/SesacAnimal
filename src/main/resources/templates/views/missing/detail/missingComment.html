@@ -16,7 +16,7 @@
             <div class="missing-card-entry" th:each="comment : ${comments}">
                 <div class="missing-detail-recomment-card-container">
                     <div style="display:flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <div class="missing-comment-title">작성자</div>
+                        <div class="missing-comment-title" th:text="${comment.author}" />
                         <div style="display:flex; flex-direction: row;">
                             <div class="missing-comment-button-new">reply</div>
                             <div class="missing-comment-button-edit">edit</div>
@@ -56,7 +56,7 @@
                         <section class="missing-recomment-card-container">
                             <div class="missing-recomment-card" th:if="${comment.comments}" th:each="recomment:${comment.comments}">
                                 <div style="display:flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                    <div>작성자</div>
+                                    <div th:text="${recomment.author}" />
                                     <div style="display:flex; flex-direction: row;">
                                         <div class="missing-recomment-button-edit">edit</div>
                                         <div class="missing-recomment-button-delete">
