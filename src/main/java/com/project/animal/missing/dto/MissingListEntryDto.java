@@ -58,7 +58,7 @@ public class MissingListEntryDto {
   public static MissingListEntryDto fromMissingPost(MissingPost post) {
     long id = post.getMissingId();
     String title = post.getTitle();
-    long memberId = post.getMemberId();
+    long memberId = post.getMember().getId();
     String animalType = post.getAnimalType();
     String specifics = post.getSpecifics();
     String color = post.getColor();

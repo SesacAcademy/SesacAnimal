@@ -82,7 +82,7 @@ public class MissingDetailDto {
   public static MissingDetailDto fromMissingPost(MissingPost post, List<MissingCommentListEntryDto> comments, List<MissingPostImageDto> images) {
     long id = post.getMissingId();
     String title = post.getTitle();
-    long memberId = post.getMemberId();
+    long memberId = post.getMember().getId();
     String animalType = post.getAnimalType();
     String specifics = post.getSpecifics();
     String color = post.getColor();
