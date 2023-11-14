@@ -6,14 +6,13 @@ import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.review.constant.EndPoint;
 import com.project.animal.review.constant.ViewName;
 import com.project.animal.review.domain.ReviewPost;
-import com.project.animal.review.dto.CreateReviewComment;
-import com.project.animal.review.dto.CreateReviewPostDto;
-import com.project.animal.review.dto.ReadListGeneric;
+import com.project.animal.review.dto.*;
 
-import com.project.animal.review.dto.ReadOneReviewDto;
 import com.project.animal.review.dummy.CreateMemberWithoutSecurity;
+import com.project.animal.review.service.ReviewCommentService;
 import com.project.animal.review.service.ReviewImageService;
 import com.project.animal.review.service.ReviewService;
+import com.project.animal.review.service.mapper.ReviewRequestMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -39,6 +38,10 @@ public class ReviewController {
     private final int size = 10;
 
     private final MemberRepository memberRepository;
+
+    private final ReviewCommentService reviewCommentService;
+
+    private final ReviewRequestMapper reviewRequestMapper;
 
     private Member createMember(){
         CreateMemberWithoutSecurity ex = new CreateMemberWithoutSecurity();
@@ -76,7 +79,9 @@ public class ReviewController {
     @GetMapping(EndPoint.REVIEW_READ_ONE)
     public String readOne(@RequestParam(name = "reviewPostId") Long reviewPostId, Model model){
          ReadOneReviewDto readOneReviewDto = reviewService.readOne(reviewPostId);
-         model.addAttribute("reviewDto", readOneReviewDto);
+         List<ReviewCommentResponseDto> dtoList = reviewCommentService.readByReviewPostId(reviewPostId);
+         ReadOneResponse readOneResponse = reviewRequestMapper.dtosToResponseDto(readOneReviewDto,dtoList);
+         model.addAttribute("reviewDto", readOneResponse);
          return ViewName.READ_ONE;
     }
     // 검색

@@ -9,6 +9,8 @@ import com.project.animal.review.dto.CreateReviewComment;
 import com.project.animal.review.dummy.CreateMemberWithoutSecurity;
 import com.project.animal.review.service.ReviewCommentService;
 import com.project.animal.review.service.ReviewService;
+import com.project.animal.review.service.mapper.ReviewCommentRequestMapper;
+import com.project.animal.review.service.mapper.ReviewRequestMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,7 @@ public class ReviewCommentController {
     private final MemberRepository memberRepository;
     private final ReviewService reviewService;
     private final ReviewCommentService reviewCommentService;
+
 
     private Member createMember(){
         CreateMemberWithoutSecurity ex = new CreateMemberWithoutSecurity();
@@ -54,4 +57,7 @@ public class ReviewCommentController {
             // 해당페이지 리턴
         }
     }
+    //1. 댓글 전체 리드 멤버 객체가 필요하다 그걸로 닉네임 가져올 수 있음 -> 게시글 리드에서 적합해보임
+    //2. 댓글 업데이트
+    //3. 댓글 삭제
 }

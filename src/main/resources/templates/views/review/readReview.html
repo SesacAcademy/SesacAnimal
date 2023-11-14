@@ -58,66 +58,75 @@
 
 <body>
 <div class="container">
-  <h1 class="title" th:text="${reviewDto.title}">제목</h1>
+  <h1 class="title" th:text="${reviewDto.readOneReviewDto.title}">제목</h1>
   <hr class="separator">
   <div class="author">
-    <div class="author-info" th:text="'작성자: ' + ${reviewDto.nickname}">
+    <div class="author-info" th:text="'작성자: ' + ${reviewDto.readOneReviewDto.nickname}">
       작성자: 닉네임
     </div>
-    <div class="timestamp" th:text="${#temporals.format(reviewDto.updatedAt, 'yyyy-MM-dd HH:mm')}">
+    <div class="timestamp" th:text="${#temporals.format(reviewDto.readOneReviewDto.updatedAt, 'yyyy-MM-dd HH:mm')}">
     </div>
 
-    <div th:each="image : ${reviewDto.urls}">
+    <div th:each="image : ${reviewDto.readOneReviewDto.urls}">
       <img th:src="@{'http://infra.shucloud.site:8007/review' + ${image.value}}" alt="유기견 썸네일" class="thumbnail-image" />
     </div>
   </div>
   <div class="buttons">
-    <a th:href="@{/review/edit(reviewPostId=${reviewDto.reviewPostId})}" class="edit-button">수정</a>
-    <a th:href="@{/review/delete(reviewPostId=${reviewDto.reviewPostId})}" class="delete-button">삭제</a>
+    <a th:href="@{/review/edit(reviewPostId=${reviewDto.readOneReviewDto.reviewPostId})}" class="edit-button">수정</a>
+    <a th:href="@{/review/delete(reviewPostId=${reviewDto.readOneReviewDto.reviewPostId})}" class="delete-button">삭제</a>
   </div>
-  <p class="text" th:text="${reviewDto.content}">이 곳에 텍스트를 입력하세요. 텍스트를 확장하였습니다.</p>
-  <div class="view-count" th:text="'조회수: ' + ${reviewDto.viewCount}">
+  <p class="text" th:text="${reviewDto.readOneReviewDto.content}">이 곳에 텍스트를 입력하세요. 텍스트를 확장하였습니다.</p>
+  <div class="view-count" th:text="'조회수: ' + ${reviewDto.readOneReviewDto.viewCount}">
     조회수: count
   </div>
   <hr class="separator">
 </div>
+
+
 <div class="comment-section">
   <h2>댓글</h2>
-  <!-- 댓글 입력 폼 -->
-<!--  <form th:action="@{/review/comment/add}" method="post">-->
-<!--    <input type="hidden" th:value="${reviewDto.reviewPostId}" name="reviewPostId" />-->
-<!--    <textarea name="comment" placeholder="댓글을 입력하세요." class="comment-input"></textarea>-->
-<!--    <button type="submit" class="comment-submit-button">-->
-<!--      <i class="fas fa-pencil-alt"></i>-->
-<!--    </button>-->
-<!--  </form>-->
+
+  <div th:each="comment : ${reviewDto.reviewCommentResponseDto}"class="comment">
+    <p>Nickname: <span th:text="${comment.nickname}"></span></p>
+    <p>Content: <span th:text="${comment.content}"></span></p>
+    <button onclick="showReplyForm(this)">대댓글 작성</button>
+
+    <form th:action="@{/review/comment/add}" method="post" style="display: none;">
+      <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
+      <input type="hidden" th:value="${comment.reviewCommentId}" name="parentId" />
+      <textarea placeholder="대댓글을 입력하세요." class="comment-input" name = "content"></textarea>
+      <button type="submit" class="comment-submit-button">
+        <i class="fas fa-pencil-alt"></i>
+      </button>
+    </form>
+
+    <div th:if="${!#lists.isEmpty(comment.children)}" class="reply">
+      <h3>대댓글</h3>
+      <div th:each="reply : ${comment.children}">
+        <p>Nickname: <span th:text="${reply.nickname}"></span></p>
+        <p>Content: <span th:text="${reply.content}"></span></p>
+      </div>
+    </div>
+  </div>
   <form th:action="@{/review/comment/add}" method="post">
-    <input type="hidden" th:value="${reviewDto.reviewPostId}" name="reviewPostId" />
-    <input type="hidden" th:if="${parentCommentId != null}" th:value="${parentCommentId}" name="parentId" />
+    <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
     <textarea placeholder="댓글을 입력하세요." class="comment-input" name = "content"></textarea>
     <button type="submit" class="comment-submit-button">
       <i class="fas fa-pencil-alt"></i>
     </button>
   </form>
 
-  <!-- 댓글 목록 -->
-<!--  <div th:each="comment : ${comments}">-->
-<!--    <div th:if="${comment.parentId == null}">-->
-<!--      <div class="comment">-->
-<!--        <div class="comment-author" th:text="${comment.author}"></div>-->
-<!--        <div class="comment-text" th:text="${comment.text}"></div>-->
-<!--      </div>-->
-<!--      &lt;!&ndash; 대댓글 목록 &ndash;&gt;-->
-<!--      <div th:each="childComment : ${comments}">-->
-<!--        <div th:if="${childComment.parentId == comment.id}">-->
-<!--          <div class="child-comment">-->
-<!--            <div class="child-comment-author" th:text="${childComment.author}"></div>-->
-<!--            <div class="child-comment-text" th:text="${childComment.text}"></div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
+
 </div>
+<script>
+function showReplyForm(button) {
+  var form = button.nextElementSibling;
+  if (form.style.display === "none") {
+    form.style.display = "block";
+  } else {
+    form.style.display = "none";
+  }
+}
+</script>
 </body>
 </html>
