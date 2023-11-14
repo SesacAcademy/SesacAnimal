@@ -20,14 +20,14 @@ public class MissingPostImage extends BaseEntity {
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "post_id")
+  @JoinColumn(name = "missing_id")
   private MissingPost missingPost;
 
   @NotNull
   @Column(name = "path")
   private String path;
 
-  @Column(name ="is_active", columnDefinition = "1")
+  @Column(name = "is_active", columnDefinition = "INT DEFAULT 1")
   private int isActive = 1;
 
   public MissingPostImage(String path, MissingPost missingPost) {

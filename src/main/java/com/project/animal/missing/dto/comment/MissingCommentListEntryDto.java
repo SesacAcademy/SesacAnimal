@@ -15,11 +15,11 @@ public class MissingCommentListEntryDto {
 
   private List<MissingCommentListEntryDto> comments;
 
-  private MissingCommentListEntryDto(long commentId, long memberId, long postId, Long parentId, String content) {
+  private MissingCommentListEntryDto(long commentId, long memberId, long postId, MissingComment parentComment, String content) {
     this.commentId = commentId;
     this.memberId = memberId;
     this.postId = postId;
-    this.parentId = parentId;
+    this.parentId = parentComment != null ? parentComment.getComment_id() : null;
     this.content = content;
   }
 
@@ -28,7 +28,7 @@ public class MissingCommentListEntryDto {
     return new MissingCommentListEntryDto(
             comment.getComment_id(),
             comment.getMember_id(), postId,
-            comment.getParentId(),
+            comment.getParentComment(),
             comment.getContent()
     );
   }

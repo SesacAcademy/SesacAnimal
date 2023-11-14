@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -22,20 +23,26 @@ public class MissingComment {
   private long member_id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "post_id")
+  @JoinColumn(name = "missing_id")
   private MissingPost missingPost;
   private String content;
 
-  // TODO: relation
-  private Long parentId;
-  public MissingComment(long member_id, MissingPost missingPost, String content, Long parentId) {
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "parent_id")
+  private MissingComment parentComment;
+
+  @OneToMany(mappedBy = "parentComment")
+  private List<MissingComment> comments;
+
+  public MissingComment(long member_id, MissingPost missingPost, String content, MissingComment parentComment) {
     this.member_id = member_id;
     this.missingPost = missingPost;
     this.content = content;
-    this.parentId = parentId;
+    this.parentComment = parentComment;
   }
 
   public void changeComment(String comment) {
+
     this.content = comment;
   }
 }

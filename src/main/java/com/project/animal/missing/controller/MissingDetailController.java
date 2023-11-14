@@ -9,7 +9,7 @@ import com.project.animal.missing.dto.comment.MissingCommentNewDto;
 import com.project.animal.missing.dto.MissingDetailDto;
 import com.project.animal.missing.dto.comment.MissingCommentListEntryDto;
 import com.project.animal.missing.exception.*;
-import com.project.animal.missing.service.MissingCommentService;
+import com.project.animal.missing.service.MissingCommentServiceImpl;
 import com.project.animal.missing.service.MissingPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class MissingDetailController extends MissingController {
 
   private final MissingPostService missingPostService;
 
-  private final MissingCommentService missingCommentService;
+  private final MissingCommentServiceImpl missingCommentServiceImpl;
 
   @GetMapping(EndPoint.PATH_ID)
   public String getPostDetail(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
@@ -54,7 +54,7 @@ public class MissingDetailController extends MissingController {
       throw new InvalidCommentFormException(dto, br);
     }
 
-    missingCommentService.createComment(dto);
+    missingCommentServiceImpl.createComment(dto);
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 
@@ -64,7 +64,7 @@ public class MissingDetailController extends MissingController {
       throw new InvalidCommentEditFormException(dto, br);
     }
 
-    missingCommentService.editComment(dto);
+    missingCommentServiceImpl.editComment(dto);
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 
@@ -74,7 +74,7 @@ public class MissingDetailController extends MissingController {
       throw new InvalidCommentDeleteFormException(dto, br);
     }
 
-    missingCommentService.deleteComment(dto);
+    missingCommentServiceImpl.deleteComment(dto);
 
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
