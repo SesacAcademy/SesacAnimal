@@ -62,7 +62,8 @@
                                         <div class="missing-recomment-button-delete">
                                             <form th:action="@{{actionPath}(actionPath=${endPoints.deleteComment})}" method="post">
                                                 <input name="missingId" th:value="${postId}" hidden />
-                                                <input name="commentId" th:value="${comment.commentId}" hidden />
+                                                <input name="commentId" th:value="${recomment.commentId}" hidden />
+                                                <input name="parentId" th:value="${recomment.parentId}" hidden/>
                                                 <input type="hidden" name="_method" value="delete"/>
                                                 <button>delete</button>
                                             </form>

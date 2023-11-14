@@ -89,9 +89,16 @@
                 <a th:href="@{/review/one(reviewPostId=${post.reviewPostId})}" style="display: block; color: inherit; text-decoration: none;">
                     <div class="image-area">
 
-                        <p>
-                            <img th:if="${post.url}" th:src="'http://infra.shucloud.site:8007/review' + ${post.url}" alt="유기견 썸네일" />
-                        </p>
+<!--                        <div th:each="image : ${reviewDto.urls}">-->
+<!--                            <img th:src="@{'http://infra.shucloud.site:8007/review' + ${image.value}}" alt="유기견 썸네일" class="thumbnail-image" />-->
+<!--                        </div>-->
+
+
+
+<!--                        <div th:each="image : ${reviewDto.urls}">-->
+<!--                            <img th:src="@{'http://infra.shucloud.site:8007/review' + ${image.value}}" alt="유기견 썸네일" class="thumbnail-image" />-->
+<!--                        </div>-->
+
 
                     </div>
                     <div class="content-area">
@@ -105,6 +112,10 @@
                     <div class="info-area">
                         <p th:text="'내용 : ' + ${post.content}"></p>
                     </div>
+                    <p>
+                        <img th:if="${post.url}" th:src="@{'http://infra.shucloud.site:8007/review' + ${post.url}}" alt="유기견 썸네일" />
+
+                    </p>
                 </a>
             </li>
         </ul>

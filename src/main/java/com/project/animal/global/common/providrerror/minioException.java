@@ -1,4 +1,4 @@
-package com.project.animal.global.common.minioserviceprovider;
+package com.project.animal.global.common.providrerror;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;

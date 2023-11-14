@@ -12,5 +12,8 @@ import java.util.List;
 
 @Repository
 public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long> {
+    @Query("SELECT ri FROM ReviewImage ri WHERE ri.id IN :ids")
+    List<ReviewImage> findAllByIds(@Param("ids") List<Long> ids);
+
 
 }

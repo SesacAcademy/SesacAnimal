@@ -27,7 +27,9 @@ public class QMissingPostImage extends EntityPathBase<MissingPostImage> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final NumberPath<Long> image_id = createNumber("image_id", Long.class);
+    public final NumberPath<Long> imageId = createNumber("imageId", Long.class);
+
+    public final NumberPath<Integer> isActive = createNumber("isActive", Integer.class);
 
     public final QMissingPost missingPost;
 

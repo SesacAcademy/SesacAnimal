@@ -1,14 +1,30 @@
 package com.project.animal.review.dummy;
 
+import com.project.animal.global.common.constant.Role;
 import com.project.animal.member.domain.Member;
+import com.project.animal.member.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
 public class CreateMemberWithoutSecurity {
+    @Autowired
+    MemberRepository repository;
     public Member createMember(){
 //        Member member = new Member(1L,"user1@example.com", "password1", "John Doe", "123-456-7890", "Regular", "User", "A", LocalDateTime.parse("2023-11-06T10:00:00"), LocalDateTime.parse("2023-11-06T10:00:00"), LocalDateTime.parse("2023-11-05T14:30:00"));
 //        return member;
-        return null;
+//        Member member = Member.builder().
+//                email("john@example.com")
+//                .isActive(1)
+//                .name("승범")
+//                .lastLoginAt(LocalDateTime.now())
+//                .role(Role.ROLE_USER)
+//                .password("hh22")
+//                .email("sda@nav.com")
+//                .phone("123-145-413")
+//                .build();
+       return repository.findById(1L).get();
+
     }
     public void creatdDummymember(){
 //        Member member1 = new Member(1L,"user1@example.com", "password1", "John Doe", "123-456-7890", "Regular", "User", "A", LocalDateTime.parse("2023-11-06T10:00:00"), LocalDateTime.parse("2023-11-06T10:00:00"), LocalDateTime.parse("2023-11-05T14:30:00"));

@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 @Controller
 @RequestMapping(EndPoint.MISSING_BASE + EndPoint.EDIT)
-public class MissingEditController {
+public class MissingEditController extends MissingController {
 
   private final int SUCCESS_FLAG = 1;
 
@@ -39,14 +39,17 @@ public class MissingEditController {
   @GetMapping(EndPoint.PATH_ID)
   public String showEditView(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
     MissingDetailDto detail = missingPostService.getPostDetail(postId);
+
+    Map<String, String> endPoints = createLinkConstants("edit");
     model.addAttribute("detail", detail);
+    model.addAttribute("endPoints", endPoints);
 
     return ViewName.POST_EDIT;
   }
 
   @PutMapping(EndPoint.PATH_ID)
   public String handleEditRequest(@Valid @ModelAttribute("detail") MissingEditDto dto, BindingResult br, RedirectAttributes redirectAttributes) {
-    if (!br.hasErrors()) {
+    if (br.hasErrors()) {
       throw new InvalidEditFormException(dto, br);
     }
 
@@ -54,7 +57,7 @@ public class MissingEditController {
     redirectAttributes.addFlashAttribute("isSuccess", isSuccess ? SUCCESS_FLAG : FAIL_FLAG);
     redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
 
-    return "redirect:" + EndPoint.MISSING + "/" + dto.getMissingId();
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 
   @ExceptionHandler(InvalidEditFormException.class)
@@ -67,8 +70,8 @@ public class MissingEditController {
     redirectAttributes.addFlashAttribute("msg", "입력한 정보를 다시 확인해주세요.");
     redirectAttributes.addFlashAttribute("post", ex.getInvalidForm());
 
-    log.error("InvalidEditFormException: >> Invalid Input " + errors.toString());
-    return "redirect:" + EndPoint.MISSING + "/edit" + '/' + ex.getInvalidForm().getMissingId();
+    log.error("InvalidEditFormException: >> Invalid Input: >> " + ex.getBindingResult().getFieldErrors());
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.EDIT + '/' + ex.getInvalidForm().getMissingId();
   }
 
   @ExceptionHandler(PostEditFailException.class)
@@ -76,7 +79,7 @@ public class MissingEditController {
     redirectAttributes.addFlashAttribute("error", "Fail to edit post");
     redirectAttributes.addFlashAttribute("type", "edit");
 
-    return "redirect:" + EndPoint.MISSING + "/" + ex.getId();
+    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.EDIT + "/" + ex.getId();
   }
 
   @ExceptionHandler(DetailNotFoundException.class)
