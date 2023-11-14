@@ -8,9 +8,9 @@ import com.project.animal.missing.dto.MissingEditDto;
 import com.project.animal.missing.exception.DetailNotFoundException;
 import com.project.animal.missing.exception.InvalidEditFormException;
 import com.project.animal.missing.exception.PostEditFailException;
-import com.project.animal.missing.service.MissingPostService;
+import com.project.animal.missing.service.MissingPostServiceImpl;
+import com.project.animal.missing.service.inf.MissingPostService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,16 +29,16 @@ public class MissingEditController extends MissingController {
 
   private final int FAIL_FLAG = 0;
 
-  private final MissingPostService missingPostService;
+  private final MissingPostService missingPostServiceImpl;
 
 
-  public MissingEditController(MissingPostService missingPostService) {
-    this.missingPostService = missingPostService;
+  public MissingEditController(MissingPostService missingPostServiceImpl) {
+    this.missingPostServiceImpl = missingPostServiceImpl;
   }
 
   @GetMapping(EndPoint.PATH_ID)
   public String showEditView(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
-    MissingDetailDto detail = missingPostService.getPostDetail(postId);
+    MissingDetailDto detail = missingPostServiceImpl.getPostDetail(postId);
 
     Map<String, String> endPoints = createLinkConstants("edit");
     model.addAttribute("detail", detail);
@@ -53,7 +53,7 @@ public class MissingEditController extends MissingController {
       throw new InvalidEditFormException(dto, br);
     }
 
-    boolean isSuccess = missingPostService.editPost(dto);
+    boolean isSuccess = missingPostServiceImpl.editPost(dto);
     redirectAttributes.addFlashAttribute("isSuccess", isSuccess ? SUCCESS_FLAG : FAIL_FLAG);
     redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
 

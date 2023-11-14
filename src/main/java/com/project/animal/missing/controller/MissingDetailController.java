@@ -10,7 +10,9 @@ import com.project.animal.missing.dto.MissingDetailDto;
 import com.project.animal.missing.dto.comment.MissingCommentListEntryDto;
 import com.project.animal.missing.exception.*;
 import com.project.animal.missing.service.MissingCommentServiceImpl;
-import com.project.animal.missing.service.MissingPostService;
+import com.project.animal.missing.service.MissingPostServiceImpl;
+import com.project.animal.missing.service.inf.MissingCommentService;
+import com.project.animal.missing.service.inf.MissingPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -30,13 +32,13 @@ import java.util.Map;
 @RequestMapping(EndPoint.MISSING_BASE + EndPoint.DETAIL)
 public class MissingDetailController extends MissingController {
 
-  private final MissingPostService missingPostService;
+  private final MissingPostService missingPostServiceImpl;
 
-  private final MissingCommentServiceImpl missingCommentServiceImpl;
+  private final MissingCommentService missingCommentServiceImpl;
 
   @GetMapping(EndPoint.PATH_ID)
   public String getPostDetail(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
-    MissingDetailDto detail = missingPostService.getPostDetail(postId);
+    MissingDetailDto detail = missingPostServiceImpl.getPostDetail(postId);
     List<MissingCommentListEntryDto> comments = detail.getComments();
 
     Map<String, String> endPoints = createLinkConstants("edit", "delete", "newComment", "editComment", "deleteComment");
