@@ -8,6 +8,7 @@ import com.project.animal.missing.dto.comment.MissingCommentNewDto;
 import com.project.animal.missing.exception.*;
 import com.project.animal.missing.repository.MissingCommentRepository;
 import com.project.animal.missing.repository.MissingPostRepository;
+import com.project.animal.missing.service.inf.MissingCommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MissingCommentService {
+public class MissingCommentServiceImpl implements MissingCommentService {
 
   private final MissingCommentRepository missingCommentRepository;
   private final MissingPostRepository missingPostRepository;
@@ -28,7 +29,14 @@ public class MissingCommentService {
       Optional<MissingPost> maybePost =  missingPostRepository.findById(dto.getMissingId());
       MissingPost post = maybePost.orElseThrow(() -> new DetailNotFoundException(dto.getMissingId()));
 
-      MissingComment comment = new MissingComment(dto.getMemberId(), post, dto.getComment(), dto.getParentId());
+      MissingComment parentComment = null;
+      if (dto.getParentId() != null) {
+        Optional<MissingComment> maybeComment = missingCommentRepository.findById(dto.getParentId());
+        parentComment = maybeComment.orElseThrow(() -> new RuntimeException("해당 부모 댓글이 없습니다."));
+      }
+
+      MissingComment comment = new MissingComment(dto.getMemberId(), post, dto.getComment(), parentComment);
+
       MissingComment result = missingCommentRepository.save(comment);
       if (result == null) throw new Exception("no save result");
       return true;
@@ -55,8 +63,8 @@ public class MissingCommentService {
   @Transactional
   public boolean deleteComment(MissingCommentDeleteDto dto) {
     try {
-      // FIX: 대댓글 삭제 버그있음
-      missingCommentRepository.deleteByParentId(dto.getCommentId());
+      
+      missingCommentRepository.deleteByParentCommentId(dto.getCommentId());
       missingCommentRepository.deleteById(dto.getCommentId());
       return true;
     } catch (Exception ex) {
