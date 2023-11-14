@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,29 +20,14 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- *  [참고] Security Config 설정
- *  - 과거에는 Spring Security 설정을 WebSecurityConfigurerAdapter 클래스를 상속받아서 구현했지만 Spring Boot 버전이 올라가면서
- *    해당 방식은 Deprecated 되었다.
- *
- *  - 따라서, 이제는 빈 등록을 통해 Spring Security를 설정한다.
- *
- *  [참고] 인증, 인가 처리를 위한 권한 설정 및 표현식
- *  - https://velog.io/@dailylifecoding/spring-security-authorize-api-basic
- *
- *  [참고] ignore와 PermitAll의 차이점
- *  - https://codejava.net/frameworks/spring-boot/fix-websecurityconfigureradapter-deprecated
- *  - https://ojt90902.tistory.com/843
- *  - https://velog.io/@jeongm/SpringSecurity-staticcssjs...-%ED%8C%8C%EC%9D%BC-%EC%84%A4%EC%A0%95
- */
 @Slf4j
 @EnableWebSecurity
 @Configuration
@@ -87,14 +74,14 @@ public class SecurityConfig {
                 .antMatchers("/v1/auth/logout").authenticated()
             .and()
             .authorizeRequests()                                              // 8. 인가가 필요한 페이지
-                .antMatchers("/test2").hasRole("ADMIN")
+                .antMatchers("/tttt").hasRole("ADMIN")
             .and()
             .authorizeRequests()
                 .anyRequest().permitAll()                                     // 9. 그 외의 페이지는 모두 허용
             .and()
             .exceptionHandling()
                 .authenticationEntryPoint(CustomAuthenticationEntryPoint())
-                .accessDeniedPage("/error/403.html");           // 10. 401 또는 403 코드 발생 시, 리다이렉트
+                .accessDeniedHandler(CustomAccessDeniedHandler());            // 10. 401 또는 403 코드 발생 시, 리다이렉트
 
         // 11. Jwt 인증 필터 및 예외 핉터 추가 (순서 꼭 지켜야함)
         http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
@@ -118,8 +105,34 @@ public class SecurityConfig {
             @Override
             public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
                 response.setCharacterEncoding("UTF-8");
-                response.sendError(401);
+                response.sendError(HttpStatus.UNAUTHORIZED.value());
+            }
+        };
+    }
+
+    @Bean
+    public AccessDeniedHandler CustomAccessDeniedHandler() {
+        return new AccessDeniedHandler() {
+            @Override
+            public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+                response.sendError(HttpStatus.FORBIDDEN.value());
             }
         };
     }
 }
+
+/**
+ *  [참고] Security Config 설정
+ *  - 과거에는 Spring Security 설정을 WebSecurityConfigurerAdapter 클래스를 상속받아서 구현했지만 Spring Boot 버전이 올라가면서
+ *    해당 방식은 Deprecated 되었다.
+ *
+ *  - 따라서, 이제는 빈 등록을 통해 Spring Security를 설정한다.
+ *
+ *  [참고] 인증, 인가 처리를 위한 권한 설정 및 표현식
+ *  - https://velog.io/@dailylifecoding/spring-security-authorize-api-basic
+ *
+ *  [참고] ignore와 PermitAll의 차이점
+ *  - https://codejava.net/frameworks/spring-boot/fix-websecurityconfigureradapter-deprecated
+ *  - https://ojt90902.tistory.com/843
+ *  - https://velog.io/@jeongm/SpringSecurity-staticcssjs...-%ED%8C%8C%EC%9D%BC-%EC%84%A4%EC%A0%95
+ */

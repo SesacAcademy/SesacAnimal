@@ -206,13 +206,26 @@ public class JwtTokenProvider implements TokenProvider {
      */
     @Override
     public boolean validateToken(String token) {
-        return !Jwts.parserBuilder()
-                .setSigningKey(key)                         // 위변조 검사 (위변조 시, 예외 발생)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getExpiration()
-                .before(new Date());                        // 만료일 체크
+
+        try {
+            // token이 null인 경우
+            if (token == null) {
+                return false;
+            }
+
+            // token이 유효한 경우
+            return !Jwts.parserBuilder()
+                    .setSigningKey(key)                     // 위변조 검사 (위변조 시, 예외 발생)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getExpiration()
+                    .before(new Date());                    // 만료일 체크
+
+        } catch (ExpiredJwtException expiredJwtException) {
+            // token이 만료된 경우
+            return false;
+        }
     }
 
     public Authentication getAuthentication(String token) {

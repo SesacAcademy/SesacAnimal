@@ -14,7 +14,7 @@ public class TestController {
         return "ok";
     }
 
-    @RequestMapping("/test2")
+    @RequestMapping("/tttt")
     @ResponseBody
     public String test2() {
         System.out.println("예아!222");

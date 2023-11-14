@@ -42,12 +42,8 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
                 log.error("JWT 서명이 조작되었습니다.");
             }
 
-            else if (e instanceof SecurityException || e instanceof MalformedJwtException) {
+            else if (e instanceof MalformedJwtException) {
                 log.error("유효하지 않은 JWT 토큰입니다.");
-            }
-
-            else if (e instanceof ExpiredJwtException) {
-                log.error("Refresh 토큰이 만료되었습니다.");
             }
 
             else if (e instanceof UnsupportedJwtException) {
@@ -68,7 +64,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     }
 
     /**
-     * AccessToken, Refresh 토큰이 저장된 쿠키를 삭제하는 메소드
+     * JWT Access, Refresh 토큰이 저장된 쿠키를 삭제 하는 메소드
      *
      * @version 0.1
      * @author 박성수
