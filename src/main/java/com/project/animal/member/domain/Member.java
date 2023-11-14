@@ -54,6 +54,7 @@ public class Member extends BaseEntity implements UserDetails {
     private Integer isActive;
 
     @Column
+    @Setter
     private LocalDateTime lastLoginAt;
 
     // 계정의 고유한 값을 리턴 --> ex. DB PK값, 중복이 없는 이메일, 아이디 값

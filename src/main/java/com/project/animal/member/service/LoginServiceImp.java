@@ -52,6 +52,7 @@ public class LoginServiceImp implements LoginService {
     private String kakao_secret;
 
     @Override
+    @Transactional
     public TokenDto login(LoginFormDto loginFormDto) {
         // 회원 조회
         Optional<Member> findMember = memberRepository.findByEmailAndType(loginFormDto.getEmail(), MAIL.name());
@@ -68,6 +69,9 @@ public class LoginServiceImp implements LoginService {
         if (!matchPassword) {
             throw new LoginException("아이디(" + loginFormDto.getEmail() + ") 로그인 실패");
         }
+
+        // 마지막 로그인 날짜 변경
+        member.setLastLoginAt(LocalDateTime.now(ZoneId.of("Asia/Tokyo")));
 
         MemberDto memberDto = new MemberDto(member);
 
@@ -127,6 +131,9 @@ public class LoginServiceImp implements LoginService {
         if (findMember.isPresent()) {
             log.info("카카오 계정을 통해 회원가입이 되었음");
             memberDto = new MemberDto(findMember.get());
+
+            // 마지막 로그인 날짜 변경
+            findMember.get().setLastLoginAt(LocalDateTime.now(ZoneId.of("Asia/Tokyo")));
         }
 
         // 카카오 계정을 통해 회원가입을 하지 않은 경우, 회원가입 진행
@@ -141,8 +148,6 @@ public class LoginServiceImp implements LoginService {
                     .type(KAKAO.name())
                     .role(Role.ROLE_USER)
                     .isActive(1)
-                    .createdAt(dateTime)
-                    .updatedAt(dateTime)
                     .lastLoginAt(dateTime)
                     .build();
 
