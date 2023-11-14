@@ -141,8 +141,6 @@ public class LoginServiceImp implements LoginService {
                     .type(KAKAO.name())
                     .role(Role.ROLE_USER)
                     .isActive(1)
-                    .createdAt(dateTime)
-                    .updatedAt(dateTime)
                     .lastLoginAt(dateTime)
                     .build();
 
