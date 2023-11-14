@@ -9,5 +9,7 @@ public interface LoginService {
 
     TokenDto login(LoginFormDto loginFormDto);
 
+    TokenDto kakaoLogin(String code);
+
     void logout(MemberDto memberDto, HttpServletResponse response);
 }

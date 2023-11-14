@@ -127,7 +127,25 @@ function checkToken() {
         }
         else if (response.data.statusCode === 400) {
             console.log(response)
-            alert(response.data.message);
+
+            // 인증번호가 틀린 경우
+            if (response.data.context === null) {
+                alert(response.data.message);
+            }
+
+            else {
+                const errorData = response.data.context;
+
+                console.log(response.data);
+
+                if (errorData.email !== undefined) {
+                    alert(errorData.email);
+                }
+
+                if (errorData.token !== undefined) {
+                    alert(errorData.token);
+                }
+            }
         }
     }).catch(function (error) {
         console.log(error);

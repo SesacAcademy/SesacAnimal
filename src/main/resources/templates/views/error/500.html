@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>500 Internal Server Error</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f1f1f1;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                text-align: center;
+            }
+
+            h1 {
+                color: #333;
+                font-size: 2rem;
+            }
+
+            p {
+                color: #666;
+                font-size: 1.2rem;
+            }
+
+            .police-image {
+                width: 500px;
+                height: 450px;
+            }
+        </style>
+    </head>
+        <body>
+        <img class="police-image" src="https://ginbits.com/wp-content/uploads/2021/08/How-to-Fix-500-Internal-Server-Error.png" alt="Police Image">
+        <h1>잠시 서버에 문제가 발생하였습니다.</h1>
+        <p>
+            <span class="redirect-timer">5</span>
+            초 뒤에 자동으로 메인 페이지로 이동합니다.
+        </p>
+        <script>
+            // 페이지가 로드된 후 1초마다 타이머를 업데이트하고 5초 뒤에 로그인 페이지로 리디렉션합니다.
+            let seconds = 5;
+            const redirectTimer = document.querySelector('.redirect-timer');
+            const countdown = setInterval(() => {
+                seconds--;
+                redirectTimer.textContent = seconds;
+                if (seconds <= 0) {
+                    clearInterval(countdown);
+                    window.location.href = '/'; // 로그인 페이지로 리디렉션
+                }
+            }, 1000);
+        </script>
+    </body>
+</html>

@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 public interface TokenProvider {
     String generateToken(MemberDto member, String type);
 
+    void removeToken(MemberDto member);
+
     boolean matchToken(String token);
 
     MemberDto parseToken(String token);

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>401 Unauthorized</title>
+        <title>404 Not Found</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -35,11 +35,11 @@
         </style>
     </head>
     <body>
-        <img class="police-image" src="https://cdn.dribbble.com/users/761395/screenshots/6287961/error_401.jpg?resize=800x600&vertical=center" alt="Police Image">
-        <h1>세션이 만료되거나 토큰이 위변조되었습니다.</h1>
+        <img class="police-image" src="https://webdeasy.de/wp-content/uploads/2020/06/404-pages.jpg" alt="Police Image">
+        <h1>페이지를 찾을 수 없습니다.</h1>
         <p>
             <span class="redirect-timer">5</span>
-            초 뒤에 자동으로 로그인 페이지로 이동합니다.
+            초 뒤에 자동으로 메인 페이지로 이동합니다.
         </p>
         <script>
             // 페이지가 로드된 후 1초마다 타이머를 업데이트하고 5초 뒤에 로그인 페이지로 리디렉션합니다.
@@ -50,7 +50,7 @@
                 redirectTimer.textContent = seconds;
                 if (seconds <= 0) {
                     clearInterval(countdown);
-                    window.location.href = '/v1/auth/login'; // 로그인 페이지로 리디렉션
+                    window.location.href = '/'; // 로그인 페이지로 리디렉션
                 }
             }, 1000);
         </script>

@@ -122,9 +122,9 @@ public class JwtTokenProvider implements TokenProvider {
      * @author 박성수
      * @param member (토큰에 저장된 클레임 정보)
      */
+    @Override
     public void removeToken(MemberDto member) {
         redisServiceProvider.remove(AuthType.JWT.name() + ":" + member.getEmail());
-        redisServiceProvider.remove(AuthType.KAKAO.name() + ":" + member.getEmail());
     }
 
     /**
