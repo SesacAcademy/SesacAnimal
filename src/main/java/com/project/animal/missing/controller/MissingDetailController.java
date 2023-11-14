@@ -1,5 +1,6 @@
 package com.project.animal.missing.controller;
 
+import com.project.animal.global.common.annotation.Member;
 import com.project.animal.global.common.utils.BindingResultParser;
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
@@ -34,28 +35,33 @@ public class MissingDetailController extends MissingController {
 
   private final MissingCommentService missingCommentService;
 
+  private final long testMemId = 2;
+
   @GetMapping(EndPoint.PATH_ID)
   public String getPostDetail(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
+
     MissingDetailDto detail = missingPostServiceImpl.getPostDetail(postId);
     List<MissingCommentListEntryDto> comments = detail.getComments();
 
     Map<String, String> endPoints = createLinkConstants("edit", "delete", "newComment", "editComment", "deleteComment");
 
+    model.addAttribute("selfId", testMemId);
     model.addAttribute("endPoints", endPoints);
     model.addAttribute("post", detail);
     model.addAttribute("comments", comments);
+
 
     return ViewName.POST_DETAIL;
   }
 
   @PostMapping(EndPoint.COMMENT + EndPoint.NEW)
   public String createNewComment(@Valid @ModelAttribute("comment") MissingCommentNewDto dto, BindingResult br) {
-    long memberId = 1;
+
     if (br.hasErrors()) {
       throw new InvalidCommentFormException(dto, br);
     }
 
-    missingCommentService.createComment(memberId, dto);
+    missingCommentService.createComment(testMemId, dto);
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 

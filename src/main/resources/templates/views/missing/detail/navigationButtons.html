@@ -1,16 +1,18 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="navButtons(post, edit, delete)"
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="navButtons(selfId, post, edit, delete)"
         style="display:flex; flex-direction: row; margin-top: 30px;">
-    <div style="padding: 10px 40px; margin-right: 20px; border: 1px solid black; border-radius: 20px;">
-        <div>
+    <div th:if="${selfId == post.memberId}">
+        <div style="padding: 10px 40px; margin-right: 20px; border: 1px solid black; border-radius: 20px;">
             <a th:href="@{{edit}/{id}(id=${post.id}, edit=${edit})}">
                 수정
             </a>
         </div>
     </div>
-    <div style="padding: 10px 40px; border: 1px solid black; border-radius: 20px;">
-        <form method="post" th:action="@{{delete}/{id}(id=${post.id}, delete=${delete})}">
-            <input type="hidden" name="_method" value="delete"/>
-            <button type="submit">삭제</button>
-        </form>
+    <div th:if="${selfId == post.memberId}">
+        <div style="padding: 10px 40px; border: 1px solid black; border-radius: 20px;">
+            <form method="post" th:action="@{{delete}/{id}(id=${post.id}, delete=${delete})}">
+                <input type="hidden" name="_method" value="delete"/>
+                <button type="submit">삭제</button>
+            </form>
+        </div>
     </div>
 </div>

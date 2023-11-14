@@ -79,11 +79,11 @@
                 <div style="display: flex; flex-direction: row;">
                     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
                         <th:block th:replace="./missing/detail/missingDetailCard :: detailCard(${post})" />
-                        <th:block th:replace="./missing/detail/navigationButtons :: navButtons(${post}, ${endPoints.edit}, ${endPoints.delete})" />
+                        <th:block th:replace="./missing/detail/navigationButtons :: navButtons(${selfId} ,${post}, ${endPoints.edit}, ${endPoints.delete})" />
                     </div>
                     <div>
                         <th:block th:replace="./missing/detail/missingComment :: comments(
-                       ${post.memberId}, ${post.id}, ${comments}, ${endPoints}, null)" />
+                       ${selfId}, ${post.id}, ${comments}, ${endPoints}, null)" />
                     </div>
                 </div>
             </div>
