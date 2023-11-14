@@ -1,13 +1,13 @@
 package com.project.animal.adoption.domain;
 
+import com.project.animal.adoption.dto.AdoptionCommentWriteDto;
 import com.project.animal.global.common.entity.BaseEntity;
 import com.project.animal.member.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,6 +33,9 @@ public class AdoptionComment extends BaseEntity {
     @Column(name = "parent_id")
     private Long parentId;
 
+    @OneToMany(mappedBy = "parentId")
+    private List<AdoptionComment> replies;
+
     public void setMember(Member member) {
         this.member = member;
     }
@@ -42,8 +45,10 @@ public class AdoptionComment extends BaseEntity {
     }
 
     //    생성자
-    public AdoptionComment(String content){
-        this.content = content;
+    public AdoptionComment(AdoptionCommentWriteDto adoptionCommentDto){
+        this.content = adoptionCommentDto.getContent();
+        this.parentId = adoptionCommentDto.getParentId();
+        this.replies = adoptionCommentDto.getReplies();
     }
 
 

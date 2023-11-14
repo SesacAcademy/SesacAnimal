@@ -37,6 +37,8 @@ public class QAdoptionComment extends EntityPathBase<AdoptionComment> {
 
     public final NumberPath<Long> parentId = createNumber("parentId", Long.class);
 
+    public final ListPath<AdoptionComment, QAdoptionComment> replies = this.<AdoptionComment, QAdoptionComment>createList("replies", AdoptionComment.class, QAdoptionComment.class, PathInits.DIRECT2);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
