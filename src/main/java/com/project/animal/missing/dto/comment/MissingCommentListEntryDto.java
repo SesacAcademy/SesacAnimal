@@ -27,7 +27,8 @@ public class MissingCommentListEntryDto {
 
     return new MissingCommentListEntryDto(
             comment.getComment_id(),
-            comment.getMember_id(), postId,
+            comment.getMember().getId(),
+            postId,
             comment.getParentComment(),
             comment.getContent()
     );

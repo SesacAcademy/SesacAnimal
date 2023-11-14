@@ -9,8 +9,6 @@ import com.project.animal.missing.dto.comment.MissingCommentNewDto;
 import com.project.animal.missing.dto.MissingDetailDto;
 import com.project.animal.missing.dto.comment.MissingCommentListEntryDto;
 import com.project.animal.missing.exception.*;
-import com.project.animal.missing.service.MissingCommentServiceImpl;
-import com.project.animal.missing.service.MissingPostServiceImpl;
 import com.project.animal.missing.service.inf.MissingCommentService;
 import com.project.animal.missing.service.inf.MissingPostService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +32,7 @@ public class MissingDetailController extends MissingController {
 
   private final MissingPostService missingPostServiceImpl;
 
-  private final MissingCommentService missingCommentServiceImpl;
+  private final MissingCommentService missingCommentService;
 
   @GetMapping(EndPoint.PATH_ID)
   public String getPostDetail(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
@@ -52,11 +50,12 @@ public class MissingDetailController extends MissingController {
 
   @PostMapping(EndPoint.COMMENT + EndPoint.NEW)
   public String createNewComment(@Valid @ModelAttribute("comment") MissingCommentNewDto dto, BindingResult br) {
+    long memberId = 1;
     if (br.hasErrors()) {
       throw new InvalidCommentFormException(dto, br);
     }
 
-    missingCommentServiceImpl.createComment(dto);
+    missingCommentService.createComment(memberId, dto);
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 
@@ -66,7 +65,7 @@ public class MissingDetailController extends MissingController {
       throw new InvalidCommentEditFormException(dto, br);
     }
 
-    missingCommentServiceImpl.editComment(dto);
+    missingCommentService.editComment(dto);
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 
@@ -76,7 +75,7 @@ public class MissingDetailController extends MissingController {
       throw new InvalidCommentDeleteFormException(dto, br);
     }
 
-    missingCommentServiceImpl.deleteComment(dto);
+    missingCommentService.deleteComment(dto);
 
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
