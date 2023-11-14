@@ -167,13 +167,14 @@
                  </div>
              </div>
 
-              <form th:id="'re-replay-form' +${index}" th:if="${comment.replies.size() == 0}"  th:object="${read}" th:action="@{'/v1/adoption/' +${read.postId}}" method="POST" accept-charset="utf-8">
+              <form th:id="'re-replay-form' +${index}" th:each="reply :${comment.replies}" th:if="${comment.replies.size() == 0}"  th:object="${read}" th:action="@{'/v1/adoption/' +${read.postId}}" method="POST" accept-charset="utf-8">
                   <fieldset>
                   <legend>입양 상세 게시판 대댓글</legend>
                       <div class="re-reply re-reply-form" th:id="'re-replay-form' +${index}">
                           <span class="material-symbols-outlined reply-icon">reply</span>
                           <div class="comments-read" >
                               <p>
+                                  <input type="hidden" th:value="${reply.id}" th:name="commentId"/>
                                   <input type="hidden" th:value="${comment.id}" th:name="parentId"/>
                                   <label for="comment-reply-write-contents" class="author">작성자</label><textarea id="comment-reply-write-contents" class="comment-contents" name="content"></textarea>
                                   <button type="submit" class="reply-button-send">댓글달기</button>
@@ -187,6 +188,7 @@
      </div>
 
 
+<!--  댓글 쓰기 영역 -->
  <form class="adoption-comments-write" th:object="${read}" th:action="@{'/v1/adoption/' +${read.postId}}" method="POST" accept-charset="utf-8">
      <fieldset>
      <legend>입양게시판 댓글</legend>

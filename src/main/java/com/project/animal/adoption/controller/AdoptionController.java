@@ -155,7 +155,8 @@ public class AdoptionController {
     // 댓글 쓰기 (읽기영역 내)
     @PostMapping(EndPoint.ADOPTION_READ)
     public String adoptionCommentPost(@ModelAttribute @Validated AdoptionCommentWriteDto adoptionCommentWriteDto, BindingResult bindingResult,
-                                      @PathVariable(name = "id") Long postId ){
+                                      @PathVariable(name = "id") Long postId,
+                                      @RequestParam(name="commentId") Long commentId){
 
         if(bindingResult.hasErrors()){
             log.info("adoption_read 영역 내 댓글 에러 ={}", bindingResult);
@@ -171,8 +172,6 @@ public class AdoptionController {
         adoptionCommentService.saveComment(adoptionCommentWriteDto, postId);
 
         return "redirect:"+EndPoint.ADOPTION_READ;
-
-
     }
 
 }
