@@ -16,8 +16,8 @@ public class SignupFormDto {
     @Pattern(regexp = "^[가-힣a-zA-Z0-9]{5,12}", message = "닉네임을 형식에 맞게 입력해주세요.")
     private String nickname;
 
-    @Pattern(regexp = "^\\d{6}$", message = "인증번호 형식이 틀렸습니다.")
-    private String token;
+    @Pattern(regexp = "^\\d{6}$", message = "인증 번호 형식이 틀렸습니다.")
+    private String authCode;
 
     @Pattern(regexp = "^[가-힣]{2,4}$", message = "이름을 제대로 입력해주세요.")
     private String name;

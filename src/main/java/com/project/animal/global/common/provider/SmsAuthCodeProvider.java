@@ -31,7 +31,7 @@ public class SmsAuthCodeProvider implements AuthCodeProvider {
         // Redis에 저장할 Key 생성 (ex. PHONE:010-1234-1234)
         String key = createKey(phone);
 
-        // Redis에 저장할 Value 생성 (인증번호 6자리)
+        // Redis에 저장할 Value 생성 (인증 번호 6자리)
         String value = createValue();
 
         // Redis에 인증 번호 저장
@@ -54,7 +54,7 @@ public class SmsAuthCodeProvider implements AuthCodeProvider {
 
         // 인증 번호가 만료되거나 문자 인증 번호 발급 시, 사용한 휴대폰 번호가 아닌 경우, 해당 예외 발생
         String findAuthCode = redisServiceProvider.get(key).orElseThrow(() -> {
-            throw new InvalidCodeException("유효하지 않은 인증번호입니다.");
+            throw new InvalidCodeException("유효하지 않은 인증 번호입니다.");
         });
 
         // 사용자가 보내온 인증 번호 값과 서버에 저장된 인증 번호 값을 비교

@@ -24,7 +24,7 @@ public class MemberControllerAdvice {
 
     /**
      * API : (GET) /v1/api/auth/email
-     * 이메일 인증 토큰 발급 과정에서 이메일 형식이 잘못된 경우, 해당 예외 발생
+     * 이메일 인증 번호 발급 과정에서 이메일 형식이 잘못된 경우, 해당 예외 발생
      */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(MailSendException.class)
@@ -36,7 +36,7 @@ public class MemberControllerAdvice {
 
     /**
      * API : (POST) /v1/api/auth/email 및 (POST) /v1/api/auth/signup
-     * 1. 이메일 인증 토큰 발급 과정에서 이미 가입된 이메일의 경우, 해당 예외 발생
+     * 1. 이메일 인증 번호 발급 과정에서 이미 가입된 이메일의 경우, 해당 예외 발생
      * 2. 회원가입 과정에서 이미 등록된 이메일의 경우, 해당 예외 발생 (극히 드뭄)
      */
     @ResponseStatus(HttpStatus.OK)
@@ -62,12 +62,12 @@ public class MemberControllerAdvice {
 
     /**
      * API : (POST) /v1/api/auth/email
-     * - 이메일 인증 확인 과정에서 인증번호가 잘못되었거나 만료된 경우, 해당 예외 발생
+     * - 이메일 인증 확인 과정에서 인증 번호가 잘못되었거나 만료된 경우, 해당 예외 발생
      */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(InvalidCodeException.class)
-    public ResponseDto<String> invalidTokenException(InvalidCodeException e) {
-        log.error("이메일 인증 확인 에러 발생", e);
+    public ResponseDto<String> invalidCodeException(InvalidCodeException e) {
+        log.error("이메일 또는 문자 인증 확인 에러 발생", e);
 
         return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());
     }

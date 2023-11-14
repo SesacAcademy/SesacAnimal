@@ -8,11 +8,11 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
-public class CheckMailTokenDto {
+public class CheckMailAuthCodeDto {
 
     @Email
     private String email;
 
-    @Pattern(regexp = "^\\d{6}$", message = "인증번호 형식이 틀렸습니다.")
-    private String token;
+    @Pattern(regexp = "^\\d{6}$", message = "인증 번호 형식이 틀렸습니다.")
+    private String authCode;
 }

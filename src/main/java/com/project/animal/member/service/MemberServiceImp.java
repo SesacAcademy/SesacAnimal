@@ -28,7 +28,7 @@ public class MemberServiceImp implements MemberService {
 
     private final MemberRepository memberRepository;
 
-    private final MailAuthCodeProvider mailTokenProvider;
+    private final MailAuthCodeProvider mailAuthCodeProvider;
 
     private final PasswordEncoder encoder;
 
@@ -42,7 +42,7 @@ public class MemberServiceImp implements MemberService {
         checkNestedNickname(signupFormDto.getNickname());
         
         // 이메일 인증 번호 체크
-        checkMailToken(signupFormDto.getEmail(), signupFormDto.getToken());
+        checkMailAuthCode(signupFormDto.getEmail(), signupFormDto.getAuthCode());
 
         LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Tokyo"));
 
@@ -63,19 +63,19 @@ public class MemberServiceImp implements MemberService {
 
     @Override
     @Transactional
-    public void createMailToken(String email) {
+    public void createMailAuthCode(String email) {
         // 이메일 중복 여부 체크
         checkNestedEmail(email);
 
-        // 이메일 인증번호 발급
-        mailTokenProvider.generateAuthCode(email);
+        // 이메일 인증 번호 발급
+        mailAuthCodeProvider.generateAuthCode(email);
     }
 
     @Override
-    public void checkMailToken(String email, String token) {
+    public void checkMailAuthCode(String email, String authCode) {
         // 이메일 인증 번호 체크
-        if(!mailTokenProvider.validateAuthCode(email, token)) {
-            throw new InvalidCodeException("유효하지 않은 인증번호입니다.");
+        if(!mailAuthCodeProvider.validateAuthCode(email, authCode)) {
+            throw new InvalidCodeException("[이메일] 유효하지 않은 인증 번호입니다.");
         }
     }
 

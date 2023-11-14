@@ -48,9 +48,11 @@ function isValidPhone(phone) {
 
 const loginButton = document.getElementById('member-login');
 const findEmailButton = document.getElementById('member-find-email-button');
+const findPasswordButton = document.getElementById('member-find-password-button');
 
 loginButton.addEventListener('click', login);
 findEmailButton.addEventListener('click', findEmail);
+findPasswordButton.addEventListener('click', findPassword);
 
 function login() {
     const email = document.getElementById('member-login-email').value;
@@ -163,3 +165,20 @@ function findEmail() {
         alert('아이디 찾기에 실패하였습니다.');
     });
 }
+
+function findPassword() {
+
+    const inputName = document.getElementById('member-find-password-name');
+    const inputEmail = document.getElementById('member-find-password-email');
+    const inputPhone = document.getElementById('member-find-password-phone');
+
+    const name = inputName.value;
+    const email = inputEmail.value;
+    const phone = inputPhone.value;
+
+    alert(name);
+    alert(email);
+    alert(phone);
+}
+
+

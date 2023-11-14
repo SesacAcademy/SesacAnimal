@@ -8,9 +8,9 @@ public interface MemberService {
 
     void save(SignupFormDto signupFormDto);
 
-    void createMailToken(String email) ;
+    void createMailAuthCode(String email) ;
 
-    void checkMailToken(String email, String token);
+    void checkMailAuthCode(String email, String authCode);
 
     Member findEmail(FindMemberEmailFormDto memberEmailFormDto);
 }

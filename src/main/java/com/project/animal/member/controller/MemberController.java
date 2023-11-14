@@ -3,9 +3,8 @@ package com.project.animal.member.controller;
 import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
 import com.project.animal.global.common.dto.ResponseDto;
-import com.project.animal.global.common.provider.MailAuthCodeProvider;
 import com.project.animal.member.domain.Member;
-import com.project.animal.member.dto.CheckMailTokenDto;
+import com.project.animal.member.dto.CheckMailAuthCodeDto;
 import com.project.animal.member.dto.FindMemberEmailFormDto;
 import com.project.animal.member.dto.SignupFormDto;
 import com.project.animal.member.exception.InvalidCodeException;
@@ -20,6 +19,7 @@ import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import static com.project.animal.global.common.constant.EndPoint.FIND_EMAIL_API;
 
 @Slf4j
@@ -28,8 +28,6 @@ import static com.project.animal.global.common.constant.EndPoint.FIND_EMAIL_API;
 public class MemberController {
 
     private final MemberService memberService;
-
-    private final MailAuthCodeProvider mailTokenProvider;
 
     /**
      * 회원가입 페이지로 이동하는 Controller
@@ -77,33 +75,33 @@ public class MemberController {
     @ResponseBody
     @GetMapping(EndPoint.EMAIL_API)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto<String> getMailToken(@RequestParam(required = true, defaultValue = "None") String email) {
+    public ResponseDto<String> getMailAuthCode(@RequestParam(required = true, defaultValue = "None") String email) {
         // 이메일 인증 번호 발급
-        memberService.createMailToken(email);
+        memberService.createMailAuthCode(email);
 
         log.info("{} 이메일로 인증 번호를 발급하였습니다. (이메일)", email);
 
-        return new ResponseDto<>(HttpStatus.NO_CONTENT.value(), "null", "인증번호 발급 Ok");
+        return new ResponseDto<>(HttpStatus.NO_CONTENT.value(), "null", "인증 번호 발급 Ok");
     }
 
     /**
      * 이메일 인증 번호 확인을 담당하는 Controller로 이메일 인증 폼에서 입력받은 데이터가 형식에 맞는지 검증합니다.
      * @version 0.1
      * @author 박성수
-     * @param checkMailTokenDto (CheckMailTokenDto 객체)
+     * @param checkMailAuthCodeDto (CheckMailAuthCodeDto 객체)
      * @return ResponseDto<String> (API 응답 DTO)
      * @throws InvalidCodeException (이메일 인증 번호가 유효하지 않은 경우, 해당 예외 발생)
      */
     @ResponseBody
     @PostMapping(EndPoint.EMAIL_API)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto<String> checkMailToken(@RequestBody @Validated CheckMailTokenDto checkMailTokenDto) {
-        // 이메일 인증번호 인증
-        memberService.checkMailToken(checkMailTokenDto.getEmail(), checkMailTokenDto.getToken());
+    public ResponseDto<String> checkMailAuthCode(@RequestBody @Validated CheckMailAuthCodeDto checkMailAuthCodeDto) {
+        // 이메일 인증 번호 인증
+        memberService.checkMailAuthCode(checkMailAuthCodeDto.getEmail(), checkMailAuthCodeDto.getAuthCode());
 
-        log.info("{} 이메일로 발급된 인증번호가 확인되었습니다.", checkMailTokenDto.getEmail());
+        log.info("{} 이메일로 발급된 인증 번호가 확인되었습니다.", checkMailAuthCodeDto.getEmail());
 
-        return new ResponseDto<>(HttpStatus.NO_CONTENT.value(), "null", "인증번호가 확인되었습니다.");
+        return new ResponseDto<>(HttpStatus.NO_CONTENT.value(), "null", "인증 번호가 확인되었습니다.");
     }
 
     /**
