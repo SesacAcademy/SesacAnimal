@@ -41,7 +41,7 @@ public class MemberServiceImp implements MemberService {
         // 닉네임 중복 여부 체크
         checkNestedNickname(signupFormDto.getNickname());
         
-        // 이메일 토큰 체크
+        // 이메일 인증 번호 체크
         checkMailToken(signupFormDto.getEmail(), signupFormDto.getToken());
 
         LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Tokyo"));
@@ -67,13 +67,13 @@ public class MemberServiceImp implements MemberService {
         // 이메일 중복 여부 체크
         checkNestedEmail(email);
 
-        // 토큰 발급
+        // 이메일 인증번호 발급
         mailTokenProvider.generateAuthCode(email);
     }
 
     @Override
     public void checkMailToken(String email, String token) {
-        // 이메일 토큰 체크
+        // 이메일 인증 번호 체크
         if(!mailTokenProvider.validateAuthCode(email, token)) {
             throw new InvalidCodeException("유효하지 않은 인증번호입니다.");
         }

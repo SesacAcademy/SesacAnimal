@@ -78,7 +78,7 @@ public class MemberController {
     @GetMapping(EndPoint.EMAIL_API)
     @ResponseStatus(HttpStatus.OK)
     public ResponseDto<String> getMailToken(@RequestParam(required = true, defaultValue = "None") String email) {
-        // 이메일 토큰 발급
+        // 이메일 인증 번호 발급
         memberService.createMailToken(email);
 
         log.info("{} 이메일로 인증 번호를 발급하였습니다. (이메일)", email);
@@ -98,7 +98,7 @@ public class MemberController {
     @PostMapping(EndPoint.EMAIL_API)
     @ResponseStatus(HttpStatus.OK)
     public ResponseDto<String> checkMailToken(@RequestBody @Validated CheckMailTokenDto checkMailTokenDto) {
-        // 이메일 토큰 인증
+        // 이메일 인증번호 인증
         memberService.checkMailToken(checkMailTokenDto.getEmail(), checkMailTokenDto.getToken());
 
         log.info("{} 이메일로 발급된 인증번호가 확인되었습니다.", checkMailTokenDto.getEmail());
