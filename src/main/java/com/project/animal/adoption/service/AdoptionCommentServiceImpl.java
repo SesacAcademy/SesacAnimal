@@ -50,6 +50,17 @@ public class AdoptionCommentServiceImpl {
 
     }
 
+    @Transactional
+    public void deleteParentAndChildComment(Long id){
+        adoptionCommentRepository.deleteById(id);
+        adoptionCommentRepository.deleteByParentId(id);
+    }
+
+    public void deleteChildComment(Long id){
+        adoptionCommentRepository.deleteById(id);
+        adoptionCommentRepository.deleteByParentId(id);
+    }
+
     public Optional<AdoptionComment> findById(Long id){
         return adoptionCommentRepository.findById(id);
     }
