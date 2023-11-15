@@ -9,6 +9,7 @@ import com.project.animal.member.domain.Member;
 import com.project.animal.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -36,6 +37,7 @@ public class AdoptionCommentServiceImpl {
 
     }
 
+    @Transactional
     public void updateComment(AdoptionCommentWriteDto adoptionCommentDto, Long commentId){
 
         AdoptionComment adoptionComment = adoptionCommentRepository.findById(commentId)
@@ -44,7 +46,7 @@ public class AdoptionCommentServiceImpl {
         // 기존 댓글 업데이트 로직 추가
         adoptionComment.setContent(adoptionCommentDto.getContent());
 
-        adoptionCommentRepository.save(adoptionComment);
+//        adoptionCommentRepository.save(adoptionComment);
 
     }
 

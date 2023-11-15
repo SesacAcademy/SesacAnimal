@@ -46,7 +46,7 @@
     <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">-->
 
     <script th:src="@{/js/main.js}"></script>
-    <script th:src="@{/js/adoption/adoption_read_comments.js}"></script>
+    <script th:src="@{/js/adoption/adoption_read_comments.js}" defer></script>
 
 
     <!-- 부트스트랩 설정 -->
@@ -150,33 +150,37 @@
          <div class="comments-read" th:each="comment, index : ${comments}">
              <p>
                  <label for="comment-contents" class="author" th:text="${comment.member.name}">작성자</label><textarea id="comment-contents" class="comment-contents" readonly th:text="${comment.content}">내용</textarea>
-<!--                 <button class="reply-button" th:text="${comment.replies.size() == 0 ? '대댓글 작성': '대댓글 보기'}"></button>-->
-                 <button class="reply-button" >대댓글 보기</button>
+                 <button class="reply-button" th:text="${comment.replies.size() == 0 ? '대댓글 작성': '대댓글 보기'}"></button>
+<!--                 <button class="reply-button" >대댓글 보기</button>-->
              </p>
 
-             <div th:id="'re-replay' +${index}" class="re-reply" th:each="reply :${comment.replies}" th:if="${comment.replies.size() != 0 }" >
-                 <span class="material-symbols-outlined reply-icon">reply</span>
-                 <div class="comments-read" >
-                     <p>
-                         <input type="hidden" th:value="${comment.id}" th:name="parentId"/>
-                         <span class="author" th:text="${reply.member.getName()}">작성자</span><textarea id="comment-reply-contents" class="comment-contents" th:text="${reply.content}"></textarea>
-                         <button type="submit" class="reply-button-send">댓글달기</button>
-                     </p>
+             <form th:each="reply :${comment.replies}" th:object="${read}" th:action="@{'/v1/adoption/' +${read.postId}}" method="POST" accept-charset="utf-8">
+                 <fieldset>
+                 <legend>입양 상세 게시판 대댓글 읽기/ 수정</legend>
+                 <div th:id="'re-replay' +${index}" class="re-reply" th:each="reply :${comment.replies}" th:if="${comment.replies.size() != 0 }" >
+                     <span class="material-symbols-outlined reply-icon">reply</span>
+                     <div class="comments-read" >
+                         <p>
+                             <input type="hidden" th:value="${reply.id}" th:name="commentId"/>
+<!--                             <input type="hidden" th:value="${comment.id}" th:name="parentId"/>-->
+                             <label class="author" th:text="${reply.member.getName()}" for="comment-reply-contents">작성자</label><textarea id="comment-reply-contents" class="comment-contents" name="content" th:text="${reply.content}" readonly></textarea>
+                             <button type="button" class="reply-button-edit">수정하기</button>
+                         </p>
+                     </div>
                  </div>
-             </div>
+                 </fieldset>
+             </form>
 
-<!--              <form th:id="'re-replay-form' +${index}" th:each="reply :${comment.replies}" th:if="${comment.replies.size() == 0}"  th:object="${read}" th:action="@{'/v1/adoption/' +${read.postId}}" method="POST" accept-charset="utf-8">-->
-             <form th:id="'re-replay-form' +${index}" th:each="reply :${comment.replies}"   th:object="${read}" th:action="@{'/v1/adoption/' +${read.postId}}" method="POST" accept-charset="utf-8">
+              <form th:id="'re-replay-form' +${index}" th:if="${comment.replies.size() == 0}"  th:object="${read}" th:action="@{'/v1/adoption/' +${read.postId}}" method="POST" accept-charset="utf-8">
                   <fieldset>
                   <legend>입양 상세 게시판 대댓글</legend>
                       <div class="re-reply re-reply-form" th:id="'re-replay-form' +${index}">
                           <span class="material-symbols-outlined reply-icon">reply</span>
                           <div class="comments-read" >
                               <p>
-                                  <input type="hidden" th:value="${reply.id}" th:name="commentId"/>
-                                  <input type="hidden" th:value="${comment.id}" th:name="parentId"/>
-                                  <label for="comment-reply-write-contents" class="author" th:text="${reply.member.name}">작성자</label><textarea id="comment-reply-write-contents" class="comment-contents" name="content" th:text="${reply.content}"></textarea>
-                                  <button type="submit" class="reply-button-send">댓글달기/수정</button>
+                                  <input type="hidden" th:value="${comment.id}" name="parentId"/>
+                                  <label for="comment-reply-write-contents" class="author">작성자</label><textarea id="comment-reply-write-contents" class="comment-contents" name="content"></textarea>
+                                  <button type="submit" class="reply-button-send">댓글달기</button>
                               </p>
                           </div>
                       </div>

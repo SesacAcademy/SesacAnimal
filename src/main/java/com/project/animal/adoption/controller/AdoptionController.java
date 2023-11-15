@@ -163,12 +163,6 @@ public class AdoptionController {
 
             return "redirect:"+EndPoint.ADOPTION_READ;
         }
-        System.out.println("comment Id :>>"+ commentId.toString());
-
-        System.out.println("comment check: >>"+adoptionCommentWriteDto.toString());
-        System.out.println("comment check: id>>"+adoptionCommentWriteDto.getId());
-        System.out.println("comment check: author>>"+adoptionCommentWriteDto.getAuthor());
-        System.out.println("comment check: content>>"+adoptionCommentWriteDto.getContent());
 
         if (commentId != null) {
             // 기존 댓글 업데이트

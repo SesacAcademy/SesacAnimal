@@ -19,11 +19,11 @@ public class AdoptionLike extends BaseEntity {
     @Column(name = "adoption_like_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "adoption_id")
     private Adoption adoption;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;
 

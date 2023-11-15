@@ -202,8 +202,8 @@
 }
 
 .adoption-comments-read .comments-read .re-reply{
-    /*display: none;*/
-    display: flex;
+    display: none;
+    /*display: flex;*/
     margin-left:35px;
     align-items: flex-start;
 }
@@ -221,7 +221,8 @@
     background-color: #fff;
     border-radius: 10px;
 }
-.adoption-comments-read .comments-read .re-reply .reply-button-send{
+.adoption-comments-read .comments-read .re-reply .reply-button-send
+{
     padding:10px;
     font-size: 18px;
     font-weight: 600;
@@ -230,6 +231,20 @@
     border-radius: 10px;
     background-color: #fff;
     box-sizing: border-box;
+    cursor: pointer;
+}
+
+.adoption-comments-read .comments-read .re-reply .reply-button-edit
+{
+    padding:10px;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: top;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-sizing: border-box;
+    color:#f0b062;
     cursor: pointer;
 }
 
