@@ -82,7 +82,7 @@ public class LoginServiceImp implements LoginService {
         }
 
         // 마지막 로그인 날짜 변경
-        member.setLastLoginAt(LocalDateTime.now(ZoneId.of("Asia/Tokyo")));
+        member.setLastLoginAt(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
 
         MemberDto memberDto = new MemberDto(member);
 
@@ -153,13 +153,13 @@ public class LoginServiceImp implements LoginService {
             memberDto = new MemberDto(findMember.get());
 
             // 마지막 로그인 날짜 변경
-            findMember.get().setLastLoginAt(LocalDateTime.now(ZoneId.of("Asia/Tokyo")));
+            findMember.get().setLastLoginAt(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
         }
 
         // 카카오 계정을 통해 회원가입을 하지 않은 경우, 회원가입 진행
         else {
             log.info("카카오 계정을 통해 회원가입이 되지 않았음");
-            LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Tokyo"));
+            LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
             Member member = Member.builder()
                     .email(userData.get(1))

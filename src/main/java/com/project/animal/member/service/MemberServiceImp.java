@@ -66,7 +66,7 @@ public class MemberServiceImp implements MemberService {
         // 이메일 인증 번호 체크
         checkMailAuthCode(signupFormDto.getEmail(), signupFormDto.getAuthCode());
 
-        LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Tokyo"));
+        LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
         Member member = Member.builder()
                 .email(signupFormDto.getEmail())

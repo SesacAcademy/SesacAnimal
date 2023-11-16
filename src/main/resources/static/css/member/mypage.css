@@ -1,0 +1,23 @@
+.member-mypage-content {
+    margin: 0 auto;
+    border: 1px solid blue;
+    width: 80%;
+    height: 720px;
+    display: flex;
+}
+
+.member-mypage-aside {
+    width: 185px;
+    margin: 0 auto;
+    /*border: 1px solid yellow;*/
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif
+    /*height: 300px;*/
+}
+
+.member-mypage-section {
+    width: 85%;
+    margin: 0 auto;
+    border: 1px solid red;
+    /*height: 300px;*/
+}
+

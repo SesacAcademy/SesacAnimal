@@ -55,9 +55,55 @@
         <!-- Header 설정 -->
         <th:block th:replace="../fragments/header/header :: header"></th:block>
 
-        <section>
-            테스트요 깔깔깔
-        </section>
+        <!-- Content 영역 -->
+        <div class="member-mypage-content">
+            <aside class="member-mypage-aside">
+
+                <!-- As a heading -->
+                <nav class="navbar bg-secondary text-light">
+                    <div class="container-fluid">
+                        <p class="navbar-brand mb-0 h1 text-light" style="margin: 0 auto;">My Page</p>
+                    </div>
+                </nav>
+
+                <nav class="navbar bg-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#" style="color: #E4477A;">회원정보 수정</a>
+                    </div>
+                </nav>
+
+                <nav class="navbar bg-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">비밀번호 변경</a>
+                    </div>
+                </nav>
+
+                <nav class="navbar bg-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">좋아요</a>
+                    </div>
+                </nav>
+
+                <nav class="navbar bg-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">내가 쓴 글</a>
+                    </div>
+                </nav>
+
+                <nav class="navbar bg-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">입양 내역</a>
+                    </div>
+                </nav>
+            </aside>
+
+            <section class="member-mypage-section">
+                <div>
+
+                </div>
+            </section>
+        </div>
+
 
         <!-- Footer 설정 -->
         <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
