@@ -84,10 +84,9 @@
 
          <section class="adoption-board">
              <ul id="adoption-list">
-                 <li th:each="adoption : ${list}" th:if="${adoption.isActive ==1}"} >
+                 <li th:each="adoption : ${list.getContent()}" th:if="${adoption.isActive ==1}"} >
                      <a th:href="@{'/v1/adoption/' + ${adoption.id}}">
                          <div class="image-area">
-<!--                             <div >-->
 
                              <p class="image" th:each="image : ${adoption.adoptionImages}" >
                                  <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 -->
@@ -140,7 +139,45 @@
                  </li>
              </ul>
          </section>
+
+         <nav th:if="${list.totalPages > 1}" id="paging">
+             <!-- 페이지 번호를 표시 -->
+             <ul class="pagination" th:if="${list.totalPages != 0}">
+                 <li class="page-item first" th:if="${startPage > blockCount}">
+                      <a class="page-link" th:href="@{/v1/adoption(pageNumber=1)}">
+                        <span class="material-symbols-outlined">skip_previous</span>
+                      </a>
+                 </li>
+
+                  <li class="page-item prev" th:if="${startPage > blockCount}">
+                      <a class="page-link" th:href="@{/v1/adoption(pageNumber=${startPage - blockCount})}">
+                        <span class="material-symbols-outlined">arrow_back_ios</span>
+                      </a>
+                  </li>
+
+
+                 <th:block th:each="pageNum : ${#numbers.sequence(startPage, (endPage <= count ? endPage : count))}">
+                     <li class="page-item" th:classappend="${pageNumber} == ${num} ? 'active' : ''">
+                         <a class="page-link" th:href="@{/v1/adoption(pageNumber=${pageNum})}">[[${pageNum}]]</a>
+                     </li>
+                 </th:block>
+
+                  <li class="page-item next" th:if="${(startPage+blockCount)<=count}">
+                      <a class="page-link" th:href="@{/v1/adoption(pageNumber=${startPage + blockCount})}">
+                          <span class="material-symbols-outlined">arrow_forward_ios</span>
+                      </a>
+                  </li>
+                  <li class="page-item last" th:if="${(startPage+blockCount)<=count}">
+                      <a class="page-link" th:href="@{/v1/adoption(pageNumber=${count})}">
+                        <span class="material-symbols-outlined">skip_next</span>
+                      </a>
+                  </li>
+             </ul>
+         </nav>
+
+
      </main>
+
  <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
 </body>
 </html>
