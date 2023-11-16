@@ -208,7 +208,7 @@ function findPassword() {
     const name = inputName.value;
     const phone = inputPhone.value;
 
-    /*if (!isValidEmail(email)) {
+    if (!isValidEmail(email)) {
         alert("이메일을 형식에 맞추어 입력해주세요.");
         return;
     }
@@ -221,7 +221,7 @@ function findPassword() {
     if (!isValidPhone(phone)) {
         alert("휴대폰 번호 형식이 틀렸습니다.");
         return;
-    }*/
+    }
 
     const config = {"Content-Type": 'application/json'};
 
@@ -281,7 +281,7 @@ function findPassword2() {
     const phone = inputPhone.value;
     const authCode = inputAuthCode.value;
 
-    /*if (!isValidEmail(email)) {
+    if (!isValidEmail(email)) {
         alert("이메일을 형식에 맞추어 입력해주세요.");
         return;
     }
@@ -299,7 +299,7 @@ function findPassword2() {
     if (!isValidCode(authCode)) {
         alert("인증번호를 제대로 입력해주세요.");
         return;
-    }*/
+    }
 
     const config = {"Content-Type": 'application/json'};
 
