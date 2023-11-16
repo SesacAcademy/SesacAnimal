@@ -4,12 +4,14 @@ import com.project.animal.adoption.domain.Adoption;
 import com.project.animal.adoption.domain.AdoptionComment;
 import com.project.animal.adoption.domain.AdoptionImage;
 import com.project.animal.adoption.dto.*;
+import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.adoption.service.AdoptionCommentServiceImpl;
 import com.project.animal.adoption.service.AdoptionServiceImpl;
 import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import retrofit2.http.Path;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,10 +36,32 @@ public class AdoptionController {
 
     // 메인 리스트 입장
     @GetMapping(EndPoint.ADOPTION_LIST)
-    public String adoptionMain(Model model){
-        List<Adoption> allWithImages = adoptionService.findAllWithImagesAndMember();
+    public String adoptionMain(@RequestParam(required = false) String pageNumber, Model model){
+        int pageSize = 10; // 한 페이지에 보여줄 데이터 개수
 
-        model.addAttribute("list",allWithImages);
+        if (pageNumber == null) {
+            pageNumber = "1"; // 페이지 번호가 없거나 1보다 작으면 기본값으로 1 설정
+        }
+        int currentPage = Integer.parseInt(pageNumber);
+        Page<Adoption> listWithImagesAndMember = adoptionService.getAdoptionPageWithImagesAndMemberPages(currentPage,pageSize); // 전체 리스트
+        int count = listWithImagesAndMember.getTotalPages();
+        int BLOCK_COUNT = 10;
+        int temp = (currentPage-1)%BLOCK_COUNT;
+        int startPage = currentPage-temp;
+        int endPage = startPage + BLOCK_COUNT -1;
+        int pageCount = (count / pageSize) + (count % pageSize == 0 ? 0 : 1);
+
+
+
+        model.addAttribute("list", listWithImagesAndMember);
+        model.addAttribute("blockCount", BLOCK_COUNT);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("pageNumber", currentPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("pageCount", pageCount);
+        model.addAttribute("count", count);
+
+
 
         return ViewName.ADOPTION_LIST;
     }

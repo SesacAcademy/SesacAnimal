@@ -14,6 +14,10 @@ import io.minio.*;
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -130,25 +134,37 @@ public class AdoptionServiceImpl implements AdoptionService {
 
         }
 
-
         return foundAdoptionId;
     }
 
 
     public List<Adoption> findAll() {
-
        return adoptionRepository.findAll();
     }
 
+    public int getCount(List<Adoption> list){
+        return list.size();
+    }
 
+    public Page<Adoption> getAdoptionPageWithImagesAndMember(int pageNumber, int pageSize) {
+        // 페이징 정보 생성
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
 
-    public boolean isBucketByUserId(String userId) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, io.minio.errors.ServerException {
-        return minioClient.bucketExists(BucketExistsArgs.builder().bucket(userId).build());
+        // adoption_image와 member를 함께 가져오는 메소드 호출
+        List<Adoption> adoptionList = adoptionRepository.findAllWithImagesAndMember();
+
+        // 가져온 리스트를 페이징 처리하여 반환
+        return new PageImpl<>(adoptionList, pageable, adoptionList.size());
+    }
+
+    public Page<Adoption> getAdoptionPageWithImagesAndMemberPages(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return adoptionRepository.findAllWithImagesAndMemberPages(pageable);
     }
 
     public void plusView(Long id){
         Optional<Adoption> foundAdoptionId = adoptionRepository.findById(id);
-        Adoption adoption = foundAdoptionId.get();
+        Adoption adoption = foundAdoptionId.orElseThrow();
 
         int hit = adoption.getHit();
         hit++;
@@ -190,6 +206,7 @@ public class AdoptionServiceImpl implements AdoptionService {
         return adoptionRepository.findByIdWithImageAndMember(id);
     }
 
+
     public List<Adoption> findAllWithImages() {
         return adoptionRepository.findAllWithImages();
     }
@@ -198,22 +215,6 @@ public class AdoptionServiceImpl implements AdoptionService {
         return adoptionRepository.findAllWithImagesAndMember();
 
     }
-
-//    public  List<Adoption> test() {
-       // return adoptionRepository.findAllWithImagesAndMember();
-      //  List<Adoption>  list =   adoptionRepository.findAll();
-      //  return list;
-
-//        List<Adoption>  list =  adoptionRepository.findAllWithImagesAndMember();
-//        for(Adoption a: list){
-//           // adoptionImageRepository.findBy a.getId()
-//            a.setAdoptionImages(adoptionImageRepository. test( a.getId() ) );
-//        }
-//
-//       return adoptionRepository.test2();
-
-
-//    }
 
 
 }

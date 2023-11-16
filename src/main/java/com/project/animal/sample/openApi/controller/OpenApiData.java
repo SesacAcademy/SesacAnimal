@@ -33,7 +33,7 @@ public class OpenApiData {
 
 
         try{
-            String stringResult = getResult(11); // api 데이터 가져오기
+            String stringResult = getResult(1); // api 데이터 가져오기
 
             List<OpenApiDto> openApiDtoList = getOpenApiDtos(stringResult); // 데이터 사용할 수 있게 가공하기
 
@@ -55,7 +55,7 @@ public class OpenApiData {
     private static String getResult(int id) throws URISyntaxException {
         RestTemplate restTemplate = new RestTemplate();
 
-        String fullUrl = "http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic?serviceKey=EzxLIzlCVgYLjZw0%2F80cOsMioDse3rHqkMt05%2FHotyGORQ3xcT6%2BFyqR2o%2B8XXuNh37OnCNoCGE7twsnT2N%2Bkg%3D%3D&pageNo=" + id + "&numOfRows=10&_type=json";
+        String fullUrl = "http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic?serviceKey=EzxLIzlCVgYLjZw0%2F80cOsMioDse3rHqkMt05%2FHotyGORQ3xcT6%2BFyqR2o%2B8XXuNh37OnCNoCGE7twsnT2N%2Bkg%3D%3D&pageNo=" + id + "&numOfRows=1000&_type=json";
 
 
         URI uri = new URI(fullUrl);
