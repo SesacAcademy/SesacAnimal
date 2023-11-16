@@ -34,7 +34,7 @@ public class ReviewCommentController {
         Optional<Member> member = memberRepository.findById(1L);
         return member.get();
     }
-    @PostMapping(EndPoint.ADD_COMMENT)
+    @PostMapping(EndPoint.COMMENT_ADD)
     //1. 글자 수 검사 => 바인딩 리절트 2.게시판 읽어올 때 comment에 관한 내용도 던져야 함 id, parentId, content, CreatedAt,
     public String createReviewComment(@ModelAttribute @Valid ReviewCommentDto reviewCommentDto,
                                       BindingResult bindingResult,
@@ -45,6 +45,7 @@ public class ReviewCommentController {
                 log.info("binding error: "+bindingResult.toString());
                 return "redirect:" + "/review" + EndPoint.REVIEW_READ_ONE + "?reviewPostId=" + reviewPostId;
             }
+            log.info("controller 체크: "+reviewCommentDto.getParentId());
             ReviewPost reviewPost = reviewService.findPostAndMember(reviewPostId);
             reviewCommentService.createComment(reviewCommentDto, reviewPost);
             return "redirect:" + "/review" + EndPoint.REVIEW_READ_ONE + "?reviewPostId=" + reviewPostId;
@@ -63,8 +64,11 @@ public class ReviewCommentController {
         reviewCommentService.update(reviewCommentId, dto);
         return "redirect:" + "/review" + EndPoint.REVIEW_READ_ONE + "?reviewPostId=" + reviewPostId;
     }
-    //1. 댓글 전체 리드 멤버 객체가 필요하다 그걸로 닉네임 가져올 수 있음 -> 게시글 리드에서 적합해보임
-    //2. 댓글 업데이트
-    //3. 댓글 삭제
+    @PostMapping(EndPoint.COMMENT_DELETE)
+    public String commentDelete(@RequestParam("reviewCommentId")Long reviewCommentId,
+                                @RequestParam("reviewPostId")Long reviewPostId){
+        reviewCommentService.delete(reviewCommentId);
+        return "redirect:" + "/review" + EndPoint.REVIEW_READ_ONE + "?reviewPostId=" + reviewPostId;
+    }
 
 }
