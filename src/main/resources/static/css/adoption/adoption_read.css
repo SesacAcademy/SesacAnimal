@@ -143,6 +143,7 @@
     width:1200px;
     margin:0 auto;
     font-size: 20px;
+    font-weight: 600;
 }
 
 .adoption-comments-read .comments-read{
@@ -201,11 +202,54 @@
     opacity: 1;
 }
 
+.adoption-comments-read .comments-read .reply{
+    display: flex;
+}
+
+.adoption-comments-read .comments-read .reply .button-area{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.adoption-comments-read .comments-read .reply .button-area .reply-button-edit {
+    margin-left:5px;
+    padding:10px;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: top;
+    border: none;
+    border-radius: 10px;
+    /*background-color: #fff;*/
+    box-sizing: border-box;
+    color:#f0b062;
+    cursor: pointer;
+}
+
+.adoption-comments-read .comments-read .reply .button-area .reply-button-delete {
+    margin-left:5px;
+    padding:10px;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: top;
+    border: none;
+    border-radius: 10px;
+    /*background-color: #fff;*/
+    box-sizing: border-box;
+    color: #f6d4a2;
+    cursor: pointer;
+}
+
+
 .adoption-comments-read .comments-read .re-reply{
     display: none;
     /*display: flex;*/
     margin-left:35px;
     align-items: flex-start;
+}
+
+.adoption-comments-read .re-reply .comments-read .reply .button-area{
+    justify-content: flex-start;
 }
 
 
@@ -221,7 +265,8 @@
     background-color: #fff;
     border-radius: 10px;
 }
-.adoption-comments-read .comments-read .re-reply .reply-button-send{
+.adoption-comments-read .comments-read .re-reply .re-reply-button-send
+{
     padding:10px;
     font-size: 18px;
     font-weight: 600;
@@ -230,6 +275,34 @@
     border-radius: 10px;
     background-color: #fff;
     box-sizing: border-box;
+    cursor: pointer;
+}
+
+.adoption-comments-read .comments-read .re-reply .button-area .re-reply-button-edit
+{
+    padding:10px;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: top;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-sizing: border-box;
+    color:#f0b062;
+    cursor: pointer;
+}
+
+.adoption-comments-read .comments-read .re-reply .button-area .re-reply-button-delete
+{
+    padding:10px;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: top;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-sizing: border-box;
+    color:#f6d4a2;
     cursor: pointer;
 }
 
@@ -258,6 +331,7 @@
     /*width:1200px;*/
     margin:0;
     font-size: 20px;
+    font-weight: 600;
 }
 
 .adoption-comments-write .comments-write{
@@ -265,10 +339,13 @@
     border: 1px solid #ddd;
     padding:50px;
     background-color: #eee;
+    display: flex;
+    align-items: flex-start;
 }
 
 .adoption-comments-write .comments-write .author{
     display: inline-block;
+    padding:5px;
     width:120px;
     height:41px;
     font-size:18px;
@@ -277,6 +354,7 @@
     border-radius: 10px;
     border-right: 1px solid #ddd;
     vertical-align: top;
+
 }
 
 .adoption-comments-write .comments-write .comment-contents{

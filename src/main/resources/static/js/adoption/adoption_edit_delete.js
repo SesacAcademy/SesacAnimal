@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     const postId = document.querySelector("#postId").value;
-    console.log("postId check:>>",postId)
 
     // 게시글 삭제용 버튼
     const postDeleteButton = document.getElementById("delete-post-button");
@@ -27,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 button.closest('p').style.display='none';
 
                 $.ajax({
-                    type: 'PUT',
+                    type: 'DELETE',
                     url: '/v1/adoption/edit/' + postId,
                     contentType: 'application/json',
                     data: JSON.stringify({ deleteImageIndex: deleteIndex }),
@@ -53,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
         postModalOk.addEventListener("click", function () {
 
             $.ajax({
-                type: 'PUT',
+                type: 'DELETE',
                 url: '/v1/adoption/edit/' + postId,
                 contentType: 'application/json',
                 data: JSON.stringify({ deletePostId: postId }),

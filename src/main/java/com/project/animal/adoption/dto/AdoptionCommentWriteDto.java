@@ -5,8 +5,10 @@ import com.project.animal.adoption.domain.AdoptionComment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter
@@ -18,6 +20,8 @@ public class AdoptionCommentWriteDto {
 
     private String author;
 
+    @NotNull
+    @NotBlank
     private String content;
 
     private Long parentId;
@@ -27,16 +31,4 @@ public class AdoptionCommentWriteDto {
 
 
 
-//    public AdoptionCommentWriteDto(String author, String content){
-//        id++;
-//        this.author=author;
-//        this.content=content;
-//    }
-//
-//    public AdoptionCommentWriteDto(String author, String content, Long parentId){
-//        id++;
-//        this.author=author;
-//        this.content=content;
-//        this.parentId=parentId;
-//    }
 }

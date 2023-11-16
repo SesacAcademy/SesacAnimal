@@ -10,6 +10,7 @@ import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import retrofit2.http.Path;
+
 import java.util.List;
 import java.util.Map;
 
@@ -99,7 +102,7 @@ public class AdoptionController {
 
 
     @CrossOrigin(origins = {"http://localhost:8080", "http://infra.shucloud.site"})
-    @PutMapping(EndPoint.ADOPTION_EDIT )
+    @DeleteMapping(EndPoint.ADOPTION_EDIT )
     @ResponseBody
     public ResponseEntity<String> handleImageDeleteRequest(@RequestBody Map<String, String> requestBody, @PathVariable Long id) {
         
@@ -156,7 +159,7 @@ public class AdoptionController {
     @PostMapping(EndPoint.ADOPTION_READ)
     public String adoptionCommentPost(@ModelAttribute @Validated AdoptionCommentWriteDto adoptionCommentWriteDto, BindingResult bindingResult,
                                       @PathVariable(name = "id") Long postId,
-                                      @RequestParam(name="commentId") Long commentId){
+                                      @RequestParam(name="commentId", required = false) Long commentId){
 
         if(bindingResult.hasErrors()){
             log.info("adoption_read 영역 내 댓글 에러 ={}", bindingResult);
@@ -164,15 +167,44 @@ public class AdoptionController {
             return "redirect:"+EndPoint.ADOPTION_READ;
         }
 
-        System.out.println("comment check: >>"+adoptionCommentWriteDto.toString());
-        System.out.println("comment check: id>>"+adoptionCommentWriteDto.getId());
-        System.out.println("comment check: author>>"+adoptionCommentWriteDto.getAuthor());
-        System.out.println("comment check: content>>"+adoptionCommentWriteDto.getContent());
-
-        adoptionCommentService.saveComment(adoptionCommentWriteDto, postId);
+        if (commentId != null) {
+            // 기존 댓글 업데이트
+            adoptionCommentService.updateComment(adoptionCommentWriteDto, commentId);
+        } else {
+            // 새로운 댓글 생성
+            adoptionCommentService.saveComment(adoptionCommentWriteDto, postId);
+        }
 
         return "redirect:"+EndPoint.ADOPTION_READ;
     }
+
+    // 댓글 / 대댓글 삭제
+    @CrossOrigin(origins = {"http://localhost:8080", "http://infra.shucloud.site"})
+    @DeleteMapping(EndPoint.ADOPTION_READ)
+    @ResponseBody
+    public ResponseEntity<String> adoptionCommentDelete(@RequestBody Map<String, String> requestBody, @PathVariable Long id){
+
+
+        try {
+            if(requestBody.get("deleteCommentParentIndex") != null) {
+                Long deleteCommentIndex = Long.valueOf(requestBody.get("deleteCommentParentIndex"));
+
+                // 댓글과 대댓글 함께 삭제 로직 수행
+                adoptionCommentService.deleteParentAndChildComment(deleteCommentIndex);
+
+            }else if(requestBody.get("deleteCommentChildIndex") != null){
+                Long deleteCommentChildIndex = Long.valueOf(requestBody.get("deleteCommentChildIndex"));
+                // 대댓글만 삭제 로직 수행
+                adoptionCommentService.deleteChildComment(deleteCommentChildIndex);
+            }
+            return ResponseEntity.ok(EndPoint.ADOPTION_READ);
+        } catch (Exception e) {
+            log.error("댓글 삭제 중 오류 발생: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail Comment delete");
+        }
+//        return ResponseEntity.ok( EndPoint.ADOPTION_READ);
+    }
+
 
 }
 

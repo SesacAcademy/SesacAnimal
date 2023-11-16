@@ -20,11 +20,11 @@ public class AdoptionComment extends BaseEntity {
     @Column(name = "adoption_comment_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="adoption_id")
     private Adoption adoption;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;
 
@@ -42,6 +42,10 @@ public class AdoptionComment extends BaseEntity {
 
     public void setAdoption(Adoption adoption) {
         this.adoption = adoption;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     //    생성자
