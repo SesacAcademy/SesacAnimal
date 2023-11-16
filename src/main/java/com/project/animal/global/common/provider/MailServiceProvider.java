@@ -19,13 +19,13 @@ public class MailServiceProvider {
     private final MailSender mailSender;
 
     /**
-     * 단일 사용자에게 메일 발송하는 메소드
+     * 단일 사용자에게 메일 발송하는 메소드이다.
      *
      * @version 0.1
      * @author 박성수
-     * @param email (메일 수신자)
-     * @param mails (메일)
-     * @throws MailSendException (메일 발송에 실패할 시, 예외 발생)
+     * @param email 메일 수신자
+     * @param mails 메일 리스트
+     * @throws MailSendException 메일 발송에 실패할 시, 예외 발생
      */
     public void sendMail(String email, MailDto... mails) {
         List<SimpleMailMessage> mailList = new ArrayList<>();
@@ -44,13 +44,13 @@ public class MailServiceProvider {
     }
 
     /**
-     * 여러 명의 사용자에게 메일 발송하는 메소드
+     * 여러 명의 사용자에게 메일 발송하는 메소드이다.
      *
      * @version 0.1
      * @author 박성수
-     * @param emailList (메일 수신자 목록)
-     * @param mails (메일)
-     * @throws MailSendException (메일 발송에 실패할 시, 예외 발생)
+     * @param emailList 메일 수신자 목록
+     * @param mails 메일 리스트
+     * @throws MailSendException 메일 발송에 실패할 시, 예외 발생
      */
     public void sendMail(List<String> emailList, MailDto... mails) {
         List<SimpleMailMessage> mailList = new ArrayList<>();

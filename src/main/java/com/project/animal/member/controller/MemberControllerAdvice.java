@@ -22,10 +22,6 @@ import static com.project.animal.global.common.constant.TokenTypeValue.USER_NICK
 @RestControllerAdvice(assignableTypes = {MemberController.class, LoginController.class})
 public class MemberControllerAdvice {
 
-    /**
-     * API : (GET) /v1/api/auth/email
-     * 이메일 인증 토큰 발급 과정에서 이메일 형식이 잘못된 경우, 해당 예외 발생
-     */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(MailSendException.class)
     public ResponseDto<String> mailParseException(MailSendException e) {
@@ -34,11 +30,6 @@ public class MemberControllerAdvice {
         return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, "이메일 발송에 실패하였습니다.");
     }
 
-    /**
-     * API : (POST) /v1/api/auth/email 및 (POST) /v1/api/auth/signup
-     * 1. 이메일 인증 토큰 발급 과정에서 이미 가입된 이메일의 경우, 해당 예외 발생
-     * 2. 회원가입 과정에서 이미 등록된 이메일의 경우, 해당 예외 발생 (극히 드뭄)
-     */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(NestedEmailException.class)
     public ResponseDto<String> nestedEmailException(NestedEmailException e) {
@@ -47,11 +38,6 @@ public class MemberControllerAdvice {
         return new ResponseDto<>(HttpStatus.CONFLICT.value(), USER_EMAIL, e.getMessage());
     }
 
-    /**
-     *
-     * @param e
-     * @return
-     */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(NestedNicknameException.class)
     public ResponseDto<String> nestedNicknameException(NestedNicknameException e) {
@@ -60,22 +46,14 @@ public class MemberControllerAdvice {
         return new ResponseDto<>(HttpStatus.CONFLICT.value(), USER_NICKNAME, e.getMessage());
     }
 
-    /**
-     * API : (POST) /v1/api/auth/email
-     * - 이메일 인증 확인 과정에서 인증번호가 잘못되었거나 만료된 경우, 해당 예외 발생
-     */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(InvalidCodeException.class)
-    public ResponseDto<String> invalidTokenException(InvalidCodeException e) {
-        log.error("이메일 인증 확인 에러 발생", e);
+    public ResponseDto<String> invalidCodeException(InvalidCodeException e) {
+        log.error("이메일 또는 문자 인증 확인 에러 발생", e);
 
         return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());
     }
 
-    /**
-     * API : (POST) /v1/api/auth/signup
-     * - 회원가입 과정에서 Bean Validation로 인한 데이터 검증 실패 시, 해당 예외 발생
-     */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseDto<Map<String, String>> methodArgumentNotValidException(MethodArgumentNotValidException e) {
@@ -99,11 +77,6 @@ public class MemberControllerAdvice {
         return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, "아이디 또는 비밀번호가 틀렸습니다.");
     }
 
-    /**
-     * 아이디 찾기 --> 해당 정보로 가입된 아이디가 없는 경우
-     * @param e
-     * @return
-     */
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(NotFoundException.class)
     public ResponseDto<String> NotFoundException(NotFoundException e) {

@@ -18,13 +18,13 @@ public class RedisServiceProvider {
     private final RedisTemplate<String, String> template;
 
     /**
-     * Redis DB에 데이터를 저장하는 메소드
+     * Redis 서버에 데이터를 저장하는 메소드이다.
      * 
      * @version 0.1
      * @author 박성수
-     * @param key
-     * @param value
-     * @param duration
+     * @param key Redis Key
+     * @param value Redis Value
+     * @param duration Redis TimeOut
      */
     public void save(String key, String value, Duration duration) {
         ValueOperations<String, String> operation = template.opsForValue();
@@ -32,11 +32,11 @@ public class RedisServiceProvider {
     }
 
     /**
-     * Redis DB에 저장된 데이터를 가져 오는 메소드
+     * Redis 서버에 저장된 데이터를 가져 오는 메소드이다.
      *
      * @version 0.1
      * @author 박성수
-     * @param key (Redis Key)
+     * @param key Redis Key
      * @return value (Redis Value)
      */
     public Optional<String> get(String key) {
@@ -47,11 +47,11 @@ public class RedisServiceProvider {
     }
 
     /**
-     * Redis DB에 있는 데이터를 삭제 하는 메소드
+     * Redis 서버에 있는 데이터를 삭제 하는 메소드이다.
      *
      * @version 0.1
      * @author 박성수
-     * @param key (Redis Key)
+     * @param key Redis Key
      */
     public void remove(String key) {
         template.expire(key, Duration.ZERO);

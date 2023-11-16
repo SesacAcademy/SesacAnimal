@@ -42,12 +42,8 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
                 log.error("JWT 서명이 조작되었습니다.");
             }
 
-            else if (e instanceof SecurityException || e instanceof MalformedJwtException) {
+            else if (e instanceof MalformedJwtException) {
                 log.error("유효하지 않은 JWT 토큰입니다.");
-            }
-
-            else if (e instanceof ExpiredJwtException) {
-                log.error("Refresh 토큰이 만료되었습니다.");
             }
 
             else if (e instanceof UnsupportedJwtException) {
@@ -68,11 +64,12 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     }
 
     /**
-     * AccessToken, Refresh 토큰이 저장된 쿠키를 삭제하는 메소드
+     * 사용자 브라우저에 저장된 쿠키 (Access, Refresh Token)를 삭제하는 메소드이다.
      *
      * @version 0.1
      * @author 박성수
-     * @param response
+     * @param request HttpServletRequest 객체
+     * @param response HttpServletResponse 객체
      */
     private void removeTokenInCookie(HttpServletRequest request, HttpServletResponse response) {
         // request 객체에서 JWT Token이 담긴 Cookie를 List 형태로 가져 온다.
@@ -81,7 +78,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
                     return cookie.getName().equals(JWT_ACCESS_TOKEN) || cookie.getName().equals(JWT_REFRESH_TOKEN);})
                 .toList();
 
-        // cookie의 라이프 사이클을 0으로 만들고 다시 response 객체에 저장한다.
+        // cookie의 만료 시간을 0으로 만들고 다시 response 객체에 저장한다.
         cookielist.forEach(cookie -> {
             cookie.setMaxAge(0);
             cookie.setPath("/");

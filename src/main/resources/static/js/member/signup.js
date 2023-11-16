@@ -49,6 +49,12 @@ function isValidPhone(phone) {
     return koreanPhoneNumberPattern.test(phone);
 }
 
+function isValidCode(code) {
+    let codeRegex = /^\d{6}$/;
+
+    return codeRegex.test(code);
+}
+
 function createToken() {
     const emailAuthBlock = document.getElementById('member-auth-email-block');
     const emailAuthButton = document.getElementById('member-auth-email-button');
@@ -70,7 +76,7 @@ function createToken() {
             emailAuthButton.style.display = 'none';
 
             document.getElementById('member-auth-email-button').style.display = 'none';
-            alert(email + ' 이메일로 인증번호를 발송하였습니다.');
+            alert(email + ' 이메일로 인증 번호를 발송하였습니다.');
 
             const timerElement = document.getElementById("member-timer");
             let remainingTime = 180; // 3분을 초로 표현
@@ -110,7 +116,7 @@ function checkToken() {
 
     axios.post("/v1/api/auth/email", {
         'email': email,
-        'token': token
+        'authCode': token
     }).then(function (response) {
         if (response.data.statusCode === 204) {
             console.log(response)
@@ -128,7 +134,7 @@ function checkToken() {
         else if (response.data.statusCode === 400) {
             console.log(response)
 
-            // 인증번호가 틀린 경우
+            // 인증 번호가 틀린 경우
             if (response.data.context === null) {
                 alert(response.data.message);
             }
@@ -142,8 +148,8 @@ function checkToken() {
                     alert(errorData.email);
                 }
 
-                if (errorData.token !== undefined) {
-                    alert(errorData.token);
+                if (errorData.authCode !== undefined) {
+                    alert(errorData.authCode);
                 }
             }
         }
@@ -167,8 +173,8 @@ function signup() {
         return;
     }
 
-    if (token === "") {
-        alert("이메일 인증을 해주세요");
+    if (!isValidCode(token)) {
+        alert("인증 번호를 제대로 입력해주세요.");
         return;
     }
 
@@ -202,7 +208,7 @@ function signup() {
     axios.post("/v1/api/auth/signup", {
         'email': email,
         'nickname': nickname,
-        'token': token,
+        'authCode': token,
         'name': name,
         'password': password,
         'phone': phone
@@ -213,7 +219,7 @@ function signup() {
         }
         else if (response.data.statusCode === 400) {
 
-            // 인증번호가 만료된 경우
+            // 인증 번호가 만료된 경우
             if (response.data.context === null) {
                 alert(response.data.message);
                 alert("새로고침하여 다시 진행해주세요.");
@@ -241,8 +247,8 @@ function signup() {
                     alert(response.data.context.phone);
                 }
 
-                if (errorData.token !== undefined) {
-                    alert(response.data.context.token);
+                if (errorData.authCode !== undefined) {
+                    alert(response.data.context.authCode);
                 }
             }
         }

@@ -35,6 +35,7 @@ public class Member extends BaseEntity implements UserDetails {
     private String nickname;
 
     @Column(length = 1000)
+    @Setter
     private String password;
 
     @Column(length = 50)

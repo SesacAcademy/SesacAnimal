@@ -9,14 +9,15 @@ public abstract class EndPoint {
     public static final String SIGNUP = "/v1/auth/signup";
     public static final String SIGNUP_API = "/v1/api/auth/signup";
     public static final String EMAIL_API = "/v1/api/auth/email";
+    public static final String PHONE_API = "/v1/api/auth/phone";
+    public static final String FIND_EMAIL_API = "/v1/api/find/email";
 
     // OAuth2 (KaKao) 관련
     public static final String KAKAO_REDIRECT_URI = "http://localhost:8080/v1/auth/login/kakao";
     public static final String KAKAO_TOKEN_URI = "https://kauth.kakao.com/oauth/token";
     public static final String KAKAO_USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
 
-    public static final String FIND_EMAIL_API = "/v1/api/find/email";
-    public static final String FIND_PWD_API = "/v1/api/find/password";
+
     
     // 입양 ADOPTION 영역
     public static final String ADOPTION_LIST = "/v1/adoption"; // 입양 게시판 메인 리스트

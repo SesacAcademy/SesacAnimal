@@ -38,13 +38,14 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
 
+        // 쿠키에 저장된 JWT Access 토큰 가져오기
         String token = jwtTokenProvider.resolveToken(request, JWT_ACCESS_TOKEN);
 
         // 기존 쿠키에 JWT Access 토큰이 없는 경우, Request 영역에 저장해둔 newAccessToken을 사용
         if (token == null && request.getAttribute(JWT_ACCESS_TOKEN) != null)
             token = (String) request.getAttribute(JWT_ACCESS_TOKEN);
 
-        // 기존 쿠키에 JWT Access 토큰이 있는 경우, JWT를 파싱하여 MemberDto 객체로 리턴
+        // JWT Access 토큰을 파싱하여 MemberDto 객체로 리턴
         if (token != null)
             return jwtTokenProvider.parseToken(token);
 
