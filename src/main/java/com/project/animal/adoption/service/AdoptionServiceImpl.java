@@ -48,7 +48,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 
         // 나머지 Adoption 엔티티 설정 (멤버 강제주입 추후 변경 필요)
         Optional<Member> member = repository.findById(2L);
-        Member member1 = member.get();
+        Member member1 = member.orElseThrow();
         adoption.setMember(member1);
         Adoption saved = adoptionRepository.save(adoption);
 
@@ -100,13 +100,8 @@ public class AdoptionServiceImpl implements AdoptionService {
     public void update (AdoptionEditDto adoptionEditDto, List<MultipartFile> files, Long id) {
         String serverFileName;
         Adoption adoption = adoptionRepository.findByIdWithImageAndMember(id);
-        System.out.println("service files:>>"+files);
-        System.out.println("service files:>>"+files.size());
 
         adoption.updateAdoption(adoptionEditDto);
-        System.out.println("service adoption update :>>"+adoption.toString());
-//        adoption.changeAdoptionImages(adoptionEditDto.getImage());
-
 
         // 나머지 Adoption 엔티티 설정 (멤버 강제주입 추후 변경 필요)
         Optional<Member> member = repository.findById(2L);
@@ -115,34 +110,12 @@ public class AdoptionServiceImpl implements AdoptionService {
 
         Adoption saved = adoptionRepository.save(adoption);
 
-        int size = adoption.getAdoptionImages().size();
-        for(int i=0; i<files.size(); i++){
-            serverFileName = saveMinio(files.get(i));// 미니오에 저장하는 영역
-            System.out.println("service serverfileName:>>"+serverFileName);
-//            adoption.getAdoptionImages().add();
-//            adoption.getAdoptionImages().get(size+i).changePath(serverFileName);
-//            System.out.println(adoption.getAdoptionImages().get(size+i));
+        for (MultipartFile file : files) {
+            serverFileName = saveMinio(file); // 미니오에 저장하는 영역
+            AdoptionImage adoptionImage = new AdoptionImage(serverFileName, saved);
 
-            AdoptionImage adoptionImage = new AdoptionImage( serverFileName, saved );
-            adoptionImage.changeAdoption(adoption);
-//            adoptionImage.changePath(serverFileName);
-
-//            adoption.getAdoptionImages().add((size+i+1), adoptionImage);
             adoptionImageRepository.save(adoptionImage);
-
         }
-
-//        for (MultipartFile file : files) {
-//            serverFileName = saveMinio(file); // 미니오에 저장하는 영역
-//            log.info("1.serverFileName====완료======"+serverFileName);
-//            log.info("1.serverFileName====완료======={}",serverFileName);
-////            AdoptionImage adoptionImage = new AdoptionImage(serverFileName, adoption);
-//            AdoptionImage adoptionImage = new AdoptionImage();
-//            adoptionImage.changeAdoption(adoption);
-//            adoptionImage.changePath(serverFileName);
-//
-//            adoptionImageRepository.save(adoptionImage);
-//        }
     }
 
 

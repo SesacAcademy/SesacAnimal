@@ -24,4 +24,6 @@ public abstract class EndPoint {
     public static final String ADOPTION_EDIT = "/v1/adoption/edit/{id}"; // 수정 영역
     public static final String ADOPTION_READ = "/v1/adoption/{id}"; // 글 읽기 영역
 
+    public static final String ADOPTION_COMMENT = "/v1/adoption/comment"; // 댓글 영역 (읽기 게시판 아래)
+
 }
