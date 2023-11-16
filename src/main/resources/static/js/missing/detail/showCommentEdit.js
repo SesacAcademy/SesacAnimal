@@ -5,7 +5,7 @@ recommentConatinerEdit.forEach((dom) => {
     const editForm = dom.querySelector(".missing-comment-edit-form");
     const content = dom.querySelector(".missing-comment-content");
 
-    editButton.addEventListener('click', () => {
+    editButton?.addEventListener('click', () => {
         const isContentShowing = content.style.display === "block";
         content.style.display = isContentShowing ? "none" : "block";
         editForm.style.display = isContentShowing ? "block" : "none";
