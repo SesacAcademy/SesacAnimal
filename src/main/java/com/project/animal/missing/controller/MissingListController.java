@@ -5,7 +5,8 @@ import com.project.animal.missing.constant.ViewName;
 import com.project.animal.missing.dto.ListResponseDto;
 import com.project.animal.missing.dto.MissingFilterDto;
 import com.project.animal.missing.dto.MissingListEntryDto;
-import com.project.animal.missing.service.MissingPostService;
+import com.project.animal.missing.service.MissingPostServiceImpl;
+import com.project.animal.missing.service.inf.MissingPostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,10 +24,10 @@ import java.util.Map;
 @RequestMapping(EndPoint.MISSING_BASE + EndPoint.LIST)
 public class MissingListController extends MissingController {
 
-  private final MissingPostService missingPostService;
+  private final MissingPostService missingPostServiceImpl;
 
-  public MissingListController(MissingPostService missingPostService) {
-    this.missingPostService = missingPostService;
+  public MissingListController(MissingPostService missingPostServiceImpl) {
+    this.missingPostServiceImpl = missingPostServiceImpl;
   }
 
   @GetMapping
@@ -36,7 +37,7 @@ public class MissingListController extends MissingController {
           Pageable pageable,
           Model model) {
 
-    ListResponseDto<MissingListEntryDto> result = missingPostService.getPostList(filterDto, pageable);
+    ListResponseDto<MissingListEntryDto> result = missingPostServiceImpl.getPostList(filterDto, pageable);
     Map<String, String> endPoints = createLinkConstants("detail", "list", "new");
 
     model.addAttribute("endPoints", endPoints);

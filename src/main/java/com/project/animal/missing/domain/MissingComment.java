@@ -1,5 +1,6 @@
 package com.project.animal.missing.domain;
 
+import com.project.animal.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,9 @@ public class MissingComment {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long comment_id;
 
-  // TODO: relation
-  private long member_id;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "member_id")
+  private Member member;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "missing_id")
@@ -34,8 +36,8 @@ public class MissingComment {
   @OneToMany(mappedBy = "parentComment")
   private List<MissingComment> comments;
 
-  public MissingComment(long member_id, MissingPost missingPost, String content, MissingComment parentComment) {
-    this.member_id = member_id;
+  public MissingComment(Member member, MissingPost missingPost, String content, MissingComment parentComment) {
+    this.member = member;
     this.missingPost = missingPost;
     this.content = content;
     this.parentComment = parentComment;

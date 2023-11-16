@@ -6,7 +6,8 @@ import com.project.animal.missing.constant.ViewName;
 import com.project.animal.missing.dto.MissingNewDto;
 import com.project.animal.missing.exception.InvalidCreateFormException;
 import com.project.animal.missing.exception.PostSaveFailException;
-import com.project.animal.missing.service.MissingPostService;
+import com.project.animal.missing.service.MissingPostServiceImpl;
+import com.project.animal.missing.service.inf.MissingPostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,10 +22,10 @@ import java.util.Map;
 @Controller
 @RequestMapping(EndPoint.MISSING_BASE + EndPoint.NEW)
 public class MissingCreateController extends MissingController {
-  private final MissingPostService missingPostService;
+  private final MissingPostService missingPostServiceImpl;
 
-  public MissingCreateController(MissingPostService missingPostService) {
-    this.missingPostService = missingPostService;
+  public MissingCreateController(MissingPostService missingPostServiceImpl) {
+    this.missingPostServiceImpl = missingPostServiceImpl;
   }
 
   @GetMapping(EndPoint.CREATE)
@@ -37,11 +38,12 @@ public class MissingCreateController extends MissingController {
 
   @PostMapping(EndPoint.CREATE)
   public String handleCreateRequest(@Valid @ModelAttribute("post") MissingNewDto dto, BindingResult br, RedirectAttributes redirectAttributes) {
+    long memberId = 1;
     if (br.hasErrors()) {
       throw new InvalidCreateFormException(dto, br);
     }
 
-    boolean isSuccess = missingPostService.createPost(dto);
+    boolean isSuccess = missingPostServiceImpl.createPost(memberId, dto);
     redirectAttributes.addFlashAttribute("isSuccess", isSuccess ? SUCCESS_FLAG : FAIL_FLAG);
     redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
 

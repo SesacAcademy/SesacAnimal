@@ -18,6 +18,8 @@ public class QMissingPost extends EntityPathBase<MissingPost> {
 
     private static final long serialVersionUID = 1179330516L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QMissingPost missingPost = new QMissingPost("missingPost");
 
     public final com.project.animal.global.common.entity.QBaseEntity _super = new com.project.animal.global.common.entity.QBaseEntity(this);
@@ -37,7 +39,7 @@ public class QMissingPost extends EntityPathBase<MissingPost> {
 
     public final NumberPath<Integer> isActive = createNumber("isActive", Integer.class);
 
-    public final NumberPath<Long> memberId = createNumber("memberId", Long.class);
+    public final com.project.animal.member.domain.QMember member;
 
     public final NumberPath<Long> missingId = createNumber("missingId", Long.class);
 
@@ -59,15 +61,24 @@ public class QMissingPost extends EntityPathBase<MissingPost> {
     public final NumberPath<Integer> viewCount = createNumber("viewCount", Integer.class);
 
     public QMissingPost(String variable) {
-        super(MissingPost.class, forVariable(variable));
+        this(MissingPost.class, forVariable(variable), INITS);
     }
 
     public QMissingPost(Path<? extends MissingPost> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QMissingPost(PathMetadata metadata) {
-        super(MissingPost.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QMissingPost(PathMetadata metadata, PathInits inits) {
+        this(MissingPost.class, metadata, inits);
+    }
+
+    public QMissingPost(Class<? extends MissingPost> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.member = inits.isInitialized("member") ? new com.project.animal.member.domain.QMember(forProperty("member")) : null;
     }
 
 }

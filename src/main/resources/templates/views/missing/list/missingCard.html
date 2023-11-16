@@ -6,12 +6,13 @@
             <div style="position: relative">
 
                 <div class="missing-card-body">
-                    <div th:text="${post.title}" class="missing-card-title truncate-1-line"></div>
+                    <div th:text="${post.title}" class="missing-card-title truncate-1-line"/>
 
-                    <div th:text="${post.missingPlace}" class="missing-card-content truncate-1-line"></div>
-                    <div th:text="${post.missingTime}" class="missing-card-content truncate-1-line"></div>
+                    <div th:text="${post.missingPlace}" class="missing-card-content truncate-1-line"/>
+                    <div th:text="${post.missingTime}" class="missing-card-content truncate-1-line"/>
+                    <div th:text="${post.author}" class="missing-card-content truncate-1-line"/>
 
-                    <div th:if="${post.reward > -1}" th:text="'사례금: ' + ${post.reward}" class="missing-card-content truncate-1-line missing-card-reward"></div>
+                    <div th:if="${post.reward > -1}" th:text="'사례금: ' + ${post.reward}" class="missing-card-content truncate-1-line missing-card-reward"/>
 
 
                 </div>

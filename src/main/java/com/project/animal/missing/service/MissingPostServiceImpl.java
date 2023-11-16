@@ -1,5 +1,7 @@
 package com.project.animal.missing.service;
 
+import com.project.animal.member.domain.Member;
+import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.missing.domain.MissingComment;
 import com.project.animal.missing.domain.MissingPost;
 import com.project.animal.missing.domain.MissingPostImage;
@@ -13,11 +15,13 @@ import com.project.animal.missing.exception.PostSaveFailException;
 import com.project.animal.missing.repository.MissingPostRepository;
 import com.project.animal.missing.service.converter.DtoEntityConverter;
 import com.project.animal.missing.service.inf.MissingPostImageService;
+import com.project.animal.missing.service.inf.MissingPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -28,8 +32,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MissingPostService {
+public class MissingPostServiceImpl implements MissingPostService {
 
+  private final MemberRepository memberRepository;
   private final MissingPostRepository missingPostRepository;
 
   private final MissingPostImageService missingPostImageService;
@@ -105,10 +110,14 @@ public class MissingPostService {
 
   }
 
-  @Transactional
-  public boolean createPost(MissingNewDto dto) {
+  @Transactional(propagation = Propagation.REQUIRED)
+  public boolean createPost(long memberId, MissingNewDto dto) {
     try {
-      MissingPost post = converter.toMissingPost(dto);
+
+      Optional<Member> maybeMember = memberRepository.findById(memberId);
+      Member member = maybeMember.orElseThrow(() -> new RuntimeException("일치하는 회원이 존재하지 않습니다."));
+
+      MissingPost post = converter.toMissingPost(member, dto);
       MissingPost result = missingPostRepository.save(post);
 
       missingPostImageService.createImage(dto.getImages(), post);
@@ -139,11 +148,13 @@ public class MissingPostService {
   // TODO: find로 post 가져온 후에 값 변경후 dirty check로 commit 가능
 
   @Transactional
-  public boolean editPost(MissingEditDto dto) {
+  public boolean editPost(long memberId, MissingEditDto dto) {
 
     try {
+      Optional<Member> maybeMember = memberRepository.findById(memberId);
+      Member member = maybeMember.orElseThrow(() -> new RuntimeException("일치하는 회원이 존재하지 않습니다."));
 
-      MissingPost post = converter.toMissingPost(dto);
+      MissingPost post = converter.toMissingPost(member, dto);
       MissingPost result = missingPostRepository.save(post);
       missingPostImageService.editImages(dto.getImages(), post, dto.getDeletedIds());
 

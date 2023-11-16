@@ -1,6 +1,7 @@
 package com.project.animal.missing.domain;
 
 import com.project.animal.global.common.entity.BaseEntity;
+import com.project.animal.member.domain.Member;
 import com.project.animal.missing.dto.MissingNewDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,10 +22,9 @@ public class MissingPost extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long missingId;
 
-  // TODO: make a relation with member table
-  @NotNull
-  @Column(name="member_id")
-  private long memberId;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "member_id")
+  private Member member;
 
   @NotNull
   @Column(name="title")
@@ -74,8 +74,8 @@ public class MissingPost extends BaseEntity {
   @OneToMany(mappedBy = "missingPost")
   private List<MissingPostImage> images;
 
-  public MissingPost(long memberId, String title, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, int missingStatus, int isActive) {
-    this.memberId = memberId;
+  public MissingPost(Member member, String title, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, int missingStatus, int isActive) {
+    this.member = member;
     this.title = title;
     this.animalType = animalType;
     this.specifics = specifics;
@@ -89,9 +89,9 @@ public class MissingPost extends BaseEntity {
     this.isActive = isActive;
   }
 
-  public MissingPost(long missingId, long memberId, String title, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, int missingStatus, int isActive) {
+  public MissingPost(long missingId, Member member, String title, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, String description, int reward, int missingStatus, int isActive) {
     this.missingId = missingId;
-    this.memberId = memberId;
+    this.member = member;
     this.title = title;
     this.animalType = animalType;
     this.specifics = specifics;

@@ -60,6 +60,12 @@ public class MissingEditDto {
     ObjectMapper mapper = new ObjectMapper();
 
     List<Long> list = null;
+
+    if (string.isEmpty()) {
+      this.deletedIds = list;
+      return;
+    }
+
     try {
       list = mapper.readValue(string, new TypeReference<List<Long>>(){});
       Collections.sort(list);
