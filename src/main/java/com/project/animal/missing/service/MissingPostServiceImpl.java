@@ -1,5 +1,6 @@
 package com.project.animal.missing.service;
 
+import com.project.animal.global.common.annotation.Profiling;
 import com.project.animal.member.domain.Member;
 import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.missing.domain.MissingComment;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Profiling
 public class MissingPostServiceImpl implements MissingPostService {
 
   private final MemberRepository memberRepository;
@@ -40,6 +42,7 @@ public class MissingPostServiceImpl implements MissingPostService {
   private final MissingPostImageService missingPostImageService;
 
   private final DtoEntityConverter converter;
+
 
   public ListResponseDto<MissingListEntryDto> getPostList(MissingFilterDto filter, Pageable pageable) {
     Page<MissingPost> pages = missingPostRepository.findByFilter(filter, pageable);
