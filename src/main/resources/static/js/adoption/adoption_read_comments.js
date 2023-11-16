@@ -127,8 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
             deleteModal.show();
 
             let deleteIndex = button.parentElement.parentElement.querySelector('input[name="commentId"]').value;
-            // let deleteIndex = button.closest('p').querySelector('input[type="hidden"]').value;
-
+            console.log("childDeleteIndex",deleteIndex);
             // 확인 버튼 클릭 이벤트 처리
             deleteCommentModalOk.addEventListener("click", function () {
                 $.ajax({

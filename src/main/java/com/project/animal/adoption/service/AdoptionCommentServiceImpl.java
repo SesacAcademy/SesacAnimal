@@ -58,7 +58,6 @@ public class AdoptionCommentServiceImpl {
 
     public void deleteChildComment(Long id){
         adoptionCommentRepository.deleteById(id);
-        adoptionCommentRepository.deleteByParentId(id);
     }
 
     public Optional<AdoptionComment> findById(Long id){
