@@ -4,10 +4,7 @@ import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
 import com.project.animal.global.common.dto.ResponseDto;
 import com.project.animal.member.domain.Member;
-import com.project.animal.member.dto.CheckMailAuthCodeDto;
-import com.project.animal.member.dto.FindMemberEmailFormDto;
-import com.project.animal.member.dto.FindMemberPwdFormDto;
-import com.project.animal.member.dto.SignupFormDto;
+import com.project.animal.member.dto.*;
 import com.project.animal.member.exception.InvalidCodeException;
 import com.project.animal.member.exception.NestedEmailException;
 import com.project.animal.member.exception.NestedNicknameException;
@@ -80,7 +77,7 @@ public class MemberController {
     @ResponseBody
     @GetMapping(EndPoint.EMAIL_API)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto<String> getMailAuthCode(@RequestParam(required = true, defaultValue = "None") String email) {
+    public ResponseDto<String> createMailAuthCode(@RequestParam(required = true, defaultValue = "None") String email) {
         // 이메일 인증 번호 발급
         memberService.createMailAuthCode(email);
 
@@ -122,7 +119,7 @@ public class MemberController {
     @ResponseBody
     @PostMapping(FIND_EMAIL_API)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto<String> findMemberId(@RequestBody @Validated FindMemberEmailFormDto findMemberEmailFormDto) {
+    public ResponseDto<String> findMemberEmail(@RequestBody @Validated FindMemberEmailFormDto findMemberEmailFormDto) {
         // 아이디 찾기
         Member findMember = memberService.findEmail(findMemberEmailFormDto);
 
@@ -131,13 +128,47 @@ public class MemberController {
         return new ResponseDto<>(HttpStatus.OK.value(), findMember.getEmail(), "아이디 찾기 Ok");
     }
 
+    /**
+     * 문자 인증 번호 발급을 담당하는 Controller 입니다.
+     * 
+     * @version 0.1
+     * @author 박성수
+     * @param findMemberPwdFormDto FindMemberPwdFormDto 객체
+     * @return ResponseDto<String> (API 응답 DTO)
+     * @throws NotFoundException 해당 정보로 가입된 아이디가 없는 경우, 해당 예외 발생
+     */
     @ResponseBody
     @PostMapping(PHONE_API)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto<String> getSmsAuthCode(@RequestBody @Validated FindMemberPwdFormDto findMemberPwdFormDto) {
+    public ResponseDto<String> createSmsAuthCode(@RequestBody @Validated FindMemberPwdFormDto findMemberPwdFormDto) {
         // 문자 인증 번호 발급
-//        memberService.createSmsAuthCode(findMemberPwdFormDto);
+        memberService.createSmsAuthCode(findMemberPwdFormDto);
+
+        log.info("{} 번호로 인증 번호를 발급하였습니다. (문자)", findMemberPwdFormDto.getPhone());
 
         return new ResponseDto<>(HttpStatus.NO_CONTENT.value(), "null", "인증 번호 발급 Ok");
+    }
+
+    /**
+     * 비밀번호 찾기를 처리하는 Controller로 비밀번호 찾기 폼에서 입력한 데이터가 형식에 맞는지 검증합니다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param smsAuthCodeDto CheckSmsAuthCodeDto 객체
+     * @return ResponseDto<String> (API 응답 DTO)
+     * @throws NotFoundException 해당 정보로 가입된 아이디가 없는 경우, 해당 예외 발생
+     * @throws InvalidCodeException 문자 인증 번호가 유효하지 않은 경우, 해당 예외 발생
+     * @throws MailSendException 메일 발송에 실패할 시, 예외 발생
+     */
+    @ResponseBody
+    @PatchMapping(PHONE_API)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseDto<String> createTempPassword(@RequestBody @Validated CheckSmsAuthCodeDto smsAuthCodeDto) {
+        // 임시 비밀번호 발급
+        memberService.createTempPassword(smsAuthCodeDto);
+
+        log.info("{} 메일로 임시 비밀번호 메일을 발송하였습니다.", smsAuthCodeDto.getEmail());
+
+        return new ResponseDto<>(HttpStatus.OK.value(), "null", "임시 비밀번호 발급 Ok");
     }
 }

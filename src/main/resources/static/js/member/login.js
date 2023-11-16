@@ -39,8 +39,6 @@ document.getElementById('member-password-model').addEventListener('click', funct
 
     const authCodeBox = document.getElementById('member-find-authcode-hide');
 
-
-
     var passwordModal = new bootstrap.Modal(document.getElementById('password-model'));
     passwordModal.show();
 });
@@ -314,7 +312,9 @@ function findPassword2() {
         console.log(response)
 
         if (response.data.statusCode === 200) {
-
+            alert(email + " 메일로 임시 비밀번호를 보내드렸습니다.");
+            const passwordModel = document.getElementById('member-close-passwordModal');
+            passwordModel.click();
         }
 
         else if (response.data.statusCode === 400) {
@@ -351,8 +351,6 @@ function findPassword2() {
         console.log(error);
         alert('비밀번호 찾기에 실패하였습니다.');
     });
-
-    alert("hi");
 }
 
 

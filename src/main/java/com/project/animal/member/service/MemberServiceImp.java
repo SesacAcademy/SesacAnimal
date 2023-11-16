@@ -1,9 +1,12 @@
 package com.project.animal.member.service;
 
 import com.project.animal.global.common.constant.Role;
+import com.project.animal.global.common.dto.MailDto;
 import com.project.animal.global.common.provider.MailAuthCodeProvider;
+import com.project.animal.global.common.provider.MailServiceProvider;
 import com.project.animal.global.common.provider.SmsAuthCodeProvider;
 import com.project.animal.member.domain.Member;
+import com.project.animal.member.dto.CheckSmsAuthCodeDto;
 import com.project.animal.member.dto.FindMemberEmailFormDto;
 import com.project.animal.member.dto.FindMemberPwdFormDto;
 import com.project.animal.member.dto.SignupFormDto;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
+import java.util.Random;
 
 import static com.project.animal.global.common.constant.AuthType.JWT;
 import static com.project.animal.global.common.constant.AuthType.MAIL;
@@ -30,6 +34,8 @@ import static com.project.animal.global.common.constant.AuthType.MAIL;
 public class MemberServiceImp implements MemberService {
 
     private final MemberRepository memberRepository;
+
+    private final MailServiceProvider mailServiceProvider;
 
     private final MailAuthCodeProvider mailAuthCodeProvider;
 
@@ -114,17 +120,65 @@ public class MemberServiceImp implements MemberService {
         }
     }
 
+    /**
+     * 문자 인증 번호 발급을 담당하는 Service이다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param memberPwdFormDto FindMemberPwdFormDto 객체
+     * @throws NotFoundException 해당 정보로 가입된 아이디가 없는 경우, 해당 예외 발생
+     */
     @Override
     public void createSmsAuthCode(FindMemberPwdFormDto memberPwdFormDto) {
+        // 사용자 정보 조회
         Optional<Member> findMember = memberRepository.findByEmailAndNameAndPhone(memberPwdFormDto.getEmail(),
                                                     memberPwdFormDto.getName(), memberPwdFormDto.getPhone());
 
-        Member member = findMember.orElseThrow(() -> {
-            throw new NotFoundException("입력하신 정보가 틀렸습니다.");
-        });
+        Member member = findMember.orElseThrow(() -> new NotFoundException("입력하신 정보가 틀렸습니다."));
 
         // 문자 인증 번호 발급
-        smsAuthCodeProvider.generateAuthCode(member.getPhone());
+        smsAuthCodeProvider.generateAuthCode(memberPwdFormDto.getPhone());
+    }
+
+    /**
+     * 문자 인증 번호 확인을 담당하는 Service로 Controller에서 전달 받은 인증 번호가 Redis 서버에 저장된 인증 번호와 일치하는지
+     * 비교하고 일치한다면 새로운 비밀번호를 생성하여 유저 메일로 보내준 뒤, DB에 있는 패스워드를 변경합니다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param smsAuthCodeDto CheckSmsAuthCodeDto 객체
+     * @throws NotFoundException 해당 정보로 가입된 아이디가 없는 경우, 해당 예외 발생
+     * @throws InvalidCodeException 문자 인증 번호가 유효하지 않은 경우, 해당 예외 발생
+     * @throws MailSendException 메일 발송에 실패할 시, 예외 발생
+     */
+    @Override
+    @Transactional
+    public void createTempPassword(CheckSmsAuthCodeDto smsAuthCodeDto) {
+        // 사용자 정보 조회
+        Optional<Member> findMember = memberRepository.findByEmailAndNameAndPhone(smsAuthCodeDto.getEmail(),
+                smsAuthCodeDto.getName(), smsAuthCodeDto.getPhone());
+
+        Member member = findMember.orElseThrow(() -> new NotFoundException("입력하신 정보가 틀렸습니다."));
+
+        // 문자 인증 번호 체크
+        if(!smsAuthCodeProvider.validateAuthCode(smsAuthCodeDto.getPhone(), smsAuthCodeDto.getAuthCode())) {
+            throw new InvalidCodeException("[문자] 유효하지 않은 인증 번호입니다.");
+        }
+
+        // 임시 비밀번호 발급
+        String tempPassword = createRandomString();
+
+        // 메일 생성
+        MailDto mail = MailDto.builder()
+                              .title("[새싹 애니멀] 임시 비밀번호입니다.")
+                              .content("임시 비밀번호 : " + tempPassword)
+                              .build();
+        
+        // 메일 전송
+        mailServiceProvider.sendMail(smsAuthCodeDto.getEmail(), mail);
+        
+        // DB에 저장된 사용자 비밀번호 수정
+        member.setPassword(encoder.encode(tempPassword));
     }
 
     /**
@@ -139,6 +193,7 @@ public class MemberServiceImp implements MemberService {
      */
     @Override
     public Member findEmail(FindMemberEmailFormDto memberEmailFormDto) {
+        // 사용자 정보 조회
         Optional<Member> findMember = memberRepository.findByNameAndPhone(memberEmailFormDto.getName(), memberEmailFormDto.getPhone());
 
         return findMember.orElseThrow(() -> new NotFoundException("해당 정보로 가입된 아이디가 없습니다."));
@@ -161,6 +216,7 @@ public class MemberServiceImp implements MemberService {
 
     /**
      * 중복된 닉네임인지 확인하는 메소드입니다.
+     *
      * @version 0.1
      * @author 박성수
      * @param nickname 유저 닉네임
@@ -173,4 +229,26 @@ public class MemberServiceImp implements MemberService {
                 });
     }
 
+    /**
+     * 랜덤 문자열을 생성하는 메소드입니다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @return String 객체 (랜덤 문자열)
+     */
+    private String createRandomString() {
+        Random rd = new Random();
+        StringBuilder tempPassword = new StringBuilder();
+
+        for (int i=1; i<=15; i++) {
+            // true인 경우, 영어 소문자
+            if (rd.nextBoolean())
+                tempPassword.append((char)(rd.nextInt(26) + 97));
+
+            // false인 경우, 숫자
+            else
+                tempPassword.append(rd.nextInt(10));
+        }
+        return tempPassword.toString();
+    }
 }
