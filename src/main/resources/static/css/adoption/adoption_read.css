@@ -143,11 +143,13 @@
     width:1200px;
     margin:0 auto;
     font-size: 20px;
+    font-weight: 600;
 }
 
 .adoption-comments-read .comments-read{
     border: 1px solid #ddd;
-    padding:50px;
+    padding:25px;
+    background-color: #eee;
 }
 
 .adoption-comments-read .comments-read .author{
@@ -173,7 +175,138 @@
     border-radius: 10px;
     box-sizing: border-box;
     resize: none;
+
 }
+
+.adoption-comments-read .comments-read .reply-button{
+    margin-left:10px;
+    padding:5px;
+    font-size: 14px;
+    vertical-align: bottom;
+    border: none;
+    box-sizing: border-box;
+    color:#2087c9;
+    cursor: pointer;
+}
+
+.adoption-comments-read .comments-read fieldset{
+    border:none;
+    margin:0;
+    padding:0;
+}
+
+.adoption-comments-read .comments-read legend{
+    display: none;
+    font-size: 1px;
+    line-height: 1;
+    opacity: 1;
+}
+
+.adoption-comments-read .comments-read .reply{
+    display: flex;
+}
+
+.adoption-comments-read .comments-read .reply .button-area{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.adoption-comments-read .comments-read .reply .button-area .reply-button-edit {
+    margin-left:5px;
+    padding:10px;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: top;
+    border: none;
+    border-radius: 10px;
+    /*background-color: #fff;*/
+    box-sizing: border-box;
+    color:#f0b062;
+    cursor: pointer;
+}
+
+.adoption-comments-read .comments-read .reply .button-area .reply-button-delete {
+    margin-left:5px;
+    padding:10px;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: top;
+    border: none;
+    border-radius: 10px;
+    /*background-color: #fff;*/
+    box-sizing: border-box;
+    color: #f6d4a2;
+    cursor: pointer;
+}
+
+
+.adoption-comments-read .comments-read .re-reply{
+    display: none;
+    /*display: flex;*/
+    margin-left:35px;
+    align-items: flex-start;
+}
+
+.adoption-comments-read .re-reply .comments-read .reply .button-area{
+    justify-content: flex-start;
+}
+
+
+
+
+.adoption-comments-read .comments-read .re-reply .reply-icon{
+    color:#2087c9;
+    transform: scale(-1, -1);
+}
+
+.adoption-comments-read .comments-read .re-reply .comments-read{
+    /*margin-left:50px;*/
+    background-color: #fff;
+    border-radius: 10px;
+}
+.adoption-comments-read .comments-read .re-reply .re-reply-button-send
+{
+    padding:10px;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: top;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.adoption-comments-read .comments-read .re-reply .button-area .re-reply-button-edit
+{
+    padding:10px;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: top;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-sizing: border-box;
+    color:#f0b062;
+    cursor: pointer;
+}
+
+.adoption-comments-read .comments-read .re-reply .button-area .re-reply-button-delete
+{
+    padding:10px;
+    font-size: 18px;
+    font-weight: 600;
+    vertical-align: top;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-sizing: border-box;
+    color:#f6d4a2;
+    cursor: pointer;
+}
+
+
 
 /* 게시글 읽기 댓글 쓰기 영역 */
 .adoption-comments-write {
@@ -182,19 +315,37 @@
     font-family: 'Noto Sans KR', 'Roboto', sans-serif;
 }
 
+.adoption-comments-write fieldset{
+    border: none;
+    margin:0;
+    padding:0;
+}
+
+.adoption-comments-write legend{
+    font-size: 1px;
+    display: none;
+    opacity: 1;
+}
+
 .adoption-comments-write h4{
-    width:1200px;
-    margin:0 auto;
+    /*width:1200px;*/
+    margin:0;
     font-size: 20px;
+    font-weight: 600;
 }
 
 .adoption-comments-write .comments-write{
+    /*width:1200px;*/
     border: 1px solid #ddd;
     padding:50px;
+    background-color: #eee;
+    display: flex;
+    align-items: flex-start;
 }
 
 .adoption-comments-write .comments-write .author{
     display: inline-block;
+    padding:5px;
     width:120px;
     height:41px;
     font-size:18px;
@@ -203,6 +354,7 @@
     border-radius: 10px;
     border-right: 1px solid #ddd;
     vertical-align: top;
+
 }
 
 .adoption-comments-write .comments-write .comment-contents{

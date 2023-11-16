@@ -14,6 +14,10 @@ import io.minio.*;
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,7 +52,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 
         // 나머지 Adoption 엔티티 설정 (멤버 강제주입 추후 변경 필요)
         Optional<Member> member = repository.findById(2L);
-        Member member1 = member.get();
+        Member member1 = member.orElseThrow();
         adoption.setMember(member1);
         Adoption saved = adoptionRepository.save(adoption);
 
@@ -100,13 +104,8 @@ public class AdoptionServiceImpl implements AdoptionService {
     public void update (AdoptionEditDto adoptionEditDto, List<MultipartFile> files, Long id) {
         String serverFileName;
         Adoption adoption = adoptionRepository.findByIdWithImageAndMember(id);
-        System.out.println("service files:>>"+files);
-        System.out.println("service files:>>"+files.size());
 
         adoption.updateAdoption(adoptionEditDto);
-        System.out.println("service adoption update :>>"+adoption.toString());
-//        adoption.changeAdoptionImages(adoptionEditDto.getImage());
-
 
         // 나머지 Adoption 엔티티 설정 (멤버 강제주입 추후 변경 필요)
         Optional<Member> member = repository.findById(2L);
@@ -115,34 +114,12 @@ public class AdoptionServiceImpl implements AdoptionService {
 
         Adoption saved = adoptionRepository.save(adoption);
 
-        int size = adoption.getAdoptionImages().size();
-        for(int i=0; i<files.size(); i++){
-            serverFileName = saveMinio(files.get(i));// 미니오에 저장하는 영역
-            System.out.println("service serverfileName:>>"+serverFileName);
-//            adoption.getAdoptionImages().add();
-//            adoption.getAdoptionImages().get(size+i).changePath(serverFileName);
-//            System.out.println(adoption.getAdoptionImages().get(size+i));
+        for (MultipartFile file : files) {
+            serverFileName = saveMinio(file); // 미니오에 저장하는 영역
+            AdoptionImage adoptionImage = new AdoptionImage(serverFileName, saved);
 
-            AdoptionImage adoptionImage = new AdoptionImage( serverFileName, saved );
-            adoptionImage.changeAdoption(adoption);
-//            adoptionImage.changePath(serverFileName);
-
-//            adoption.getAdoptionImages().add((size+i+1), adoptionImage);
             adoptionImageRepository.save(adoptionImage);
-
         }
-
-//        for (MultipartFile file : files) {
-//            serverFileName = saveMinio(file); // 미니오에 저장하는 영역
-//            log.info("1.serverFileName====완료======"+serverFileName);
-//            log.info("1.serverFileName====완료======={}",serverFileName);
-////            AdoptionImage adoptionImage = new AdoptionImage(serverFileName, adoption);
-//            AdoptionImage adoptionImage = new AdoptionImage();
-//            adoptionImage.changeAdoption(adoption);
-//            adoptionImage.changePath(serverFileName);
-//
-//            adoptionImageRepository.save(adoptionImage);
-//        }
     }
 
 
@@ -157,25 +134,37 @@ public class AdoptionServiceImpl implements AdoptionService {
 
         }
 
-
         return foundAdoptionId;
     }
 
 
     public List<Adoption> findAll() {
-
        return adoptionRepository.findAll();
     }
 
+    public int getCount(List<Adoption> list){
+        return list.size();
+    }
 
+    public Page<Adoption> getAdoptionPageWithImagesAndMember(int pageNumber, int pageSize) {
+        // 페이징 정보 생성
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
 
-    public boolean isBucketByUserId(String userId) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, io.minio.errors.ServerException {
-        return minioClient.bucketExists(BucketExistsArgs.builder().bucket(userId).build());
+        // adoption_image와 member를 함께 가져오는 메소드 호출
+        List<Adoption> adoptionList = adoptionRepository.findAllWithImagesAndMember();
+
+        // 가져온 리스트를 페이징 처리하여 반환
+        return new PageImpl<>(adoptionList, pageable, adoptionList.size());
+    }
+
+    public Page<Adoption> getAdoptionPageWithImagesAndMemberPages(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return adoptionRepository.findAllWithImagesAndMemberPages(pageable);
     }
 
     public void plusView(Long id){
         Optional<Adoption> foundAdoptionId = adoptionRepository.findById(id);
-        Adoption adoption = foundAdoptionId.get();
+        Adoption adoption = foundAdoptionId.orElseThrow();
 
         int hit = adoption.getHit();
         hit++;
@@ -217,6 +206,7 @@ public class AdoptionServiceImpl implements AdoptionService {
         return adoptionRepository.findByIdWithImageAndMember(id);
     }
 
+
     public List<Adoption> findAllWithImages() {
         return adoptionRepository.findAllWithImages();
     }
@@ -225,22 +215,6 @@ public class AdoptionServiceImpl implements AdoptionService {
         return adoptionRepository.findAllWithImagesAndMember();
 
     }
-
-//    public  List<Adoption> test() {
-       // return adoptionRepository.findAllWithImagesAndMember();
-      //  List<Adoption>  list =   adoptionRepository.findAll();
-      //  return list;
-
-//        List<Adoption>  list =  adoptionRepository.findAllWithImagesAndMember();
-//        for(Adoption a: list){
-//           // adoptionImageRepository.findBy a.getId()
-//            a.setAdoptionImages(adoptionImageRepository. test( a.getId() ) );
-//        }
-//
-//       return adoptionRepository.test2();
-
-
-//    }
 
 
 }

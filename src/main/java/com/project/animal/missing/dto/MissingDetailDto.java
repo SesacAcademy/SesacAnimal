@@ -19,10 +19,10 @@ public class MissingDetailDto {
 
   private String title;
 
-  // TODO: Change to member nickname;
   private long memberId;
 
-  // TODO: Decide what to use either String or Enum;
+  private String author;
+
   private String animalType;
 
   private String description;
@@ -48,8 +48,11 @@ public class MissingDetailDto {
   private List<MissingPostImageDto> images;
 
   private MissingDetailDto(
-          long id, String title,
-          long memberId, String animalType,
+          long id,
+          String title,
+          long memberId,
+          String author,
+          String animalType,
           String specifics,
           String color,
           int viewCount,
@@ -65,6 +68,7 @@ public class MissingDetailDto {
     this.id = id;
     this.title = title;
     this.memberId = memberId;
+    this.author = author;
     this.animalType = animalType;
     this.specifics = specifics;
     this.color = color;
@@ -82,7 +86,8 @@ public class MissingDetailDto {
   public static MissingDetailDto fromMissingPost(MissingPost post, List<MissingCommentListEntryDto> comments, List<MissingPostImageDto> images) {
     long id = post.getMissingId();
     String title = post.getTitle();
-    long memberId = post.getMemberId();
+    long memberId = post.getMember().getId();
+    String author = post.getMember().getNickname();
     String animalType = post.getAnimalType();
     String specifics = post.getSpecifics();
     String color = post.getColor();
@@ -96,7 +101,7 @@ public class MissingDetailDto {
 
 
     return new MissingDetailDto(
-            id, title, memberId, animalType, specifics, color, viewCount, missingPlace,
+            id, title, memberId, author, animalType, specifics, color, viewCount, missingPlace,
             missingTime, reward, missingStatus, updatedAt, description, comments, images);
   }
 }

@@ -56,7 +56,7 @@ public class QMissingPostImage extends EntityPathBase<MissingPostImage> {
 
     public QMissingPostImage(Class<? extends MissingPostImage> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.missingPost = inits.isInitialized("missingPost") ? new QMissingPost(forProperty("missingPost")) : null;
+        this.missingPost = inits.isInitialized("missingPost") ? new QMissingPost(forProperty("missingPost"), inits.get("missingPost")) : null;
     }
 
 }

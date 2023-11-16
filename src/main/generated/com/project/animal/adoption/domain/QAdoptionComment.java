@@ -31,13 +31,13 @@ public class QAdoptionComment extends EntityPathBase<AdoptionComment> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final NumberPath<Integer> group_num = createNumber("group_num", Integer.class);
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final com.project.animal.member.domain.QMember member;
 
-    public final NumberPath<Integer> tab = createNumber("tab", Integer.class);
+    public final NumberPath<Long> parentId = createNumber("parentId", Long.class);
+
+    public final ListPath<AdoptionComment, QAdoptionComment> replies = this.<AdoptionComment, QAdoptionComment>createList("replies", AdoptionComment.class, QAdoptionComment.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;

@@ -1,5 +1,6 @@
 package com.project.animal.missing.controller;
 
+import com.project.animal.global.common.annotation.Member;
 import com.project.animal.global.common.utils.BindingResultParser;
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
@@ -9,8 +10,8 @@ import com.project.animal.missing.dto.comment.MissingCommentNewDto;
 import com.project.animal.missing.dto.MissingDetailDto;
 import com.project.animal.missing.dto.comment.MissingCommentListEntryDto;
 import com.project.animal.missing.exception.*;
-import com.project.animal.missing.service.MissingCommentServiceImpl;
-import com.project.animal.missing.service.MissingPostService;
+import com.project.animal.missing.service.inf.MissingCommentService;
+import com.project.animal.missing.service.inf.MissingPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -30,31 +31,37 @@ import java.util.Map;
 @RequestMapping(EndPoint.MISSING_BASE + EndPoint.DETAIL)
 public class MissingDetailController extends MissingController {
 
-  private final MissingPostService missingPostService;
+  private final MissingPostService missingPostServiceImpl;
 
-  private final MissingCommentServiceImpl missingCommentServiceImpl;
+  private final MissingCommentService missingCommentService;
+
+  private final long testMemId = 2;
 
   @GetMapping(EndPoint.PATH_ID)
   public String getPostDetail(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
-    MissingDetailDto detail = missingPostService.getPostDetail(postId);
+
+    MissingDetailDto detail = missingPostServiceImpl.getPostDetail(postId);
     List<MissingCommentListEntryDto> comments = detail.getComments();
 
     Map<String, String> endPoints = createLinkConstants("edit", "delete", "newComment", "editComment", "deleteComment");
 
+    model.addAttribute("selfId", testMemId);
     model.addAttribute("endPoints", endPoints);
     model.addAttribute("post", detail);
     model.addAttribute("comments", comments);
+
 
     return ViewName.POST_DETAIL;
   }
 
   @PostMapping(EndPoint.COMMENT + EndPoint.NEW)
   public String createNewComment(@Valid @ModelAttribute("comment") MissingCommentNewDto dto, BindingResult br) {
+
     if (br.hasErrors()) {
       throw new InvalidCommentFormException(dto, br);
     }
 
-    missingCommentServiceImpl.createComment(dto);
+    missingCommentService.createComment(testMemId, dto);
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 
@@ -64,7 +71,7 @@ public class MissingDetailController extends MissingController {
       throw new InvalidCommentEditFormException(dto, br);
     }
 
-    missingCommentServiceImpl.editComment(dto);
+    missingCommentService.editComment(dto);
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 
@@ -74,7 +81,7 @@ public class MissingDetailController extends MissingController {
       throw new InvalidCommentDeleteFormException(dto, br);
     }
 
-    missingCommentServiceImpl.deleteComment(dto);
+    missingCommentService.deleteComment(dto);
 
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }

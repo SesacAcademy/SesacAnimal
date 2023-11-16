@@ -28,7 +28,7 @@ public class QMissingComment extends EntityPathBase<MissingComment> {
 
     public final StringPath content = createString("content");
 
-    public final NumberPath<Long> member_id = createNumber("member_id", Long.class);
+    public final com.project.animal.member.domain.QMember member;
 
     public final QMissingPost missingPost;
 
@@ -52,7 +52,8 @@ public class QMissingComment extends EntityPathBase<MissingComment> {
 
     public QMissingComment(Class<? extends MissingComment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.missingPost = inits.isInitialized("missingPost") ? new QMissingPost(forProperty("missingPost")) : null;
+        this.member = inits.isInitialized("member") ? new com.project.animal.member.domain.QMember(forProperty("member")) : null;
+        this.missingPost = inits.isInitialized("missingPost") ? new QMissingPost(forProperty("missingPost"), inits.get("missingPost")) : null;
         this.parentComment = inits.isInitialized("parentComment") ? new QMissingComment(forProperty("parentComment"), inits.get("parentComment")) : null;
     }
 

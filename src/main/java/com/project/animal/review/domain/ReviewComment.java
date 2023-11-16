@@ -2,7 +2,7 @@ package com.project.animal.review.domain;
 
 import com.project.animal.global.common.entity.BaseEntity;
 import com.project.animal.member.domain.Member;
-import com.project.animal.review.dto.CreateReviewComment;
+import com.project.animal.review.dto.ReviewCommentDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,7 +39,7 @@ public class ReviewComment extends BaseEntity {
             fetch = FetchType.LAZY,
             orphanRemoval = true)
     private List<ReviewComment> subReviewComments = new ArrayList<>();
-    public void dtoToEntity(CreateReviewComment dto, ReviewPost reviewPost, Member member) {
+    public void dtoToEntity(ReviewCommentDto dto, ReviewPost reviewPost, Member member) {
         this.content = dto.getContent();
         this.reviewPost = reviewPost;
         this.member = member;
@@ -47,5 +47,9 @@ public class ReviewComment extends BaseEntity {
 
     public void updateParent(ReviewComment parentComment) {
         this.parentComment = parentComment;
+    }
+
+    public void update(ReviewCommentDto dto) {
+        this.content = dto.getContent();
     }
 }
