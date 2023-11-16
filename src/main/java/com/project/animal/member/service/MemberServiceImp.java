@@ -2,8 +2,10 @@ package com.project.animal.member.service;
 
 import com.project.animal.global.common.constant.Role;
 import com.project.animal.global.common.provider.MailAuthCodeProvider;
+import com.project.animal.global.common.provider.SmsAuthCodeProvider;
 import com.project.animal.member.domain.Member;
 import com.project.animal.member.dto.FindMemberEmailFormDto;
+import com.project.animal.member.dto.FindMemberPwdFormDto;
 import com.project.animal.member.dto.SignupFormDto;
 import com.project.animal.member.exception.InvalidCodeException;
 import com.project.animal.member.exception.NestedEmailException;
@@ -30,6 +32,8 @@ public class MemberServiceImp implements MemberService {
     private final MemberRepository memberRepository;
 
     private final MailAuthCodeProvider mailAuthCodeProvider;
+
+    private final SmsAuthCodeProvider smsAuthCodeProvider;
 
     private final PasswordEncoder encoder;
 
@@ -110,6 +114,19 @@ public class MemberServiceImp implements MemberService {
         }
     }
 
+    @Override
+    public void createSmsAuthCode(FindMemberPwdFormDto memberPwdFormDto) {
+        Optional<Member> findMember = memberRepository.findByEmailAndNameAndPhone(memberPwdFormDto.getEmail(),
+                                                    memberPwdFormDto.getName(), memberPwdFormDto.getPhone());
+
+        Member member = findMember.orElseThrow(() -> {
+            throw new NotFoundException("입력하신 정보가 틀렸습니다.");
+        });
+
+        // 문자 인증 번호 발급
+        smsAuthCodeProvider.generateAuthCode(member.getPhone());
+    }
+
     /**
      * 아이디 찾기를 담당하는 Service로 Controller에서 전달받은 FindMemberEmailFormDto 객체를 이용하여 DB에 해당하는 정보가
      * 있는지 확인합니다.
@@ -155,4 +172,5 @@ public class MemberServiceImp implements MemberService {
                     throw new NestedNicknameException("중복된 닉네임입니다.");
                 });
     }
+
 }

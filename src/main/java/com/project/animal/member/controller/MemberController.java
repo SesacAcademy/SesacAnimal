@@ -6,6 +6,7 @@ import com.project.animal.global.common.dto.ResponseDto;
 import com.project.animal.member.domain.Member;
 import com.project.animal.member.dto.CheckMailAuthCodeDto;
 import com.project.animal.member.dto.FindMemberEmailFormDto;
+import com.project.animal.member.dto.FindMemberPwdFormDto;
 import com.project.animal.member.dto.SignupFormDto;
 import com.project.animal.member.exception.InvalidCodeException;
 import com.project.animal.member.exception.NestedEmailException;
@@ -21,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import static com.project.animal.global.common.constant.EndPoint.FIND_EMAIL_API;
+import static com.project.animal.global.common.constant.EndPoint.PHONE_API;
 
 @Slf4j
 @Controller
@@ -127,5 +129,15 @@ public class MemberController {
         log.info("이름 : {}, 휴대폰 번호 : {}에 해당하는 아이디 찾기를 수행하였습니다.", findMember.getName(), findMember.getPhone());
 
         return new ResponseDto<>(HttpStatus.OK.value(), findMember.getEmail(), "아이디 찾기 Ok");
+    }
+
+    @ResponseBody
+    @PostMapping(PHONE_API)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseDto<String> getSmsAuthCode(@RequestBody @Validated FindMemberPwdFormDto findMemberPwdFormDto) {
+        // 문자 인증 번호 발급
+//        memberService.createSmsAuthCode(findMemberPwdFormDto);
+
+        return new ResponseDto<>(HttpStatus.NO_CONTENT.value(), "null", "인증 번호 발급 Ok");
     }
 }

@@ -8,6 +8,7 @@
 /* a태그 밑줄 제거 */
 a {
     all: unset;
+    text-decoration: none !important;
 }
 
 a:link {

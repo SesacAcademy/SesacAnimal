@@ -49,6 +49,12 @@ function isValidPhone(phone) {
     return koreanPhoneNumberPattern.test(phone);
 }
 
+function isValidCode(code) {
+    let codeRegex = /^\d{6}$/;
+
+    return codeRegex.test(code);
+}
+
 function createToken() {
     const emailAuthBlock = document.getElementById('member-auth-email-block');
     const emailAuthButton = document.getElementById('member-auth-email-button');
@@ -167,8 +173,8 @@ function signup() {
         return;
     }
 
-    if (token === "") {
-        alert("이메일 인증을 해주세요");
+    if (!isValidCode(token)) {
+        alert("인증 번호를 제대로 입력해주세요.");
         return;
     }
 

@@ -4,9 +4,13 @@ document.getElementById('member-id-model').addEventListener('click', function ()
     const findEmailTag = document.querySelectorAll(".member-find-hide");
     const inputEmail = document.getElementById('member-find-email');
     const inputEmailBox = document.getElementById('member-find-appear');
+    const inputName  = document.getElementById('member-find-email-name');
+    const inputPhone  = document.getElementById('member-find-email-phone');
 
     inputEmailBox.style.display = "none";
     inputEmail.value = "";
+    inputName.value = "";
+    inputPhone.value = "";
 
     // 선택한 요소들의 display 속성을 "none"으로 변경
     for (var i = 0; i < findEmailTag.length; i++) {
@@ -18,6 +22,25 @@ document.getElementById('member-id-model').addEventListener('click', function ()
 });
 
 document.getElementById('member-password-model').addEventListener('click', function () {
+
+    const inputEmail = document.getElementById('member-find-password-email');
+    const inputName = document.getElementById('member-find-password-name');
+    const inputPhone = document.getElementById('member-find-password-phone');
+    const inputAuthCode = document.getElementById('member-find-password-authcode');
+    const inputAuthButton = document.getElementById('member-find-password-button');
+    const inputAuthCodeBox = document.getElementById('member-find-authcode-hide');
+
+    inputEmail.value = "";
+    inputName.value = "";
+    inputPhone.value = "";
+    inputAuthCode.value = "";
+    inputAuthButton.style.display = "inline-block";
+    inputAuthCodeBox.style.display = "none";
+
+    const authCodeBox = document.getElementById('member-find-authcode-hide');
+
+
+
     var passwordModal = new bootstrap.Modal(document.getElementById('password-model'));
     passwordModal.show();
 });
@@ -46,13 +69,21 @@ function isValidPhone(phone) {
     return koreanPhoneNumberPattern.test(phone);
 }
 
+function isValidCode(code) {
+    let codeRegex = /^\d{6}$/;
+
+    return codeRegex.test(code);
+}
+
 const loginButton = document.getElementById('member-login');
 const findEmailButton = document.getElementById('member-find-email-button');
 const findPasswordButton = document.getElementById('member-find-password-button');
+const findPasswordButton2 = document.getElementById('member-find-password-button2');
 
 loginButton.addEventListener('click', login);
 findEmailButton.addEventListener('click', findEmail);
 findPasswordButton.addEventListener('click', findPassword);
+findPasswordButton2.addEventListener('click', findPassword2);
 
 function login() {
     const email = document.getElementById('member-login-email').value;
@@ -168,17 +199,160 @@ function findEmail() {
 
 function findPassword() {
 
-    const inputName = document.getElementById('member-find-password-name');
+    const inputAuthButton = document.getElementById('member-find-password-button');
+    const inputAuthCodeBox = document.getElementById('member-find-authcode-hide');
+
     const inputEmail = document.getElementById('member-find-password-email');
+    const inputName = document.getElementById('member-find-password-name');
     const inputPhone = document.getElementById('member-find-password-phone');
 
-    const name = inputName.value;
     const email = inputEmail.value;
+    const name = inputName.value;
     const phone = inputPhone.value;
 
-    alert(name);
-    alert(email);
-    alert(phone);
+    /*if (!isValidEmail(email)) {
+        alert("이메일을 형식에 맞추어 입력해주세요.");
+        return;
+    }
+
+    if (!isVaildName(name)) {
+        alert("이름을 제대로 입력해주세요.");
+        return;
+    }
+
+    if (!isValidPhone(phone)) {
+        alert("휴대폰 번호 형식이 틀렸습니다.");
+        return;
+    }*/
+
+    const config = {"Content-Type": 'application/json'};
+
+    axios.post("/v1/api/auth/phone", {
+        'email': email,
+        'name': name,
+        'phone': phone
+    }, config).then(function (response) {
+        console.log(response)
+
+        if (response.data.statusCode === 204) {
+            alert(phone + ' 번호로 인증번호가 담긴 문자를 전송하였습니다.');
+            inputAuthButton.style.display = "none";
+            inputAuthCodeBox.style.display = "flex";
+        }
+
+        else if (response.data.statusCode === 400) {
+
+            if (response.data.context === null) {
+                alert(response.data.message);
+            }
+
+            // 값 형식이 틀린 경우
+            else {
+                const errorData = response.data.context;
+
+                console.log(response.data);
+
+                if (errorData.email !== undefined) {
+                    alert(response.data.context.email);
+                }
+
+                if (errorData.name !== undefined) {
+                    alert(response.data.context.name);
+                }
+
+                if (errorData.phone !== undefined) {
+                    alert(response.data.context.phone);
+                }
+            }
+        }
+
+    }).catch(function (error) {
+        console.log(error);
+        alert('비밀번호 찾기에 실패하였습니다.');
+    });
+}
+
+function findPassword2() {
+    const inputEmail = document.getElementById('member-find-password-email');
+    const inputName = document.getElementById('member-find-password-name');
+    const inputPhone = document.getElementById('member-find-password-phone');
+    const inputAuthCode = document.getElementById('member-find-password-authcode');
+
+    const email = inputEmail.value;
+    const name = inputName.value;
+    const phone = inputPhone.value;
+    const authCode = inputAuthCode.value;
+
+    /*if (!isValidEmail(email)) {
+        alert("이메일을 형식에 맞추어 입력해주세요.");
+        return;
+    }
+
+    if (!isVaildName(name)) {
+        alert("이름을 제대로 입력해주세요.");
+        return;
+    }
+
+    if (!isValidPhone(phone)) {
+        alert("휴대폰 번호 형식이 틀렸습니다.");
+        return;
+    }
+
+    if (!isValidCode(authCode)) {
+        alert("인증번호를 제대로 입력해주세요.");
+        return;
+    }*/
+
+    const config = {"Content-Type": 'application/json'};
+
+    axios.patch("/v1/api/auth/phone", {
+        'email': email,
+        'name': name,
+        'phone': phone,
+        'authCode' : authCode
+    }, config).then(function (response) {
+        console.log(response)
+
+        if (response.data.statusCode === 200) {
+
+        }
+
+        else if (response.data.statusCode === 400) {
+
+            if (response.data.context === null) {
+                alert(response.data.message);
+            }
+
+            // 값 형식이 틀린 경우
+            else {
+                const errorData = response.data.context;
+
+                console.log(response.data);
+
+                if (errorData.email !== undefined) {
+                    alert(response.data.context.email);
+                }
+
+                if (errorData.name !== undefined) {
+                    alert(response.data.context.name);
+                }
+
+                if (errorData.phone !== undefined) {
+                    alert(response.data.context.phone);
+                }
+
+                if (errorData.authCode !== undefined) {
+                    alert(response.data.context.authCode);
+                }
+            }
+        }
+
+    }).catch(function (error) {
+        console.log(error);
+        alert('비밀번호 찾기에 실패하였습니다.');
+    });
+
+    alert("hi");
 }
 
 
