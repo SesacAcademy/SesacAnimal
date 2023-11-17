@@ -32,7 +32,7 @@ function isValidEmail(email) {
 }
 
 function isValidNickName(nickname) {
-    let nicknameRegex = /^[가-힣a-zA-Z0-9]{5,12}$/;
+    let nicknameRegex = /^[가-힣a-zA-Z0-9]{3,12}$/;
 
     return nicknameRegex.test(nickname);
 }

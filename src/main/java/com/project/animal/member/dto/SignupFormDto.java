@@ -13,7 +13,7 @@ public class SignupFormDto {
     @Email(message = "이메일 형식이 틀렸습니다.")
     private String email;
 
-    @Pattern(regexp = "^[가-힣a-zA-Z0-9]{5,12}", message = "닉네임을 형식에 맞게 입력해주세요.")
+    @Pattern(regexp = "^[가-힣a-zA-Z0-9]{3,12}", message = "닉네임을 형식에 맞게 입력해주세요.")
     private String nickname;
 
     @Pattern(regexp = "^\\d{6}$", message = "인증 번호 형식이 틀렸습니다.")
