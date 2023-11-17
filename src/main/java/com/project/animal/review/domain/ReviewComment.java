@@ -39,6 +39,7 @@ public class ReviewComment extends BaseEntity {
             fetch = FetchType.LAZY,
             orphanRemoval = true)
     private List<ReviewComment> subReviewComments = new ArrayList<>();
+
     public void dtoToEntity(ReviewCommentDto dto, ReviewPost reviewPost, Member member) {
         this.content = dto.getContent();
         this.reviewPost = reviewPost;

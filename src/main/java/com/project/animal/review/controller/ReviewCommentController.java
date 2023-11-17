@@ -34,7 +34,7 @@ public class ReviewCommentController {
         Optional<Member> member = memberRepository.findById(1L);
         return member.get();
     }
-    @PostMapping(EndPoint.COMMENT_ADD)
+    @PostMapping("/comment/add")
     //1. 글자 수 검사 => 바인딩 리절트 2.게시판 읽어올 때 comment에 관한 내용도 던져야 함 id, parentId, content, CreatedAt,
     public String createReviewComment(@ModelAttribute @Valid ReviewCommentDto reviewCommentDto,
                                       BindingResult bindingResult,
@@ -51,7 +51,7 @@ public class ReviewCommentController {
             return "redirect:" + "/review" + EndPoint.REVIEW_READ_ONE + "?reviewPostId=" + reviewPostId;
         }
     }
-    @PostMapping(EndPoint.COMMENT_UPDATE)
+    @PostMapping("/comment/update")
     public String commentUpdate(@RequestParam("reviewCommentId")Long reviewCommentId,
                                 @RequestParam("reviewPostId")Long reviewPostId,
                                 @ModelAttribute ReviewCommentDto dto,
@@ -64,7 +64,7 @@ public class ReviewCommentController {
         reviewCommentService.update(reviewCommentId, dto);
         return "redirect:" + "/review" + EndPoint.REVIEW_READ_ONE + "?reviewPostId=" + reviewPostId;
     }
-    @PostMapping(EndPoint.COMMENT_DELETE)
+    @PostMapping("/comment/delete")
     public String commentDelete(@RequestParam("reviewCommentId")Long reviewCommentId,
                                 @RequestParam("reviewPostId")Long reviewPostId){
         reviewCommentService.delete(reviewCommentId);
