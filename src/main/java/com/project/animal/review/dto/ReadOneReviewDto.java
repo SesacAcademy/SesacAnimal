@@ -23,11 +23,13 @@ public class ReadOneReviewDto {
     private int viewCount;
     private Map<Long,String> urls = new LinkedHashMap<>();
     private Long reviewPostId;
+    private Long memberId;
 
     public ReadOneReviewDto(ReviewPost reviewPost) {
         this.title = reviewPost.getTitle();
         this.reviewPostId = reviewPost.getId();
         this.nickname = reviewPost.getMember().getNickname();
+        this.memberId = reviewPost.getMember().getId();
         this.updatedAt = reviewPost.getUpdatedAt();
         this.content = reviewPost.getContent();
         this.viewCount = reviewPost.getViewCount();
