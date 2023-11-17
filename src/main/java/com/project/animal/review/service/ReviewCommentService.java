@@ -73,6 +73,11 @@ public class ReviewCommentService {
         ReviewComment reviewComment = findReviewComment(reviewCommentId);
         reviewComment.update(dto);
     }
+
+    public void delete(Long reviewCommentId) {
+        ReviewComment reviewComment = findReviewComment(reviewCommentId);
+        reviewCommentRepository.delete(reviewComment);
+    }
 }
 
 

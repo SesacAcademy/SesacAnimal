@@ -35,7 +35,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     private final ReviewImageService reviewImageService;
-    private final int size = 10;
+    private final int size = 9;
 
     private final MemberRepository memberRepository;
 
@@ -72,7 +72,7 @@ public class ReviewController {
                                   Model model){
         ReadListGeneric viewDto = reviewService.readAll(page, size);
         model.addAttribute("listDto", viewDto);
-        return ViewName.REVIEW_LIST;
+        return "/review/readReviewListFinal";
     }
     // 단일로 하나 보기
     // 게시판 읽어올 때 comment에 관한 내용도 던져야 함 id, parentId, content, CreatedAt, updatedAt
@@ -125,6 +125,12 @@ public class ReviewController {
     public String delete(@RequestParam(name = "reviewPostId")Long reviewPostId){
         reviewService.delete(reviewPostId);
         return ViewName.HOME;
+    }
+
+
+    @GetMapping("/home")
+    public String viewUpdate(){
+        return "/review/readReviewOne";
     }
 
 }

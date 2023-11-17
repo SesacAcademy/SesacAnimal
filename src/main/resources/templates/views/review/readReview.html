@@ -89,10 +89,10 @@
   <div th:each="comment : ${reviewDto.reviewCommentResponseDto}"class="comment">
     <p>Nickname: <span th:text="${comment.nickname}"></span></p>
     <p>Content: <span th:text="${comment.content}"></span></p>
-    <button onclick="showReplyForm(this)">대댓글 작성</button>
+    <button onclick="showReplyForm(this)" id="reReply">대댓글 작성</button>
 
     <button onclick="showEditForm(this)">댓글 수정</button>
-    <form th:action="@{/review/comment/update}" method="post" style="display: none;">
+    <form th:action="@{/review/comment/update}" id="editForm" method="post" style="display: none;">
       <input type="hidden" th:value="${comment.reviewCommentId}" name="reviewCommentId" />
       <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
       <textarea name="content" style="display: none;"></textarea>
@@ -102,8 +102,9 @@
     <!-- 댓글 수정 버튼 -->
 
     <!-- 댓글 삭제 버튼 -->
-    <form th:action="@{/review/comment/delete}" method="post" style="display: inline;">
-      <input type="hidden" th:value="${comment.reviewCommentId}" name="commentId" />
+    <form th:action="@{/review/comment/delete}" id="deleteForm" method="post" style="display: inline;">
+      <input type="hidden" th:value="${comment.reviewCommentId}" name="reviewCommentId" />
+      <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
       <button type="submit" id="deleteButton">댓글 삭제</button>
     </form>
 
@@ -121,10 +122,29 @@
       <div th:each="reply : ${comment.children}">
         <p>Nickname: <span th:text="${reply.nickname}"></span></p>
         <p>Content: <span th:text="${reply.content}"></span></p>
+
+        <button onclick="showEditForm(this)">대댓글 수정</button>
+        <form th:action="@{/review/comment/update}" method="post" style="display: none;">
+          <input type="hidden" th:value="${reply.reviewCommentId}" name="reviewCommentId" />
+          <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
+          <textarea name="content" style="display: none;"></textarea>
+          <button type="submit">수정완료</button>
+        </form>
+
+        <form th:action="@{/review/comment/delete}" method="post" style="display: inline;">
+          <input type="hidden" th:value="${reply.reviewCommentId}" name="reviewCommentId" />
+          <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
+          <button type="submit" id="childDeleteButton">대댓글 삭제</button>
+        </form>
+
+
       </div>
     </div>
+
+
+
   </div>
-  <form th:action="@{/review/comment/add}" method="post">
+  <form th:action="@{/review/comment/add}" id="replyForm" method="post">
     <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
     <textarea placeholder="댓글을 입력하세요." class="comment-input" name = "content"></textarea>
     <button type="submit" class="comment-submit-button">
@@ -136,13 +156,21 @@
 </div>
 <script>
 function showReplyForm(button) {
-  var form = button.nextElementSibling;
-  if (form.style.display === "none") {
-    form.style.display = "block";
-  } else {
-    form.style.display = "none";
-  }
+ var commentDiv = button.parentNode;
+  var commentId = commentDiv.querySelector('input[name="reviewCommentId"]').value;
+
+  var commentDiv = button.parentNode;
+  var replyForm = commentDiv.document.getElementById("replyForm");
+  var editForm = commentDiv.document.getElementById("editForm");
+  var deleteForm = commentDiv.document.getElementById("deleteForm");
+
+  // 대댓글 작성 폼만 보이게 합니다.
+  replyForm.style.display = "block";
+  // 댓글 수정 폼과 삭제 폼은 숨깁니다.
+  editForm.style.display = "none";
+  deleteForm.style.display = "none";
  }
+
 
 function showEditForm(button) {
   var commentDiv = button.parentNode;
@@ -153,6 +181,7 @@ function showEditForm(button) {
   var replyButton = button.previousElementSibling; // 대댓글 작성 버튼
   var editButton = button; // 댓글 수정 버튼
   var deleteButton = document.getElementById("deleteButton");
+  var childDeleteButton = document.getElementById("childDeleteButton");
 
 
   contentTextarea.value = contentSpan.innerText;
@@ -163,6 +192,7 @@ function showEditForm(button) {
   replyButton.style.display = "none"; // 대댓글 작성 버튼 숨기기
   editButton.style.display = "none"; // 댓글 수정 버튼 숨기기
    deleteButton.style.display = "none"; // 댓글 삭제 버튼 숨기기
+   childDeleteButton.style.display = "none"; // 댓글 삭제 버튼 숨기기
 }
 
 </script>
