@@ -61,10 +61,12 @@ function createToken() {
 
     const email = document.getElementById('member-email').value;
 
-    if (!isValidEmail(email)) {
+    /*if (!isValidEmail(email)) {
         alert("이메일 형식이 틀렸습니다.");
         return;
-    }
+    }*/
+
+    emailAuthButton.style.display = 'none';
 
     axios({
         method: "get",
@@ -97,14 +99,22 @@ function createToken() {
                 }
             }, 1000);
         }
+
+        else if (response.data.statusCode === 400) {
+            alert(response.data.message);
+            emailAuthButton.style.display = 'inline-block';
+        }
+
         else if (response.data.statusCode === 409) {
             alert(response.data.message);
+            emailAuthButton.style.display = 'inline-block';
             console.log(response);
         }
 
     }).catch(function (error) {
         console.log(error);
         alert('메일 인증에 실패하였습니다.');
+        emailAuthButton.style.display = 'inline-block';
     });
 }
 
@@ -179,12 +189,12 @@ function signup() {
     }
 
     if (!isValidNickName(nickname)) {
-        alert("이름을 입력해주세요.");
+        alert("닉네임을 제대로 입력해주세요.");
         return;
     }
 
     if (!isVaildName(name)) {
-        alert("이름을 입력해주세요.");
+        alert("이름을 제대로 입력해주세요.");
         return;
     }
 
@@ -254,6 +264,12 @@ function signup() {
         }
         else if (response.data.statusCode === 409) {
 
+            // 이메일이 중복된 경우 (회원가입 도중, 동시에 같은 요청이 온 경우)
+            if (response.data.context === null) {
+                alert(response.data.message);
+                alert("새로고침하여 다시 진행해주세요.");
+            }
+
             // 이메일이 중복된 경우 (회원가입 도중, 해당 이메일로 가입된 경우)
             if (response.data.context === "email") {
                 console.log(response.data);
@@ -269,6 +285,6 @@ function signup() {
         }
     }).catch(function (error) {
         console.log(error);
-        alert('메일 인증에 실패하였습니다.');
+        alert('회원가입에 실패하였습니다.');
     });
 }

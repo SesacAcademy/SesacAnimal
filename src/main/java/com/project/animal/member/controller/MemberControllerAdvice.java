@@ -11,6 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +54,14 @@ public class MemberControllerAdvice {
         log.error("이메일 또는 문자 인증 확인 에러 발생", e);
 
         return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseDto<String> sqlIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
+        log.error("DB Unique 제약조건 위배 되었음");
+
+        return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, "회원가입에 실패하였습니다.");
     }
 
     @ResponseStatus(HttpStatus.OK)
