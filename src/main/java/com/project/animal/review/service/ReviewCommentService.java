@@ -5,6 +5,7 @@ import com.project.animal.review.domain.ReviewComment;
 import com.project.animal.review.domain.ReviewPost;
 import com.project.animal.review.dto.ReviewCommentDto;
 
+import com.project.animal.review.dto.ReviewCommentDtoCount;
 import com.project.animal.review.dto.ReviewCommentResponseDto;
 import com.project.animal.review.exception.ReviewCommentException;
 
@@ -53,8 +54,8 @@ public class ReviewCommentService {
         return commentCheckOptional(reviewCommentOptional, reviewCommentId);
     }
 
-    public List<ReviewCommentResponseDto> readByReviewPostId(Long reviewPostId) {
-        List<ReviewComment> reviewComments = reviewCommentCustomRepository.findAllByPost(reviewPostId);
+    public ReviewCommentDtoCount readByReviewPostId(Long reviewPostId) {
+        List<ReviewComment> reviewComments = reviewCommentCustomRepository.findAllByPost(reviewPostId);;
         List<ReviewCommentResponseDto> commentResponseList = new ArrayList<>();
         Map<Long, ReviewCommentResponseDto> commentHashMap = new HashMap<>();
         reviewComments.forEach(c->{
@@ -65,8 +66,10 @@ public class ReviewCommentService {
             }else {
                 commentResponseList.add(reviewCommentResponseDto);
             }
-        }); return commentResponseList;
+        });
+        return reviewCommentRequestMapper.includeCommentCount(commentResponseList, reviewComments);
     }
+
 
     public void update(Long reviewCommentId, ReviewCommentDto dto) {
         dtoCheck(dto);

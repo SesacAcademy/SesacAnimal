@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(EndPoint.REVIEW)
+@RequestMapping("/review")
 @AllArgsConstructor
 @Log4j2
 public class ReviewController {
@@ -49,11 +49,11 @@ public class ReviewController {
         return member.get();
     }
 
-    @GetMapping(EndPoint.REVIEW_WRITE)
+    @GetMapping("/write")
     public String writeReviewPage(){
         return ViewName.WRITE_PAGE;
     }
-    @PostMapping(EndPoint.REVIEW_WRITE)
+    @PostMapping("/write")
     public String createReviewPost(@ModelAttribute @Valid CreateReviewPostDto createReviewPostDto,
                                BindingResult bindingResult,
                                @RequestParam(name = "imageList") List<MultipartFile> imageFiles
@@ -74,35 +74,38 @@ public class ReviewController {
         model.addAttribute("listDto", viewDto);
         return "/review/readReviewListFinal";
     }
-    // 단일로 하나 보기
-    // 게시판 읽어올 때 comment에 관한 내용도 던져야 함 id, parentId, content, CreatedAt, updatedAt
-    @GetMapping(EndPoint.REVIEW_READ_ONE)
+
+    @GetMapping("/one")
     public String readOne(@RequestParam(name = "reviewPostId") Long reviewPostId, Model model){
          ReadOneReviewDto readOneReviewDto = reviewService.readOne(reviewPostId);
-         List<ReviewCommentResponseDto> dtoList = reviewCommentService.readByReviewPostId(reviewPostId);
-         ReadOneResponse readOneResponse = reviewRequestMapper.dtosToResponseDto(readOneReviewDto,dtoList);
+         ReviewCommentDtoCount dto = reviewCommentService.readByReviewPostId(reviewPostId);
+         ReadOneResponse readOneResponse = reviewRequestMapper.dtosToResponseDto(readOneReviewDto,dto.getReviewCommentResponseDtoList());
          model.addAttribute("reviewDto", readOneResponse);
+         model.addAttribute("commentCount", dto.getCommentCount());
          return ViewName.READ_ONE;
     }
     // 검색
-    @GetMapping(EndPoint.REVIEW_SEARCH)
+    @GetMapping("/search")
     public String readBySearch(@RequestParam(name = "type") String type,
                                @RequestParam(name = "keyword") String keyword,
                                @RequestParam(name = "page", defaultValue = "0") Integer page,
                                Model model) {
+
         ReadListGeneric<ReadListGeneric> viewDto = reviewService.readBySearch(type, keyword, page, size);
         model.addAttribute("listDto", viewDto);
         return ViewName.REVIEW_LIST;
     }
-    @GetMapping(EndPoint.REVIEW_EDIT)
+    @GetMapping("/edit")
     public String edit(@RequestParam(name = "reviewPostId") Long reviewPostId, Model model){
         ReadOneReviewDto readOneReviewDto = reviewService.readOne(reviewPostId);
-        List<ReviewCommentResponseDto> dtoList = reviewCommentService.readByReviewPostId(reviewPostId);
-        ReadOneResponse readOneResponse = reviewRequestMapper.dtosToResponseDto(readOneReviewDto,dtoList);
+        ReviewCommentDtoCount dto = reviewCommentService.readByReviewPostId(reviewPostId);
+//        List<ReviewCommentResponseDto> dtoList = reviewCommentService.readByReviewPostId(reviewPostId);
+        ReadOneResponse readOneResponse = reviewRequestMapper.dtosToResponseDto(readOneReviewDto,dto.getReviewCommentResponseDtoList());
+        model.addAttribute("commentCount",dto.getCommentCount());
         model.addAttribute("reviewDto", readOneResponse);
         return ViewName.EDIT_ONE;
     }
-    @PostMapping(EndPoint.REVIEW_UPDATE)
+    @PostMapping("/update")
     public String update(@RequestParam(name = "reviewImageIds", required = false) List<Long> reviewImageIds,
                          @ModelAttribute @Valid CreateReviewPostDto updatePostDto,
                          @RequestParam(name = "reviewPostId")Long reviewPostId,
@@ -121,16 +124,11 @@ public class ReviewController {
         reviewImageService.saveImg(imageFiles,reviewPost);
         return ViewName.HOME;
     }
-    @GetMapping(EndPoint.REVIEW_DELETE)
+    @GetMapping("/delete")
     public String delete(@RequestParam(name = "reviewPostId")Long reviewPostId){
         reviewService.delete(reviewPostId);
         return ViewName.HOME;
     }
 
-
-    @GetMapping("/home")
-    public String viewUpdate(){
-        return "/review/readReviewOne";
-    }
 
 }

@@ -16,6 +16,7 @@ public class ReviewCommentResponseDto {
     private Long memberId;
     private List<ReviewCommentResponseDto> children = new ArrayList<>();
 
+
     public ReviewCommentResponseDto(Long reviewCommentId, String content, String nickname, Long memberId) {
         this.reviewCommentId = reviewCommentId;
         this.content = content;
