@@ -1,7 +1,8 @@
 package com.project.animal.review.controller;
 
+import com.project.animal.global.common.annotation.Member;
 import com.project.animal.global.common.dto.ImageListDto;
-import com.project.animal.member.domain.Member;
+import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.review.constant.EndPoint;
 import com.project.animal.review.constant.ViewName;
@@ -37,16 +38,13 @@ public class ReviewController {
     private final ReviewImageService reviewImageService;
     private final int size = 9;
 
-    private final MemberRepository memberRepository;
-
     private final ReviewCommentService reviewCommentService;
 
     private final ReviewRequestMapper reviewRequestMapper;
 
-    private Member createMember(){
-        CreateMemberWithoutSecurity ex = new CreateMemberWithoutSecurity();
-        Optional<Member> member = memberRepository.findById(1L);
-        return member.get();
+    @ModelAttribute("member")
+    public MemberDto addMemberInModel(@Member MemberDto member) {
+        return member;
     }
 
     @GetMapping("/write")
@@ -56,15 +54,14 @@ public class ReviewController {
     @PostMapping("/write")
     public String createReviewPost(@ModelAttribute @Valid CreateReviewPostDto createReviewPostDto,
                                BindingResult bindingResult,
-                               @RequestParam(name = "imageList") List<MultipartFile> imageFiles
+                               @RequestParam(name = "imageList") List<MultipartFile> imageFiles,
+                               @Member MemberDto member
     ){
-        Member member = createMember();
         if (bindingResult.hasErrors()){
             return ViewName.WRITE_PAGE;
         }
         ReviewPost reviewPost = reviewService.createReviewPost(createReviewPostDto, member);
         reviewImageService.saveImg(imageFiles, reviewPost);
-
       return ViewName.HOME;
     }
     @GetMapping()
@@ -72,7 +69,7 @@ public class ReviewController {
                                   Model model){
         ReadListGeneric viewDto = reviewService.readAll(page, size);
         model.addAttribute("listDto", viewDto);
-        return "/review/readReviewListFinal";
+        return ViewName.REVIEW_LIST;
     }
 
     @GetMapping("/one")
@@ -84,7 +81,7 @@ public class ReviewController {
          model.addAttribute("commentCount", dto.getCommentCount());
          return ViewName.READ_ONE;
     }
-    // 검색
+
     @GetMapping("/search")
     public String readBySearch(@RequestParam(name = "type") String type,
                                @RequestParam(name = "keyword") String keyword,
@@ -99,7 +96,6 @@ public class ReviewController {
     public String edit(@RequestParam(name = "reviewPostId") Long reviewPostId, Model model){
         ReadOneReviewDto readOneReviewDto = reviewService.readOne(reviewPostId);
         ReviewCommentDtoCount dto = reviewCommentService.readByReviewPostId(reviewPostId);
-//        List<ReviewCommentResponseDto> dtoList = reviewCommentService.readByReviewPostId(reviewPostId);
         ReadOneResponse readOneResponse = reviewRequestMapper.dtosToResponseDto(readOneReviewDto,dto.getReviewCommentResponseDtoList());
         model.addAttribute("commentCount",dto.getCommentCount());
         model.addAttribute("reviewDto", readOneResponse);
@@ -129,6 +125,4 @@ public class ReviewController {
         reviewService.delete(reviewPostId);
         return ViewName.HOME;
     }
-
-
 }

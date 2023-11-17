@@ -198,11 +198,11 @@ width:10%;
 <!--    </div>-->
     <form action="/review/delete" method="get">
         <input type="hidden" name="reviewPostId" th:value="${reviewDto.readOneReviewDto.reviewPostId}" />
-        <button type="submit" class="button delete-button">삭제</button>
+        <button type="submit" class="button delete-button" th:if="${member != null && member.id == reviewDto.readOneReviewDto.memberId}">삭제</button>
     </form>
     <form action="/review/edit" method="get">
         <input type="hidden" name="reviewPostId" th:value="${reviewDto.readOneReviewDto.reviewPostId}" />
-        <button type="submit" class="button edit-button">수정</button>
+        <button type="submit" class="button edit-button" th:if="${member != null && member.id == reviewDto.readOneReviewDto.memberId}">수정</button>
     </form>
 
 
@@ -229,13 +229,20 @@ width:10%;
 <div class="comment-section">
 
 
-    <form th:action="@{/review/comment/add}" id="replyForm" method="post" style="display: block;" class="commentInput">
+    <form th:action="@{/review/comment/add}" id="replyForm" method="post" style="display: block;" class="commentInput" th:if="${member != null}">
         <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
         <textarea placeholder="댓글을 입력하세요." class="comment-input" name="content"></textarea>
         <button type="submit" class="comment-submit-button">
             <i class="fas fa-pencil-alt"></i>
         </button>
     </form>
+
+
+    <textarea placeholder="로그인을 해야 댓글 작성이 가능합니다. 로그인 하시겠습니까?" class="comment-input" name="content" th:readonly="${member == null}"></textarea>
+    <button type="button" class="comment-submit-button">
+        <i class="fas fa-pencil-alt"></i>
+    </button>
+
 
     <div th:each="comment : ${reviewDto.reviewCommentResponseDto}" class="comment">
         <div class="top">
@@ -245,7 +252,7 @@ width:10%;
             </div>
 
             <div class="reply-button">
-                <button onclick="showReplyForm(this)" id="replyButton">대댓글 작성</button>
+                <button onclick="showReplyForm(this)" id="replyButton" th:if="${member != null}">대댓글 작성</button>
 
                 <form th:action="@{/review/comment/add}" id="reReplyForm" method="post" style="display: none;">
                     <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
@@ -256,7 +263,7 @@ width:10%;
                     </button>
                 </form>
                 <div id="editDeleteButtons" style="display: block;">
-                    <button th:attr="onclick='showEditForm(this, \'' + ${comment.content} + '\')'">댓글 수정</button>
+                    <button th:attr="onclick='showEditForm(this, \'' + ${comment.content} + '\')'" th:if="${member != null && member.id == comment.memberId}">댓글 수정</button>
                     <form th:action="@{/review/comment/update}" id="editForm" method="post" style="display: none; text-align: center;" >
                         <input type="hidden" th:value="${comment.reviewCommentId}" name="reviewCommentId" />
                         <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
@@ -267,7 +274,7 @@ width:10%;
                     <form th:action="@{/review/comment/delete}" id="deleteForm" method="post" style="display: inline;">
                         <input type="hidden" th:value="${comment.reviewCommentId}" name="reviewCommentId" />
                         <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
-                        <button type="submit" id="deleteButton">댓글 삭제</button>
+                        <button type="submit" id="deleteButton" th:if="${member != null && member.id == comment.memberId}">댓글 삭제</button>
                     </form>
                 </div>
             </div>
@@ -280,8 +287,8 @@ width:10%;
                     <p>Content: <span th:text="${reply.content}"></span></p>
                 </div>
 
-                <div class="reply-button">
-                <button th:attr="onclick='showReplyEditForm(this, \'' + ${reply.content} + '\')'">댓글 수정</button>
+                <div class="reply-button" th:if="${member != null && member.id == reply.memberId}">
+                <button th:attr="onclick='showReplyEditForm(this, \'' + ${reply.content} + '\')'" >댓글 수정</button>
                 <form th:attr="id='editForm' + ${reply.reviewCommentId}" th:action="@{/review/comment/update}" method="post" style="display: none; text-align: center;" >
                     <input type="hidden" th:value="${reply.reviewCommentId}" name="reviewCommentId" />
                     <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />

@@ -74,7 +74,7 @@
 
         </div>
         <div class="button-container">
-            <button id="submit">작성</button>
+            <button id="submit" th:disabled="${member == null}">작성</button>
             <button id="cancel" type="button" onclick="location.href='/review'">취소</button>
 
         </div>

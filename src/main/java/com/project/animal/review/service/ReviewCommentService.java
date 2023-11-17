@@ -33,7 +33,6 @@ public class ReviewCommentService {
     public void createComment(ReviewCommentDto commentDto, ReviewPost reviewPost) {
         dtoCheck(commentDto);
         ReviewComment commentEntity = reviewCommentRequestMapper.dtoToReviewComment(commentDto, reviewPost);
-        log.info("id null 체크"+commentDto.getParentId());
         if (commentDto.getParentId() != null){
             ReviewComment parentComment =findReviewComment(commentDto.getParentId());
             commentEntity.updateParent(parentComment);

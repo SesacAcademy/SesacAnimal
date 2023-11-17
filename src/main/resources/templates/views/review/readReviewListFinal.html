@@ -250,11 +250,16 @@ float:right;
 
 </div>
 <div class="write">
-    <a href="/review/write" class="write-button" title="글쓰기">
+    <a href="/review/write" class="write-button" title="글쓰기" th:if="${member != null}">
         <span class="material-symbols-outlined" style="font-size: 1.3em; padding-right: 10px;">edit_square</span>
-        <!--            <span>글쓰기</span>-->
     </a>
 </div>
+
+<!--<div class="write">-->
+<!--    <a href="/review/write" class="write-button" title="글쓰기" th:onclick="${member == null} ? event.preventDefault() : ''">-->
+<!--        <span class="material-symbols-outlined" style="font-size: 1.3em; padding-right: 10px;">edit_square</span>-->
+<!--    </a>-->
+<!--</div>-->
 
 <div class="title"><h3>여러분의 입양후기를 남겨주세요</h3></div>
 <!-- 리뷰 id 개수만큼 반복 -->

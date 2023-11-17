@@ -216,7 +216,7 @@ width:10%;
 
 
   <input type="hidden" name="reviewPostId" th:value="${reviewDto.readOneReviewDto.reviewPostId}" />
-  <button type="submit" class="edit-button">작성</button>
+  <button type="submit" class="edit-button" th:if="${member != null && member.id == reviewDto.readOneReviewDto.memberId}">작성</button>
 
   <div class="statistics">
     <div class="view-count" th:text="'조회수: ' + ${reviewDto.readOneReviewDto.viewCount}"></div>

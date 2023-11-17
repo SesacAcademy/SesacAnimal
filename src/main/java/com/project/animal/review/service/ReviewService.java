@@ -1,6 +1,8 @@
 package com.project.animal.review.service;
 
+import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.member.domain.Member;
+import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.review.domain.ReviewPost;
 import com.project.animal.review.dto.*;
 import com.project.animal.review.exception.NotFoundException;
@@ -29,8 +31,12 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
-    public ReviewPost createReviewPost(CreateReviewPostDto createReviewPostDto, Member member) {
+    private final MemberRepository memberRepository;
+
+
+    public ReviewPost createReviewPost(CreateReviewPostDto createReviewPostDto, MemberDto memberDto) {
         dtoCheck(createReviewPostDto);
+        Member member = findMemberById(memberDto);
         ReviewPost reviewPost = new ReviewPost(createReviewPostDto, member);
         return reviewRepository.save(reviewPost);
     }
@@ -132,5 +138,10 @@ public class ReviewService {
     public ReviewPost findPostAndMember(Long reviewPostId){
         Optional<ReviewPost> reviewPost = reviewRepository.findByIdWithMember(reviewPostId);
         return postCheckOptional(reviewPost, reviewPostId);
+    }
+    private Member findMemberById(MemberDto memberDto){
+        Long memberDtoId = memberDto.getId();
+        Optional<Member> optionalMember = memberRepository.findById(memberDtoId);
+        return optionalMember.orElseThrow(()->new NotFoundException("해당 게시글의 유효 id가 유효하지 않습니다. 유효하지 않은 memberId: "+ memberDtoId));
     }
 }
