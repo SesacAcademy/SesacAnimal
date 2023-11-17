@@ -129,6 +129,7 @@ public class MemberServiceImp implements MemberService {
      * @throws NotFoundException 해당 정보로 가입된 아이디가 없는 경우, 해당 예외 발생
      */
     @Override
+    @Transactional
     public void createSmsAuthCode(FindMemberPwdFormDto memberPwdFormDto) {
         // 사용자 정보 조회
         Optional<Member> findMember = memberRepository.findByEmailAndNameAndPhone(memberPwdFormDto.getEmail(),
