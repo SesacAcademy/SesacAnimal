@@ -287,8 +287,8 @@ float:right;
 
             <div class="stats">
 
-                조회수: <span>100</span>
-                댓글수: <span>5</span>
+                조회수: <span th:text="${post.viewCount}"></span>
+                댓글수: <span th:text="${post.commentCount}"></span>
                 좋아요: <span>10</span>
             </div>
         </a>
