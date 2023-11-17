@@ -1,8 +1,9 @@
+/* mypage 공통 설정 */
 .member-mypage-content {
     margin: 0 auto;
-    border: 1px solid blue;
+    /*border: 1px solid blue;*/
     width: 80%;
-    height: 720px;
+    /*height: 720px;*/
     display: flex;
 }
 
@@ -17,7 +18,125 @@
 .member-mypage-section {
     width: 85%;
     margin: 0 auto;
-    border: 1px solid red;
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    /*border: 1px solid red;*/
     /*height: 300px;*/
 }
+
+thead th:nth-child(1) {
+    width: 50px;
+    text-align: center;
+}
+
+thead th:nth-child(2) {
+    text-align: center;
+}
+
+thead th:nth-child(3) {
+    width: 80px;
+    text-align: center;
+}
+
+thead th:nth-child(4) {
+    width: 120px;
+    text-align: center;
+}
+
+thead th:nth-child(5) {
+    width: 65px;
+    text-align: center;
+}
+
+tbody > tr > td:nth-child(1) {
+    text-align: center;
+}
+
+tbody > tr > td:nth-child(2) {
+    text-align: center;
+}
+
+tbody > tr > td:nth-child(3) {
+    text-align: center;
+}
+
+tbody > tr > td:nth-child(4) {
+    text-align: center;
+}
+
+tbody > tr > td:nth-child(5) {
+    text-align: center;
+}
+
+.pagination {
+    justify-content: center;
+}
+
+/* mypage_info HTML */
+.member-mypage-info-content {
+    margin: 0 auto;
+    width: 90%;
+    border: 1px solid #e9e9e9;
+    height: 300px;
+}
+
+.member-mypage-info-box {
+    margin: 0 auto;
+    width: 85%;
+    /*height: 250px;*/
+    /*border: 1px solid black;*/
+    /*text-align: center;*/
+}
+
+/* mypage_password HTML */
+.member-mypage-password-content {
+    margin: 0 auto;
+    width: 90%;
+    /*height: 900px;*/
+    border: 1px solid #e9e9e9;
+}
+
+.member-mypage-password-box {
+    margin: 0 auto;
+    width: 85%;
+    /*height: 900px;*/
+    /*border: 1px solid black;*/
+    /*text-align: center;*/
+}
+
+.member-mypage-password-input {
+    width: 135px;
+}
+
+.member-mypage-password-button {
+    text-align: center;
+}
+
+/* mypage_wishList HTML */
+.member-mypage-wishList-content {
+    margin: 0 auto;
+    width: 90%;
+    /*height: 900px;*/
+    /*border: 1px solid #e9e9e9;*/
+}
+
+/* mypage_boardList HTML */
+.member-mypage-boardList-content {
+    margin: 0 auto;
+    width: 90%;
+    /*height: 900px;*/
+    /*border: 1px solid #e9e9e9;*/
+}
+
+
+/* mypage_adoptionList HTML */
+.member-mypage-adoptionList-content {
+    margin: 0 auto;
+    width: 90%;
+    /*height: 900px;*/
+    /*border: 1px solid #e9e9e9;*/
+}
+
+
+
+
 
