@@ -1,5 +1,7 @@
 package com.project.animal.missing.controller;
 
+import com.project.animal.global.common.annotation.Member;
+import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.global.common.utils.BindingResultParser;
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
@@ -36,9 +38,14 @@ public class MissingEditController extends MissingController {
     this.missingPostServiceImpl = missingPostServiceImpl;
   }
 
+
   @GetMapping(EndPoint.PATH_ID)
-  public String showEditView(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
+  public String showEditView(@PathVariable(EndPoint.ID_KEY) long postId, Model model, @Member MemberDto memberDto) {
     MissingDetailDto detail = missingPostServiceImpl.getPostDetail(postId);
+
+    if (detail.getMemberId() != memberDto.getId()) {
+      throw new RuntimeException("수정이 불가한 유저 입니다.");
+    }
 
     Map<String, String> endPoints = createLinkConstants("edit");
     model.addAttribute("detail", detail);
@@ -48,13 +55,17 @@ public class MissingEditController extends MissingController {
   }
 
   @PutMapping(EndPoint.PATH_ID)
-  public String handleEditRequest(@Valid @ModelAttribute("detail") MissingEditDto dto, BindingResult br, RedirectAttributes redirectAttributes) {
-    long memberId = 1;
-    if (br.hasErrors()) {
+  public String handleEditRequest(
+          @Valid @ModelAttribute("detail") MissingEditDto dto,
+          BindingResult br,
+          RedirectAttributes redirectAttributes,
+          @Member MemberDto member) {
+
+    if (br.hasErrors() || member == null ) {
       throw new InvalidEditFormException(dto, br);
     }
 
-    boolean isSuccess = missingPostServiceImpl.editPost(memberId, dto);
+    boolean isSuccess = missingPostServiceImpl.editPost(member.getId(), dto);
     redirectAttributes.addFlashAttribute("isSuccess", isSuccess ? SUCCESS_FLAG : FAIL_FLAG);
     redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
 
