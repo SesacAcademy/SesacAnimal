@@ -1,5 +1,7 @@
 package com.project.animal.missing.controller;
 
+import com.project.animal.global.common.annotation.Member;
+import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
 import com.project.animal.missing.dto.ListResponseDto;
@@ -28,6 +30,11 @@ public class MissingListController extends MissingController {
 
   public MissingListController(MissingPostService missingPostServiceImpl) {
     this.missingPostServiceImpl = missingPostServiceImpl;
+  }
+
+  @ModelAttribute("member")
+  public MemberDto addMemberInModel(@Member MemberDto member) {
+    return member;
   }
 
   @GetMapping
