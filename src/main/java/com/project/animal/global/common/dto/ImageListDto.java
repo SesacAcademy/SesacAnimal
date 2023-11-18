@@ -1,6 +1,6 @@
 package com.project.animal.global.common.dto;
 
-import com.project.animal.global.common.providrerror.minioException;
+import com.project.animal.global.common.exception.MinioException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ public class ImageListDto {
         this.imageList = imageList;
         this.imageCount = imageList.size();
         if (imageCount>5){
-            throw new minioException("이미지를 5장 이상 초과할 수 없습니다.");
+            throw new MinioException("이미지를 5장 이상 초과할 수 없습니다.");
         }
         //화면에서 입력한 이미지의 숫자와 리스트의 숫자를 비교하는 메소드를 위한 생성자
         //화면에서 입력한 이미지의 숫자를 컨트롤러에서 받고 비교 현재 화면에서 사용자가 입력한 이미지 갯수를 입력받을 수 없어 list.size()로 임의 작성

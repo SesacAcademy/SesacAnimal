@@ -79,8 +79,14 @@
   <div class="view-count" th:text="'조회수: ' + ${reviewDto.readOneReviewDto.viewCount}">
     조회수: count
   </div>
+  <div class="like-count" th:text="'좋아요 갯수: ' + ${reviewDto.readOneReviewDto.likeCount}">
+    조회수: count
+  </div>
   <hr class="separator">
 </div>
+<button id="likeButton" class="like-button">좋아요</button>
+<!--<input type="hidden" th:value="${comment.reviewCommentId}" name="reviewCommentId" />-->
+
 
 
 <div class="comment-section">

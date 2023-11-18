@@ -1,11 +1,10 @@
 package com.project.animal.global.common.provider;
 
 import com.project.animal.global.common.dto.ImageListDto;
-import com.project.animal.global.common.providrerror.minioException;
+import com.project.animal.global.common.exception.MinioException;
 import io.minio.BucketExistsArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
-import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class MinioServiceProvider {
         try {
             boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             return found;
-        } catch (MinioException | IOException | NoSuchAlgorithmException | InvalidKeyException e) {
+        } catch (io.minio.errors.MinioException | IOException | NoSuchAlgorithmException | InvalidKeyException e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -50,7 +49,7 @@ public class MinioServiceProvider {
                     for (MultipartFile image:images) {
                         if (!image.isEmpty()){
                             if (image.getSize()>=10*1024*1024){
-                                throw new minioException(image.getName()+": 파일의 용량이 너무 큽니다");
+                                throw new MinioException(image.getName()+": 파일의 용량이 너무 큽니다");
                             }
                             String url = uploadImageToMinio(image, type);
                             urls.add(url);
@@ -58,19 +57,19 @@ public class MinioServiceProvider {
                     }
                 }
             }
-        } catch (MinioException e) {
+        } catch (io.minio.errors.MinioException e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return urls;
     }
-    private boolean imageDtoSizeCheck(ImageListDto imageListDto) throws MinioException {
+    private boolean imageDtoSizeCheck(ImageListDto imageListDto) throws io.minio.errors.MinioException {
         int userInputCount = imageListDto.getImageCount();
         int inputImageCount = imageListDto.getImageList().size();
         if (inputImageCount==userInputCount){
             return true;
         }else {
-            throw new MinioException("유저가 올리고자 하는 이미지가 제대로 등록되지 않았습니다." +
+            throw new io.minio.errors.MinioException("유저가 올리고자 하는 이미지가 제대로 등록되지 않았습니다." +
                     " 유저가 올리고자 하는 이미지: " + userInputCount + " 등록된 이미지 갯수: " + inputImageCount);
         }
     }
@@ -93,7 +92,7 @@ public class MinioServiceProvider {
             );
             is.close();
             return url;
-        }catch (MinioException |IOException | NoSuchAlgorithmException | InvalidKeyException e){
+        }catch (io.minio.errors.MinioException | IOException | NoSuchAlgorithmException | InvalidKeyException e){
             log.error(e.getMessage());
             throw new RuntimeException(e);
         }

@@ -20,12 +20,11 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(EndPoint.REVIEW)
+@RequestMapping("/review")
 @AllArgsConstructor
 @Log4j2
 public class ReviewCommentController {
 
-    private final MemberRepository memberRepository;
     private final ReviewService reviewService;
     private final ReviewCommentService reviewCommentService;
 

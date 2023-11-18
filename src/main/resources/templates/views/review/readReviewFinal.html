@@ -217,6 +217,11 @@ width:10%;
         게시물 내용
     </div>
 
+    <form action="/review/like/add" method="post">
+        <input type="hidden" name="reviewPostId" th:value="${reviewDto.readOneReviewDto.reviewPostId}" />
+        <button type="submit" class="like-button" th:if="${member != null}">좋아요</button>
+    </form>
+
 
     <div class="statistics">
         <div class="view-count" th:text="'조회수: ' + ${reviewDto.readOneReviewDto.viewCount}"></div>

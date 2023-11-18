@@ -144,4 +144,8 @@ public class ReviewService {
         Optional<Member> optionalMember = memberRepository.findById(memberDtoId);
         return optionalMember.orElseThrow(()->new NotFoundException("해당 게시글의 유효 id가 유효하지 않습니다. 유효하지 않은 memberId: "+ memberDtoId));
     }
+    public ReviewPost findReviewPostById(Long reviewPostId){
+        Optional<ReviewPost> optionalReviewPost = reviewRepository.findById(reviewPostId);
+        return checkOptional(optionalReviewPost);
+    }
 }

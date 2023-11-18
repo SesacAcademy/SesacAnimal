@@ -39,6 +39,8 @@ public class QReviewPost extends EntityPathBase<ReviewPost> {
 
     public final ListPath<ReviewImage, QReviewImage> reviewImages = this.<ReviewImage, QReviewImage>createList("reviewImages", ReviewImage.class, QReviewImage.class, PathInits.DIRECT2);
 
+    public final ListPath<ReviewPostLike, QReviewPostLike> reviewPostLikes = this.<ReviewPostLike, QReviewPostLike>createList("reviewPostLikes", ReviewPostLike.class, QReviewPostLike.class, PathInits.DIRECT2);
+
     public final StringPath title = createString("title");
 
     //inherited
