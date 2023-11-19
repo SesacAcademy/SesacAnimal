@@ -5,6 +5,7 @@ import com.project.animal.member.domain.Member;
 import com.project.animal.review.dto.CreateReviewPostDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,14 +33,15 @@ public class ReviewPost extends BaseEntity {
 
     @Column(name = "view_count")
     private int viewCount;
-
-    @OneToMany(mappedBy = "reviewPost", cascade = CascadeType.REMOVE)
+    @BatchSize(size = 1000)
+    @OneToMany(mappedBy = "reviewPost", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ReviewImage> reviewImages = new ArrayList<>();
 
     @Column(name = "is_active")
     private int isActive;
 
-    @OneToMany(mappedBy = "reviewPost")
+    @BatchSize(size = 1000)
+    @OneToMany(mappedBy = "reviewPost", fetch = FetchType.LAZY)
     private List<ReviewComment> comments = new ArrayList<>();
 
 

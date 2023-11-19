@@ -167,13 +167,17 @@
        display: flex;
         justify-content: flex-end;
         align-items: center;
-        padding: 20px;
+        padding: 5px;
         background-color: #f0f0f0;
         margin-right: 150px;
 }
 .write-button{
 font-size: 35px;
-margin-right: 150px;
+margin-right: 200px;
+padding-right: 20px;
+
+ width: 300px; /* Adjust width as needed */
+    height: 100px;
 }
 .reviewList {
     width:1400px;
@@ -218,16 +222,20 @@ ul.pagination li a {
 ul.pagination li a.active {
     font-weight: bold;
 }
+.material-symbols-outlined{
+float:right;
+}
 
 
 </style>
 
 <div class="header">
-    <select class="form-select" aria-label="Default select example">
+    <form th:action="@{/review/search}" method="get">
+    <select class="form-select" name="type" aria-label="Default select example">
         <option selected>전체</option>
-        <option value="1">제목</option>
-        <option value="2">작성자</option>
-        <option value="3">내용</option>
+        <option value="title">제목</option>
+        <option value="author">작성자</option>
+        <option value="content">내용</option>
     </select>
 
     <p class="search">
@@ -238,19 +246,28 @@ ul.pagination li a.active {
             <span class="material-symbols-outlined">search</span>
         </button>
     </p>
+    </form>
 
 </div>
 <div class="write">
-    <a href="/review/write" class="write-button" title="글쓰기">
-        <span class="material-symbols-outlined">edit_square</span>
-        <!--            <span>글쓰기</span>-->
+    <a href="/review/write" class="write-button" title="글쓰기" th:if="${member != null}">
+        <span class="material-symbols-outlined" style="font-size: 1.3em; padding-right: 10px;">edit_square</span>
     </a>
 </div>
+
+<!--<div class="write">-->
+<!--    <a href="/review/write" class="write-button" title="글쓰기" th:onclick="${member == null} ? event.preventDefault() : ''">-->
+<!--        <span class="material-symbols-outlined" style="font-size: 1.3em; padding-right: 10px;">edit_square</span>-->
+<!--    </a>-->
+<!--</div>-->
 
 <div class="title"><h3>여러분의 입양후기를 남겨주세요</h3></div>
 <!-- 리뷰 id 개수만큼 반복 -->
 <div class="reviewList">
     <!-- 리뷰 id 개수만큼 반복 -->
+    <div th:if="${listDto.list.size() == 0}">
+        <p>해당 게시글이 없어요. 여러분의 후기를 남겨주세요!</p>
+    </div>
     <div class="review-item" th:each="post : ${listDto.list}">
         <a th:href="@{/review/one(reviewPostId=${post.reviewPostId})}" style="display: block; color: inherit; text-decoration: none;">
             <div class="img-area">
@@ -268,19 +285,15 @@ ul.pagination li a.active {
                     <div class="content" th:text="'내용 : ' + ${post.content}"style="font-size: 18px;">내용</div>
                 </div>
             </div>
-<!--            <div class="text">-->
-<!--            <div class="title" th:text="'제목 : ' + ${post.title}" style="font-size: 21px; font-weight: bold;">제목</div>-->
-<!--            <div class="content" th:text="'내용 : ' + ${post.content}"style="font-size: 18px;">내용</div>-->
-<!--            <div class="nickname" th:text="'작성자 : ' + ${post.memberName}"style="font-size: 15px;">작성자</div>-->
-<!--            </div>-->
+
             <div class="date" style="font-size: 13px;">
                 작성날짜: <span th:text="${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
             </div>
 
             <div class="stats">
 
-                조회수: <span>100</span>
-                댓글수: <span>5</span>
+                조회수: <span th:text="${post.viewCount}"></span>
+                댓글수: <span th:text="${post.commentCount}"></span>
                 좋아요: <span>10</span>
             </div>
         </a>

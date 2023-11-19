@@ -49,7 +49,7 @@
         <!-- Axios 설정-->
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-        <title>마이 페이지</title>
+        <title>내 게시글</title>
     </head>
     <body>
         <!-- Header 설정 -->
@@ -68,38 +68,93 @@
 
                 <nav class="navbar bg-light">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#" style="color: #E4477A;">회원정보 수정</a>
+                        <a class="navbar-brand" href="/v1/member/mypage/info">내 회원정보</a>
                     </div>
                 </nav>
 
                 <nav class="navbar bg-light">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">비밀번호 변경</a>
+                        <a class="navbar-brand" href="/v1/member/mypage/password">비밀번호 변경</a>
                     </div>
                 </nav>
 
                 <nav class="navbar bg-light">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">좋아요</a>
+                        <a class="navbar-brand" href="/v1/member/mypage/wishList">좋아요</a>
                     </div>
                 </nav>
 
                 <nav class="navbar bg-light">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">내가 쓴 글</a>
+                        <a class="navbar-brand" style="color: #E4477A;">내 게시글</a>
                     </div>
                 </nav>
 
                 <nav class="navbar bg-light">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">입양 내역</a>
+                        <a class="navbar-brand" href="/v1/member/mypage/adoptionList">입양 내역</a>
                     </div>
                 </nav>
             </aside>
 
             <section class="member-mypage-section">
-                <div>
-
+                <div class="member-mypage-boardList-content mt-4">
+                    <table class="table table-bordered mt-2 mb-3">
+                        <thead class="table-light">
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>등록일</th>
+                        <th>조회수</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><a>테스트 제목</a></td>
+                            <td>박성수</td>
+                            <td>2022.12.31</td>
+                            <td>333</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><a>테스트 제목</a></td>
+                            <td>박성수</td>
+                            <td>2022.12.31</td>
+                            <td>333</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><a>테스트 제목</a></td>
+                            <td>박성수</td>
+                            <td>2022.12.31</td>
+                            <td>333</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><a>테스트 제목</a></td>
+                            <td>박성수</td>
+                            <td>2022.12.31</td>
+                            <td>333</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </section>
         </div>
@@ -107,6 +162,6 @@
 
         <!-- Footer 설정 -->
         <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
-<!--        <script th:src="@{/js/member/login.js}"></script>-->
+        <!--        <script th:src="@{/js/member/login.js}"></script>-->
     </body>
 </html>

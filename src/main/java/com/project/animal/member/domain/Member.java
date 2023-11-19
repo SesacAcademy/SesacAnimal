@@ -28,7 +28,7 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(length = 100)
+    @Column(length = 100, unique = true)
     private String email;
 
     @Column(length = 100)
@@ -41,7 +41,7 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(length = 50)
     private String name;
 
-    @Column(length = 50)
+    @Column(length = 50, unique = true)
     private String phone;
 
     @Column

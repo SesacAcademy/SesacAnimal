@@ -1,7 +1,7 @@
 <div xmlns:th="http://www.thymeleaf.org" class="missing-detail-comment-container"
         th:fragment="comments(selfId, postId, comments, endPoints, parentId)">
 
-        <section class="missing-detail-comment-card-container">
+        <section th:if="${selfId != 0}" class="missing-detail-comment-card-container">
             <div class="missing-comment-title">작성자</div>
             <form class="missing-comment-form" method="post" th:action="@{{actionPath}(actionPath=${endPoints.newComment})}">
                 <input name="missingId" th:value="${postId}" hidden />
@@ -18,7 +18,7 @@
                     <div style="display:flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <div class="missing-comment-title" th:text="${comment.author}" />
                         <div style="display:flex; flex-direction: row;">
-                            <div class="missing-comment-button-new">reply</div>
+                            <div th:if="${selfId != 0}" class="missing-comment-button-new">reply</div>
 
                             <div th:if="${selfId == comment.memberId}"
                                  class="missing-comment-button-edit" >edit</div>

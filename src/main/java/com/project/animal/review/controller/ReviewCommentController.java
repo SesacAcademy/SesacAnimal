@@ -1,6 +1,7 @@
 package com.project.animal.review.controller;
 
-import com.project.animal.member.domain.Member;
+import com.project.animal.global.common.annotation.Member;
+import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.review.constant.EndPoint;
 import com.project.animal.review.domain.ReviewPost;
@@ -29,13 +30,11 @@ public class ReviewCommentController {
     private final ReviewCommentService reviewCommentService;
 
 
-    private Member createMember(){
-        CreateMemberWithoutSecurity ex = new CreateMemberWithoutSecurity();
-        Optional<Member> member = memberRepository.findById(1L);
-        return member.get();
+    @ModelAttribute("member")
+    public MemberDto addMemberInModel(@Member MemberDto member) {
+        return member;
     }
-    @PostMapping(EndPoint.COMMENT_ADD)
-    //1. 글자 수 검사 => 바인딩 리절트 2.게시판 읽어올 때 comment에 관한 내용도 던져야 함 id, parentId, content, CreatedAt,
+    @PostMapping("/comment/add")
     public String createReviewComment(@ModelAttribute @Valid ReviewCommentDto reviewCommentDto,
                                       BindingResult bindingResult,
                                       @RequestParam(name = "reviewPostId") Long reviewPostId,
@@ -43,32 +42,30 @@ public class ReviewCommentController {
         {
             if (bindingResult.hasErrors()) {
                 log.info("binding error: "+bindingResult.toString());
-                return "redirect:" + "/review" + EndPoint.REVIEW_READ_ONE + "?reviewPostId=" + reviewPostId;
+                return "redirect:/review/one?reviewPostId=" + reviewPostId;
             }
-            log.info("controller 체크: "+reviewCommentDto.getParentId());
             ReviewPost reviewPost = reviewService.findPostAndMember(reviewPostId);
             reviewCommentService.createComment(reviewCommentDto, reviewPost);
-            return "redirect:" + "/review" + EndPoint.REVIEW_READ_ONE + "?reviewPostId=" + reviewPostId;
+            return "redirect:/review/one?reviewPostId=" + reviewPostId;
         }
     }
-    @PostMapping(EndPoint.COMMENT_UPDATE)
+    @PostMapping("/comment/update")
     public String commentUpdate(@RequestParam("reviewCommentId")Long reviewCommentId,
                                 @RequestParam("reviewPostId")Long reviewPostId,
                                 @ModelAttribute ReviewCommentDto dto,
-                                BindingResult bindingResult,
-                                Model model){
+                                BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             log.info("binding error: "+bindingResult.toString());
-            return "redirect:" + "/review" + EndPoint.REVIEW_READ_ONE + "?reviewPostId=" + reviewPostId;
+            return "redirect:/review/one?reviewPostId=" + reviewPostId;
         }
         reviewCommentService.update(reviewCommentId, dto);
-        return "redirect:" + "/review" + EndPoint.REVIEW_READ_ONE + "?reviewPostId=" + reviewPostId;
+        return "redirect:/review/one?reviewPostId=" + reviewPostId;
     }
-    @PostMapping(EndPoint.COMMENT_DELETE)
+    @PostMapping("/comment/delete")
     public String commentDelete(@RequestParam("reviewCommentId")Long reviewCommentId,
                                 @RequestParam("reviewPostId")Long reviewPostId){
         reviewCommentService.delete(reviewCommentId);
-        return "redirect:" + "/review" + EndPoint.REVIEW_READ_ONE + "?reviewPostId=" + reviewPostId;
+        return "redirect:/review/one?reviewPostId=" + reviewPostId;
     }
 
 }

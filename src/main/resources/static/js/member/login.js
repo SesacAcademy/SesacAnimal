@@ -223,6 +223,8 @@ function findPassword() {
         return;
     }
 
+    inputAuthButton.style.display = "none";
+
     const config = {"Content-Type": 'application/json'};
 
     axios.post("/v1/api/auth/phone", {
@@ -267,6 +269,7 @@ function findPassword() {
     }).catch(function (error) {
         console.log(error);
         alert('비밀번호 찾기에 실패하였습니다.');
+        inputAuthButton.style.display = "inline-block";
     });
 }
 
@@ -275,6 +278,7 @@ function findPassword2() {
     const inputName = document.getElementById('member-find-password-name');
     const inputPhone = document.getElementById('member-find-password-phone');
     const inputAuthCode = document.getElementById('member-find-password-authcode');
+    const inputAuthButton = document.getElementById('member-find-password-button2');
 
     const email = inputEmail.value;
     const name = inputName.value;
@@ -300,6 +304,7 @@ function findPassword2() {
         alert("인증번호를 제대로 입력해주세요.");
         return;
     }
+    inputAuthButton.style.display = "none";
 
     const config = {"Content-Type": 'application/json'};
 
@@ -315,6 +320,7 @@ function findPassword2() {
             alert(email + " 메일로 임시 비밀번호를 보내드렸습니다.");
             const passwordModel = document.getElementById('member-close-passwordModal');
             passwordModel.click();
+            inputAuthButton.style.display = "inline-block";
         }
 
         else if (response.data.statusCode === 400) {
@@ -345,10 +351,12 @@ function findPassword2() {
                     alert(response.data.context.authCode);
                 }
             }
+            inputAuthButton.style.display = "inline-block";
         }
 
     }).catch(function (error) {
         console.log(error);
+        inputAuthButton.style.display = "inline-block";
         alert('비밀번호 찾기에 실패하였습니다.');
     });
 }

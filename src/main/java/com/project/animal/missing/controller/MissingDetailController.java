@@ -1,6 +1,7 @@
 package com.project.animal.missing.controller;
 
 import com.project.animal.global.common.annotation.Member;
+import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.global.common.utils.BindingResultParser;
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
@@ -34,18 +35,19 @@ public class MissingDetailController extends MissingController {
   private final MissingPostService missingPostServiceImpl;
 
   private final MissingCommentService missingCommentService;
-
-  private final long testMemId = 2;
+  
 
   @GetMapping(EndPoint.PATH_ID)
-  public String getPostDetail(@PathVariable(EndPoint.ID_KEY) long postId, Model model) {
+  public String getPostDetail(@PathVariable(EndPoint.ID_KEY) long postId,
+                              Model model,
+                              @Member MemberDto member) {
 
     MissingDetailDto detail = missingPostServiceImpl.getPostDetail(postId);
     List<MissingCommentListEntryDto> comments = detail.getComments();
 
     Map<String, String> endPoints = createLinkConstants("edit", "delete", "newComment", "editComment", "deleteComment");
 
-    model.addAttribute("selfId", testMemId);
+    model.addAttribute("selfId", member != null ? member.getId() : 0);
     model.addAttribute("endPoints", endPoints);
     model.addAttribute("post", detail);
     model.addAttribute("comments", comments);
@@ -55,13 +57,13 @@ public class MissingDetailController extends MissingController {
   }
 
   @PostMapping(EndPoint.COMMENT + EndPoint.NEW)
-  public String createNewComment(@Valid @ModelAttribute("comment") MissingCommentNewDto dto, BindingResult br) {
+  public String createNewComment(@Valid @ModelAttribute("comment") MissingCommentNewDto dto, BindingResult br, @Member MemberDto member) {
 
-    if (br.hasErrors()) {
+    if (br.hasErrors() || member == null) {
       throw new InvalidCommentFormException(dto, br);
     }
 
-    missingCommentService.createComment(testMemId, dto);
+    missingCommentService.createComment(member.getId(), dto);
     return "redirect:" + EndPoint.MISSING_BASE + EndPoint.DETAIL + "/" + dto.getMissingId();
   }
 

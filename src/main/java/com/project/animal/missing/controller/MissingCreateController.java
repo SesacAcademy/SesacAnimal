@@ -1,5 +1,7 @@
 package com.project.animal.missing.controller;
 
+import com.project.animal.global.common.annotation.Member;
+import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.global.common.utils.BindingResultParser;
 import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
@@ -37,13 +39,15 @@ public class MissingCreateController extends MissingController {
   }
 
   @PostMapping(EndPoint.CREATE)
-  public String handleCreateRequest(@Valid @ModelAttribute("post") MissingNewDto dto, BindingResult br, RedirectAttributes redirectAttributes) {
-    long memberId = 1;
-    if (br.hasErrors()) {
+  public String handleCreateRequest(
+          @Valid @ModelAttribute("post") MissingNewDto dto, BindingResult br, RedirectAttributes redirectAttributes,
+          @Member MemberDto member) {
+
+    if (br.hasErrors() || member == null) {
       throw new InvalidCreateFormException(dto, br);
     }
 
-    boolean isSuccess = missingPostServiceImpl.createPost(memberId, dto);
+    boolean isSuccess = missingPostServiceImpl.createPost(member.getId(), dto);
     redirectAttributes.addFlashAttribute("isSuccess", isSuccess ? SUCCESS_FLAG : FAIL_FLAG);
     redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
 

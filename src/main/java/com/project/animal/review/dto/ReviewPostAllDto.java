@@ -28,6 +28,7 @@ public class ReviewPostAllDto {
     private String memberName;
 
     private String url;
+    private int commentCount;
 
     public ReviewPostAllDto(ReviewPost reviewPost){
         this.reviewPostId = reviewPost.getId();
@@ -37,7 +38,10 @@ public class ReviewPostAllDto {
         this.updatedAt = reviewPost.getUpdatedAt();
         this.memberName = reviewPost.getMember().getName();
         this.url = getActiveImage(reviewPost.getReviewImages());
+        this.commentCount = reviewPost.getComments().size();
+        this.viewCount = reviewPost.getViewCount();
     }
+
     private String setList(List<ReviewImage> images) {
 
         if (images.isEmpty()){

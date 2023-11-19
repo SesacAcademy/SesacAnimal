@@ -52,7 +52,7 @@ containers.forEach((dom) => {
     };
 
 
-    recommentButton.addEventListener("click", () => {
+    recommentButton?.addEventListener("click", () => {
         drawRecommentInput();
     });
 });
