@@ -36,6 +36,7 @@ public class AdoptionImage {
     public void changeImage(String path, Adoption adoption) {
         this.adoption=adoption;
         this.path = path;
+        this.isActive=1;
     }
 
     public void changeIsActive(int isActive) {

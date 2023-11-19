@@ -36,6 +36,8 @@ public class AdoptionController {
     private final AdoptionServiceImpl adoptionService;
     private final AdoptionCommentServiceImpl adoptionCommentService;
 
+
+    //멤버 정보 불러올 공통 영역
     @ModelAttribute("member")
     public MemberDto addMemberInModel(@Member MemberDto member) {
         return member;
@@ -59,7 +61,6 @@ public class AdoptionController {
 //        int pageCount = (count / pageSize) + (count % pageSize == 0 ? 0 : 1); //
 
 
-
         model.addAttribute("list", listWithImagesAndMember);
         model.addAttribute("blockCount", BLOCK_COUNT);
         model.addAttribute("startPage", startPage);
@@ -77,7 +78,7 @@ public class AdoptionController {
     // 글 쓰기 들어오기
     @GetMapping(EndPoint.ADOPTION_WRITE)
     public String adoptionWrite(@Member MemberDto member){
-        System.out.println("member:>>"+member);
+
         if(member == null ){
             return "redirect:"+EndPoint.ADOPTION_LIST;
         }else{
@@ -158,6 +159,7 @@ public class AdoptionController {
     }
 
 
+    // 게시글 상세 수정 영역 중 게시글, 이미지 삭제 영역
     @CrossOrigin(origins = {"http://localhost:8080", "http://infra.shucloud.site"})
     @DeleteMapping(EndPoint.ADOPTION_EDIT )
     @ResponseBody
@@ -202,7 +204,8 @@ public class AdoptionController {
     @PostMapping(EndPoint.ADOPTION_READ)
     public String adoptionCommentPost(@ModelAttribute @Validated AdoptionCommentWriteDto adoptionCommentWriteDto, BindingResult bindingResult,
                                       @PathVariable(name = "id") Long postId,
-                                      @RequestParam(name="commentId", required = false) Long commentId){
+                                      @RequestParam(name="commentId", required = false) Long commentId,
+                                      @Member MemberDto memberDto){
 
         if(bindingResult.hasErrors()){
             log.info("adoption_read 영역 내 댓글 에러 ={}", bindingResult);
@@ -215,7 +218,7 @@ public class AdoptionController {
             adoptionCommentService.updateComment(adoptionCommentWriteDto, commentId);
         } else {
             // 새로운 댓글 생성
-            adoptionCommentService.saveComment(adoptionCommentWriteDto, postId);
+            adoptionCommentService.saveComment(adoptionCommentWriteDto, postId, memberDto);
         }
 
         return "redirect:"+EndPoint.ADOPTION_READ;
@@ -225,7 +228,7 @@ public class AdoptionController {
     @CrossOrigin(origins = {"http://localhost:8080", "http://infra.shucloud.site"})
     @DeleteMapping(EndPoint.ADOPTION_READ)
     @ResponseBody
-    public ResponseEntity<String> adoptionCommentDelete(@RequestBody Map<String, String> requestBody, @PathVariable Long id){
+    public ResponseEntity<String> adoptionCommentDelete(@RequestBody Map<String, String> requestBody, @PathVariable(name="id") Long postId){
 
 
         try {

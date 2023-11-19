@@ -1,3 +1,7 @@
+function checkLoginAlert() {
+    alert("로그인이 필요합니다.");
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // 댓글 수정하기 로직
     const replyEditButton = document.getElementsByClassName('reply-button-edit');

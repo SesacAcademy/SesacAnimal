@@ -5,7 +5,9 @@ import com.project.animal.adoption.domain.AdoptionComment;
 import com.project.animal.adoption.dto.AdoptionCommentWriteDto;
 import com.project.animal.adoption.repository.AdoptionCommentRepository;
 import com.project.animal.adoption.repository.AdoptionRepository;
+import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.member.domain.Member;
+import com.project.animal.member.exception.LoginException;
 import com.project.animal.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,14 +25,12 @@ public class AdoptionCommentServiceImpl {
     private final AdoptionRepository adoptionRepository;
     private final AdoptionCommentRepository adoptionCommentRepository;
     private final MemberRepository repository;
-    public void saveComment(AdoptionCommentWriteDto adoptionCommentDto, Long postId){
-
+    public void saveComment(AdoptionCommentWriteDto adoptionCommentDto, Long postId, MemberDto memberDto){
+        Member member = repository.findById(memberDto.getId()).orElseThrow(() -> new RuntimeException("로그인이 필요합니다."));
         AdoptionComment adoptionComment = new AdoptionComment(adoptionCommentDto);
 
-        Optional<Member> member = repository.findById(2L);
-        Member member1 = member.orElseThrow();
-        adoptionComment.setMember(member1);
-        Adoption adoption = adoptionRepository.findById(postId).orElseThrow();
+        adoptionComment.setMember(member);
+        Adoption adoption = adoptionRepository.findById(postId).orElseThrow(() -> new RuntimeException("코멘트 등록시도: 아이디를 찾을 수 없습니다."));
         adoptionComment.setAdoption(adoption);
 
         adoptionCommentRepository.save(adoptionComment);

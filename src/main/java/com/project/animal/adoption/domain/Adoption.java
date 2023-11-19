@@ -104,7 +104,8 @@ public class Adoption extends BaseEntity {
     public void changeIsActive(int isActive) {
         this.isActive = isActive;
     }
-
+    
+    // 입양 게시판 상세 수정 시 사용
     public void updateAdoption(AdoptionEditDto adoptionEditDto){
         this.title= adoptionEditDto.getTitle();
         this.content=adoptionEditDto.getContent();
@@ -117,7 +118,7 @@ public class Adoption extends BaseEntity {
         this.center=adoptionEditDto.getCenter();
         this.happenPlace=adoptionEditDto.getHappenPlace();
         this.specialMark=adoptionEditDto.getSpecialMark();
-//        this.adoptionImages=adoptionEditDto.getImage();
+//        this.adoptionImages=adoptionEditDto.getPath();
 
     }
 
