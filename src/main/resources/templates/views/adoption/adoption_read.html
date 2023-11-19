@@ -67,8 +67,7 @@
                  <span class="material-symbols-outlined">visibility</span> <span>조회수</span> <span th:text="${read.hit}">0</span>
              </p>
              <p>
-                 <a th:href="@{'/v1/adoption/edit/' + ${read.postId}}" class="edit-button" title="글수정">
-<!--                 <a href="/v1/adoption/edit/{id}" class="edit-button" title="글수정">-->
+                 <a th:if="${read.authorId == member.id}" th:href="@{'/v1/adoption/edit/' + ${read.postId}}" class="edit-button" title="글수정">
                      <span class="material-symbols-outlined">edit</span>
                      <span>글 수정</span>
                  </a>
@@ -221,7 +220,8 @@
          <h4 class="comment-write-title">댓글 쓰기</h4>
 
          <div class="comments-write">
-             <label for="author"><input id="author" class="author" type="text" name="author" placeholder="작성자"/></label>
+             <label for="author" th:if="${member == null }"><input id="author" class="author" type="text" name="author" placeholder= "작성자" /></label>
+             <label for="author" th:unless="${member == null }"><input id="author" class="author" type="text" name="author" th:value="${member.nickname}" readonly /></label>
              <label for="content"><textarea id="content" class="comment-contents" name="content" ></textarea></label>
              <button type="submit">댓글달기</button>
          </div>

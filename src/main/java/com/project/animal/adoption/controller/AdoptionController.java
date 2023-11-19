@@ -7,8 +7,10 @@ import com.project.animal.adoption.dto.*;
 import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.adoption.service.AdoptionCommentServiceImpl;
 import com.project.animal.adoption.service.AdoptionServiceImpl;
+import com.project.animal.global.common.annotation.Member;
 import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
+import com.project.animal.global.common.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,32 +36,37 @@ public class AdoptionController {
     private final AdoptionServiceImpl adoptionService;
     private final AdoptionCommentServiceImpl adoptionCommentService;
 
+    @ModelAttribute("member")
+    public MemberDto addMemberInModel(@Member MemberDto member) {
+        return member;
+    }
+
+
     // 메인 리스트 입장
     @GetMapping(EndPoint.ADOPTION_LIST)
-    public String adoptionMain(@RequestParam(required = false) String pageNumber, Model model){
+    public String adoptionMain(@RequestParam(required = false) Integer pageNumber, Model model){
         int pageSize = 10; // 한 페이지에 보여줄 데이터 개수
 
-        if (pageNumber == null) {
-            pageNumber = "1"; // 페이지 번호가 없거나 1보다 작으면 기본값으로 1 설정
+        if (pageNumber == null || pageNumber == 0) {
+            pageNumber = 1; // 페이지 번호가 없거나 1보다 작으면 기본값으로 1 설정
         }
-        int currentPage = Integer.parseInt(pageNumber);
-        Page<Adoption> listWithImagesAndMember = adoptionService.getAdoptionPageWithImagesAndMemberPages(currentPage,pageSize); // 전체 리스트
-        int count = listWithImagesAndMember.getTotalPages();
-        int BLOCK_COUNT = 10;
-        int temp = (currentPage-1)%BLOCK_COUNT;
-        int startPage = currentPage-temp;
-        int endPage = startPage + BLOCK_COUNT -1;
-        int pageCount = (count / pageSize) + (count % pageSize == 0 ? 0 : 1);
+        Page<Adoption> listWithImagesAndMember = adoptionService.getAdoptionPageWithImagesAndMemberPages(pageNumber,pageSize); // 전체 리스트
+        int count = listWithImagesAndMember.getTotalPages(); // 총 불러온 리스트의 갯수
+        int BLOCK_COUNT = 10; // 페이지 넘버 갯수
+        int temp = (pageNumber-1)%BLOCK_COUNT; //  페이지 넘버 갯수에 맞게 시작페이지 보이도록 계산해주는 변수
+        int startPage = pageNumber-temp; // 페이지네이션에서 보여줄 시작 페이지
+        int endPage = startPage + BLOCK_COUNT -1; // 페이지네이션에서 보여줄 끝 페이지
+//        int pageCount = (count / pageSize) + (count % pageSize == 0 ? 0 : 1); //
 
 
 
         model.addAttribute("list", listWithImagesAndMember);
         model.addAttribute("blockCount", BLOCK_COUNT);
         model.addAttribute("startPage", startPage);
-        model.addAttribute("pageNumber", currentPage);
+        model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("endPage", endPage);
-        model.addAttribute("pageCount", pageCount);
         model.addAttribute("count", count);
+//        model.addAttribute("pageCount", pageCount);
 
 
 
@@ -69,16 +76,21 @@ public class AdoptionController {
 
     // 글 쓰기 들어오기
     @GetMapping(EndPoint.ADOPTION_WRITE)
-    public String adoptionWrite(){
-
-        return ViewName.ADOPTION_WRITE;
+    public String adoptionWrite(@Member MemberDto member){
+        System.out.println("member:>>"+member);
+        if(member == null ){
+            return "redirect:"+EndPoint.ADOPTION_LIST;
+        }else{
+            return ViewName.ADOPTION_WRITE;
+        }
     }
 
 
     //  글쓰기 쓰고 post 보내는 영역
     @PostMapping(EndPoint.ADOPTION_WRITE)
     public String adoptionWritePost(@ModelAttribute @Validated AdoptionWriteDto adoptionWriteDto, BindingResult bindingResult,
-                                    @RequestParam(name="image") List<MultipartFile> file) {
+                                    @RequestParam(name="image") List<MultipartFile> file,
+                                    @Member MemberDto member) {
 
         if(bindingResult.hasErrors()){
             log.info("adoption_write binding error = {}", bindingResult);
@@ -86,13 +98,13 @@ public class AdoptionController {
             return "redirect:"+EndPoint.ADOPTION_WRITE;
         }
 
-        adoptionService.save(adoptionWriteDto, file);
+        adoptionService.save(adoptionWriteDto, file, member);
 
 //        return "redirect:/v1/adoption";
         return "redirect:"+EndPoint.ADOPTION_LIST;
     }
 
-    // 수정 하기 위해 들어오는 쓰기 영역
+    // 글쓰기 영역 adoption_write
     @GetMapping(EndPoint.ADOPTION_EDIT)
     public String adoptionEditGet(@PathVariable Long id, Model model){
 
@@ -105,12 +117,30 @@ public class AdoptionController {
         return ViewName.ADOPTION_EDIT;
     }
 
+    // 게시글 상세 읽기 영역
+    @GetMapping(EndPoint.ADOPTION_READ)
+    public String adoptionRead(@PathVariable(name="id") Long postId, Model model){
+        // 조회수 올리기
+        adoptionService.plusView(postId);
 
-    // 수정 하고 PUT 보내는 영역
+        Adoption adoption = adoptionService.findByIdWidhImageAndMember(postId);
+
+        AdoptionReadDto adoptionReadDto = new AdoptionReadDto(adoption, postId);
+        model.addAttribute("read", adoptionReadDto);
+
+        List<AdoptionComment> allComment = adoptionCommentService.findTopLevelCommentsByAdoptionId(postId);
+        model.addAttribute("comments", allComment);
+
+        return ViewName.ADOPTION_READ;
+    }
+
+
+    // 상세 게시글 수정 하고 Post 보내는 영역
     @PostMapping (EndPoint.ADOPTION_EDIT)
     public String adoptionEditPut(@ModelAttribute @Validated AdoptionEditDto adoptionEditDto, BindingResult bindingResult,
                                @RequestParam(name="image") List<MultipartFile> file,
-                                  @PathVariable Long id){
+                                  @PathVariable(name="id") Long postId,
+                                  @Member MemberDto memberDto){
 
         if(bindingResult.hasErrors()){
             log.info("adoption_edit binding error = {}", bindingResult);
@@ -118,8 +148,10 @@ public class AdoptionController {
 //            return EndPoint.ADOPTION_LIST;
         }
 
-        adoptionService.update(adoptionEditDto, file, id);
-
+        // 로그인한 아이디와 글쓴 아이디가 같으면 수정
+        if(adoptionEditDto.getAuthorId() == memberDto.getId()){
+            adoptionService.update(adoptionEditDto, file, postId);
+        }
 
         return "redirect:"+EndPoint.ADOPTION_LIST;
 //        return EndPoint.ADOPTION_LIST;
@@ -163,21 +195,7 @@ public class AdoptionController {
     }
     
     
-    // 게시글 상세 읽기 영역
-    @GetMapping(EndPoint.ADOPTION_READ)
-    public String adoptionRead(@PathVariable Long id, Model model){
-        // 조회수 올리기
-        adoptionService.plusView(id);
 
-         Adoption adoption = adoptionService.findByIdWidhImageAndMember(id);
-         AdoptionReadDto adoptionReadDto = new AdoptionReadDto(adoption, id);
-         model.addAttribute("read", adoptionReadDto);
-
-        List<AdoptionComment> allComment = adoptionCommentService.findTopLevelCommentsByAdoptionId(id);
-        model.addAttribute("comments", allComment);
-
-        return ViewName.ADOPTION_READ;
-    }
 
 
     // 댓글 쓰기 (읽기영역 내)

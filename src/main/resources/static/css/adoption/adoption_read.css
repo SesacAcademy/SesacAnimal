@@ -2,7 +2,7 @@
 /* 입양 게시판 글 읽기 내용 */
 .adoption-read {
     width:1200px;
-    margin:150px auto;
+    margin:100px auto 30px;
     padding:50px;
     border: 1px solid #ddd;
     font-family: 'Noto Sans KR', 'Roboto', sans-serif;
@@ -149,7 +149,7 @@
 .adoption-comments-read .comments-read{
     border: 1px solid #ddd;
     padding:25px;
-    background-color: #eee;
+    background-color: #f1f1f1;
 }
 
 .adoption-comments-read .comments-read .author{
@@ -338,7 +338,7 @@
     /*width:1200px;*/
     border: 1px solid #ddd;
     padding:50px;
-    background-color: #eee;
+    background-color: #f1f1f1;
     display: flex;
     align-items: flex-start;
 }

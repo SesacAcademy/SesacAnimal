@@ -1,6 +1,7 @@
 package com.project.animal.adoption.domain;
 
 import com.project.animal.adoption.dto.AdoptionEditDto;
+import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.global.common.entity.BaseEntity;
 import com.project.animal.member.domain.Member;
 import lombok.Getter;
@@ -95,6 +96,7 @@ public class Adoption extends BaseEntity {
         this.member = member;
     }
 
+
     public void setHit(int hit) {
         this.hit = hit;
     }
@@ -121,7 +123,7 @@ public class Adoption extends BaseEntity {
 
 
     // 입양 게시판 write시 생성자
-    public Adoption(String title, String breed, String gender, String age, String center, String neutered, String content, String color, String happenPlace, String specialMark) {
+    public Adoption(String title, String breed, String gender, String age, String center, String neutered, String content, String color, String happenPlace, String specialMark, Member member) {
         this.title=title;
         this.breed=breed;
         this.gender=gender;
@@ -134,6 +136,7 @@ public class Adoption extends BaseEntity {
         this.specialMark=specialMark;
         this.status="보호중";
         this.isActive=1;
+        this.member = member;
     }
 
 

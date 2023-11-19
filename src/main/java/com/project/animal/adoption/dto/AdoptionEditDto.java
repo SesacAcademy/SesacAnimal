@@ -15,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class AdoptionEditDto {
 
+    private Long authorId;
+
     private String author;
 
     private String title;
@@ -50,7 +52,8 @@ public class AdoptionEditDto {
 
 
     public AdoptionEditDto(Adoption adoption, Long postId){
-        this.author = adoption.getMember().getName();
+        this.authorId = adoption.getMember().getId();
+        this.author = adoption.getMember().getNickname();
         this.title =adoption.getTitle();
         this.path=adoption.getAdoptionImages();
         this.breed=adoption.getBreed();
@@ -68,7 +71,7 @@ public class AdoptionEditDto {
     }
 
     public AdoptionEditDto(Adoption adoption){
-        this.author = adoption.getMember().getName();
+        this.author = adoption.getMember().getNickname();
         this.title =adoption.getTitle();
         this.path=adoption.getAdoptionImages();
         this.breed=adoption.getBreed();

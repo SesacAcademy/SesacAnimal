@@ -7,6 +7,8 @@ import com.project.animal.adoption.dto.AdoptionWriteDto;
 import com.project.animal.adoption.repository.AdoptionImageRepository;
 import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.adoption.service.inf.AdoptionService;
+import com.project.animal.global.common.dto.MemberDto;
+import com.project.animal.member.exception.LoginException;
 import com.project.animal.sample.openApi.dto.OpenApiDto;
 import com.project.animal.member.domain.Member;
 import com.project.animal.member.repository.MemberRepository;
@@ -45,15 +47,14 @@ public class AdoptionServiceImpl implements AdoptionService {
     private final MemberRepository repository;
 
 
-    public void save(AdoptionWriteDto adoptionWriteDto, List<MultipartFile> files) {
+
+    public void save(AdoptionWriteDto adoptionWriteDto, List<MultipartFile> files, MemberDto memberDto) {
+        Member member = repository.findById(memberDto.getId()).orElseThrow(LoginException :: new);
+
 
         String serverFileName;
-        Adoption adoption = new Adoption(adoptionWriteDto.getTitle(), adoptionWriteDto.getBreed(), adoptionWriteDto.getGender(), adoptionWriteDto.getAge(), adoptionWriteDto.getCenter(), adoptionWriteDto.getNeutered(), adoptionWriteDto.getContent(), adoptionWriteDto.getColor(), adoptionWriteDto.getHappenPlace(), adoptionWriteDto.getSpecialMark());
+        Adoption adoption = new Adoption(adoptionWriteDto.getTitle(), adoptionWriteDto.getBreed(), adoptionWriteDto.getGender(), adoptionWriteDto.getAge(), adoptionWriteDto.getCenter(), adoptionWriteDto.getNeutered(), adoptionWriteDto.getContent(), adoptionWriteDto.getColor(), adoptionWriteDto.getHappenPlace(), adoptionWriteDto.getSpecialMark(), member);
 
-        // 나머지 Adoption 엔티티 설정 (멤버 강제주입 추후 변경 필요)
-        Optional<Member> member = repository.findById(2L);
-        Member member1 = member.orElseThrow();
-        adoption.setMember(member1);
         Adoption saved = adoptionRepository.save(adoption);
 
         for (MultipartFile file : files) {
@@ -63,6 +64,8 @@ public class AdoptionServiceImpl implements AdoptionService {
 
             adoptionImageRepository.save(adoptionImage);
         }
+
+
    }
 
 
@@ -106,11 +109,6 @@ public class AdoptionServiceImpl implements AdoptionService {
         Adoption adoption = adoptionRepository.findByIdWithImageAndMember(id);
 
         adoption.updateAdoption(adoptionEditDto);
-
-        // 나머지 Adoption 엔티티 설정 (멤버 강제주입 추후 변경 필요)
-        Optional<Member> member = repository.findById(2L);
-        Member member1 = member.get();
-        adoption.setMember(member1);
 
         Adoption saved = adoptionRepository.save(adoption);
 
@@ -181,7 +179,6 @@ public class AdoptionServiceImpl implements AdoptionService {
         for (OpenApiDto openApiDto : openApiDtoList) {
 
             Adoption adoption = new Adoption(openApiDto.getDesertionNo(), openApiDto.getKindCd(),openApiDto.getColorCd(),openApiDto.getAge(),openApiDto.getNoticeSdt(),openApiDto.getNoticeEdt(),openApiDto.getProcessState(),openApiDto.getSexCd(),openApiDto.getNeuterYn(), openApiDto.getCareAddr(),openApiDto.getCareNm(),openApiDto.getNoticeNo(),openApiDto.getSpecialMark(),openApiDto.getHappenPlace());
-
 
             Optional<Member> member = repository.findById(1L);
             Member member1 = member.get();

@@ -62,7 +62,11 @@
              <div class="write-view-area">
                  <p>
                      <button type="reset" class="reset-button">취소</button>
-                     <button type="submit" class="write-button" title="글쓰기">
+                     <button type="submit" class="write-button" title="글쓰기" th:if="${member != null}">
+                         <span class="material-symbols-outlined">edit_square</span>
+                         <span>글쓰기 저장</span>
+                     </button>
+                     <button type="submit" class="write-button" title="글쓰기" th:unless="${member != null}" onclick="checkLoginAlert()">
                          <span class="material-symbols-outlined">edit_square</span>
                          <span>글쓰기 저장</span>
                      </button>
@@ -70,8 +74,8 @@
              </div>
              <div class="contents-area" >
                  <p>
-                     <label for="author-input" class="title">작성자</label>
-                     <input id="author-input" type="text" class="desc"  name="author"/>
+                     <label for="author-input" class="title" >작성자</label>
+                     <input id="author-input" type="text" class="desc" th:name="${member.nickname}" th:value="${member != null} ? ${member.nickname} : '로그인을 해주세요.'" readonly/>
                  </p>
                  <p>
                      <label for="title-input">제목</label>

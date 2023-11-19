@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class AdoptionReadDto {
 
+    private Long authorId;
     private String author;
     private String title;
     private String breed;
@@ -33,7 +34,8 @@ public class AdoptionReadDto {
     private Long postId;
 
     public AdoptionReadDto(Adoption adoption, Long postId){
-        this.author=adoption.getMember().getName();
+        this.authorId=adoption.getMember().getId();
+        this.author=adoption.getMember().getNickname();
         this.title = adoption.getTitle();
         this.breed = adoption.getBreed();
         this.gender = adoption.getGender();

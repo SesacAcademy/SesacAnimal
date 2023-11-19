@@ -6,17 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "adoption_like")
-public class AdoptionLike extends BaseEntity {
+@Table(name = "adoption_post_like")
+public class AdoptionPostLike extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "adoption_like_id")
+    @Column(name = "adoption_post_like_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,6 +26,6 @@ public class AdoptionLike extends BaseEntity {
     @JoinColumn(name="member_id")
     private Member member;
 
-    private int status;
+    private int status; // 0: 안좋아요 , 1: 좋아요
 
 }
