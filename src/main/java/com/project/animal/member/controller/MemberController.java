@@ -5,10 +5,7 @@ import com.project.animal.global.common.constant.ViewName;
 import com.project.animal.global.common.dto.ResponseDto;
 import com.project.animal.member.domain.Member;
 import com.project.animal.member.dto.*;
-import com.project.animal.member.exception.InvalidCodeException;
-import com.project.animal.member.exception.NestedEmailException;
-import com.project.animal.member.exception.NestedNicknameException;
-import com.project.animal.member.exception.NotFoundException;
+import com.project.animal.member.exception.*;
 import com.project.animal.member.service.inf.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +47,7 @@ public class MemberController {
      * @return ResponseDto<String> (API 응답 DTO)
      * @throws NestedEmailException 이메일이 중복된 경우, 해당 예외 발생
      * @throws NestedNicknameException 닉네임이 중복된 경우, 해당 예외 발생
+     * @throws NestedPhoneException 중복된 번호인 경우, 해당 예외 발생
      * @throws InvalidCodeException 이메일 인증 번호가 유효하지 않은 경우, 해당 예외 발생
      */
     @ResponseBody

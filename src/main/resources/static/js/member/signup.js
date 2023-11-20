@@ -282,6 +282,12 @@ function signup() {
                 console.log(response.data);
                 alert(response.data.message);
             }
+
+            // 휴대폰 번호가 중복된 경우
+            if (response.data.context === "phone") {
+                console.log(response.data);
+                alert(response.data.message);
+            }
         }
     }).catch(function (error) {
         console.log(error);

@@ -11,7 +11,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmailAndType(String email, String type);
     Optional<Member> findByEmailAndTypeAndIsActive(String email, String type, Integer isActive);
     Optional<Member> findByNickname(String nickname);
+    Optional<Member> findByPhone(String phone);
     Optional<Member> findByNameAndPhone(String name, String phone);
-    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
-    Optional<Member> findByEmailAndNameAndPhone(String email, String name, String phone);
+    Optional<Member> findByEmailAndNameAndPhoneAndIsActive(String email, String name, String phone, Integer isActive);
 }

@@ -49,6 +49,14 @@ public class MemberControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(NestedPhoneException.class)
+    public ResponseDto<String> nestedPhoneException(NestedPhoneException e) {
+        log.error("휴대폰 번호 중복 에러 발생!", e);
+
+        return new ResponseDto<>(HttpStatus.CONFLICT.value(), "phone", e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(InvalidCodeException.class)
     public ResponseDto<String> invalidCodeException(InvalidCodeException e) {
         log.error("이메일 또는 문자 인증 확인 에러 발생", e);
