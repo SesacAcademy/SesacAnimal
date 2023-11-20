@@ -6,4 +6,5 @@ public class ViewName {
     public static final String READ_ONE = "/review/readReviewFinal";
     public static final String EDIT_ONE = "/review/updateReviewFinal";
     public static final String HOME = "redirect:/review";
+    public static final String REVIEW_LIST_BY_SEARCH = "/review/readListReviewBySearch";
 }

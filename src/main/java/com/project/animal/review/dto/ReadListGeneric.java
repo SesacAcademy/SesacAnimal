@@ -16,7 +16,7 @@ import java.util.List;
 public class ReadListGeneric<T> {
     private List<ReviewPostAllDto> list;
     private int totalPages;
-    private int currentPage; //현재 페이지
+    private int currentPage;
     private int maxPage = 10;
 
 }

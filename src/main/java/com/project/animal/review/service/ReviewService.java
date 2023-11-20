@@ -7,6 +7,7 @@ import com.project.animal.review.domain.ReviewPost;
 import com.project.animal.review.dto.*;
 import com.project.animal.review.exception.NotFoundException;
 import com.project.animal.review.exception.ReviewDtoNullException;
+import com.project.animal.review.repository.ReviewPostCustomRepository;
 import com.project.animal.review.repository.ReviewRepository;
 import io.minio.MinioClient;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,8 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
 
     private final MemberRepository memberRepository;
+
+    private final ReviewPostCustomRepository reviewPostCustomRepository;
 
 
     public ReviewPost createReviewPost(CreateReviewPostDto createReviewPostDto, MemberDto memberDto) {
@@ -79,14 +82,24 @@ public class ReviewService {
         ReadOneReviewDto readOneReviewDto = new ReadOneReviewDto(reviewPost);
         return readOneReviewDto;
     }
+//    @Transactional(readOnly = true)
+//    private ReadListGeneric readByName(Integer page, int size, String nickname) {
+//        Pageable pageable = createPageByCreatedAt(page,size);
+//        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByNickname(nickname,pageable);
+//        return entityToDtoByReadAll(postList);
+//    }
     @Transactional(readOnly = true)
     private ReadListGeneric readByName(Integer page, int size, String nickname) {
         Pageable pageable = createPageByCreatedAt(page,size);
-        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByNickname(nickname,pageable);
+        String type = "author";
+        Page<ReviewPost> postList = reviewPostCustomRepository.findAllWithMemberAndImageByTypeAndKeyword(type, nickname,pageable);
         return entityToDtoByReadAll(postList);
     }
+
     public ReadListGeneric<ReadListGeneric> readBySearch(String type, String keyword, Integer page, int size) {
         switch (type){
+//            case "view":
+//                return readByView(page ,size, keyword);
             case "author":
                 return readByName(page ,size, keyword);
             case "title":
