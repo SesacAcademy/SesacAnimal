@@ -17,8 +17,5 @@ public interface AdoptionPostLikeRepository extends JpaRepository<AdoptionPostLi
 //    AdoptionPostLike findByAdoptionAndMember(Long id, Member member);
     AdoptionPostLike findByAdoptionAndMember(Adoption adoption, Member member);
 
-    // 추가된 메소드
-    List<AdoptionPostLike> findByAdoptionIdAndStatus(Long adoptionId, int status);
-
 
 }

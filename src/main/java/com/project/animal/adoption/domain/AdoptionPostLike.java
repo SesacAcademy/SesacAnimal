@@ -29,11 +29,6 @@ public class AdoptionPostLike extends BaseEntity {
     @JoinColumn(name="member_id")
     private Member member;
 
-    private int status; // 0: 안좋아요 , 1: 좋아요
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 
     public void setMember(Member member) {
         this.member = member;
@@ -50,6 +45,5 @@ public class AdoptionPostLike extends BaseEntity {
     public AdoptionPostLike(Adoption adoption, Member member){
         this.adoption = adoption;
         this.member = member;
-        this.status=1;
     }
 }

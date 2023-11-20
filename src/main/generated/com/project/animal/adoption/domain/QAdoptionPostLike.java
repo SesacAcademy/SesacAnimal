@@ -33,8 +33,6 @@ public class QAdoptionPostLike extends EntityPathBase<AdoptionPostLike> {
 
     public final com.project.animal.member.domain.QMember member;
 
-    public final NumberPath<Integer> status = createNumber("status", Integer.class);
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 

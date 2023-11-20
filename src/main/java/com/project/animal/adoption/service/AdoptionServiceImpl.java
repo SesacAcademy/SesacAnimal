@@ -180,21 +180,8 @@ public class AdoptionServiceImpl implements AdoptionService {
         adoptionRepository.save(adoption);
     }
 
-    public AdoptionPostLike getPostLikeByAdoptionId(Long postId){
-        return adoptionPostLikeRepository.findByAdoptionId(postId);
-    }
 
-    public List<AdoptionPostLike> getLikesByAdoptionAndStatus(Long adoption_id, int status) {
-        return adoptionPostLikeRepository.findByAdoptionIdAndStatus(adoption_id, status);
-    }
 
-    public void adoptionPostLikeSave(AdoptionPostLike adoptionPostLike){
-        adoptionPostLikeRepository.save(adoptionPostLike);
-    }
-
-    public List<AdoptionPostLike> adoptionPostLikesAll (){
-        return adoptionPostLikeRepository.findAll();
-    }
 
     @Transactional
     public int likeAdoption(Long postId, MemberDto memberDto) {
@@ -209,8 +196,7 @@ public class AdoptionServiceImpl implements AdoptionService {
                 // 이미 좋아요를 눌렀다면 좋아요 취소
                 adoptionPostLikeRepository.delete(postLike);
                 adoptionPostLikeRepository.flush();
-//                postLike.setStatus(0);
-//                adoptionPostLikeRepository.save(postLike);
+
             } else {
                 // 좋아요를 누르지 않았다면 좋아요 추가
                 postLike = new AdoptionPostLike(adoption, member);
