@@ -33,7 +33,7 @@ public class ReviewPost extends BaseEntity {
 
     @Column(name = "view_count")
     private int viewCount;
-    @BatchSize(size = 1000)
+
     @OneToMany(mappedBy = "reviewPost")
     private List<ReviewImage> reviewImages = new ArrayList<>();
 
@@ -45,8 +45,6 @@ public class ReviewPost extends BaseEntity {
 
     @OneToMany(mappedBy = "reviewPost", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ReviewPostLike> reviewPostLikes = new ArrayList<>();
-
-
 
     public ReviewPost(CreateReviewPostDto createReviewPostDto, Member member) {
         this.content = createReviewPostDto.getContent();

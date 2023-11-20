@@ -16,17 +16,10 @@ import java.util.List;
 @NoArgsConstructor
 public class ReviewCommentRequestMapper {
 
-    public ReviewComment dtoToReviewComment(ReviewCommentDto dto, ReviewPost reviewPost) {
+    public ReviewComment dtoToReviewComment(ReviewCommentDto dto, ReviewPost reviewPost, Member member) {
         ReviewComment reviewComment = new ReviewComment();
-        Member member = memberNullCheck(reviewPost);
         reviewComment.dtoToEntity(dto, reviewPost, member);
         return reviewComment;
-    }
-    private Member memberNullCheck(ReviewPost reviewPost){
-        if (reviewPost.getMember() != null){
-            return reviewPost.getMember();
-        }
-        throw new NotFoundException("게시글을 작성한 멤버가 존재하지 않습니다. 게시글 아이디: "+ reviewPost.getId());
     }
     public ReviewCommentResponseDto reviewCommentToDto(ReviewComment reviewComment){
         Member member = memberNullCheckByComment(reviewComment);

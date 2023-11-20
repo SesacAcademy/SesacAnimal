@@ -2,6 +2,7 @@ package com.project.animal.review.dto;
 
 import com.project.animal.review.domain.ReviewImage;
 import com.project.animal.review.domain.ReviewPost;
+import com.project.animal.review.domain.ReviewPostLike;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,10 +26,13 @@ public class ReviewPostAllDto {
 
     private LocalDateTime updatedAt;
 
-    private String memberName;
+    private String nickname;
 
     private String url;
+
     private int commentCount;
+
+    private int postLikeCount;
 
     public ReviewPostAllDto(ReviewPost reviewPost){
         this.reviewPostId = reviewPost.getId();
@@ -36,23 +40,14 @@ public class ReviewPostAllDto {
         this.content = reviewPost.getContent();
         this.viewCount = reviewPost.getViewCount();
         this.updatedAt = reviewPost.getUpdatedAt();
-        this.memberName = reviewPost.getMember().getName();
+        this.nickname = reviewPost.getMember().getNickname();
         this.url = getActiveImage(reviewPost.getReviewImages());
         this.commentCount = reviewPost.getComments().size();
         this.viewCount = reviewPost.getViewCount();
+        this.postLikeCount = reviewPost.getReviewPostLikes().size();
     }
 
-    private String setList(List<ReviewImage> images) {
 
-        if (images.isEmpty()){
-            return null;
-        }
-        for (ReviewImage reviewImage:images) {
-            if (reviewImage.getIsActiveToDto()==1){
-                return reviewImage.getUrl();
-            }
-        } return null;
-    }
     private String getActiveImage(List<ReviewImage> images) {
         return images.stream()
                 .filter(image -> image.getIsActiveToDto() == 1)

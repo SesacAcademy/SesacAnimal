@@ -3,8 +3,7 @@ package com.project.animal.review.controller;
 import com.project.animal.global.common.annotation.Member;
 import com.project.animal.global.common.dto.ImageListDto;
 import com.project.animal.global.common.dto.MemberDto;
-import com.project.animal.member.repository.MemberRepository;
-import com.project.animal.review.constant.EndPoint;
+
 import com.project.animal.review.constant.ViewName;
 import com.project.animal.review.domain.ReviewPost;
 import com.project.animal.review.dto.*;

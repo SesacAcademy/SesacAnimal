@@ -1,12 +1,16 @@
 package com.project.animal.review.service;
 
 
+import com.project.animal.global.common.dto.MemberDto;
+import com.project.animal.member.domain.Member;
+import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.review.domain.ReviewComment;
 import com.project.animal.review.domain.ReviewPost;
 import com.project.animal.review.dto.ReviewCommentDto;
 
 import com.project.animal.review.dto.ReviewCommentDtoCount;
 import com.project.animal.review.dto.ReviewCommentResponseDto;
+import com.project.animal.review.exception.NotFoundException;
 import com.project.animal.review.exception.ReviewCommentException;
 
 import com.project.animal.review.repository.ReviewCommentCustomRepository;
@@ -28,14 +32,17 @@ public class ReviewCommentService {
     private final ReviewCommentRepository reviewCommentRepository;
     private final ReviewCommentRequestMapper reviewCommentRequestMapper;
     private final ReviewCommentCustomRepository reviewCommentCustomRepository;
+    private final MemberRepository memberRepository;
 
 
-    public void createComment(ReviewCommentDto commentDto, ReviewPost reviewPost) {
+    public void createComment(ReviewCommentDto commentDto, ReviewPost reviewPost, MemberDto memberDto) {
         dtoCheck(commentDto);
-        ReviewComment commentEntity = reviewCommentRequestMapper.dtoToReviewComment(commentDto, reviewPost);
+        Member member = findMember(memberDto);
+        ReviewComment commentEntity = reviewCommentRequestMapper.dtoToReviewComment(commentDto, reviewPost, member);
         if (commentDto.getParentId() != null){
             ReviewComment parentComment =findReviewComment(commentDto.getParentId());
             commentEntity.updateParent(parentComment);
+
         }
         reviewCommentRepository.save(commentEntity);
     }
@@ -51,6 +58,11 @@ public class ReviewCommentService {
     private ReviewComment findReviewComment(Long reviewCommentId){
         Optional<ReviewComment> reviewCommentOptional = reviewCommentRepository.findById(reviewCommentId);
         return commentCheckOptional(reviewCommentOptional, reviewCommentId);
+    }
+    private Member findMember(MemberDto memberDto){
+        Long memberId = memberDto.getId();
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        return optionalMember.orElseThrow(()->new NotFoundException("해당 id의 멤버를 조회할 수 없습니다."+memberId));
     }
 
     public ReviewCommentDtoCount readByReviewPostId(Long reviewPostId) {

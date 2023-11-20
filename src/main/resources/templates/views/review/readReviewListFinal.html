@@ -280,7 +280,7 @@ float:right;
                 <div class="text">
                     <div class="title" th:text="'제목 : ' + ${post.title}" style="font-size: 21px; font-weight: bold;">제목</div>
                     <br>
-                    <div class="nickname" th:text="'작성자 : ' + ${post.memberName}"style="font-size: 15px;">작성자</div>
+                    <div class="nickname" th:text="'작성자 : ' + ${post.nickname}"style="font-size: 15px;">작성자</div>
                     <br>
                     <div class="content" th:text="'내용 : ' + ${post.content}"style="font-size: 18px;">내용</div>
                 </div>
@@ -294,29 +294,36 @@ float:right;
 
                 조회수: <span th:text="${post.viewCount}"></span>
                 댓글수: <span th:text="${post.commentCount}"></span>
-                좋아요: <span>10</span>
+                좋아요: <span th:text="${post.postLikeCount}"> </span>
             </div>
         </a>
     </div>
 </div>
 <div class="center-align">
-<!--    style="display: flex; list-style: none;"-->
-    <ul class="pagination">
+
+    <ul class="pagination" th:if="${listDto.totalPages > 1}">
         <!-- 이전 페이지 링크 -->
-        <li th:unless="${listDto.pageNumber == 0}">
-            <a th:href="@{/review(page=${listDto.pageNumber})}"></a>
+        <li th:if="${listDto.currentPage / 10 * 10 - 1 >= 0}">
+            <a th:href="@{/review(page=${listDto.currentPage / 10 * 10 - 10})}">이전</a>
         </li>
 
         <!-- 페이지 번호 링크 -->
-        <li th:each="num : ${#numbers.sequence(1, listDto.count)}" style="margin: 0 10px;">
-            <a th:href="@{/review(page=${num-1})}" th:text="${num}" th:class="${num == listDto.pageNumber+1 ? 'active' : ''}"></a>
+        <li th:each="num : ${#numbers.sequence(listDto.currentPage / 10 * 10 + 1, (listDto.currentPage / 10 + 1) * 10)}"
+            th:if="${num <= listDto.totalPages}" style="margin: 0 10px;">
+            <a th:href="@{/review(page=${num-1})}" th:text="${num}" th:class="${num == listDto.currentPage+1 ? 'active' : ''}"></a>
         </li>
 
-        <!-- 다음 페이지 링크 -->
-        <li th:unless="${listDto.pageNumber+1 == listDto.count}">
-            <a th:href="@{/review(page=${listDto.pageNumber+1})}"></a>
+        <!-- 더보기 링크 -->
+        <li th:if="${(listDto.currentPage / 10 + 1) * 10 + 1 <= listDto.totalPages}">
+            <a th:href="@{/review(page=${(listDto.currentPage / 10 + 1) * 10})}">더보기</a>
         </li>
+
     </ul>
+
+
+
+
+
 </div>
 
 <th:block th:replace="../fragments/footer/footer :: footer"></th:block>

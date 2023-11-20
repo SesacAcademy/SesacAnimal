@@ -31,7 +31,7 @@ public class ReviewPostLikeService {
         likeStatusDecide(reviewPostLikeOptional,memberId, reviewPostId);
     }
     private void likeStatusDecide(Optional<ReviewPostLike> likeOptional, Long memberId, Long reviewPostId){
-      likeOptional.ifPresent(like->statusChange(like));
+      likeOptional.ifPresent(like->delete(like));
       likeOptional.orElseGet(()->{
           insertLike(memberId, reviewPostId);
           return null;
@@ -39,13 +39,12 @@ public class ReviewPostLikeService {
     }
     private void insertLike(Long memberId, Long reviewPostId) {
         Member member = findMemberById(memberId);
-        ReviewPost reviewPost = reviewService.findReviewPostById(reviewPostId);
+        ReviewPost reviewPost = reviewService.findById(reviewPostId);
         ReviewPostLike reviewPostLike = reviewPostLikeMapper.createEntity(member, reviewPost);
         reviewPostLikeRepository.save(reviewPostLike);
     }
-    private void statusChange(ReviewPostLike reviewPostLike){
-       int i = reviewPostLike.getIsActive() == 1 ? 0 : 1;
-       reviewPostLike.changeIsActive(i);
+    private void delete(ReviewPostLike reviewPostLike){
+        reviewPostLikeRepository.delete(reviewPostLike);
     }
     private Member findMemberById(Long memberId){
         Optional<Member> member = memberRepository.findById(memberId);

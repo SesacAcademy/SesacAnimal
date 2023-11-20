@@ -24,7 +24,7 @@ public class ReadOneReviewDto {
     private Map<Long,String> urls = new LinkedHashMap<>();
     private Long reviewPostId;
     private Long memberId;
-    private int likeCount;
+    private int postLikeCount;
 
     public ReadOneReviewDto(ReviewPost reviewPost) {
         this.title = reviewPost.getTitle();
@@ -34,7 +34,7 @@ public class ReadOneReviewDto {
         this.updatedAt = reviewPost.getUpdatedAt();
         this.content = reviewPost.getContent();
         this.viewCount = reviewPost.getViewCount();
-        this.likeCount = reviewPost.getReviewPostLikes().size();
+        this.postLikeCount = reviewPost.getReviewPostLikes().size();
         this.urls = setIdAndUrlAndCheckActive(reviewPost.getReviewImages());
     }
 

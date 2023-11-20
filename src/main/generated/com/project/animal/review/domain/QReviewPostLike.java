@@ -29,8 +29,6 @@ public class QReviewPostLike extends EntityPathBase<ReviewPostLike> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Integer> isActive = createNumber("isActive", Integer.class);
-
     public final com.project.animal.member.domain.QMember member;
 
     public final QReviewPost reviewPost;

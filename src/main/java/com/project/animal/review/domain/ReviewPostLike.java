@@ -17,8 +17,6 @@ public class ReviewPostLike extends BaseEntity {
     @Column(name = "review_post_like_id")
     private Long id;
 
-    private int isActive;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -30,10 +28,10 @@ public class ReviewPostLike extends BaseEntity {
     public ReviewPostLike(Member member, ReviewPost reviewPost) {
         this.member = member;
         this.reviewPost = reviewPost;
-        isActive = 1;
+//        isActive = 1;
     }
 
-    public void changeIsActive(int i) {
-        this.isActive = i;
-    }
+//    public void changeIsActive(int i) {
+//        this.isActive = i;
+//    }
 }

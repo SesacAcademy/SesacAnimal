@@ -53,15 +53,15 @@ public class ReviewService {
     }
     private ReadListGeneric entityToDtoByReadAll(Page<ReviewPost> entity) {
         int totalPages =  entity.getTotalPages();
-        int pageNum = entity.getNumber();
+        int currentPage = entity.getNumber();
         List<ReviewPostAllDto> dtoList = entity.getContent()
                 .stream()
                 .map(reviewPost -> new ReviewPostAllDto(reviewPost))
                 .collect(Collectors.toList());
         return ReadListGeneric.builder()
                 .list(dtoList)
-                .count(totalPages)
-                .pageNumber(pageNum)
+                .totalPages(totalPages)
+                .currentPage(currentPage)
                 .build();
     }
     public ReadOneReviewDto readOne(Long reviewPostId) {
@@ -82,7 +82,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     private ReadListGeneric readByName(Integer page, int size, String nickname) {
         Pageable pageable = createPageByCreatedAt(page,size);
-        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByNickame(nickname,pageable);
+        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByNickname(nickname,pageable);
         return entityToDtoByReadAll(postList);
     }
     public ReadListGeneric<ReadListGeneric> readBySearch(String type, String keyword, Integer page, int size) {
@@ -135,17 +135,13 @@ public class ReviewService {
         return reviewPost.orElseThrow(
                 ()-> new NotFoundException("해당 게시글의 id가 유효하지 않습니다 유효하지 않은 reviewPostId: "+reviewPostId));
     }
-    public ReviewPost findPostAndMember(Long reviewPostId){
-        Optional<ReviewPost> reviewPost = reviewRepository.findByIdWithMember(reviewPostId);
+    public ReviewPost findById(Long reviewPostId){
+        Optional<ReviewPost> reviewPost = reviewRepository.findById(reviewPostId);
         return postCheckOptional(reviewPost, reviewPostId);
     }
     private Member findMemberById(MemberDto memberDto){
         Long memberDtoId = memberDto.getId();
         Optional<Member> optionalMember = memberRepository.findById(memberDtoId);
         return optionalMember.orElseThrow(()->new NotFoundException("해당 게시글의 유효 id가 유효하지 않습니다. 유효하지 않은 memberId: "+ memberDtoId));
-    }
-    public ReviewPost findReviewPostById(Long reviewPostId){
-        Optional<ReviewPost> optionalReviewPost = reviewRepository.findById(reviewPostId);
-        return checkOptional(optionalReviewPost);
     }
 }
