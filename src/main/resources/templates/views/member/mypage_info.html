@@ -99,7 +99,7 @@
 
             <section class="member-mypage-section mb-4">
                 <div class="member-mypage-info-content mt-4">
-                    <div class="member-mypage-info-box mt-4">
+                    <div class="member-mypage-info-box mt-4 mb-3">
                         <h2>회원 정보</h2>
 
                         <div class="input-group mb-3">
@@ -114,26 +114,21 @@
 
                         <div class="input-group mb-3">
                             <span class="input-group-text member-mypage-password-input">닉네임</span>
-                            <input type="text" class="form-control" th:value="${memberInfo['nickname']}" aria-label="Username" aria-describedby="basic-addon1">
-                            <button class="btn btn-outline-secondary" type="button">닉네임 변경</button>
+                            <input type="text" class="form-control" th:value="${memberInfo['nickname']}" aria-label="Username" aria-describedby="basic-addon1" disabled>
                         </div>
 
                         <div class="input-group mb-3">
                             <span class="input-group-text member-mypage-password-input">휴대폰 번호</span>
                             <input type="text" class="form-control" th:value="${memberInfo['phone']}" aria-label="Username" aria-describedby="basic-addon1" disabled>
                         </div>
-
+                        <button id="member-mypage-signout-button" type="button" class="btn btn-danger">회원 탈퇴</button>
                     </div>
                 </div>
             </section>
         </div>
 
-        <!--<span th:text="${memberInfo['name']}"></span>
-                    <span></span>
-                    <span></span>-->
-
         <!-- Footer 설정 -->
         <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
-<!--        <script th:src="@{/js/member/login.js}"></script>-->
+        <script th:src="@{/js/member/mypage_info.js}"></script>
     </body>
 </html>

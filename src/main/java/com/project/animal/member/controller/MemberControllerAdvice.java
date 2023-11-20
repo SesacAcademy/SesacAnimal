@@ -21,7 +21,7 @@ import static com.project.animal.global.common.constant.TokenTypeValue.USER_EMAI
 import static com.project.animal.global.common.constant.TokenTypeValue.USER_NICKNAME;
 
 @Slf4j
-@RestControllerAdvice(assignableTypes = {MemberController.class, LoginController.class})
+@RestControllerAdvice(assignableTypes = {MemberController.class, LoginController.class, MyPageController.class})
 public class MemberControllerAdvice {
 
     @ResponseStatus(HttpStatus.OK)
@@ -90,6 +90,14 @@ public class MemberControllerAdvice {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(NotFoundException.class)
     public ResponseDto<String> NotFoundException(NotFoundException e) {
+        log.error(e.getMessage());
+
+        return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(WrongPasswordException.class)
+    public ResponseDto<String> wrongPasswordException(WrongPasswordException e) {
         log.error(e.getMessage());
 
         return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());

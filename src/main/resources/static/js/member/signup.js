@@ -61,10 +61,10 @@ function createToken() {
 
     const email = document.getElementById('member-email').value;
 
-    /*if (!isValidEmail(email)) {
+    if (!isValidEmail(email)) {
         alert("이메일 형식이 틀렸습니다.");
         return;
-    }*/
+    }
 
     emailAuthButton.style.display = 'none';
 
