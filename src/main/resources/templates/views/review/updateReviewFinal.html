@@ -222,35 +222,35 @@ width:10%;
     <div class="view-count" th:text="'조회수: ' + ${reviewDto.readOneReviewDto.viewCount}"></div>
     <div class="divider"></div>
     <p th:text="'댓글 수: ' + ${commentCount}"></p>
-    <div class="like">좋아요 count</div>
+    <div class="like-count" th:text="'좋아요 수: ' + ${reviewDto.readOneReviewDto.postLikeCount}"></div>
 
   </div>
 </form>
 </div>
-<div class="comment-section">
+<!--<div class="comment-section">-->
 
 
 
-  <div th:each="comment : ${reviewDto.reviewCommentResponseDto}" class="comment">
-    <div class="top">
-      <div class="title">
-        <p>Nickname: <span th:text="${comment.nickname}"></span></p>
-        <p>Content: <span th:text="${comment.content}"></span></p>
-      </div>
+<!--  <div th:each="comment : ${reviewDto.reviewCommentResponseDto}" class="comment">-->
+<!--    <div class="top">-->
+<!--      <div class="title">-->
+<!--        <p>Nickname: <span th:text="${comment.nickname}"></span></p>-->
+<!--        <p>Content: <span th:text="${comment.content}"></span></p>-->
+<!--      </div>-->
 
-    </div>
+<!--    </div>-->
 
-    <div th:if="${!#lists.isEmpty(comment.children)}" class="reply">
-      <div th:each="reply : ${comment.children}" class="top">
-        <div class="title">
-          <p>Nickname: <span th:text="${reply.nickname}"></span></p>
-          <p>Content: <span th:text="${reply.content}"></span></p>
-        </div>
-        </div>
-      </div>
+<!--    <div th:if="${!#lists.isEmpty(comment.children)}" class="reply">-->
+<!--      <div th:each="reply : ${comment.children}" class="top">-->
+<!--        <div class="title">-->
+<!--          <p>Nickname: <span th:text="${reply.nickname}"></span></p>-->
+<!--          <p>Content: <span th:text="${reply.content}"></span></p>-->
+<!--        </div>-->
+<!--        </div>-->
+<!--      </div>-->
 
-    </div>
-  </div>
+<!--    </div>-->
+<!--  </div>-->
 </div>
 
 <th:block th:replace="../fragments/footer/footer :: footer"></th:block>

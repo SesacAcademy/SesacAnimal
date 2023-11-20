@@ -33,17 +33,18 @@ public class ReviewPost extends BaseEntity {
 
     @Column(name = "view_count")
     private int viewCount;
-    @BatchSize(size = 1000)
-    @OneToMany(mappedBy = "reviewPost", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "reviewPost")
     private List<ReviewImage> reviewImages = new ArrayList<>();
 
     @Column(name = "is_active")
     private int isActive;
 
-    @BatchSize(size = 1000)
-    @OneToMany(mappedBy = "reviewPost", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "reviewPost", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ReviewComment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "reviewPost", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<ReviewPostLike> reviewPostLikes = new ArrayList<>();
 
     public ReviewPost(CreateReviewPostDto createReviewPostDto, Member member) {
         this.content = createReviewPostDto.getContent();

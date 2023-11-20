@@ -217,11 +217,17 @@ width:10%;
         게시물 내용
     </div>
 
+    <form action="/review/like/add" method="post">
+        <input type="hidden" name="reviewPostId" th:value="${reviewDto.readOneReviewDto.reviewPostId}" />
+        <button type="submit" class="like-button" th:if="${member != null}">좋아요</button>
+    </form>
+
 
     <div class="statistics">
         <div class="view-count" th:text="'조회수: ' + ${reviewDto.readOneReviewDto.viewCount}"></div>
+        <div class="like-count" th:text="'좋아요 수: ' + ${reviewDto.readOneReviewDto.postLikeCount}"></div>
     <div class="divider"></div>
-        <div class="like">좋아요 count</div>
+
         <p th:text="'댓글 수: ' + ${commentCount}"></p>
 
 </div>
@@ -237,12 +243,12 @@ width:10%;
         </button>
     </form>
 
-
-    <textarea placeholder="로그인을 해야 댓글 작성이 가능합니다. 로그인 하시겠습니까?" class="comment-input" name="content" th:readonly="${member == null}"></textarea>
+<div th:if="${member == null}">
+    <textarea placeholder="로그인을 해야 댓글 작성이 가능합니다. 로그인 하시겠습니까?" class="comment-input" name="content"></textarea>
     <button type="button" class="comment-submit-button">
         <i class="fas fa-pencil-alt"></i>
     </button>
-
+</div>
 
     <div th:each="comment : ${reviewDto.reviewCommentResponseDto}" class="comment">
         <div class="top">
@@ -262,8 +268,8 @@ width:10%;
                         <i class="fas fa-pencil-alt"></i>
                     </button>
                 </form>
-                <div id="editDeleteButtons" style="display: block;">
-                    <button th:attr="onclick='showEditForm(this, \'' + ${comment.content} + '\')'" th:if="${member != null && member.id == comment.memberId}">댓글 수정</button>
+                <div id="editDeleteButtons" style="display: block;" th:if="${member != null && member.id == comment.memberId}">
+                    <button th:attr="onclick='showEditForm(this, \'' + ${comment.content} + '\')'" >댓글 수정</button>
                     <form th:action="@{/review/comment/update}" id="editForm" method="post" style="display: none; text-align: center;" >
                         <input type="hidden" th:value="${comment.reviewCommentId}" name="reviewCommentId" />
                         <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />

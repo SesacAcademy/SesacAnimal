@@ -3,8 +3,7 @@ package com.project.animal.review.controller;
 import com.project.animal.global.common.annotation.Member;
 import com.project.animal.global.common.dto.ImageListDto;
 import com.project.animal.global.common.dto.MemberDto;
-import com.project.animal.member.repository.MemberRepository;
-import com.project.animal.review.constant.EndPoint;
+
 import com.project.animal.review.constant.ViewName;
 import com.project.animal.review.domain.ReviewPost;
 import com.project.animal.review.dto.*;
@@ -90,7 +89,9 @@ public class ReviewController {
 
         ReadListGeneric<ReadListGeneric> viewDto = reviewService.readBySearch(type, keyword, page, size);
         model.addAttribute("listDto", viewDto);
-        return ViewName.REVIEW_LIST;
+        model.addAttribute("type", type);         // 검색 유형 추가
+        model.addAttribute("keyword", keyword);
+        return ViewName.REVIEW_LIST_BY_SEARCH;
     }
     @GetMapping("/edit")
     public String edit(@RequestParam(name = "reviewPostId") Long reviewPostId, Model model){
