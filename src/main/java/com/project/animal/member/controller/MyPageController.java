@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 import static com.project.animal.global.common.constant.ViewName.MYPAGE_VIEW;
 
 @Slf4j
@@ -47,16 +49,15 @@ public class MyPageController {
      * @return
      */
     @ResponseBody
-    @DeleteMapping("/v1/api/member/mypage/info")
+    @DeleteMapping("/v1/api/member")
     @ResponseStatus(HttpStatus.OK)
-    public String deleteMember(@RequestBody @Validated ChangePasswordFormDto changePasswordFormDto) {
-//    public ResponseDto<String> deleteMember(@RequestBody @Validated ChangePasswordFormDto changePasswordFormDto) {
+    public ResponseDto<String> deleteMember(@Member MemberDto memberDto, HttpServletResponse response) {
+        // 회원 탈퇴
+        myPageService.deleteMember(memberDto, response);
 
-        System.out.println(changePasswordFormDto.toString());
+        log.info("{} 계정이 회원 탈퇴 되었습니다.", memberDto.getEmail());
 
-
-        return "ok";
-//        return new ResponseDto<>(HttpStatus.OK.value(), "null", "회원가입 완료");
+        return new ResponseDto<>(HttpStatus.OK.value(), "null", "회원 탈퇴 완료");
     }
 
 
@@ -67,14 +68,14 @@ public class MyPageController {
     }
 
     @ResponseBody
-    @PatchMapping("/v1/member/mypage/password")
+    @PatchMapping("/v1/api/member/mypage/password")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDto<String> changePassword(@RequestBody @Validated ChangePasswordFormDto changePasswordFormDto,
                                  @Member MemberDto memberDto) {
         // 비밀번호 변경
         myPageService.changePassword(changePasswordFormDto, memberDto);
 
-        log.info("{} 메일의 비밀번호를 변경하였습니다.", memberDto.getEmail());
+        log.info("{} 계정의 비밀번호를 변경하였습니다.", memberDto.getEmail());
 
         return new ResponseDto<>(HttpStatus.OK.value(), "null", "비밀번호 변경 완료");
     }

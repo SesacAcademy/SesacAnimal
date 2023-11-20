@@ -66,7 +66,7 @@ public class LoginServiceImp implements LoginService {
     @Transactional
     public TokenDto login(LoginFormDto loginFormDto) {
         // 회원 조회
-        Optional<Member> findMember = memberRepository.findByEmailAndType(loginFormDto.getEmail(), MAIL.name());
+        Optional<Member> findMember = memberRepository.findByEmailAndTypeAndIsActive(loginFormDto.getEmail(), MAIL.name(), 1);
         log.info("LoginService - 회원 조회 {}", loginFormDto.getEmail());
 
         // 회원이 존재하지 않는 경우, 예외 발생

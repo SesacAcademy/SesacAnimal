@@ -35,7 +35,7 @@ function changePassword() {
 
     const config = {"Content-Type": 'application/json'};
 
-    axios.patch("/v1/member/mypage/password", {
+    axios.patch("/v1/api/member/mypage/password", {
         'oldPassword': inputOldPassword,
         'newPassword': inputNewPassword
     }, config).then(function (response) {
@@ -50,7 +50,8 @@ function changePassword() {
             console.log(response)
 
             if (response.data.context === null) {
-                alert(response.data.message);
+                // alert(response.data.message);
+                alert("기존 비밀번호가 틀렸습니다.");
             }
 
             else {

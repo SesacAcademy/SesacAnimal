@@ -7,6 +7,7 @@ import com.project.animal.member.exception.LoginException;
 import com.project.animal.member.exception.NotFoundException;
 import com.project.animal.member.exception.WrongPasswordException;
 import com.project.animal.member.repository.MemberRepository;
+import com.project.animal.member.service.inf.LoginService;
 import com.project.animal.member.service.inf.MyPageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Slf4j
@@ -23,11 +25,26 @@ public class MyPageServiceImp implements MyPageService {
 
     private final MemberRepository memberRepository;
 
+    private final LoginService loginService;
+
     private final PasswordEncoder encoder;
 
     @Override
     public Member getMember(MemberDto memberDto) {
         return memberRepository.findById(memberDto.getId()).orElseThrow(NotFoundException::new);
+    }
+
+    @Override
+    @Transactional
+    public void deleteMember(MemberDto memberDto, HttpServletResponse response) {
+        // Member 객체 조회
+        Member findMember = memberRepository.findById(memberDto.getId()).orElseThrow(NotFoundException::new);
+
+        // Member Status 변경 (삭제 대기)
+        findMember.setIsActive(0);
+        
+        // 쿠키 삭제
+        loginService.logout(memberDto, response);
     }
 
     @Override

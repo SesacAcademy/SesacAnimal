@@ -8,24 +8,28 @@ function signout() {
 
     if (checkSignout) {
 
-        axios.delete("/v1/api/auth/phone", {
-            'email': email,
-            'name': name,
-            'phone': phone,
-            'authCode' : authCode
-        }, config).then(function (response) {
+        const config = {"Content-Type": 'application/json'};
+
+        axios.delete("/v1/api/member", null, config)
+        .then(function (response) {
             console.log(response)
 
             if (response.data.statusCode === 200) {
-
+                alert("회원 탈퇴에 성공하였습니다.");
+                location.href="/v1/auth/login";
             }
 
+            else if (response.data.statusCode === 400) {
+                console.log(response)
 
+                if (response.data.context === null) {
+                    alert(response.data.message);
+                }
+            }
 
         }).catch(function (error) {
             console.log(error);
-
-            alert('비밀번호 찾기에 실패하였습니다.');
+            alert('회원 탈퇴에 실패하였습니다.');
         });
     }
 }
