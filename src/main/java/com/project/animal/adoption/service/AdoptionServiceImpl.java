@@ -32,9 +32,7 @@ import java.rmi.ServerException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -190,7 +188,7 @@ public class AdoptionServiceImpl implements AdoptionService {
         return adoptionPostLikeRepository.findByAdoptionIdAndStatus(adoption_id, status);
     }
 
-    public void adoptionPostListSave(AdoptionPostLike adoptionPostLike){
+    public void adoptionPostLikeSave(AdoptionPostLike adoptionPostLike){
         adoptionPostLikeRepository.save(adoptionPostLike);
     }
 
@@ -200,26 +198,44 @@ public class AdoptionServiceImpl implements AdoptionService {
 
     @Transactional
     public int likeAdoption(Long postId, MemberDto memberDto) {
+        Map<String,Object> responseBody = new HashMap<>();
         // 좋아요 로직 수행
         Adoption adoption = adoptionRepository.findById(postId).orElse(null);
         if (adoption != null) {
             Member member = repository.findById(memberDto.getId()).orElseThrow();
-            AdoptionPostLike postLike = adoptionPostLikeRepository.findByAdoptionAndMember(postId, member);
+            AdoptionPostLike postLike = adoptionPostLikeRepository.findByAdoptionAndMember(adoption, member);
 
             if (postLike != null) {
                 // 이미 좋아요를 눌렀다면 좋아요 취소
-                postLike.setStatus(0);
-                adoptionPostLikeRepository.save(postLike);
+                adoptionPostLikeRepository.delete(postLike);
+                adoptionPostLikeRepository.flush();
+//                postLike.setStatus(0);
+//                adoptionPostLikeRepository.save(postLike);
             } else {
                 // 좋아요를 누르지 않았다면 좋아요 추가
-//                postLike = new AdoptionPostLike(adoption, member);
-                postLike.setStatus(1);
+                postLike = new AdoptionPostLike(adoption, member);
+
                 adoptionPostLikeRepository.save(postLike);
             }
         }
+        // 업데이트된 상태 반환
+//        responseBody.put("status", getPostLikeByAdoptionId(postId).getStatus());
 
+//        responseBody.put("likeCount", );
         // 업데이트된 좋아요 수 반환
         return adoption.getAdoptionPostLikes().size();
+    }
+
+    public boolean isAdoptionLikedByUser(Long postId, Long memberId) {
+        Adoption adoption = adoptionRepository.findById(postId).orElse(null);
+
+        if (adoption != null) {
+            Member member = repository.findById(memberId).orElseThrow();
+            AdoptionPostLike postLike = adoptionPostLikeRepository.findByAdoptionAndMember(adoption, member);
+            return postLike != null;
+        }
+
+        return false;
     }
 
     public void apiSave(List<OpenApiDto> openApiDtoList) {
@@ -262,6 +278,7 @@ public class AdoptionServiceImpl implements AdoptionService {
         return adoptionRepository.findAllWithImagesAndMember();
 
     }
+
 
 
 }

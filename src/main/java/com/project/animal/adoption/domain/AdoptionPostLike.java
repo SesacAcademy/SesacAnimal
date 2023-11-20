@@ -35,8 +35,18 @@ public class AdoptionPostLike extends BaseEntity {
         this.status = status;
     }
 
+    public void setMember(Member member) {
+        this.member = member;
+    }
 
-
+    public void setMember(MemberDto memberDto) {
+        Member member1 = new Member();
+        member1.setEmail(memberDto.getEmail());
+        member1.setId(memberDto.getId());
+        member1.setNickname(memberDto.getNickname());
+        member1.setRole(memberDto.getRole());
+        this.member = member1;
+    }
     public AdoptionPostLike(Adoption adoption, Member member){
         this.adoption = adoption;
         this.member = member;

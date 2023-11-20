@@ -59,15 +59,6 @@
 <!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>-->
 
     <title>새싹 애니멀</title>
-    <style>
-        .red{
-            color:red;
-        }
-
-        .black{
-            color:black;
-        }
-    </style>
 </head>
 <body>
  <th:block th:replace="../fragments/header/header :: header"></th:block>
@@ -105,7 +96,7 @@
 
          <section class="adoption-board">
              <ul id="adoption-list">
-                 <li th:if="${adoption.isActive ==1}" th:each="adoption : ${list.getContent()}" th:data-adoption-like="${adoption.adoptionPostLikes}">
+                 <li th:if="${adoption.isActive ==1}" th:each="adoption, status : ${list.getContent()}" >
                      <a th:href="@{'/v1/adoption/' + ${adoption.id}}">
                          <div class="image-area">
 
@@ -124,8 +115,7 @@
                                  </p>
                                  <p class="like" th:if="${member != null}" >
                                      <input type="hidden" name="postId" th:value="${adoption.id}" />
-                                     <input type="hidden" name="like" />
-                                     <span class="material-symbols-outlined like-icon" >heart_plus</span><span class="like-count" th:text="${adoption.adoptionPostLikes.size()}"></span>
+                                     <span class="material-symbols-outlined like-icon" th:classappend="${likeStatusList[status.index] ? 'red' : 'black'}">heart_plus</span><span class="like-count" th:text="${adoption.adoptionPostLikes.size()}"></span>
                                  </p>
 
                              </div>

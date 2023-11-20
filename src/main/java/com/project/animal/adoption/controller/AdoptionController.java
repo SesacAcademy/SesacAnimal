@@ -5,6 +5,7 @@ import com.project.animal.adoption.domain.AdoptionComment;
 import com.project.animal.adoption.domain.AdoptionImage;
 import com.project.animal.adoption.domain.AdoptionPostLike;
 import com.project.animal.adoption.dto.*;
+import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.adoption.service.AdoptionCommentServiceImpl;
 import com.project.animal.adoption.service.AdoptionServiceImpl;
 import com.project.animal.global.common.annotation.Member;
@@ -24,9 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,6 +33,7 @@ import java.util.Map;
 public class AdoptionController {
 
     private final AdoptionServiceImpl adoptionService;
+    private final AdoptionRepository adoptionRepository;
     private final AdoptionCommentServiceImpl adoptionCommentService;
     private final MemberRepository repository;
 
@@ -47,7 +47,8 @@ public class AdoptionController {
 
     // 메인 리스트 입장
     @GetMapping(EndPoint.ADOPTION_LIST)
-    public String adoptionMainGet(@RequestParam(required = false) Integer pageNumber, Model model){
+    public String adoptionMainGet(@RequestParam(required = false) Integer pageNumber, Model model,
+                                  @Member MemberDto memberDto){
         int pageSize = 10; // 한 페이지에 보여줄 데이터 개수
 
         if (pageNumber == null || pageNumber == 0) {
@@ -69,10 +70,17 @@ public class AdoptionController {
         model.addAttribute("endPage", endPage);
         model.addAttribute("count", count);
 //        model.addAttribute("pageCount", pageCount);
+    
+        // 좋아요 리스트를 체크하기 위한 로직
+        List<Boolean> likeStatusList = new ArrayList<>();
+        for (Adoption adoption : listWithImagesAndMember.getContent()) {
+            boolean liked = adoptionService.isAdoptionLikedByUser(adoption.getId(), memberDto.getId());
+            likeStatusList.add(liked);
+        }
 
-        List<AdoptionPostLike> adoptionPostLikes = adoptionService.adoptionPostLikesAll();
+        model.addAttribute("likeStatusList", likeStatusList);
 
-        model.addAttribute("postLikes",adoptionPostLikes);
+
 
         return ViewName.ADOPTION_LIST;
     }
@@ -84,36 +92,19 @@ public class AdoptionController {
 
         Long postId = Long.valueOf(requestBody.get("postId"));
         Map<String, Object> responseBody = new HashMap<>();
-        Adoption adoption = adoptionService.findById(postId).orElseThrow();
-        AdoptionPostLike postLikeByAdoptionId = adoptionService.getPostLikeByAdoptionId(postId);
-//        List<AdoptionPostLike> likesByAdoptionAndStatus = adoptionService.getLikesByAdoptionAndStatus(postId, 1);
 
-        if(postLikeByAdoptionId == null){
-            postLikeByAdoptionId = new AdoptionPostLike(adoption, repository.findById(memberDto.getId()).orElseThrow());
+        Optional<Adoption> adoption = adoptionRepository.findById(postId);
 
-            adoptionService.adoptionPostListSave(postLikeByAdoptionId);
-            adoptionService.simpleSave(adoption);
-//            return responseBody;
-        } else if(postLikeByAdoptionId != null){
-            System.out.println("data:>>"+postLikeByAdoptionId.getStatus());
-            // 상태값 변경
-            if(postLikeByAdoptionId.getStatus()==0){
-                postLikeByAdoptionId.setStatus(1);
-            }else if (postLikeByAdoptionId.getStatus()==1){
-                postLikeByAdoptionId.setStatus(0);
-                // AdoptionPostLike 삭제
-                adoption.getAdoptionPostLikes().remove(postLikeByAdoptionId);
-            }
-
-            postLikeByAdoptionId.setAdoption(adoption);
-            postLikeByAdoptionId.setMember(adoption.getMember());
-            // 저장
-            adoptionService.simpleSave(adoption);
-            adoptionService.adoptionPostListSave(postLikeByAdoptionId);
-
+        if(adoption.isEmpty()){
+            System.out.println("이 게시판이 없습니다.");
+            throw new RuntimeException("이 게시판이 없습니다.");
         }
-        responseBody.put("status", postLikeByAdoptionId.getStatus());
-        responseBody.put("likeCount", adoption.getAdoptionPostLikes().size());
+
+        int likeCount = adoptionService.likeAdoption(postId, memberDto);
+        boolean likedByUser = adoptionService.isAdoptionLikedByUser(postId, memberDto.getId());
+
+        responseBody.put("status", likedByUser);
+        responseBody.put("likeCount", likeCount);
         return responseBody;
 
     }
