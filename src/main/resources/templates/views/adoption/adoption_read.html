@@ -160,10 +160,8 @@
                             <label for="comment-contents" class="author" th:text="${comment.member.nickname}">작성자</label><textarea id="comment-contents" class="comment-contents" readonly th:text="${comment.content}" name="content">내용</textarea>
                          </p>
                          <p class="button-area">
-                             <button class="reply-button-edit" type="button" th:if="${member != null and read.authorId == member.id}">수정하기</button>
-<!--                             <button class="reply-button-edit" type="button" th:unless="${read.authorId == member.id}" disabled onclick="checkLoginAlert()">수정하기</button>-->
-                             <button class="reply-button-delete" type="button" th:if="${member != null and read.authorId == member.id}">삭제하기</button>
-<!--                             <button class="reply-button-delete" type="button" th:unless="${read.authorId == member.id}" disabled onclick="checkLoginAlert()">삭제하기</button>-->
+                             <button class="reply-button-edit" type="button" th:if="${member != null and comment.member.id == member.id}">수정하기</button>
+                             <button class="reply-button-delete" type="button" th:if="${member != null and comment.member.id == member.id}">삭제하기</button>
                              <button class="reply-button" type="button" th:text="${comment.replies.size() == 0 ? '대댓글 작성': '대댓글 보기'}"></button>
                          </p>
                      </div>

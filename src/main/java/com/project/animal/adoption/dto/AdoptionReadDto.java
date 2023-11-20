@@ -3,6 +3,7 @@ package com.project.animal.adoption.dto;
 
 import com.project.animal.adoption.domain.Adoption;
 import com.project.animal.adoption.domain.AdoptionImage;
+import com.project.animal.global.common.dto.MemberDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,7 +34,7 @@ public class AdoptionReadDto {
 
     private Long postId;
 
-    public AdoptionReadDto(Adoption adoption, Long postId){
+    public AdoptionReadDto(Adoption adoption, Long postId, MemberDto memberDto){
         this.authorId=adoption.getMember().getId();
         this.author=adoption.getMember().getNickname();
         this.title = adoption.getTitle();
