@@ -16,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.project.animal.global.common.constant.ViewName.MYPAGE_VIEW;
+import static com.project.animal.global.common.constant.ViewName.*;
 
 @Slf4j
 @Controller
@@ -74,7 +74,7 @@ public class MyPageController {
     @GetMapping("/v1/member/mypage/password")
     public String changePasswordForm() {
         // 비밀번호 변경 폼으로 이동
-        return "member/mypage_password";
+        return CHANGE_PASSWORD_VIEW;
     }
 
     /**
@@ -110,7 +110,7 @@ public class MyPageController {
      */
     @GetMapping("/v1/member/mypage/wishList")
     public String wishList(@Member MemberDto member) {
-        return "member/mypage_wishList";
+        return MYPAGE_WISH_LIST;
     }
 
     /**
@@ -123,7 +123,7 @@ public class MyPageController {
      */
     @GetMapping("/v1/member/mypage/boardList")
     public String myBoardList(@Member MemberDto member) {
-        return "member/mypage_boardList";
+        return MYPAGE_BOARD_LIST;
     }
 
     /**
@@ -136,6 +136,6 @@ public class MyPageController {
      */
     @GetMapping("/v1/member/mypage/adoptionList")
     public String adoptionList(@Member MemberDto member) {
-        return "member/mypage_adoptionList";
+        return MYPAGE_ADOPTION_LIST;
     }
 }

@@ -232,7 +232,7 @@ public class MemberServiceImp implements MemberService {
     }
 
     /**
-     * 중복된 번호인지 확인하는 메소드입니다.
+     * 중복된 휴대폰 번호인지 확인하는 메소드입니다.
      * 
      * @version 0.1
      * @author 박성수

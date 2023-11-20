@@ -1,6 +1,5 @@
 package com.project.animal.member.controller;
 
-import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
 import com.project.animal.global.common.dto.ResponseDto;
 import com.project.animal.member.domain.Member;
@@ -14,9 +13,6 @@ import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import static com.project.animal.global.common.constant.EndPoint.FIND_EMAIL_API;
-import static com.project.animal.global.common.constant.EndPoint.PHONE_API;
 
 @Slf4j
 @Controller
@@ -32,7 +28,7 @@ public class MemberController {
      * @author 박성수
      * @return String (회원가입 페이지 뷰 이름)
      */
-    @GetMapping(EndPoint.SIGNUP)
+    @GetMapping("/v1/auth/signup")
     public String signupForm() {
         // 회원가입 폼으로 이동
         return ViewName.SIGNUP_VIEW;
@@ -51,7 +47,7 @@ public class MemberController {
      * @throws InvalidCodeException 이메일 인증 번호가 유효하지 않은 경우, 해당 예외 발생
      */
     @ResponseBody
-    @PostMapping(EndPoint.SIGNUP_API)
+    @PostMapping("/v1/api/auth/signup")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDto<String> signup(@RequestBody @Validated SignupFormDto signupFormDto) {
         // 회원가입 진행
@@ -73,7 +69,7 @@ public class MemberController {
      * @throws MailSendException 메일 발송에 실패할 시, 예외 발생
      */
     @ResponseBody
-    @GetMapping(EndPoint.EMAIL_API)
+    @GetMapping("/v1/api/auth/email")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDto<String> createMailAuthCode(@RequestParam(required = true, defaultValue = "None") String email) {
         // 이메일 인증 번호 발급
@@ -94,7 +90,7 @@ public class MemberController {
      * @throws InvalidCodeException 이메일 인증 번호가 유효하지 않은 경우, 해당 예외 발생
      */
     @ResponseBody
-    @PostMapping(EndPoint.EMAIL_API)
+    @PostMapping("/v1/api/auth/email")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDto<String> checkMailAuthCode(@RequestBody @Validated CheckMailAuthCodeDto checkMailAuthCodeDto) {
         // 이메일 인증 번호 인증
@@ -115,7 +111,7 @@ public class MemberController {
      * @throws NotFoundException 해당 정보로 가입된 아이디가 없는 경우, 해당 예외 발생
      */
     @ResponseBody
-    @PostMapping(FIND_EMAIL_API)
+    @PostMapping("/v1/api/find/email")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDto<String> findMemberEmail(@RequestBody @Validated FindMemberEmailFormDto findMemberEmailFormDto) {
         // 아이디 찾기
@@ -136,7 +132,7 @@ public class MemberController {
      * @throws NotFoundException 해당 정보로 가입된 아이디가 없는 경우, 해당 예외 발생
      */
     @ResponseBody
-    @PostMapping(PHONE_API)
+    @PostMapping("/v1/api/auth/phone")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDto<String> createSmsAuthCode(@RequestBody @Validated FindMemberPwdFormDto findMemberPwdFormDto) {
         // 문자 인증 번호 발급
@@ -159,7 +155,7 @@ public class MemberController {
      * @throws MailSendException 메일 발송에 실패할 시, 예외 발생
      */
     @ResponseBody
-    @PatchMapping(PHONE_API)
+    @PatchMapping("/v1/api/auth/phone")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDto<String> createTempPassword(@RequestBody @Validated CheckSmsAuthCodeDto smsAuthCodeDto) {
         // 임시 비밀번호 발급

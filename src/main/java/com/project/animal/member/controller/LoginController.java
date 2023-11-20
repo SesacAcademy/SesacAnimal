@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 
-import static com.project.animal.global.common.constant.EndPoint.KAKAO_LOGIN;
 import static com.project.animal.global.common.constant.ExpirationTime.ACCESS_TOKEN_COOKIE_EXPIRATION_TIME;
 import static com.project.animal.global.common.constant.ExpirationTime.REFRESH_TOKEN_COOKIE_EXPIRATION_TIME;
 import static com.project.animal.global.common.constant.TokenTypeValue.JWT_ACCESS_TOKEN;
@@ -40,7 +39,7 @@ public class LoginController {
      * @author 박성수
      * @return String (로그인 페이지 뷰 이름)
      */
-    @GetMapping(EndPoint.LOGIN)
+    @GetMapping("/v1/auth/login")
     public String loginForm() {
         return ViewName.LOGIN_VIEW;
     }
@@ -56,7 +55,7 @@ public class LoginController {
      * @throws LoginException 로그인 실패 시, 해당 예외 발생
      */
     @ResponseBody
-    @PostMapping(EndPoint.LOGIN_API)
+    @PostMapping("/v1/api/auth/login")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResponseDto<String>> login(@RequestBody @Validated LoginFormDto loginFormDto,
                                                      HttpServletResponse response) {
@@ -83,7 +82,7 @@ public class LoginController {
      * @param response HttpServletResponse 객체
      * @return ResponseEntity<HttpHeaders> 
      */
-    @GetMapping(KAKAO_LOGIN)
+    @GetMapping("/v1/auth/login/kakao")
     @ResponseBody
     public ResponseEntity<HttpHeaders> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
         
@@ -107,7 +106,7 @@ public class LoginController {
      * @param response HttpServletResponse 객체
      * @return String (로그인 페이지 뷰 이름)
      */
-    @GetMapping(EndPoint.LOGOUT)
+    @GetMapping("/v1/auth/logout")
     public String logout(@Member MemberDto member, HttpServletResponse response) {
         // 로그아웃
         loginService.logout(member, response);

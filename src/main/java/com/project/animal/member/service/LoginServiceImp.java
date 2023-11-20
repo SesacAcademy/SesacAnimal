@@ -117,13 +117,13 @@ public class LoginServiceImp implements LoginService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", kakao_client_id);
-        body.add("redirect_uri", KAKAO_REDIRECT_URI);
+        body.add("redirect_uri", "http://localhost:8080/v1/auth/login/kakao");
         body.add("code", code);
         body.add("client_secret", kakao_secret);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
 
         // Post 전송 --> 토큰 발급 (Access, Refresh)
-        ResponseEntity<TokenDto> token = restTemplate.exchange(KAKAO_TOKEN_URI, HttpMethod.POST, requestEntity, TokenDto.class);
+        ResponseEntity<TokenDto> token = restTemplate.exchange("https://kauth.kakao.com/oauth/token", HttpMethod.POST, requestEntity, TokenDto.class);
 
         // 2. (KaKao) 발급받은 Access Token으로 사용자 정보 조회
 
@@ -133,7 +133,7 @@ public class LoginServiceImp implements LoginService {
         headers.add("Accept", "application/json");
 
         // Get 전송
-        ResponseEntity<String> kakaoUserInfo = restTemplate.exchange(KAKAO_USER_INFO_URI,
+        ResponseEntity<String> kakaoUserInfo = restTemplate.exchange("https://kapi.kakao.com/v2/user/me",
                                                 HttpMethod.GET, new HttpEntity<>(headers), String.class);
 
         // 사용자 정보 조회 (소셜 로그인은 사업자 등록이 되어 있지 않아 따로 DTO를 만들지 않고 직접 파싱하였습니다)
