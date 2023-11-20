@@ -2,9 +2,11 @@ package com.project.animal.adoption.service;
 
 import com.project.animal.adoption.domain.Adoption;
 import com.project.animal.adoption.domain.AdoptionImage;
+import com.project.animal.adoption.domain.AdoptionPostLike;
 import com.project.animal.adoption.dto.AdoptionEditDto;
 import com.project.animal.adoption.dto.AdoptionWriteDto;
 import com.project.animal.adoption.repository.AdoptionImageRepository;
+import com.project.animal.adoption.repository.AdoptionPostLikeRepository;
 import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.adoption.service.inf.AdoptionService;
 import com.project.animal.global.common.dto.MemberDto;
@@ -43,6 +45,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 
     private final AdoptionRepository adoptionRepository;
     private final AdoptionImageRepository adoptionImageRepository;
+    private final AdoptionPostLikeRepository adoptionPostLikeRepository;
     private final MinioClient minioClient;
     private final MemberRepository repository;
 
@@ -177,7 +180,46 @@ public class AdoptionServiceImpl implements AdoptionService {
         adoption.setHit(hit);
 
         adoptionRepository.save(adoption);
+    }
 
+    public AdoptionPostLike getPostLikeByAdoptionId(Long postId){
+        return adoptionPostLikeRepository.findByAdoptionId(postId);
+    }
+
+    public List<AdoptionPostLike> getLikesByAdoptionAndStatus(Long adoption_id, int status) {
+        return adoptionPostLikeRepository.findByAdoptionIdAndStatus(adoption_id, status);
+    }
+
+    public void adoptionPostListSave(AdoptionPostLike adoptionPostLike){
+        adoptionPostLikeRepository.save(adoptionPostLike);
+    }
+
+    public List<AdoptionPostLike> adoptionPostLikesAll (){
+        return adoptionPostLikeRepository.findAll();
+    }
+
+    @Transactional
+    public int likeAdoption(Long postId, MemberDto memberDto) {
+        // 좋아요 로직 수행
+        Adoption adoption = adoptionRepository.findById(postId).orElse(null);
+        if (adoption != null) {
+            Member member = repository.findById(memberDto.getId()).orElseThrow();
+            AdoptionPostLike postLike = adoptionPostLikeRepository.findByAdoptionAndMember(postId, member);
+
+            if (postLike != null) {
+                // 이미 좋아요를 눌렀다면 좋아요 취소
+                postLike.setStatus(0);
+                adoptionPostLikeRepository.save(postLike);
+            } else {
+                // 좋아요를 누르지 않았다면 좋아요 추가
+//                postLike = new AdoptionPostLike(adoption, member);
+                postLike.setStatus(1);
+                adoptionPostLikeRepository.save(postLike);
+            }
+        }
+
+        // 업데이트된 좋아요 수 반환
+        return adoption.getAdoptionPostLikes().size();
     }
 
     public void apiSave(List<OpenApiDto> openApiDtoList) {

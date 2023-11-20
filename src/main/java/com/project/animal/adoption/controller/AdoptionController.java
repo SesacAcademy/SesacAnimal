@@ -3,14 +3,15 @@ package com.project.animal.adoption.controller;
 import com.project.animal.adoption.domain.Adoption;
 import com.project.animal.adoption.domain.AdoptionComment;
 import com.project.animal.adoption.domain.AdoptionImage;
+import com.project.animal.adoption.domain.AdoptionPostLike;
 import com.project.animal.adoption.dto.*;
-import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.adoption.service.AdoptionCommentServiceImpl;
 import com.project.animal.adoption.service.AdoptionServiceImpl;
 import com.project.animal.global.common.annotation.Member;
 import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
 import com.project.animal.global.common.dto.MemberDto;
+import com.project.animal.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,9 +23,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import retrofit2.http.Path;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +35,7 @@ public class AdoptionController {
 
     private final AdoptionServiceImpl adoptionService;
     private final AdoptionCommentServiceImpl adoptionCommentService;
+    private final MemberRepository repository;
 
 
     //멤버 정보 불러올 공통 영역
@@ -46,7 +47,7 @@ public class AdoptionController {
 
     // 메인 리스트 입장
     @GetMapping(EndPoint.ADOPTION_LIST)
-    public String adoptionMain(@RequestParam(required = false) Integer pageNumber, Model model){
+    public String adoptionMainGet(@RequestParam(required = false) Integer pageNumber, Model model){
         int pageSize = 10; // 한 페이지에 보여줄 데이터 개수
 
         if (pageNumber == null || pageNumber == 0) {
@@ -69,9 +70,52 @@ public class AdoptionController {
         model.addAttribute("count", count);
 //        model.addAttribute("pageCount", pageCount);
 
+        List<AdoptionPostLike> adoptionPostLikes = adoptionService.adoptionPostLikesAll();
 
+        model.addAttribute("postLikes",adoptionPostLikes);
 
         return ViewName.ADOPTION_LIST;
+    }
+
+    // 입양 게시판 list 좋아요 처리 영역
+    @PostMapping (EndPoint.ADOPTION_LIST)
+    @ResponseBody
+    public Map<String, Object> adoptionMainPost(@RequestBody Map<String, String> requestBody, @Member MemberDto memberDto){
+
+        Long postId = Long.valueOf(requestBody.get("postId"));
+        Map<String, Object> responseBody = new HashMap<>();
+        Adoption adoption = adoptionService.findById(postId).orElseThrow();
+        AdoptionPostLike postLikeByAdoptionId = adoptionService.getPostLikeByAdoptionId(postId);
+//        List<AdoptionPostLike> likesByAdoptionAndStatus = adoptionService.getLikesByAdoptionAndStatus(postId, 1);
+
+        if(postLikeByAdoptionId == null){
+            postLikeByAdoptionId = new AdoptionPostLike(adoption, repository.findById(memberDto.getId()).orElseThrow());
+
+            adoptionService.adoptionPostListSave(postLikeByAdoptionId);
+            adoptionService.simpleSave(adoption);
+//            return responseBody;
+        } else if(postLikeByAdoptionId != null){
+            System.out.println("data:>>"+postLikeByAdoptionId.getStatus());
+            // 상태값 변경
+            if(postLikeByAdoptionId.getStatus()==0){
+                postLikeByAdoptionId.setStatus(1);
+            }else if (postLikeByAdoptionId.getStatus()==1){
+                postLikeByAdoptionId.setStatus(0);
+                // AdoptionPostLike 삭제
+                adoption.getAdoptionPostLikes().remove(postLikeByAdoptionId);
+            }
+
+            postLikeByAdoptionId.setAdoption(adoption);
+            postLikeByAdoptionId.setMember(adoption.getMember());
+            // 저장
+            adoptionService.simpleSave(adoption);
+            adoptionService.adoptionPostListSave(postLikeByAdoptionId);
+
+        }
+        responseBody.put("status", postLikeByAdoptionId.getStatus());
+        responseBody.put("likeCount", adoption.getAdoptionPostLikes().size());
+        return responseBody;
+
     }
 
 

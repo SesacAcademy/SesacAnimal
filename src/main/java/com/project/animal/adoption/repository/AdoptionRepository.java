@@ -32,6 +32,7 @@ public interface AdoptionRepository extends JpaRepository<Adoption, Long> {
     Page<Adoption> findAllWithImagesAndMemberPages(Pageable pageable);
 
 
+
 //    @Query(value = "SELECT distinct a FROM Adoption a " +
 //            "LEFT JOIN FETCH a.adoptionImages " +
 //            "LEFT JOIN FETCH a.adoptionPostLikes " +

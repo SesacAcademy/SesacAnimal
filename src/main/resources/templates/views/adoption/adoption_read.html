@@ -86,7 +86,7 @@
              </p>
              <p>
                  <span class="title">입양상태</span>
-                 <span class="desc" th:text="${read.title}"></span>
+                 <span class="desc" th:text="${read.status}"></span>
              </p>
              <div class="image-area">
                  <p>
@@ -126,10 +126,10 @@
                  <span class="title">발견장소</span>
                  <span class="desc" th:text="${read.happenPlace}"></span>
              </p>
-             <p>
-                 <span class="title">보호상태</span>
-                 <span class="desc" th:text="${read.status}"></span>
-             </p>
+<!--             <p>-->
+<!--                 <span class="title">보호상태</span>-->
+<!--                 <span class="desc" th:text="${read.status}"></span>-->
+<!--             </p>-->
              <p>
                  <span class="title">중성화유무</span>
                  <span class="desc" th:text="${read.neutered}"></span>
@@ -145,12 +145,11 @@
             </div>
      </section>
 
-
-     <div class="adoption-comments-read" th:if="${comments.size() != 0}">
+ <input id="postId" type="hidden" th:value="${read.postId}" name="postId"/>
+    <div class="adoption-comments-read" th:if="${comments.size() != 0}">
          <h4 class="comment-read-title">댓글 읽기</h4>
 
          <div class="comments-read" th:each="comment, index : ${comments}">
-             <input id="postId" type="hidden" th:value="${read.postId}" name="postId"/>
              <!-- 댓글 읽기 수정 삭제 대댓글 작성 가능영역 -->
              <form th:object="${read}" th:action="@{'/v1/adoption/' +${read.postId}}" method="POST" accept-charset="utf-8">
                  <fieldset>
