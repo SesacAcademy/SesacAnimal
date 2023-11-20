@@ -244,6 +244,7 @@ function findPassword() {
 
             if (response.data.context === null) {
                 alert(response.data.message);
+                inputAuthButton.style.display = "flex";
             }
 
             // 값 형식이 틀린 경우
@@ -263,6 +264,8 @@ function findPassword() {
                 if (errorData.phone !== undefined) {
                     alert(response.data.context.phone);
                 }
+
+                inputAuthButton.style.display = "flex";
             }
         }
 
