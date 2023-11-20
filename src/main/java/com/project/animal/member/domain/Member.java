@@ -22,6 +22,7 @@ import java.util.List;
 @Builder                // to do : Builder 관련 로직 제거 후, 이후에 제거
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 public class Member extends BaseEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

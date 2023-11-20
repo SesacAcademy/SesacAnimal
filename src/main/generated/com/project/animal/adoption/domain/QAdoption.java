@@ -26,6 +26,8 @@ public class QAdoption extends EntityPathBase<Adoption> {
 
     public final ListPath<AdoptionImage, QAdoptionImage> adoptionImages = this.<AdoptionImage, QAdoptionImage>createList("adoptionImages", AdoptionImage.class, QAdoptionImage.class, PathInits.DIRECT2);
 
+    public final ListPath<AdoptionPostLike, QAdoptionPostLike> adoptionPostLikes = this.<AdoptionPostLike, QAdoptionPostLike>createList("adoptionPostLikes", AdoptionPostLike.class, QAdoptionPostLike.class, PathInits.DIRECT2);
+
     public final StringPath age = createString("age");
 
     public final StringPath breed = createString("breed");

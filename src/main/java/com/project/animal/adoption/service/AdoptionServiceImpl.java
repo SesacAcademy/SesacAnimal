@@ -2,9 +2,11 @@ package com.project.animal.adoption.service;
 
 import com.project.animal.adoption.domain.Adoption;
 import com.project.animal.adoption.domain.AdoptionImage;
+import com.project.animal.adoption.domain.AdoptionPostLike;
 import com.project.animal.adoption.dto.AdoptionEditDto;
 import com.project.animal.adoption.dto.AdoptionWriteDto;
 import com.project.animal.adoption.repository.AdoptionImageRepository;
+import com.project.animal.adoption.repository.AdoptionPostLikeRepository;
 import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.adoption.service.inf.AdoptionService;
 import com.project.animal.global.common.dto.MemberDto;
@@ -30,9 +32,7 @@ import java.rmi.ServerException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -43,6 +43,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 
     private final AdoptionRepository adoptionRepository;
     private final AdoptionImageRepository adoptionImageRepository;
+    private final AdoptionPostLikeRepository adoptionPostLikeRepository;
     private final MinioClient minioClient;
     private final MemberRepository repository;
 
@@ -177,7 +178,50 @@ public class AdoptionServiceImpl implements AdoptionService {
         adoption.setHit(hit);
 
         adoptionRepository.save(adoption);
+    }
 
+
+
+
+    @Transactional
+    public int likeAdoption(Long postId, MemberDto memberDto) {
+        Map<String,Object> responseBody = new HashMap<>();
+        // 좋아요 로직 수행
+        Adoption adoption = adoptionRepository.findById(postId).orElse(null);
+        if (adoption != null) {
+            Member member = repository.findById(memberDto.getId()).orElseThrow();
+            AdoptionPostLike postLike = adoptionPostLikeRepository.findByAdoptionAndMember(adoption, member);
+
+            if (postLike != null) {
+                // 이미 좋아요를 눌렀다면 좋아요 취소
+                adoptionPostLikeRepository.delete(postLike);
+                adoptionPostLikeRepository.flush();
+
+            } else {
+                // 좋아요를 누르지 않았다면 좋아요 추가
+                postLike = new AdoptionPostLike(adoption, member);
+
+                adoptionPostLikeRepository.save(postLike);
+            }
+        }
+        // 업데이트된 상태 반환
+//        responseBody.put("status", getPostLikeByAdoptionId(postId).getStatus());
+
+//        responseBody.put("likeCount", );
+        // 업데이트된 좋아요 수 반환
+        return adoption.getAdoptionPostLikes().size();
+    }
+
+    public boolean isAdoptionLikedByUser(Long postId, Long memberId) {
+        Adoption adoption = adoptionRepository.findById(postId).orElse(null);
+
+        if (adoption != null) {
+            Member member = repository.findById(memberId).orElseThrow();
+            AdoptionPostLike postLike = adoptionPostLikeRepository.findByAdoptionAndMember(adoption, member);
+            return postLike != null;
+        }
+
+        return false;
     }
 
     public void apiSave(List<OpenApiDto> openApiDtoList) {
@@ -220,6 +264,7 @@ public class AdoptionServiceImpl implements AdoptionService {
         return adoptionRepository.findAllWithImagesAndMember();
 
     }
+
 
 
 }

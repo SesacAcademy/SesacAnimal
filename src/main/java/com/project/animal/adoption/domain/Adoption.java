@@ -36,8 +36,11 @@ public class Adoption extends BaseEntity {
     @NotBlank
     private String title; // 제목
 
-    @OneToMany(mappedBy = "adoption" )
+    @OneToMany(mappedBy = "adoption", fetch = FetchType.LAZY)
     private List<AdoptionImage> adoptionImages;
+
+    @OneToMany(mappedBy = "adoption", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<AdoptionPostLike> adoptionPostLikes;
 
     @NotNull
     @NotBlank
