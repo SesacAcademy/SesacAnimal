@@ -155,13 +155,13 @@ public class AdoptionController {
 
     // 게시글 상세 읽기 영역
     @GetMapping(EndPoint.ADOPTION_READ)
-    public String adoptionRead(@PathVariable(name="id") Long postId, Model model){
+    public String adoptionRead(@PathVariable(name="id") Long postId, Model model, @Member MemberDto memberDto){
         // 조회수 올리기
         adoptionService.plusView(postId);
 
         Adoption adoption = adoptionService.findByIdWidhImageAndMember(postId);
 
-        AdoptionReadDto adoptionReadDto = new AdoptionReadDto(adoption, postId);
+        AdoptionReadDto adoptionReadDto = new AdoptionReadDto(adoption, postId, memberDto);
         model.addAttribute("read", adoptionReadDto);
 
         List<AdoptionComment> allComment = adoptionCommentService.findTopLevelCommentsByAdoptionId(postId);
