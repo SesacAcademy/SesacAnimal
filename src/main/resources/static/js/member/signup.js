@@ -61,10 +61,10 @@ function createToken() {
 
     const email = document.getElementById('member-email').value;
 
-    /*if (!isValidEmail(email)) {
+    if (!isValidEmail(email)) {
         alert("이메일 형식이 틀렸습니다.");
         return;
-    }*/
+    }
 
     emailAuthButton.style.display = 'none';
 
@@ -279,6 +279,12 @@ function signup() {
         
             // 닉네임이 중복된 경우
             if (response.data.context === "nickname") {
+                console.log(response.data);
+                alert(response.data.message);
+            }
+
+            // 휴대폰 번호가 중복된 경우
+            if (response.data.context === "phone") {
                 console.log(response.data);
                 alert(response.data.message);
             }

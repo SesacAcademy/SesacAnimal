@@ -10,10 +10,7 @@ import com.project.animal.member.dto.CheckSmsAuthCodeDto;
 import com.project.animal.member.dto.FindMemberEmailFormDto;
 import com.project.animal.member.dto.FindMemberPwdFormDto;
 import com.project.animal.member.dto.SignupFormDto;
-import com.project.animal.member.exception.InvalidCodeException;
-import com.project.animal.member.exception.NestedEmailException;
-import com.project.animal.member.exception.NestedNicknameException;
-import com.project.animal.member.exception.NotFoundException;
+import com.project.animal.member.exception.*;
 import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.member.service.inf.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +49,7 @@ public class MemberServiceImp implements MemberService {
      * @param signupFormDto SignupFormDto 객체
      * @throws NestedEmailException 이메일이 중복된 경우, 해당 예외 발생
      * @throws NestedNicknameException 닉네임이 중복된 경우, 해당 예외 발생
+     * @throws NestedPhoneException 중복된 번호인 경우, 해당 예외 발생
      * @throws InvalidCodeException 이메일 인증 번호가 유효하지 않은 경우, 해당 예외 발생
      */
     @Override
@@ -62,6 +60,9 @@ public class MemberServiceImp implements MemberService {
 
         // 닉네임 중복 여부 체크
         checkNestedNickname(signupFormDto.getNickname());
+        
+        // 휴대폰 번호 중복 여부 체크
+        checkNestedPhone(signupFormDto.getPhone());
         
         // 이메일 인증 번호 체크
         checkMailAuthCode(signupFormDto.getEmail(), signupFormDto.getAuthCode());
@@ -132,8 +133,8 @@ public class MemberServiceImp implements MemberService {
     @Transactional
     public void createSmsAuthCode(FindMemberPwdFormDto memberPwdFormDto) {
         // 사용자 정보 조회
-        Optional<Member> findMember = memberRepository.findByEmailAndNameAndPhone(memberPwdFormDto.getEmail(),
-                                                    memberPwdFormDto.getName(), memberPwdFormDto.getPhone());
+        Optional<Member> findMember = memberRepository.findByEmailAndNameAndPhoneAndIsActive(memberPwdFormDto.getEmail(),
+                                                    memberPwdFormDto.getName(), memberPwdFormDto.getPhone(), 1);
 
         Member member = findMember.orElseThrow(() -> new NotFoundException("입력하신 정보가 틀렸습니다."));
 
@@ -156,8 +157,8 @@ public class MemberServiceImp implements MemberService {
     @Transactional
     public void createTempPassword(CheckSmsAuthCodeDto smsAuthCodeDto) {
         // 사용자 정보 조회
-        Optional<Member> findMember = memberRepository.findByEmailAndNameAndPhone(smsAuthCodeDto.getEmail(),
-                smsAuthCodeDto.getName(), smsAuthCodeDto.getPhone());
+        Optional<Member> findMember = memberRepository.findByEmailAndNameAndPhoneAndIsActive(smsAuthCodeDto.getEmail(),
+                smsAuthCodeDto.getName(), smsAuthCodeDto.getPhone(), 1);
 
         Member member = findMember.orElseThrow(() -> new NotFoundException("입력하신 정보가 틀렸습니다."));
 
@@ -227,6 +228,21 @@ public class MemberServiceImp implements MemberService {
         memberRepository.findByNickname(nickname)
                 .ifPresent((x) -> {
                     throw new NestedNicknameException("중복된 닉네임입니다.");
+                });
+    }
+
+    /**
+     * 중복된 휴대폰 번호인지 확인하는 메소드입니다.
+     * 
+     * @version 0.1
+     * @author 박성수
+     * @param phone 휴대폰 번호
+     * @throws NestedPhoneException 중복된 번호인 경우, 해당 예외 발생
+     */
+    private void checkNestedPhone(String phone) {
+        memberRepository.findByPhone(phone)
+                .ifPresent((x) -> {
+                    throw new NestedPhoneException("중복된 휴대폰 번호입니다.");
                 });
     }
 

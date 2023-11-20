@@ -21,7 +21,7 @@ import static com.project.animal.global.common.constant.TokenTypeValue.USER_EMAI
 import static com.project.animal.global.common.constant.TokenTypeValue.USER_NICKNAME;
 
 @Slf4j
-@RestControllerAdvice(assignableTypes = {MemberController.class, LoginController.class})
+@RestControllerAdvice(assignableTypes = {MemberController.class, LoginController.class, MyPageController.class})
 public class MemberControllerAdvice {
 
     @ResponseStatus(HttpStatus.OK)
@@ -46,6 +46,14 @@ public class MemberControllerAdvice {
         log.error("닉네임 중복 에러 발생!", e);
 
         return new ResponseDto<>(HttpStatus.CONFLICT.value(), USER_NICKNAME, e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(NestedPhoneException.class)
+    public ResponseDto<String> nestedPhoneException(NestedPhoneException e) {
+        log.error("휴대폰 번호 중복 에러 발생!", e);
+
+        return new ResponseDto<>(HttpStatus.CONFLICT.value(), "phone", e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -90,6 +98,14 @@ public class MemberControllerAdvice {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(NotFoundException.class)
     public ResponseDto<String> NotFoundException(NotFoundException e) {
+        log.error(e.getMessage());
+
+        return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(WrongPasswordException.class)
+    public ResponseDto<String> wrongPasswordException(WrongPasswordException e) {
         log.error(e.getMessage());
 
         return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), null, e.getMessage());
