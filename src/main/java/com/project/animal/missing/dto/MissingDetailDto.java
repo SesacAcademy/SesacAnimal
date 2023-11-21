@@ -47,6 +47,10 @@ public class MissingDetailDto {
 
   private List<MissingPostImageDto> images;
 
+  private int isLiked;
+
+  private int likeCount;
+
   private MissingDetailDto(
           long id,
           String title,
@@ -63,7 +67,9 @@ public class MissingDetailDto {
           LocalDateTime updatedAt,
           String description,
           List<MissingCommentListEntryDto> comments,
-          List<MissingPostImageDto> images
+          List<MissingPostImageDto> images,
+          int isLiked,
+          int likeCount
   ) {
     this.id = id;
     this.title = title;
@@ -81,9 +87,11 @@ public class MissingDetailDto {
     this.description = description;
     this.comments = comments;
     this.images = images;
+    this.isLiked = isLiked;
+    this.likeCount = likeCount;
   }
 
-  public static MissingDetailDto fromMissingPost(MissingPost post, List<MissingCommentListEntryDto> comments, List<MissingPostImageDto> images) {
+  public static MissingDetailDto fromMissingPost(MissingPost post, List<MissingCommentListEntryDto> comments, List<MissingPostImageDto> images, int isLiked, int likeCount) {
     long id = post.getMissingId();
     String title = post.getTitle();
     long memberId = post.getMember().getId();
@@ -100,9 +108,11 @@ public class MissingDetailDto {
     String description = post.getDescription();
 
 
+
+
     return new MissingDetailDto(
             id, title, memberId, author, animalType, specifics, color, viewCount, missingPlace,
-            missingTime, reward, missingStatus, updatedAt, description, comments, images);
+            missingTime, reward, missingStatus, updatedAt, description, comments, images, isLiked, likeCount);
   }
 }
 

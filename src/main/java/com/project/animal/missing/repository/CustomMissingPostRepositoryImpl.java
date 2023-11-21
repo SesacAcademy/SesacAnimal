@@ -1,9 +1,11 @@
 package com.project.animal.missing.repository;
 
 import com.project.animal.missing.domain.MissingPost;
+import com.project.animal.missing.domain.QMissingLike;
 import com.project.animal.missing.domain.QMissingPostImage;
 import com.project.animal.missing.dto.MissingFilterDto;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import com.project.animal.missing.domain.QMissingPost;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -30,6 +33,7 @@ public class CustomMissingPostRepositoryImpl implements CustomMissingPostReposit
   public Page<MissingPost> findByFilter(MissingFilterDto filter, Pageable pageable) {
     QMissingPost qMissing = QMissingPost.missingPost;
     QMissingPostImage qImage = QMissingPostImage.missingPostImage;
+    QMissingLike qLike = QMissingLike.missingLike;
 
     BooleanBuilder builder = new BooleanBuilder();
 
