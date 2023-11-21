@@ -89,38 +89,38 @@ public class ReviewService {
 //        return entityToDtoByReadAll(postList);
 //    }
     @Transactional(readOnly = true)
-    private ReadListGeneric readByName(Integer page, int size, String nickname) {
+    public ReadListGeneric readByKeyword(String type, Integer page, int size, String keyword) {
         Pageable pageable = createPageByCreatedAt(page,size);
-        String type = "author";
-        Page<ReviewPost> postList = reviewPostCustomRepository.findAllWithMemberAndImageByTypeAndKeyword(type, nickname,pageable);
+        Page<ReviewPost> postList = reviewPostCustomRepository.findAllWithMemberAndImageByTypeAndKeyword(type, keyword,pageable);
         return entityToDtoByReadAll(postList);
     }
 
-    public ReadListGeneric<ReadListGeneric> readBySearch(String type, String keyword, Integer page, int size) {
-        switch (type){
-//            case "view":
-//                return readByView(page ,size, keyword);
-            case "author":
-                return readByName(page ,size, keyword);
-            case "title":
-                return readByTitle(page,size,keyword);
-            case "content":
-                return readByContent(page, size, keyword);
-        }
-        return null;
-    }
-    @Transactional(readOnly = true)
-    private ReadListGeneric<ReadListGeneric> readByContent(Integer page, int size, String content) {
-        Pageable pageable = createPageByCreatedAt(page,size);
-        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByContent(content, pageable);
-        return entityToDtoByReadAll(postList);
-    }
-    @Transactional(readOnly = true)
-    private ReadListGeneric<ReadListGeneric> readByTitle(Integer page, int size, String title) {
-        Pageable pageable = createPageByCreatedAt(page,size);
-        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByTitle(title,pageable);
-        return entityToDtoByReadAll(postList);
-    }
+
+//    public ReadListGeneric<ReadListGeneric> readBySearch(String type, String keyword, Integer page, int size) {
+//        switch (type){
+////            case "view":
+////                return readByView(page ,size, keyword);
+//            case "author":
+//                return readByName(page ,size, keyword);
+//            case "title":
+//                return readByTitle(page,size,keyword);
+//            case "content":
+//                return readByContent(page, size, keyword);
+//        }
+//        return null;
+//    }
+//    @Transactional(readOnly = true)
+//    private ReadListGeneric<ReadListGeneric> readByContent(Integer page, int size, String content) {
+//        Pageable pageable = createPageByCreatedAt(page,size);
+//        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByContent(content, pageable);
+//        return entityToDtoByReadAll(postList);
+//    }
+//    @Transactional(readOnly = true)
+//    private ReadListGeneric<ReadListGeneric> readByTitle(Integer page, int size, String title) {
+//        Pageable pageable = createPageByCreatedAt(page,size);
+//        Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByTitle(title,pageable);
+//        return entityToDtoByReadAll(postList);
+//    }
 
     public ReviewPost updateReviewPost( CreateReviewPostDto updatePostDto, Long reviewPostId) {
         dtoCheck(updatePostDto);
@@ -156,5 +156,11 @@ public class ReviewService {
         Long memberDtoId = memberDto.getId();
         Optional<Member> optionalMember = memberRepository.findById(memberDtoId);
         return optionalMember.orElseThrow(()->new NotFoundException("해당 게시글의 유효 id가 유효하지 않습니다. 유효하지 않은 memberId: "+ memberDtoId));
+    }
+
+    public ReadListGeneric<ReadListGeneric> readByFilter(String type, Integer page, int size) {
+        Pageable pageable = createPageByCreatedAt(page,size);
+        Page<ReviewPost> postList = reviewPostCustomRepository.findAllByType(type, pageable);
+        return entityToDtoByReadAll(postList);
     }
 }

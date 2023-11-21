@@ -5,6 +5,7 @@ import com.project.animal.review.domain.QReviewImage;
 import com.project.animal.review.domain.QReviewPost;
 import com.project.animal.review.domain.ReviewPost;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,6 +42,7 @@ public class ReviewPostCustomRepository {
                 case "content":
                     builder.and(reviewPost.content.contains(keyword));
                     break;
+
             }
         }
 
@@ -63,4 +65,39 @@ public class ReviewPostCustomRepository {
 
         return new PageImpl<>(content, pageable, total);
     }
+    public Page<ReviewPost> findAllByType(String type, Pageable pageable) {
+        QReviewPost reviewPost = QReviewPost.reviewPost;
+        QMember member = QMember.member;
+        QReviewImage reviewImage = QReviewImage.reviewImage;
+
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(reviewPost.isActive.eq(1));
+
+        JPAQuery<ReviewPost> query = jpaQueryFactory
+                .selectFrom(reviewPost)
+                .leftJoin(reviewPost.member, member).fetchJoin()
+                .where(builder);
+
+        if ("view".equals(type)) {
+            query.orderBy(reviewPost.viewCount.desc());
+        } else if ("like".equals(type)) {
+            query.groupBy(reviewPost.id)
+                    .orderBy(reviewPost.reviewPostLikes.size().desc());
+        }
+
+        List<ReviewPost> content = query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = jpaQueryFactory
+                .selectFrom(reviewPost)
+                .leftJoin(reviewPost.member, member)
+                .leftJoin(reviewPost.reviewImages, reviewImage)
+                .where(builder)
+                .fetchCount();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
 }
