@@ -1,9 +1,14 @@
 package com.project.animal.missing.controller;
 
 import com.project.animal.global.common.utils.BindingResultParser;
+import com.project.animal.missing.constant.ViewName;
+import com.project.animal.missing.controller.utils.PathMaker;
+import com.project.animal.missing.exception.DetailNotFoundException;
 import com.project.animal.missing.exception.InvalidCreateFormException;
 import com.project.animal.missing.exception.PostSaveFailException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -11,8 +16,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Map;
 
 @Slf4j
+@RequiredArgsConstructor
 @ControllerAdvice(basePackageClasses = MissingController.class)
 public class MissingControllerAdvice {
+
+  private final PathMaker pathMaker;
 
   public final int SUCCESS_FLAG = 1;
 
@@ -45,5 +53,18 @@ public class MissingControllerAdvice {
 
     log.error("handleInvalidCreateForm: >> Invalid Input " + errors.toString());
     return "redirect:" + "/v1/missing/new";
+  }
+
+  @ExceptionHandler(DetailNotFoundException.class)
+  public String handleDetailNotFound(DetailNotFoundException ex, Model model) {
+
+    String listEndPoints = pathMaker.createLink("list").get("list");
+
+    model.addAttribute("error", "Fail to find detail");
+    model.addAttribute("type", "detail");
+    model.addAttribute("redirectUrl", listEndPoints);
+
+    log.error("DetailNotFoundException: >>  " + ex.getMissingId());
+    return ViewName.POST_DETAIL;
   }
 }
