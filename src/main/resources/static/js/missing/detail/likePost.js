@@ -4,6 +4,9 @@ const button = document.querySelector(".missing-card-like");
 const postId = document.querySelector(".missing-card-post-id").textContent;
 const emptyHeart = document.querySelector(".empty-heart");
 const filledHeart = document.querySelector(".filled-heart");
+const likeCount = document.querySelector(".missing-like-count");
+
+
 
 button.addEventListener('click',async () => {
     const { isLiked } = await toggleLike();
@@ -11,9 +14,11 @@ button.addEventListener('click',async () => {
     if (isLiked == 1) {
         emptyHeart.style.display = "none";
         filledHeart.style.display = "block";
+        likeCount.textContent = Number(likeCount.textContent) + 1;
     } else {
         emptyHeart.style.display = "block";
         filledHeart.style.display = "none";
+        if (likeCount.textContent > 0) likeCount.textContent = Number(likeCount.textContent) - 1;
     }
 
 });
