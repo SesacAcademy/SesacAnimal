@@ -18,6 +18,12 @@
                     <div class="missing-detail-field" th:text="'세부종류: ' + ${post.specifics}" />
                     <div class="missing-detail-field" th:text="'색상: ' + ${post.color}" />
                     <div class="missing-detail-field" th:text="'실종시간: ' + ${post.missingTime}" />
+
+                    <div class="missing-card-like">
+                        <div class="missing-card-post-id" th:text="${post.id}" />
+                        <i class="empty-heart far fa-heart" style="display: none"></i>
+                        <i class="filled-heart fas fa-heart" style="display: block"></i>
+                    </div>
                 </div>
             </div>
             <div style="flex flex-col">
