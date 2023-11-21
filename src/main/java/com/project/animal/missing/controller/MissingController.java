@@ -138,4 +138,13 @@ public class MissingController {
     return "redirect:" + "/v1/missing/detail/" + dto.getMissingId();
   }
 
+  @DeleteMapping("/delete/{postId}")
+  public String handleDeleteRequest(@PathVariable("postId") long id, RedirectAttributes redirectAttributes) {
+    // TODO: id 없는 경우 검증
+    boolean result = missingPostService.deletePost(id);
+    redirectAttributes.addFlashAttribute("serverMsg", "Success to delete the post");
+
+    return "redirect:" + "/v1/missing/list";
+  }
+
 }

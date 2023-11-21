@@ -93,4 +93,14 @@ public class MissingControllerAdvice {
 
     return "redirect:" + "/v1/missing/edit/" + ex.getId();
   }
+
+  // 게시글 삭제 관련 예외
+
+  @ExceptionHandler(PostDeleteFailException.class)
+  public String handlePostDeleteFail(PostDeleteFailException ex, RedirectAttributes redirectAttributes) {
+    redirectAttributes.addFlashAttribute("error", "Fail to delete post");
+    redirectAttributes.addFlashAttribute("type", "delete");
+
+    return "redirect:" + "/v1/missing/detail/" + ex.getTargetId();
+  }
 }
