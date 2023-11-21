@@ -31,6 +31,9 @@ public interface AdoptionRepository extends JpaRepository<Adoption, Long> {
             countQuery = "select count(a) from Adoption a")
     Page<Adoption> findAllWithImagesAndMemberPages(Pageable pageable);
 
+    List<Adoption> findByBreedContaining(String breed);
+
+    Page<Adoption> findByBreedContaining(String breed, Pageable pageable);
 
 
 //    @Query(value = "SELECT distinct a FROM Adoption a " +

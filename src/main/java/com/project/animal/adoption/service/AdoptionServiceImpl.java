@@ -153,16 +153,21 @@ public class AdoptionServiceImpl implements AdoptionService {
         return list.size();
     }
 
-    public Page<Adoption> getAdoptionPageWithImagesAndMember(int pageNumber, int pageSize) {
-        // 페이징 정보 생성
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+//    public List<Adoption> getDogList() {
+//        // Adoption 엔터티에서 breed 값이 "[개]"를 포함하는 데이터 검색
+//        return adoptionRepository.findByBreedContaining("[개]");
+//    }
+//
+//    public List<Adoption> getCatList() {
+//        // Adoption 엔터티에서 breed 값이 "[고양이]"를 포함하는 데이터 검색
+//        return adoptionRepository.findByBreedContaining("[고양이]");
+//    }
 
-        // adoption_image와 member를 함께 가져오는 메소드 호출
-        List<Adoption> adoptionList = adoptionRepository.findAllWithImagesAndMember();
-
-        // 가져온 리스트를 페이징 처리하여 반환
-        return new PageImpl<>(adoptionList, pageable, adoptionList.size());
+    public Page<Adoption> findPatsByBreed(String breed, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
+        return adoptionRepository.findByBreedContaining(breed, pageable);
     }
+
 
     public Page<Adoption> getAdoptionPageWithImagesAndMemberPages(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
@@ -223,6 +228,8 @@ public class AdoptionServiceImpl implements AdoptionService {
 
         return false;
     }
+
+
 
     public void apiSave(List<OpenApiDto> openApiDtoList) {
         // 센터에서 받은 api를 담는 영역

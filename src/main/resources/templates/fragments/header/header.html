@@ -7,7 +7,6 @@
     - 폰트는 구글 폰트를 이용하여 Roboto, Noto Sans Kr을 사용하였음
     -타임리프로 fragment만들어서 replace로 index.html에 연결하여서 사용하면됨
 -->
-
 <header lang="ko"
         xmlns:th="http://www.thymeleaf.org" th:fragment="header">
     <div class="logo-area">
@@ -19,12 +18,12 @@
         </h1>
     </div>
 
-    <menu class="menu">
+    <menu class="header-menu">
         <ul>
             <li><a href="/" title="Home">Home</a></li>
-            <li><a href="/v1/adoption" title="입양">입양/임보</a></li>
-            <li><a href="/v1/missing/list" title="실종">실종</a></li>
-            <li><a href="/review" title="후기">후기</a></li>            
+            <li><a href="/v1/adoption" title="입양">임시보호 동물들</a></li>
+            <li><a href="/review" title="후기">입양 후기</a></li>
+            <li><a href="/v1/missing/list" title="실종">실종 동물</a></li>
         </ul>
     </menu>
 
