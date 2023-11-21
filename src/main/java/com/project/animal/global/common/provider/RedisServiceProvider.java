@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 import java.time.Duration;
@@ -15,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RedisServiceProvider {
 
-    private final RedisTemplate<String, String> template;
+    private final StringRedisTemplate template;
 
     /**
      * Redis 서버에 데이터를 저장하는 메소드이다.

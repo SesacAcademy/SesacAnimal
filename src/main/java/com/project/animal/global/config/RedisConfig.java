@@ -8,6 +8,8 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
@@ -23,29 +25,31 @@ public class RedisConfig {
     private String password;
 
     @Bean
-    public RedisConnectionFactory createRedisConnectionFactory() {
+    public LettuceConnectionFactory createRedisConnectionFactory() {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(hostName, port);
         config.setPassword(password);
-        RedisConnectionFactory factory = new LettuceConnectionFactory(config);
+        LettuceConnectionFactory factory = new LettuceConnectionFactory(config);
 
         return factory;
     }
 
     @Bean
     @Primary
-    public RedisTemplate<String, String> createStringRedisTemplate() {
-        RedisTemplate<String, String> template = new RedisTemplate<>();
-        template.setConnectionFactory(createRedisConnectionFactory());
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new StringRedisSerializer());
+    public StringRedisTemplate createStringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        StringRedisTemplate template = new StringRedisTemplate();
+        template.setConnectionFactory(redisConnectionFactory);
 
         return template;
     }
 
     @Bean
-    public RedisTemplate<String, Object> createJsonRedisTemplate() {
+    public RedisTemplate<String, Object> createJsonRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(createRedisConnectionFactory());
+
+        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
+        template.setValueSerializer(serializer);
+
         template.setKeySerializer(new StringRedisSerializer());
 
         return template;
@@ -68,4 +72,5 @@ public class RedisConfig {
  * - https://growth-coder.tistory.com/228
  * - https://wildeveloperetrain.tistory.com/32
  * - https://luvstudy.tistory.com/143
+ * - https://docs.spring.io/spring-data/redis/reference/redis/template.html
  */
