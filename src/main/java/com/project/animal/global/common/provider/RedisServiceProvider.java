@@ -1,5 +1,8 @@
 package com.project.animal.global.common.provider;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.animal.global.common.utils.CustomJsonHandler;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,21 @@ public class RedisServiceProvider {
 
     private final StringRedisTemplate template;
 
+    private final CustomJsonHandler customJsonHandler;
+
+
+    /**
+     * Redis 서버에 데이터를 저장하는 메소드
+     * @version 0.1
+     * @param key
+     * @param value
+     */
+    public <T> void save(String key, T value) {
+        ValueOperations<String, String> operation = template.opsForValue();
+        String stringValue = customJsonHandler.stringify(value);
+        operation.set(key, stringValue);
+    }
+
     /**
      * Redis 서버에 데이터를 저장하는 메소드이다.
      * 
@@ -30,6 +48,18 @@ public class RedisServiceProvider {
     public void save(String key, String value, Duration duration) {
         ValueOperations<String, String> operation = template.opsForValue();
         operation.set(key, value, duration);
+    }
+
+    /**
+     * Redis 서버에 저장된 데이터를 가져 오거나 없는 경우 디폴트를 반환하는 메소드
+     *
+     * @version 0.1
+     * @param key
+     * @return value or defaultValue
+     */
+    public String getOrElse(String key, String defaultValue) {
+        Optional<String> value = get(key);
+        return value.orElse(defaultValue);
     }
 
     /**
