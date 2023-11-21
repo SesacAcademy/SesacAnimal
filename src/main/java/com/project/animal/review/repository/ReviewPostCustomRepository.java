@@ -3,6 +3,7 @@ package com.project.animal.review.repository;
 import com.project.animal.member.domain.QMember;
 import com.project.animal.review.domain.QReviewImage;
 import com.project.animal.review.domain.QReviewPost;
+import com.project.animal.review.domain.QReviewPostLike;
 import com.project.animal.review.domain.ReviewPost;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -49,7 +50,6 @@ public class ReviewPostCustomRepository {
         List<ReviewPost> content = jpaQueryFactory
                 .selectFrom(reviewPost)
                 .leftJoin(reviewPost.member, member).fetchJoin()
-                .leftJoin(reviewPost.reviewImages, reviewImage).fetchJoin()
                 .where(builder)
                 .orderBy(reviewPost.createdAt.desc())
                 .offset(pageable.getOffset())
@@ -100,4 +100,15 @@ public class ReviewPostCustomRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
+    public List<ReviewPost> findPostByLike() {
+        QReviewPost reviewPost = QReviewPost.reviewPost;
+        QMember member = QMember.member;
+
+        return jpaQueryFactory
+                .selectFrom(reviewPost)
+                .groupBy(reviewPost.id)
+                .orderBy(reviewPost.reviewPostLikes.size().desc())
+                .limit(3)
+                .fetch();
+    }
 }
