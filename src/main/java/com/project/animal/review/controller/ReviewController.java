@@ -87,11 +87,21 @@ public class ReviewController {
                                @RequestParam(name = "page", defaultValue = "0") Integer page,
                                Model model) {
 
-        ReadListGeneric<ReadListGeneric> viewDto = reviewService.readBySearch(type, keyword, page, size);
+        ReadListGeneric<ReadListGeneric> viewDto = reviewService.readByKeyword(type, page, size, keyword);
         model.addAttribute("listDto", viewDto);
         model.addAttribute("type", type);         // 검색 유형 추가
         model.addAttribute("keyword", keyword);
         return ViewName.REVIEW_LIST_BY_SEARCH;
+    }
+    @GetMapping("/filter")
+    public String readByFilter(@RequestParam(name = "type") String type,
+                               @RequestParam(name = "page", defaultValue = "0") Integer page,
+                               Model model) {
+
+        ReadListGeneric<ReadListGeneric> viewDto = reviewService.readByFilter(type, page, size);
+        model.addAttribute("listDto", viewDto);
+        model.addAttribute("type", type);
+        return ViewName.REVIEW_LIST_BY_FILTER;
     }
     @GetMapping("/edit")
     public String edit(@RequestParam(name = "reviewPostId") Long reviewPostId, Model model){
