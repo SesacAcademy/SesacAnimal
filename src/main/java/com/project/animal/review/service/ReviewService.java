@@ -67,6 +67,14 @@ public class ReviewService {
                 .currentPage(currentPage)
                 .build();
     }
+    private List<ReviewIndexResponse> entityToDtoByHome(List<ReviewPost> reviewPostList) {
+
+        List<ReviewIndexResponse> dtoList = reviewPostList
+                .stream()
+                .map(reviewPost -> new ReviewIndexResponse(reviewPost))
+                .collect(Collectors.toList());
+        return dtoList;
+    }
     public ReadOneReviewDto readOne(Long reviewPostId) {
         Optional<ReviewPost> reviewPost = reviewRepository.findByIdWithMemberAndImage(reviewPostId);
         ReviewPost reviewEntity = checkOptional(reviewPost);
@@ -93,6 +101,10 @@ public class ReviewService {
         Pageable pageable = createPageByCreatedAt(page,size);
         Page<ReviewPost> postList = reviewPostCustomRepository.findAllWithMemberAndImageByTypeAndKeyword(type, keyword,pageable);
         return entityToDtoByReadAll(postList);
+    }
+    public List<ReviewIndexResponse> readByLike(){
+        List<ReviewPost> reviewPostList = reviewPostCustomRepository.findPostByLike();
+        return entityToDtoByHome(reviewPostList);
     }
 
 
