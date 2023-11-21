@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 public interface MissingPostService {
   ListResponseDto<MissingListEntryDto> getPostList(MissingFilterDto filter, Pageable pageable);
 
-  MissingDetailDto getPostDetail(long postId);
+  MissingDetailDto getPostDetail(long postId, long memberId);
 
   boolean createPost(long memberId, MissingNewDto dto);
 

@@ -28,6 +28,20 @@ public class MissingLikeServiceImpl implements MissingLikeService {
   private final MissingLikeCacheService missingLikeCacheService;
 
 
+  @Override
+  public int getLikeCount(long postId) {
+    return missingLikeCacheService.getCountByPostId(postId);
+  }
+
+  @Override
+  public int getStatusByPostIdAndMemberId(long postId, long memberId) {
+    final int NotLiked = 0;
+    Optional<MissingLike> maybeLike = missingLikeRepository.findLikeByPostIdAndMemberId(postId, memberId);
+    MissingLike like = maybeLike.orElse(null);
+
+    return like != null ? like.getStatus() : NotLiked;
+  }
+
   @Transactional
   @Override
   public int likePost(long memberId, long postId) {
@@ -37,7 +51,7 @@ public class MissingLikeServiceImpl implements MissingLikeService {
             : updateMissingLike(maybeLike.get());
 
     missingLikeRepository.save(like);
-    missingLikeCacheService.update(postId, like.getStatus());
+    missingLikeCacheService.updateLike(postId, like.getStatus());
 
     return like.getStatus();
   }

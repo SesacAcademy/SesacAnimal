@@ -62,7 +62,7 @@ public class MissingController {
                               @Member MemberDto member,
                               Model model) {
 
-    MissingDetailDto detail = missingPostService.getPostDetail(postId);
+    MissingDetailDto detail = missingPostService.getPostDetail(postId, member.getId());
     List<MissingCommentListEntryDto> comments = detail.getComments();
 
     Map<String, String> endPoints = pathMaker.createLink("edit", "delete", "newComment", "editComment", "deleteComment");
@@ -103,7 +103,7 @@ public class MissingController {
 
   @GetMapping("/edit/{postId}")
   public String showEditView(@PathVariable("postId") long postId, Model model, @Member MemberDto memberDto) {
-    MissingDetailDto detail = missingPostService.getPostDetail(postId);
+    MissingDetailDto detail = missingPostService.getPostDetail(postId, memberDto.getId());
 
     if (detail.getMemberId() != memberDto.getId()) {
       throw new RuntimeException("수정이 불가한 유저 입니다.");

@@ -15,6 +15,7 @@ import com.project.animal.missing.exception.PostEditFailException;
 import com.project.animal.missing.exception.PostSaveFailException;
 import com.project.animal.missing.repository.MissingPostRepository;
 import com.project.animal.missing.service.converter.DtoEntityConverter;
+import com.project.animal.missing.service.inf.MissingLikeService;
 import com.project.animal.missing.service.inf.MissingPostImageService;
 import com.project.animal.missing.service.inf.MissingPostService;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,8 @@ public class MissingPostServiceImpl implements MissingPostService {
 
   private final MissingPostImageService missingPostImageService;
 
+  private final MissingLikeService missingLikeService;
+
   private final DtoEntityConverter converter;
 
 
@@ -65,20 +68,16 @@ public class MissingPostServiceImpl implements MissingPostService {
     return entry;
   }
 
-  /*
-  *  Question
-  *  findById 로 가져올 때 양방향 매핑이 되어있으니까 images에 대한 레퍼런스도 가지고있다.
-  *  이후에 findById 로 가져온 post에서 images에 접근하면, Images중에 외래키로 Postid를 가진애를
-  *  다시 쿼리해서 가져오는건가요?
-  * */
-  public MissingDetailDto getPostDetail(long postId) {
+  public MissingDetailDto getPostDetail(long postId, long memberId) {
     Optional<MissingPost> maybePost =  missingPostRepository.findById(postId);
     MissingPost post = maybePost.orElseThrow(() -> new DetailNotFoundException(postId));
 
     List<MissingCommentListEntryDto> comments =  createCommentList(post.getMissingId(), post.getComments());
     List<MissingPostImageDto> images = createImageList(post.getImages());
+    int isLiked = missingLikeService.getStatusByPostIdAndMemberId(postId, memberId);
+    int likeCount = missingLikeService.getLikeCount(postId);
 
-    MissingDetailDto detailDto = MissingDetailDto.fromMissingPost(post, comments, images);
+    MissingDetailDto detailDto = MissingDetailDto.fromMissingPost(post, comments, images, isLiked, likeCount);
 
     return detailDto;
   }
