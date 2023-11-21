@@ -1,0 +1,132 @@
+/* index 페이지 입양 부분 css */
+
+.adoption{
+    max-width:1280px;
+    margin:0 auto;
+}
+
+.adoption .adoption-banner img{
+    width:100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.adoption .adoption-find {
+    width:100%;
+    height: 120px;
+    display: flex;
+    padding:0 120px;
+    align-items: center;
+    background-color: #fff;
+}
+
+.adoption .adoption-find-title {
+    margin: 0;
+    padding: 0;
+}
+
+.adoption .adoption-find-title img {
+    width:200px;
+}
+
+.adoption .adoption-find-area {
+    margin-left:80px;
+    display:flex;
+    align-items: center;
+}
+
+.adoption .adoption-find-area .icon-area{
+    margin:0;
+    padding:0;
+    display: flex;
+}
+
+.adoption .adoption-find-area .icon-area a{
+    margin-right: 30px;
+}
+
+.adoption .adoption-find-area .icon-area img{
+    width:40px;
+}
+
+.adoption .adoption-find-area .center-area{
+    margin-left:60px;
+    flex-direction: column;
+}
+.adoption .adoption-find-area .center-area label{
+    position: relative;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.adoption .adoption-find-area .local-area{
+    margin-left: 30px;
+    flex-direction: column;
+}
+
+.adoption .adoption-find-area .local-area label{
+    position: relative;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.adoption .adoption-find-area .button-area{
+    margin:0;
+}
+
+.adoption .adoption-find-area .button-area button{
+    width:166px;
+    height: 50px;
+    background-color: #393B4A;
+    color:#fff;
+    border:none;
+    border-radius: 45px;
+    margin-left: 92px;
+}
+
+/* custom Select Box Css 영역 */
+.adoption-selectBox {
+    margin:0;
+    padding:0;
+    position: relative;
+    width: 151px;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #D9D9D9;
+    font-size: 14px;
+}
+.adoption-selectBox .select {
+    width: inherit;
+    height: inherit;
+    background: transparent;
+    border: 0 none;
+    outline: 0 none;
+    padding: 0 10px;
+    position: relative;
+    z-index: 3;
+    -webkit-appearance:none; /* 크롬 화살표 없애기 */
+    -moz-appearance:none; /* 파이어폭스 화살표 없애기 */
+    appearance:none /* 화살표 없애기 */
+}
+.adoption-selectBox .select option {
+    background: #D9D9D9;
+    color: #fff;
+    padding: 3px 0;
+    font-size: 14px;
+}
+.adoption-selectBox .icoArrow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 35px;
+    height: inherit;
+    border-left: 1px solid #D9D9D9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.adoption-selectBox .select:focus + .icoArrow{
+    transform: rotate(180deg);
+}

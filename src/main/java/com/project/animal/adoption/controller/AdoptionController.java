@@ -47,14 +47,34 @@ public class AdoptionController {
 
     // 메인 리스트 입장
     @GetMapping(EndPoint.ADOPTION_LIST)
-    public String adoptionMainGet(@RequestParam(required = false) Integer pageNumber, Model model,
+    public String adoptionMainGet(@RequestParam(required = false) Integer pageNumber,
+                                  @RequestParam(required = false) String breed,
+                                  Model model,
                                   @Member MemberDto memberDto){
+
+        System.out.println("breed:>>"+breed);
+
         int pageSize = 10; // 한 페이지에 보여줄 데이터 개수
 
         if (pageNumber == null || pageNumber == 0) {
             pageNumber = 1; // 페이지 번호가 없거나 1보다 작으면 기본값으로 1 설정
         }
+
+
+//        dogList = adoptionService.getDogList();
+//        for (Adoption adoption : dogList) {
+//            System.out.println("개:>>"+adoption.getBreed());
+//        }
+        //고양이 리스트 가져오기
+//        catList = adoptionService.getCatList();
+        Page<Adoption> breedList = adoptionService.findPatsByBreed(breed, pageNumber, pageSize);
+
+        for (Adoption adoption : breedList) {
+            System.out.println("breadList Check:>>"+adoption.getId());
+        }
+        //전체 리스트
         Page<Adoption> listWithImagesAndMember = adoptionService.getAdoptionPageWithImagesAndMemberPages(pageNumber,pageSize); // 전체 리스트
+
         int count = listWithImagesAndMember.getTotalPages(); // 총 불러온 리스트의 갯수
         int BLOCK_COUNT = 10; // 페이지 넘버 갯수
         int temp = (pageNumber-1)%BLOCK_COUNT; //  페이지 넘버 갯수에 맞게 시작페이지 보이도록 계산해주는 변수
@@ -63,7 +83,14 @@ public class AdoptionController {
 //        int pageCount = (count / pageSize) + (count % pageSize == 0 ? 0 : 1); //
 
 
-        model.addAttribute("list", listWithImagesAndMember);
+//        model.addAttribute("list", listWithImagesAndMember);
+
+        if(breed.equals("dog") || breed.equals("cat")){
+            model.addAttribute("list", breedList);
+        }else{
+            model.addAttribute("list", listWithImagesAndMember);
+        }
+
         model.addAttribute("blockCount", BLOCK_COUNT);
         model.addAttribute("startPage", startPage);
         model.addAttribute("pageNumber", pageNumber);
@@ -72,18 +99,19 @@ public class AdoptionController {
 //        model.addAttribute("pageCount", pageCount);
     
         // 좋아요 리스트를 체크하기 위한 로직
-        List<Boolean> likeStatusList = new ArrayList<>();
-        for (Adoption adoption : listWithImagesAndMember.getContent()) {
-            boolean liked = adoptionService.isAdoptionLikedByUser(adoption.getId(), memberDto.getId());
-            likeStatusList.add(liked);
+        if(memberDto != null){
+            List<Boolean> likeStatusList = new ArrayList<>();
+            for (Adoption adoption : listWithImagesAndMember.getContent()) {
+                boolean liked = adoptionService.isAdoptionLikedByUser(adoption.getId(), memberDto.getId());
+                likeStatusList.add(liked);
+            }
+            model.addAttribute("likeStatusList", likeStatusList);
         }
-
-        model.addAttribute("likeStatusList", likeStatusList);
-
 
 
         return ViewName.ADOPTION_LIST;
     }
+
 
     // 입양 게시판 list 좋아요 처리 영역
     @PostMapping (EndPoint.ADOPTION_LIST)
