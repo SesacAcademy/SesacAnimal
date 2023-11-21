@@ -40,6 +40,9 @@
 
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/header/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/adoption/adoption_index.css}" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
     <script th:src="@{/js/main.js}"></script>
 
@@ -52,9 +55,11 @@
   </head>
   <body>
     <th:block th:replace="../fragments/header/header :: header"></th:block>
-
     <span th:text="${member} ? ${member.email} : 'Anonymous'"></span>
     <span>님 안녕하세요</span>
+    <th:block th:replace="../fragments/adoption/adoption_index :: adoption_index"></th:block>
+
+
     <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
   </body>
 </html>
