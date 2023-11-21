@@ -8,6 +8,7 @@ import com.project.animal.missing.controller.utils.PathMaker;
 import com.project.animal.missing.dto.*;
 import com.project.animal.missing.dto.comment.MissingCommentListEntryDto;
 import com.project.animal.missing.exception.InvalidCreateFormException;
+import com.project.animal.missing.exception.InvalidEditFormException;
 import com.project.animal.missing.service.inf.MissingPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -101,7 +102,40 @@ public class MissingController {
     redirectAttributes.addFlashAttribute("isSuccess", isSuccess ? SUCCESS_FLAG : FAIL_FLAG);
     redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
 
-    return "redirect:" + EndPoint.MISSING_BASE + EndPoint.NEW;
+    return "redirect:" + "/v1/missing/new";
+  }
+
+  @GetMapping("/edit/{postId}")
+  public String showEditView(@PathVariable("postId") long postId, Model model, @Member MemberDto memberDto) {
+    MissingDetailDto detail = missingPostService.getPostDetail(postId);
+
+    if (detail.getMemberId() != memberDto.getId()) {
+      throw new RuntimeException("수정이 불가한 유저 입니다.");
+    }
+
+    Map<String, String> endPoints = pathMaker.createLink("edit");
+    model.addAttribute("detail", detail);
+    model.addAttribute("endPoints", endPoints);
+
+    return ViewName.POST_EDIT;
+  }
+
+  @PutMapping("/edit/{postId}")
+  public String handleEditRequest(
+          @Valid @ModelAttribute("detail") MissingEditDto dto,
+          BindingResult br,
+          RedirectAttributes redirectAttributes,
+          @Member MemberDto member) {
+
+    if (br.hasErrors() || member == null ) {
+      throw new InvalidEditFormException(dto, br);
+    }
+
+    boolean isSuccess = missingPostService.editPost(member.getId(), dto);
+    redirectAttributes.addFlashAttribute("isSuccess", isSuccess ? SUCCESS_FLAG : FAIL_FLAG);
+    redirectAttributes.addFlashAttribute("isRedirected", SUCCESS_FLAG);
+
+    return "redirect:" + "/v1/missing/detail/" + dto.getMissingId();
   }
 
 }
