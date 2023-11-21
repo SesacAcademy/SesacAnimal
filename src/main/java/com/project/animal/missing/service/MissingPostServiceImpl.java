@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
 public class MissingPostServiceImpl implements MissingPostService {
 
   private final MemberRepository memberRepository;
+
   private final MissingPostRepository missingPostRepository;
 
   private final MissingPostImageService missingPostImageService;
