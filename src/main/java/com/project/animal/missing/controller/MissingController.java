@@ -2,7 +2,6 @@ package com.project.animal.missing.controller;
 
 import com.project.animal.global.common.annotation.Member;
 import com.project.animal.global.common.dto.MemberDto;
-import com.project.animal.missing.constant.EndPoint;
 import com.project.animal.missing.constant.ViewName;
 import com.project.animal.missing.controller.utils.PathMaker;
 import com.project.animal.missing.dto.*;
@@ -22,10 +21,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,7 +33,6 @@ public class MissingController {
   public final int SUCCESS_FLAG = 1;
 
   public final int FAIL_FLAG = 0;
-
 
   private final MissingPostService missingPostService;
 
