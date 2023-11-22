@@ -87,4 +87,25 @@ public class RedisServiceProvider {
     public void remove(String key) {
         template.expire(key, Duration.ZERO);
     }
+
+
+    /**
+     * Redis 서버에 있는 데이터의 숫자를 1 올려주는 메소드 (동시성 보장)
+     *
+     * @version 0.1
+     * @param key Redis Key
+     */
+    public void increase(String key) {
+        template.opsForValue().increment(key);
+    }
+
+    /**
+     * Redis 서버에 있는 데이터의 숫자를 1 내려주는 메소드 (동시성 보장)
+     *
+     * @version 0.1
+     * @param key Redis Key
+     */
+    public void decrease(String key) {
+        template.opsForValue().decrement(key);
+    }
 }

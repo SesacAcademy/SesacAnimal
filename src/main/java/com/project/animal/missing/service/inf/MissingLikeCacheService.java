@@ -1,8 +1,10 @@
 package com.project.animal.missing.service.inf;
 
+import java.util.Optional;
+
 public interface MissingLikeCacheService {
 
   void updateLike(long postId, int status);
 
-  int getCountByPostId(long postId);
+  Optional<Integer> getCountByPostId(long postId);
 }

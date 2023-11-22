@@ -1,4 +1,4 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="detailCard(post)">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="detailCard(selfId, post)">
     <h3 th:text="${post.title}" />
     <h6 th:text="${post.author}" />
     <section class="missing-detail-page-content">
@@ -19,7 +19,7 @@
                     <div class="missing-detail-field" th:text="'색상: ' + ${post.color}" />
                     <div class="missing-detail-field" th:text="'실종시간: ' + ${post.missingTime}" />
 
-                    <div class="missing-card-like">
+                    <div th:if="${selfId > 0}" class="missing-card-like">
                         <div class="missing-card-post-id" th:text="${post.id}" hidden />
                         <div>
                             <i class="empty-heart far fa-heart" th:style="${post.isLiked == 0} ? 'display: block' : 'display: none'"></i>
