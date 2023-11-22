@@ -62,12 +62,13 @@ public class MissingController {
                               @Member MemberDto member,
                               Model model) {
 
-    MissingDetailDto detail = missingPostService.getPostDetail(postId, member.getId());
+    long memId = member != null ? member.getId() : 0;
+    MissingDetailDto detail = missingPostService.getPostDetail(postId, memId);
     List<MissingCommentListEntryDto> comments = detail.getComments();
 
     Map<String, String> endPoints = pathMaker.createLink("edit", "delete", "newComment", "editComment", "deleteComment");
 
-    model.addAttribute("selfId", member != null ? member.getId() : 0);
+    model.addAttribute("selfId", memId);
     model.addAttribute("endPoints", endPoints);
     model.addAttribute("post", detail);
     model.addAttribute("comments", comments);
