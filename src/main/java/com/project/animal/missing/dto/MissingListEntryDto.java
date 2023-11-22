@@ -40,6 +40,8 @@ public class MissingListEntryDto {
 
   private List<MissingPostImageDto> images;
 
+  private int likeCount;
+
   private MissingListEntryDto(long id, String title, long memberId, String author, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, int reward, int missingStatus, LocalDateTime updatedAt) {
     this.id = id;
     this.title = title;
@@ -79,5 +81,9 @@ public class MissingListEntryDto {
 
   public void addImages(List<MissingPostImageDto> images) {
     this.images = images;
+  }
+
+  public void addLikeCount(Integer count) {
+    this.likeCount = count == null ? 0 : count;
   }
 }

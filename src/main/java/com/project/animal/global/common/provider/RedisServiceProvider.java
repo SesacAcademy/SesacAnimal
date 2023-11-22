@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -77,6 +78,18 @@ public class RedisServiceProvider {
         return Optional.ofNullable(token);
     }
 
+
+    /**
+     * Redis 서버에 저장된 데이터를 가져 오는 메소드이다.
+     *
+     * @version 0.1
+     * @param keys List of Redis key
+     * @return value List of value retrieved by key from Redis
+     */
+    public List<String> getMultiple(List<String> keys) {
+        return template.opsForValue().multiGet(keys);
+    }
+
     /**
      * Redis 서버에 있는 데이터를 삭제 하는 메소드이다.
      *
@@ -108,4 +121,6 @@ public class RedisServiceProvider {
     public void decrease(String key) {
         template.opsForValue().decrement(key);
     }
+
+
 }

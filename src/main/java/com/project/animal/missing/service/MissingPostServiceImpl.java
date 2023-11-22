@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
@@ -51,12 +52,32 @@ public class MissingPostServiceImpl implements MissingPostService {
   public ListResponseDto<MissingListEntryDto> getPostList(MissingFilterDto filter, Pageable pageable) {
     Page<MissingPost> pages = missingPostRepository.findByFilter(filter, pageable);
 
-    int count = (int) pages.getTotalElements();
     List<MissingListEntryDto> posts = pages.stream()
             .map(this ::convertToMissingListEntryDto)
             .collect(Collectors.toList());
 
-    return new ListResponseDto<>(count, posts);
+    List<Integer> counts = getLikeCountById(pages);
+
+    List<MissingListEntryDto> postsWithLikes = IntStream.range(0, posts.size())
+            .mapToObj((idx) -> {
+              MissingListEntryDto target = posts.get(idx);
+              target.addLikeCount(counts.get(idx));
+              return target;
+            })
+            .collect(Collectors.toList());
+
+
+    int count = (int) pages.getTotalElements();
+
+    return new ListResponseDto<>(count, postsWithLikes);
+  }
+
+  private List<Integer> getLikeCountById(Page<MissingPost> pages) {
+    List<Long> ids = pages.stream()
+            .map(MissingPost::getMissingId)
+            .collect(Collectors.toList());
+
+    return missingLikeService.getLikeCountMultiple(ids);
   }
 
   private MissingListEntryDto convertToMissingListEntryDto(MissingPost entity) {
@@ -65,6 +86,8 @@ public class MissingPostServiceImpl implements MissingPostService {
             .map(image -> new MissingPostImageDto(image.getImageId(), image.getPath()))
             .collect(Collectors.toList());
     entry.addImages(images);
+
+
     return entry;
   }
 

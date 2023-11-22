@@ -14,7 +14,7 @@
 
                     <div th:if="${post.reward > -1}" th:text="'사례금: ' + ${post.reward}" class="missing-card-content truncate-1-line missing-card-reward"/>
 
-
+                    <div th:text="${post.likeCount}" />
                 </div>
                 <img th:src="@{/img/ellipse.png}" alt="ellipse" width="100%" height="100%" class="missing-card-ellipse" />
 
