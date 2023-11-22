@@ -3,7 +3,7 @@ package com.project.animal.global.common.constant;
 public abstract class ViewName {
 
     // Home 관련
-    public static final String INDEX_VIEW = "/home/index";
+    public static final String INDEX_VIEW = "home/index";
 
     // Member 관련
     public static final String MEMBER_PREFIX = "member";
