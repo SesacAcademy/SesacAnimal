@@ -79,7 +79,7 @@
             <div th:if="${post}">
                 <div style="display: flex; flex-direction: row;">
                     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
-                        <th:block th:replace="./missing/detail/missingDetailCard :: detailCard(${post})" />
+                        <th:block th:replace="./missing/detail/missingDetailCard :: detailCard(${selfId}, ${post})" />
                         <th:block th:replace="./missing/detail/navigationButtons :: navButtons(${selfId} ,${post}, ${endPoints.edit}, ${endPoints.delete})" />
                     </div>
                     <div>

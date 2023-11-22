@@ -30,7 +30,10 @@ public class MissingLikeServiceImpl implements MissingLikeService {
 
   @Override
   public int getLikeCount(long postId) {
-    return missingLikeCacheService.getCountByPostId(postId);
+    Optional<Integer> maybeCurrentCount = missingLikeCacheService.getCountByPostId(postId);
+    Integer currentCount = maybeCurrentCount.orElse(missingLikeRepository.likedCountByPostId(postId));
+
+    return currentCount;
   }
 
   @Override
