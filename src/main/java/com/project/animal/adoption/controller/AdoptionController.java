@@ -48,10 +48,11 @@ public class AdoptionController {
     // 메인 리스트 입장
     @GetMapping(EndPoint.ADOPTION_LIST)
     public String adoptionMainGet(@RequestParam(required = false) Integer pageNumber,
-                                  @RequestParam(required = false) String breed,
+                                  @RequestParam(required = false) String breedd,
                                   Model model,
                                   @Member MemberDto memberDto){
 
+        String breed = "cat";
         System.out.println("breed:>>"+breed);
 
         int pageSize = 10; // 한 페이지에 보여줄 데이터 개수
