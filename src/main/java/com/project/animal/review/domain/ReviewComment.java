@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class ReviewComment extends BaseEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_comment_id")
     private Long id;
 
