@@ -15,63 +15,63 @@
         </div>
 
         <form class="adoption-find" method="POST" action="/">
-            <p class="adoption-find-title">
-                <img th:src="@{/img/findnadopt.png}" alt="Find & Adopt" />
-            </p>
-
-            <div class="adoption-find-area">
-                <p class="icon-area">
-                    <a href="/v1/adoption?breed=dog" title="강아지 보기">
-                        <img th:src="@{/img/dog_icon.png}" alt="강아지 선택" />
-                    </a>
-                    <a href="/v1/adoption?breed=cat" title="고양이 보기">
-                        <img th:src="@{/img/cat_icon.png}" alt="고양이 선택" />
-                    </a>
+            <div class="adoption-filter-content">
+                <p class="adoption-find-title">
+                    <img th:src="@{/img/findnadopt.png}" alt="Find & Adopt" />
                 </p>
 
-                <div class="center-area">
-                    <label for="is-center">센터 보호 여부</label>
-                    <p class="adoption-selectBox">
-                        <select name="center" class="select" id="is-center">
-                            <option value="" disabled selected></option>
-                            <option value="N">일반</option>
-                            <option value="Y">센터</option>
-                        </select>
-                        <span class="material-symbols-outlined icoArrow">expand_more</span>
+                <div class="adoption-find-area">
+                    <p class="icon-area">
+                        <a href="/v1/adoption?breed=dog" title="강아지 보기">
+                            <img th:src="@{/img/dog_icon.png}" alt="강아지 선택" />
+                        </a>
+                        <a href="/v1/adoption?breed=cat" title="고양이 보기">
+                            <img th:src="@{/img/cat_icon.png}" alt="고양이 선택" />
+                        </a>
                     </p>
+
+                    <div class="center-area">
+                        <label for="is-center">센터 보호 여부</label>
+                        <p class="adoption-selectBox">
+                            <select name="center" class="select" id="is-center">
+                                <option value="" disabled selected></option>
+                                <option value="N">일반</option>
+                                <option value="Y">센터</option>
+                            </select>
+                            <span class="material-symbols-outlined icoArrow">expand_more</span>
+                        </p>
+                    </div>
+
+                    <div class="local-area">
+                        <label for="local">지역</label>
+                        <p class="adoption-selectBox">
+                            <select id="local" name="local" class="select">
+                                <option selected value=""></option>
+                                <option value="서울">서울</option>
+                                <option value="경기">경기</option>
+                                <option value="부산">부산</option>
+                                <option value="경북">경북</option>
+                                <option value="경남">경남</option>
+                                <option value="대구">대구</option>
+                                <option value="대전">대전</option>
+                                <option value="충북">충북</option>
+                                <option value="충남">충남</option>
+                                <option value="강원">강원</option>
+                                <option value="광주">광주</option>
+                                <option value="전북">전북</option>
+                                <option value="전남">전남</option>
+                                <option value="제주">제주</option>
+                            </select>
+                            <span class="material-symbols-outlined icoArrow">expand_more</span>
+                        </p>
+                    </div>
                 </div>
-
-                <div class="local-area">
-                    <label for="local">지역</label>
-                    <p class="adoption-selectBox">
-                        <select id="local" name="local" class="select">
-                            <option selected value=""></option>
-                            <option value="서울">서울</option>
-                            <option value="경기">경기</option>
-                            <option value="부산">부산</option>
-                            <option value="경북">경북</option>
-                            <option value="경남">경남</option>
-                            <option value="대구">대구</option>
-                            <option value="대전">대전</option>
-                            <option value="충북">충북</option>
-                            <option value="충남">충남</option>
-                            <option value="강원">강원</option>
-                            <option value="광주">광주</option>
-                            <option value="전북">전북</option>
-                            <option value="전남">전남</option>
-                            <option value="제주">제주</option>
-                        </select>
-                        <span class="material-symbols-outlined icoArrow">expand_more</span>
-                    </p>
-                </div>
-                <p class="button-area">
-                    <a href="/v1/adoption">
-                        <button>입양동물 찾아보기</button>
-                    </a>
-                </p>
-
-
             </div>
+            <p class="button-area">
+                <a href="/v1/adoption">
+                    <button>입양동물 찾아보기</button>
+                </a>
+            </p>
         </form>
 
     </section>

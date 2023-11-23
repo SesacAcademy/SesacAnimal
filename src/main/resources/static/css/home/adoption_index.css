@@ -1,7 +1,6 @@
 /* index 페이지 입양 부분 css */
 
 .adoption{
-    max-width:1280px;
     margin:0 auto;
 }
 
@@ -15,9 +14,15 @@
     width:100%;
     height: 120px;
     display: flex;
-    padding:0 120px;
     align-items: center;
+    justify-content: space-between;
     background-color: #fff;
+    padding: 0 120px;
+}
+
+.adoption .adoption-filter-content {
+    display: flex;
+    align-items: center;
 }
 
 .adoption .adoption-find-title {
@@ -70,18 +75,17 @@
     letter-spacing: 2px;
 }
 
-.adoption .adoption-find-area .button-area{
+.adoption .button-area{
     margin:0;
 }
 
-.adoption .adoption-find-area .button-area button{
+.adoption .button-area button{
     width:166px;
     height: 50px;
     background-color: #393B4A;
     color:#fff;
     border:none;
     border-radius: 45px;
-    margin-left: 92px;
 }
 
 /* custom Select Box Css 영역 */
