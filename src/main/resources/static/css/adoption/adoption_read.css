@@ -62,8 +62,9 @@
 
 }
 .adoption-read .view-button-area .view-area span{
-    vertical-align: middle;
+    vertical-align: bottom;
     color:#777;
+    font-size: 14px;
 }
 
 

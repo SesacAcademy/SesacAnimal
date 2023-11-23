@@ -133,13 +133,6 @@ p, div{
 
 
 .adoption .select select {
-    /* height: 30px;
-    text-indent: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    vertical-align: top;
-    font-size: 15px; */
     width:173px;
     height:41px;
     background-color: rgba(240,240,240,0.41);
@@ -148,6 +141,7 @@ p, div{
     border-radius: 10px;
     box-sizing: border-box;
     text-indent: 10px;
+    font-size: 15px;
 }
 
 .adoption .write .write-button{
@@ -214,7 +208,8 @@ p, div{
     /* margin-left: 15px; */
     width:150px ;
     height: 150px;
-    object-fit: contain;
+    object-fit: cover;
+    border-radius: 20px;
 }
 
 .adoption-board ul li .status-area {
@@ -247,7 +242,6 @@ p, div{
 /* ********************************** */
 #paging {
     width:100%;
-
 }
 
 #paging ul {
@@ -256,17 +250,25 @@ p, div{
     justify-content: center;
 }
 
+#paging ul li a,
+#paging ul li a span{
+    font-size: 15px;
+    vertical-align: bottom;
+}
 
 .page-item.first .page-link, .page-item.last .page-link, .page-item.next .page-link, .page-item.prev .page-link, .page-item.previous .page-link {
     /*width:15px;*/
     /*padding: 1rem;*/
     /*margin:0 10rem;*/
 }
-.page-item.disabled .page-link {
-    border-color: #d9dee3;
-}
+/*.page-item.disabled .page-link {*/
+/*    border-color: #d9dee3;*/
+/*}*/
 .page-item.active .page-link {
     margin: 0 0.1rem 0 0.3rem;
+}
+.page-item.active {
+    color:#5da5f8;
 }
 
 .page-link,
@@ -276,54 +278,27 @@ p, div{
     line-height: 1;
     text-align: center;
     min-width: 20px;
-
-}
-.page-link:focus,
-.page-link > a:focus {
-    color: #697a8d;
 }
 
-/*.page-link.btn-primary {*/
-/*    box-shadow: none !important;*/
-/*}*/
-
-/*.pagination-lg .page-link,*/
-/*.pagination-lg > li > a:not(.page-link) {*/
-/*    min-width: calc(*/
-/*            2.875rem + 0px*/
-/*    );*/
-/*}*/
-
-/*.pagination-lg > .page-item.first .page-link, .pagination-lg > .page-item.last .page-link, .pagination-lg > .page-item.next .page-link, .pagination-lg > .page-item.prev .page-link, .pagination-lg > .page-item.previous .page-link {*/
-/*    padding-top: 0.853rem;*/
-/*    padding-bottom: 0.853rem;*/
-/*}*/
-
-/*.pagination-sm .page-link,*/
-/*.pagination-sm > li > a:not(.page-link) {*/
-/*    min-width: calc(*/
-/*            1.5rem + 0px*/
-/*    );*/
-/*}*/
-/*.pagination-sm .page-link .tf-icon,*/
-/*.pagination-sm > li > a:not(.page-link) .tf-icon {*/
-/*    font-size: 0.9375rem;*/
-/*}*/
-
-/*.pagination-sm > .page-item.first .page-link, .pagination-sm > .page-item.last .page-link, .pagination-sm > .page-item.next .page-link, .pagination-sm > .page-item.prev .page-link, .pagination-sm > .page-item.previous .page-link {*/
-/*    padding-top: 0.3rem;*/
-/*    padding-bottom: 0.3rem;*/
-/*}*/
+.page-item:focus .page-link,
+.page-item:hover .page-link,
+.page-item:active .page-link
+{
+    color: #5da5f8;
+}
 
 .page-item.active .page-link, .page-item.active .page-link:hover, .page-item.active .page-link:focus,
 .pagination li.active > a:not(.page-link),
 .pagination li.active > a:not(.page-link):hover,
 .pagination li.active > a:not(.page-link):focus {
-    width:50px;
-    border-color: #696cff;
-    background-color: #fff;
+/*.pagination li.active,*/
+/*.pagination li a:active*/
+/*{*/
+    /*width:50px;*/
+    /*border-color: #696cff;*/
+    /*background-color: #fff;*/
     color: #2087c9;
-    box-shadow: 0 0.125rem 0.25rem rgba(105, 108, 255, 0.4);
+    /*box-shadow: 0 0.125rem 0.25rem rgba(105, 108, 255, 0.4);*/
 }
 
 
