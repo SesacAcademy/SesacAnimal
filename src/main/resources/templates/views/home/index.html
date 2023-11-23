@@ -167,7 +167,9 @@
   </head>
   <body>
     <th:block th:replace="../fragments/header/header :: header"></th:block>
-
+    <span th:text="${member} ? ${member.email} : 'Anonymous'"></span>
+    <span>님 안녕하세요</span>
+    <th:block th:replace="../fragments/adoption/adoption_index :: adoption_index"></th:block>
 
 
     <div class = "review-box">

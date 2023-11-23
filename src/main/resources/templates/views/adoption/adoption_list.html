@@ -63,137 +63,163 @@
 <body>
  <th:block th:replace="../fragments/header/header :: header"></th:block>
 
-     <main class="adoption">
-         <div class="search-area">
-             <p class="search">
-                 <label for="search-input"><input type="text" id="search-input" name="search"/></label>
-                 <a class="search-button" id="search-button">
-                     <span class="material-symbols-outlined">search</span>
-                 </a>
-             </p>
-             <p class="select">
-                 <label for="center-filter">
-                     <select id="center-filter">
-                         <option value="">작성자 선택</option>
-                         <option value="Y">센터글만 보기</option>
-                         <option value="N">유저글만 보기</option>
-                     </select>
-                 </label>
-             </p>
-             <p class="write" th:if="${member != null}">
-                 <a href="/v1/adoption/edit" class="write-button" title="글쓰기">
-                     <span class="material-symbols-outlined">edit_square</span>
-                     <span>글쓰기</span>
-                 </a>
-             </p>
-             <p class="write" th:unless="${member != null}">
-                 <a href="javascript:void(0);" class="write-button" title="글쓰기" onclick="checkLoginAlert()">
-                     <span class="material-symbols-outlined">edit_square</span>
-                     <span>글쓰기</span>
-                 </a>
-             </p>
-         </div>
+    <div>
+        <nav class="adoption-navigation">
+            <div>
 
-         <section class="adoption-board">
-             <ul id="adoption-list">
-                 <li th:if="${adoption.isActive ==1}" th:each="adoption, status : ${list.getContent()}" >
-                     <a th:href="@{'/v1/adoption/' + ${adoption.id}}">
-                         <div class="image-area">
+            </div>
+            <p class="process">
+                <a href="" title="입양절차">
+                    <span>입양절차</span><span class="material-symbols-outlined">navigate_next</span>
+                </a>
+            </p>
+            <p class="caution">
+                <a href="" title="입양시 주의사항">
+                    <span>입양시 주의사항</span><span class="material-symbols-outlined">navigate_next</span>
+                </a>
+            </p>
+            <p class="board">
+                <a href="" title="공고 확인">
+                    <span>입양 게시판</span><span class="material-symbols-outlined">navigate_next</span>
+                </a>
+            </p>
+        </nav>
 
-                             <p class="image" th:each="image : ${adoption.adoptionImages}" >
-                                 <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 -->
-                                 <img th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') and image.isActive==1 }" th:src="${image.path}" alt="유기동물 이미지"/>
-                                 <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 -->
-                                 <img th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') and image.isActive==1 }" th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
-                                 <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않고, image.path가 'empty'인 경우 -->
-                                 <img th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}" th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>
-                             </p>
 
-                             <div class="status-area">
-                                 <p>
-                                    <span th:text="${adoption.status}">입양상태</span>
-                                 </p>
-                                 <p class="like" th:if="${member != null}" >
-                                     <input type="hidden" name="postId" th:value="${adoption.id}" />
-                                     <span class="material-symbols-outlined like-icon" th:classappend="${likeStatusList[status.index] ? 'red' : 'black'}">heart_plus</span><span class="like-count" th:text="${adoption.adoptionPostLikes.size()}"></span>
-                                 </p>
-
-                             </div>
-                         </div>
-<!--                             <div th:each="image : ${adoption.adoptionImages}">-->
-<!--                                 &lt;!&ndash; 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 &ndash;&gt;-->
-<!--                                 <p th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') }">-->
-<!--                                     <img th:src="${image.path}" alt="유기동물 이미지"/>-->
-<!--                                 </p>-->
-
-<!--                                 &lt;!&ndash; 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 &ndash;&gt;-->
-<!--                                 <p th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') }">-->
-<!--                                     <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>-->
-<!--                                 </p>-->
-
-<!--                                 &lt;!&ndash; 조건: image.path가 'www.animal.go.kr/'로 끝나지 않고, image.path가 'empty'인 경우 &ndash;&gt;-->
-<!--                                 <p th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}">-->
-<!--                                     <img th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>-->
-<!--                                 </p>-->
-<!--                             </div>-->
-<!--                             <p class="status-area">-->
-<!--                                 <span th:text="${adoption.status}" >입양상태</span>-->
-<!--                                 <span class="material-symbols-outlined">heart_plus</span>-->
-<!--                             </p>-->
-<!--                         </div>-->
-                         <div class="content-area">
-                             <p>제목 : <span th:text="${adoption.title}"></span></p>
-                             <p>내용 : <span th:text="${adoption.content}"></span></p>
-                         </div>
-                         <div class="info-area">
-                             <p id="noticeEdt" th:if="${adoption.noticeEdt != null}">공고종료일 : <span th:text="${adoption.noticeEdt}"></span></p>
-                             <p th:if="${adoption.member.getNickname() != null}">작성자 : <span th:text="${adoption.member.getNickname()}"></span></p>
-                             <p th:if="${adoption.happenPlace != null}">발견장소 : <span th:text="${adoption.happenPlace}"></span></p>
-                             <p th:if="${adoption.specialMark != null and adoption.center != 'Y'}">특이사항 : <span th:text="${adoption.specialMark}"></span></p>
-                         </div>
+         <section class="adoption">
+             <div class="search-area">
+                 <p class="search">
+                     <label for="search-input"><input type="text" id="search-input" name="search"/></label>
+                     <a class="search-button" id="search-button">
+                         <span class="material-symbols-outlined">search</span>
                      </a>
-                 </li>
-             </ul>
+                 </p>
+                 <p class="select">
+                     <label for="center-filter">
+                         <select id="center-filter">
+                             <option value="">작성자 선택</option>
+                             <option value="Y">센터글만 보기</option>
+                             <option value="N">유저글만 보기</option>
+                         </select>
+                     </label>
+                 </p>
+                 <p class="write" th:if="${member != null}">
+                     <a href="/v1/adoption/edit" class="write-button" title="글쓰기">
+                         <span class="material-symbols-outlined">edit_square</span>
+                         <span>글쓰기</span>
+                     </a>
+                 </p>
+                 <p class="write" th:unless="${member != null}">
+                     <a href="javascript:void(0);" class="write-button" title="글쓰기" onclick="checkLoginAlert()">
+                         <span class="material-symbols-outlined">edit_square</span>
+                         <span>글쓰기</span>
+                     </a>
+                 </p>
+             </div>
+
+             <section class="adoption-board">
+                 <ul id="adoption-list">
+                     <li th:if="${adoption.isActive ==1}" th:each="adoption, status : ${list.getContent()}" >
+                         <a th:href="@{'/v1/adoption/' + ${adoption.id}}">
+                             <div class="image-area">
+
+                                 <p class="image" th:each="image : ${adoption.adoptionImages}" >
+                                     <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 -->
+                                     <img th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') and image.isActive==1 }" th:src="${image.path}" alt="유기동물 이미지"/>
+                                     <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 -->
+                                     <img th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') and image.isActive==1 }" th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
+                                     <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않고, image.path가 'empty'인 경우 -->
+                                     <img th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}" th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>
+                                 </p>
+
+                                 <div class="status-area">
+                                     <p>
+                                        <span th:text="${adoption.status}">입양상태</span>
+                                     </p>
+                                     <p class="like" th:if="${member != null}" >
+                                         <input type="hidden" name="postId" th:value="${adoption.id}" />
+                                         <span class="material-symbols-outlined like-icon" th:classappend="${likeStatusList[status.index] ? 'red' : 'black'}">heart_plus</span><span class="like-count" th:text="${adoption.adoptionPostLikes.size()}"></span>
+                                     </p>
+
+                                 </div>
+                             </div>
+    <!--                             <div th:each="image : ${adoption.adoptionImages}">-->
+    <!--                                 &lt;!&ndash; 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 &ndash;&gt;-->
+    <!--                                 <p th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') }">-->
+    <!--                                     <img th:src="${image.path}" alt="유기동물 이미지"/>-->
+    <!--                                 </p>-->
+
+    <!--                                 &lt;!&ndash; 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 &ndash;&gt;-->
+    <!--                                 <p th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') }">-->
+    <!--                                     <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>-->
+    <!--                                 </p>-->
+
+    <!--                                 &lt;!&ndash; 조건: image.path가 'www.animal.go.kr/'로 끝나지 않고, image.path가 'empty'인 경우 &ndash;&gt;-->
+    <!--                                 <p th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}">-->
+    <!--                                     <img th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>-->
+    <!--                                 </p>-->
+    <!--                             </div>-->
+    <!--                             <p class="status-area">-->
+    <!--                                 <span th:text="${adoption.status}" >입양상태</span>-->
+    <!--                                 <span class="material-symbols-outlined">heart_plus</span>-->
+    <!--                             </p>-->
+    <!--                         </div>-->
+                             <div class="content-area">
+                                 <p>제목 : <span th:text="${adoption.title}"></span></p>
+                                 <p>내용 : <span th:text="${adoption.content}"></span></p>
+                             </div>
+                             <div class="info-area">
+                                 <p id="noticeEdt" th:if="${adoption.noticeEdt != null}">공고종료일 : <span th:text="${adoption.noticeEdt}"></span></p>
+                                 <p th:if="${adoption.member.getNickname() != null}">작성자 : <span th:text="${adoption.member.getNickname()}"></span></p>
+                                 <p th:if="${adoption.happenPlace != null}">발견장소 : <span th:text="${adoption.happenPlace}"></span></p>
+                                 <p th:if="${adoption.specialMark != null and adoption.center != 'Y'}">특이사항 : <span th:text="${adoption.specialMark}"></span></p>
+                             </div>
+                         </a>
+                     </li>
+                 </ul>
+             </section>
+
+             <nav th:if="${list.totalPages > 1}" id="paging">
+                 <!-- 페이지 번호를 표시 -->
+                 <ul class="pagination" th:if="${list.totalPages != 0}">
+                     <li class="page-item first" th:if="${startPage > blockCount}">
+                          <a class="page-link" th:href="@{/v1/adoption(pageNumber=1)}">
+                            <span class="material-symbols-outlined">skip_previous</span>
+                          </a>
+                     </li>
+
+                      <li class="page-item prev" th:if="${startPage > blockCount}">
+                          <a class="page-link" th:href="@{/v1/adoption(pageNumber=${startPage - blockCount})}">
+                            <span class="material-symbols-outlined">arrow_back_ios</span>
+                          </a>
+                      </li>
+
+
+                     <th:block th:each="pageNum : ${#numbers.sequence(startPage, (endPage <= count ? endPage : count))}">
+                         <li class="page-item" th:classappend="${pageNumber == num} ? 'active' : ''">
+                             <a class="page-link" th:href="@{/v1/adoption(pageNumber=${pageNum})}">[[${pageNum}]]</a>
+                         </li>
+                     </th:block>
+
+                      <li class="page-item next" th:if="${(startPage+blockCount)<=count}">
+                          <a class="page-link" th:href="@{/v1/adoption(pageNumber=${startPage + blockCount})}">
+                              <span class="material-symbols-outlined">arrow_forward_ios</span>
+                          </a>
+                      </li>
+                      <li class="page-item last" th:if="${(startPage+blockCount)<=count}">
+                          <a class="page-link" th:href="@{/v1/adoption(pageNumber=${count})}">
+                            <span class="material-symbols-outlined">skip_next</span>
+                          </a>
+                      </li>
+                 </ul>
+             </nav>
+
+
          </section>
 
-         <nav th:if="${list.totalPages > 1}" id="paging">
-             <!-- 페이지 번호를 표시 -->
-             <ul class="pagination" th:if="${list.totalPages != 0}">
-                 <li class="page-item first" th:if="${startPage > blockCount}">
-                      <a class="page-link" th:href="@{/v1/adoption(pageNumber=1)}">
-                        <span class="material-symbols-outlined">skip_previous</span>
-                      </a>
-                 </li>
-
-                  <li class="page-item prev" th:if="${startPage > blockCount}">
-                      <a class="page-link" th:href="@{/v1/adoption(pageNumber=${startPage - blockCount})}">
-                        <span class="material-symbols-outlined">arrow_back_ios</span>
-                      </a>
-                  </li>
 
 
-                 <th:block th:each="pageNum : ${#numbers.sequence(startPage, (endPage <= count ? endPage : count))}">
-                     <li class="page-item" th:classappend="${pageNumber == num} ? 'active' : ''">
-                         <a class="page-link" th:href="@{/v1/adoption(pageNumber=${pageNum})}">[[${pageNum}]]</a>
-                     </li>
-                 </th:block>
-
-                  <li class="page-item next" th:if="${(startPage+blockCount)<=count}">
-                      <a class="page-link" th:href="@{/v1/adoption(pageNumber=${startPage + blockCount})}">
-                          <span class="material-symbols-outlined">arrow_forward_ios</span>
-                      </a>
-                  </li>
-                  <li class="page-item last" th:if="${(startPage+blockCount)<=count}">
-                      <a class="page-link" th:href="@{/v1/adoption(pageNumber=${count})}">
-                        <span class="material-symbols-outlined">skip_next</span>
-                      </a>
-                  </li>
-             </ul>
-         </nav>
-
-
-     </main>
-
+    </div>
 
  <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
 </body>
