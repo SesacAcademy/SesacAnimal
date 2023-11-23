@@ -4,83 +4,118 @@
     margin:0 auto;
 }
 
+.adoption .adoption-banner {
+    position: relative;
+}
+
 .adoption .adoption-banner img{
     width:100%;
     height: 100%;
     object-fit: cover;
 }
 
+.adoption .adoption-banner .banner-button {
+    display: inline-block;
+    background-color: #393B4A;
+    color: white;
+    padding: 15px 21px;
+    border-radius: 45px;
+    font-weight: 500;
+    position: absolute;
+    left: 50%;
+    bottom: 18.27%;
+    font-size: 1rem;
+    max-width: 166px;
+}
+
 .adoption .adoption-find {
     width:100%;
-    height: 120px;
+    height: 9.375%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: #fff;
-    padding: 0 120px;
 }
+
 
 .adoption .adoption-filter-content {
     display: flex;
     align-items: center;
-}
-
-.adoption .adoption-find-title {
-    margin: 0;
-    padding: 0;
+    position: relative;
 }
 
 .adoption .adoption-find-title img {
-    width:200px;
+    width: 100%;
 }
 
 .adoption .adoption-find-area {
-    margin-left:80px;
     display:flex;
+    flex-direction: row;
     align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }
 
-.adoption .adoption-find-area .icon-area{
-    margin:0;
-    padding:0;
-    display: flex;
+.adoption .adoption-find-area .blank-space-left {
+    width: 31.25%;
 }
 
-.adoption .adoption-find-area .icon-area a{
-    margin-right: 30px;
+.adoption .adoption-find-area .adoption-animal-filter-link {
+    display: block;
+    width: 3.125%;
 }
 
-.adoption .adoption-find-area .icon-area img{
-    width:40px;
+.adoption .adoption-find-area .blank-between-animal-icons {
+    width: 2.34%;
+    max-width: 60px;
+}
+
+.adoption .adoption-find-area img{
+    width: 100%;
+}
+
+.adoption .adoption-find-area .blank-cat-icon-right {
+    width: 4.68%;
+    max-width: 120px;
 }
 
 .adoption .adoption-find-area .center-area{
-    margin-left:60px;
+    width: 11.80%;
+    max-width: 200px;
     flex-direction: column;
 }
 .adoption .adoption-find-area .center-area label{
     position: relative;
-    font-size: 12px;
+    font-size: 0.9rem;
     letter-spacing: 2px;
 }
 
+.adoption .adoption-find-area .blank-between-select-box {
+    width: 2.34%;
+    max-width: 30px;
+}
+
 .adoption .adoption-find-area .local-area{
-    margin-left: 30px;
+    max-width: 200px;
+    width: 11.80%;
     flex-direction: column;
 }
 
 .adoption .adoption-find-area .local-area label{
     position: relative;
-    font-size: 12px;
+    font-size: 0.9rem;
     letter-spacing: 2px;
 }
 
 .adoption .button-area{
     margin:0;
+    position: absolute;
+    right: 9.375%;
 }
 
 .adoption .button-area button{
-    width:166px;
+    width: 166px;
     height: 50px;
     background-color: #393B4A;
     color:#fff;
@@ -93,7 +128,7 @@
     margin:0;
     padding:0;
     position: relative;
-    width: 151px;
+    max-width: 200px;
     height: 40px;
     border-radius: 4px;
     border: 1px solid #D9D9D9;
@@ -129,6 +164,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #D9D9D9;
 }
 
 .adoption-selectBox .select:focus + .icoArrow{
