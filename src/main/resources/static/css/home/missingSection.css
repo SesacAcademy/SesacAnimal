@@ -1,0 +1,22 @@
+.missing-box{
+   margin: 0 auto;
+   position: relative;
+}
+
+.missing-bg-top {
+   width: 100%;
+}
+
+.missing-top-button {
+    display: inline-block;
+    background-color: #393B4A;
+    color: white;
+    padding: 15px 21px;
+    border-radius: 45px;
+    font-weight: 500;
+    position: absolute;
+    left: 9.375%;
+    bottom: 16.87%;
+    font-size: 1rem;
+    max-width: 166px;
+}
