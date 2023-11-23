@@ -51,8 +51,37 @@ p, div{
     width:120px;
 }
 
+/* swiper.js 사용 영역 */
+.swiper {
+    width: 150px;
+    height: 150px;
+}
+
+.swiper-slide {
+    text-align: center;
+}
+
+/* next, prev 버튼 영역*/
+.swiper-button-next::after,
+.swiper-button-prev::after{
+    color:rgba(222,216,209,1);
+    font-size: 25px !important;
+}
+.swiper-button-next::after{
+    right:7px !important;
+}
+
+.swiper-button-prev::after{
+    left:-7px !important;
+}
+
+/* Pagination 활성 상태의 색상 */
+.swiper-pagination .swiper-pagination-bullet-active {
+    background-color: rgba(222,216,209,1); /* 원하는 활성 상태의 색상으로 설정 */
+}
 
 
+/* *********************** */
 /* 입양 게시판 css 영역 */
 .adoption {
     width: 1200px;
@@ -183,9 +212,9 @@ p, div{
 
 .adoption-board ul li .image-area img {
     /* margin-left: 15px; */
-    width:150px;
+    width:150px ;
     height: 150px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .adoption-board ul li .status-area {
@@ -196,6 +225,7 @@ p, div{
 
 .adoption-board ul li .status-area span{
     vertical-align: middle;
+    font-size: 14px;
 }
 
 
