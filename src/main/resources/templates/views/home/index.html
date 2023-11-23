@@ -63,15 +63,19 @@
     <section>
       <div class="missing-box-top">
         <img th:src="@{/img/missing_bg_1.png}" class="missing-bg-top">
-        <div class="missing-top-button">실종동물 살펴보기</div>
+        <a href="/v1/missing/list">
+          <div class="missing-top-button">실종동물 살펴보기</div>
+        </a>
       </div>
       <div class="missing-box-bottom">
         <img th:src="@{/img/missing_bg_2.png}" class="missing-bg-bottom">
         <div class="card-container">
-          <a class="each-card" th:each="missingPost : ${missingPosts}">
-            <img th:src="${missingPost.images[0].path}" />
-            <div th:text="${missingPost.getTitle()}"></div>
-          </a>
+          <div class="each-card" th:each="missingPost : ${missingPosts}">
+            <a th:href="@{/v1/missing/detail/{id}(id=${missingPost.getId()})}">
+              <img th:src="${missingPost.images[0].path}" />
+              <div th:text="${missingPost.getTitle()}"></div>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -89,9 +93,9 @@
             <div class="content-like-box">
               <div class="review-post-content" th:text="${reviewPost.content}">내용임다~</div>
               <div class="review-like">
-<span class="material-symbols-outlined">
-favorite
-</span>
+              <span class="material-symbols-outlined">
+              favorite
+              </span>
                 <span class="like-count" th:text="${reviewPost.postLikeCount}">10</span>
               </div>
             </div>
