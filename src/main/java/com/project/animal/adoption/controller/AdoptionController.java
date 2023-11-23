@@ -48,12 +48,12 @@ public class AdoptionController {
     // 메인 리스트 입장
     @GetMapping(EndPoint.ADOPTION_LIST)
     public String adoptionMainGet(@RequestParam(required = false) Integer pageNumber,
-                                  @RequestParam(required = false) String breedd,
+                                  @RequestParam(required = false) String breed,
                                   Model model,
                                   @Member MemberDto memberDto){
 
-        String breed = "cat";
-        System.out.println("breed:>>"+breed);
+//        String breed = "cat";
+//        System.out.println("breed:>>"+breed);
 
         int pageSize = 10; // 한 페이지에 보여줄 데이터 개수
 
@@ -86,11 +86,11 @@ public class AdoptionController {
 
 //        model.addAttribute("list", listWithImagesAndMember);
 
-        if(breed.equals("dog") || breed.equals("cat")){
-            model.addAttribute("list", breedList);
-        }else{
+//        if(breed.equals("dog") || breed.equals("cat")){
+//            model.addAttribute("list", breedList);
+//        }else{
             model.addAttribute("list", listWithImagesAndMember);
-        }
+//        }
 
         model.addAttribute("blockCount", BLOCK_COUNT);
         model.addAttribute("startPage", startPage);
