@@ -2,12 +2,14 @@ package com.project.animal.missing.dto;
 
 import com.project.animal.global.common.utils.CustomDateParser;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Getter
 @ToString
+@NoArgsConstructor
 public class MissingFilterDto {
   private static final String DEFAULT_TIME = "T00:00:00";
   private String animalType;
