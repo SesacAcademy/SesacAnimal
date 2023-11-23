@@ -219,13 +219,13 @@ width:10%;
 
     <form action="/review/like/add" method="post">
         <input type="hidden" name="reviewPostId" th:value="${reviewDto.readOneReviewDto.reviewPostId}" />
-        <button type="submit" class="like-button" th:if="${member != null}">좋아요</button>
+        <button type="submit" class="like-button" th:if="${member != null}" style="border: red">좋아요</button>
     </form>
 
 
     <div class="statistics">
-        <div class="view-count" th:text="'조회수: ' + ${reviewDto.readOneReviewDto.viewCount}"></div>
-        <div class="like-count" th:text="'좋아요 수: ' + ${reviewDto.readOneReviewDto.postLikeCount}"></div>
+        <div class="view-count" th:text="${reviewDto.readOneReviewDto.viewCount}"></div>
+        <div class="like-count" th:text="${reviewDto.readOneReviewDto.postLikeCount}"></div>
     <div class="divider"></div>
 
         <p th:text="'댓글 수: ' + ${commentCount}"></p>
