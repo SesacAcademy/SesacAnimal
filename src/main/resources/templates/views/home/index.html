@@ -58,26 +58,11 @@
   </head>
   <body>
     <th:block th:replace="../fragments/header/header :: header"></th:block>
-    <th:block th:replace="../fragments/adoption/adoption_index :: adoption_index"></th:block>
+    <th:block th:replace="../fragments/home/adoption_index :: adoption_index"></th:block>
+    <th:block th:replace="../fragments/home/missing_index :: missing_index"></th:block>
 
     <section>
-      <div class="missing-box-top">
-        <img th:src="@{/img/missing_bg_1.png}" class="missing-bg-top">
-        <a href="/v1/missing/list">
-          <div class="missing-top-button">실종동물 살펴보기</div>
-        </a>
-      </div>
-      <div class="missing-box-bottom">
-        <img th:src="@{/img/missing_bg_2.png}" class="missing-bg-bottom">
-        <div class="card-container">
-          <div class="each-card" th:each="missingPost : ${missingPosts}">
-            <a th:href="@{/v1/missing/detail/{id}(id=${missingPost.getId()})}">
-              <img th:src="${missingPost.images[0].path}" />
-              <div th:text="${missingPost.getTitle()}"></div>
-            </a>
-          </div>
-        </div>
-      </div>
+      <img th:src="@{/img/dummySection.png}"  style="width:100%;"/>
     </section>
 
 
