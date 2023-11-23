@@ -1,13 +1,58 @@
 /* ********************************** */
+/* 공통 영역 */
+.adoption-title{
+    width:1200px;
+    margin:50px auto 0;
+}
+
+.adoption-title .title-route{
+    margin:30px 0 50px;
+    vertical-align: bottom;
+    color:#777;
+    font-size: 14px;
+}
+
+.adoption-title .title-route span.home{
+    font-size: 19px;
+    vertical-align: bottom;
+}
+
+.adoption-title .title-content{
+    position: relative;
+    padding:0;
+    border-bottom: 1px solid #777;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.adoption-title .title-content h2{
+    font-size:35px;
+}
+
+
+.adoption-title .title-content .image{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.adoption-title .title-content .image img{
+    width:120px;
+}
+
+
 
 /* 입양 수정 페이지 */
 /* adoption-edit */
 .adoption-edit {
     width:1200px;
-    margin:150px auto;
+    margin:80px auto;
     padding:50px;
-    border: 1px solid #ddd;
     font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+    border: 1px solid #f9f9f9;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+    border-radius: 35px;
 }
 .adoption-edit fieldset {
     margin: 0;

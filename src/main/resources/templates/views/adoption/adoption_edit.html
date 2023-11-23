@@ -60,6 +60,18 @@
 <body>
  <th:block th:replace="../fragments/header/header :: header"></th:block>
 
+     <div class="adoption-title">
+         <p class="title-route">
+             <span class="material-symbols-outlined home">home</span> <span> &gt; </span> <span>임시보호 동물들</span>
+         </p>
+         <div class="title-content">
+             <h2>입양</h2>
+             <p class="image">
+                 <img src="https://www.seocho.go.kr/images/animal/sub/sub4top_img.png" alt="새싹애니멀"/>
+             </p>
+         </div>
+     </div>
+
      <section class="adoption-edit">
          <form th:object="${edit}" th:action="@{'/v1/adoption/edit/' + ${edit.postId}}" method="POST" name="edit" accept-charset="utf-8" enctype="multipart/form-data">
 <!--             <input type="hidden" name="_method" value="PUT">-->

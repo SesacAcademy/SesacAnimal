@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if(button.innerText === "수정하기"){
                 textarea.readOnly = false;
-                textarea.style.backgroundColor = "#eee";
+                textarea.style.backgroundColor = "rgba(255,250,250,0.5)";
                 textarea.style.border = "1px solid #000";
                 button.innerText = "수정완료";
                 button.style.color="#c1dcf9";
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if(button.innerText === "수정하기"){
                 textarea.readOnly = false;
-                textarea.style.backgroundColor = "#eee";
+                textarea.style.backgroundColor = "#f1f1f1";
                 button.innerText = "수정완료";
                 button.style.color="#c1dcf9";
                 button.type="button";
