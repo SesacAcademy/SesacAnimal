@@ -105,7 +105,7 @@
                      <span class="title">이미지</span>
                  </p>
 
-                 <p class="image" th:each="image, index : ${read.path}" >
+                 <p class="image" th:each="image, index : ${read.path}" th:if="${image.isActive==1}">
                      <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 -->
                      <img th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') and image.isActive==1 }" th:src="${image.path}" alt="유기동물 이미지"/>
                      <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 -->
@@ -138,10 +138,6 @@
                  <span class="title">발견장소</span>
                  <span class="desc" th:text="${read.happenPlace}"></span>
              </p>
-<!--             <p>-->
-<!--                 <span class="title">보호상태</span>-->
-<!--                 <span class="desc" th:text="${read.status}"></span>-->
-<!--             </p>-->
              <p>
                  <span class="title">중성화유무</span>
                  <span class="desc" th:text="${read.neutered}"></span>

@@ -131,7 +131,7 @@
                                  </p>
 
                                  <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않고, image.path가 'empty'인 경우 -->
-                                 <p class="image" th:each="image, index : ${edit.path}" data-edit-index="${index}" th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty')}">
+                                 <p class="image" th:each="image, index : ${edit.path}" data-edit-index="${index}" th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty') and image.isActive==1}">
                                      <img th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>
                                      <input type="hidden" name="deleteIndex" th:value="${index.index}"/></p>
 
