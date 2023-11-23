@@ -4,6 +4,7 @@ import com.project.animal.missing.dto.*;
 import org.springframework.data.domain.Pageable;
 
 public interface MissingPostService {
+  ListResponseDto<MissingListEntryDto> getPostsForHome(int count);
   ListResponseDto<MissingListEntryDto> getPostList(MissingFilterDto filter, Pageable pageable);
 
   MissingDetailDto getPostDetail(long postId, long memberId);
