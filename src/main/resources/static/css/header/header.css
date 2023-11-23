@@ -20,8 +20,8 @@ header{
     font-family: 'Roboto', 'Noto Sans KR', sans-serif;
     border-bottom: 1px solid #eee;
     box-sizing: border-box;
-    background-color: rgba(222,216,209,1)
-    
+    background-color: rgba(222,216,209,1);
+    font-size:16px;
 }
 
 .logo-area{
