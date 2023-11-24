@@ -18,10 +18,10 @@
                     <div style="display:flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <div class="missing-comment-title" th:text="${comment.author}" />
                         <div style="display:flex; flex-direction: row;">
-                            <div th:if="${selfId != 0}" class="missing-comment-button-new">reply</div>
+                            <div th:if="${selfId != 0}" class="missing-comment-button-new">댓글</div>
 
                             <div th:if="${selfId == comment.memberId}"
-                                 class="missing-comment-button-edit" >edit</div>
+                                 class="missing-comment-button-edit" >수정</div>
 
                             <div th:if="${selfId == comment.memberId}">
                                 <div class="missing-comment-button-delete">
@@ -30,7 +30,7 @@
                                         <input name="commentId" th:value="${comment.commentId}" hidden />
                                         <input name="memberId" th:value="${selfId}" hidden />
                                         <input type="hidden" name="_method" value="delete"/>
-                                        <button>delete</button>
+                                        <button style="background-color: white; outline:none; border:none;">삭제</button>
                                     </form>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                             <input name="memberId" th:value="${selfId}" hidden />
                             <input name="commentId" th:value="${comment.commentId}" hidden />
                             <input type="text" name="comment" th:value="${comment.content}"/>
-                            <button>수정</button>
+                            <button style="background-color: white; outline:none; border:none;">수정</button>
                         </form>
 
                     </div>
@@ -64,7 +64,7 @@
                                     <div th:text="${recomment.author}" />
                                     <div style="display:flex; flex-direction: row;">
 
-                                        <div th:if="${selfId == recomment.memberId}" class="missing-recomment-button-edit">edit</div>
+                                        <div th:if="${selfId == recomment.memberId}" class="missing-recomment-button-edit">수정</div>
 
                                         <div th:if="${selfId == recomment.memberId}">
                                             <div class="missing-recomment-button-delete">
@@ -73,7 +73,7 @@
                                                     <input name="commentId" th:value="${recomment.commentId}" hidden />
                                                     <input name="parentId" th:value="${recomment.parentId}" hidden/>
                                                     <input type="hidden" name="_method" value="delete"/>
-                                                    <button>delete</button>
+                                                    <button style="background-color: white; outline:none; border:none;">삭제</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -88,7 +88,7 @@
                                     <input name="commentId" th:value="${recomment.commentId}" hidden />
                                     <input name="parentId" th:value="${recomment.parentId}" hidden/>
                                     <input type="text" name="comment" th:value="${recomment.content}" style="width: 70%;"/>
-                                    <button>수정</button>
+                                    <button style="border: 1px solid black; border-radius: 30px; background: white; padding: 6px 15px; font-size: 1rem;" >수정</button>
                                 </form>
                             </div>
                         </section>

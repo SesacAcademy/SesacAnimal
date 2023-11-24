@@ -10,7 +10,7 @@
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    max-width: 787px;
+    width: 787px;
 }
 
 .missing-new-thumb {
@@ -29,7 +29,7 @@
     border-radius: 10px;
     border: 1px solid black;
     width: 100%;
-    max-width: 787px;
+    width: 787px;
 
     padding: 20px; 30px;
     margin-top:30px;

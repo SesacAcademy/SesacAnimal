@@ -11,7 +11,7 @@
         <div style="padding: 10px 40px; border: 1px solid black; border-radius: 20px;">
             <form method="post" th:action="@{{delete}/{id}(id=${post.id}, delete=${delete})}">
                 <input type="hidden" name="_method" value="delete"/>
-                <button type="submit">삭제</button>
+                <button type="submit" style="background-color:white; outline:none; border: none; cursor: pointer;">삭제</button>
             </form>
         </div>
     </div>
