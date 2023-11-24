@@ -42,7 +42,6 @@ public class MissingController {
   public String getPostList(
           @ModelAttribute MissingFilterDto filterDto,
           @Member MemberDto member,
-          @PageableDefault(sort="missing_id", direction = Sort.Direction.DESC)
           Pageable pageable,
           Model model) {
 
