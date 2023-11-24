@@ -90,6 +90,7 @@
                     <table class="table table-bordered mt-2 mb-3">
                         <thead class="table-light">
                             <th>번호</th>
+                            <th>카테고리</th>
                             <th>제목</th>
                             <th>작성자</th>
                             <th>등록일</th>
@@ -103,8 +104,11 @@
                             </tr>
 
                             <th:block th:if="${count > 0}">
-                                <tr th:each="board : ${myBoardList}">
-                                    <td th:text="${board['id']}"></td>
+                                <tr th:each="board, index : ${myBoardList}">
+                                    <td th:text="${index.count} + ${pageNumber - 1} * ${boardSize}">1</td>
+                                    <td th:text="입양" th:if="${board['category'] == 'adoption'}"></td>
+                                    <td th:text="실종" th:if="${board['category'] == 'missing'}"></td>
+                                    <td th:text="후기" th:if="${board['category'] == 'review'}"></td>
                                     <td>
                                         <a th:text="${board['title']}" th:if="${board['category'] == 'adoption'}"
                                            th:href="@{/v1/adoption/{id}(id=${board['boardId']})}"></a>

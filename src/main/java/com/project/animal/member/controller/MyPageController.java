@@ -121,12 +121,12 @@ public class MyPageController {
         int count = myPageService.getMyBoardCount(member).intValue();
 
         // 내 게시글 조회
-        int boardSize = 2;
+        int boardSize = 10;
         int currentPage = Integer.parseInt(pageNumber);
         List<Board> myBoardList = myPageService.getMyBoardList(member, currentPage-1, boardSize);
 
         // 페이징 처리
-        int pageBlock = 4;
+        int pageBlock = 5;
         int pageCount = (count / boardSize) + (count % boardSize == 0 ? 0 : 1);
 
         int result = (currentPage - 1) / pageBlock;
@@ -139,6 +139,7 @@ public class MyPageController {
         // Model에 데이터 저장
         model.addAttribute("myBoardList", myBoardList);
         model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("boardSize", boardSize);
         model.addAttribute("pageBlock", pageBlock);
         model.addAttribute("pageCount", pageCount);
         model.addAttribute("startPage", startPage);
