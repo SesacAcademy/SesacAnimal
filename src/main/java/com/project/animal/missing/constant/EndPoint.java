@@ -2,6 +2,7 @@ package com.project.animal.missing.constant;
 
 abstract public class EndPoint {
 
+  // To do : 해당 EndPoint 클래스 제거
   public static final String ID_KEY = "postId";
   public static final String VERSION = "/v1";
   public static final String MISSING = "/missing";

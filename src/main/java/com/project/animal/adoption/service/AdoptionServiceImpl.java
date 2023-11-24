@@ -10,28 +10,21 @@ import com.project.animal.adoption.repository.AdoptionPostLikeRepository;
 import com.project.animal.adoption.repository.AdoptionRepository;
 import com.project.animal.adoption.service.inf.AdoptionService;
 import com.project.animal.global.common.dto.MemberDto;
-import com.project.animal.member.exception.LoginException;
-import com.project.animal.sample.openApi.dto.OpenApiDto;
 import com.project.animal.member.domain.Member;
+import com.project.animal.member.exception.LoginException;
 import com.project.animal.member.repository.MemberRepository;
-import io.minio.*;
-import io.minio.errors.*;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.io.InputStream;
-import java.rmi.ServerException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
 import java.util.*;
 
 
@@ -231,31 +224,6 @@ public class AdoptionServiceImpl implements AdoptionService {
         return false;
     }
 
-
-
-    public void apiSave(List<OpenApiDto> openApiDtoList) {
-        // 센터에서 받은 api를 담는 영역
-        log.info("no1: >> " + openApiDtoList.size());
-
-        for (OpenApiDto openApiDto : openApiDtoList) {
-
-            Adoption adoption = new Adoption(openApiDto.getDesertionNo(), openApiDto.getKindCd(),openApiDto.getColorCd(),openApiDto.getAge(),openApiDto.getNoticeSdt(),openApiDto.getNoticeEdt(),openApiDto.getProcessState(),openApiDto.getSexCd(),openApiDto.getNeuterYn(), openApiDto.getCareAddr(),openApiDto.getCareNm(),openApiDto.getNoticeNo(),openApiDto.getSpecialMark(),openApiDto.getHappenPlace());
-
-            Optional<Member> member = repository.findById(1L);
-            Member member1 = member.get();
-            adoption.setMember(member1);
-
-            Adoption saved = adoptionRepository.save(adoption);
-
-
-            AdoptionImage adoptionImage = new AdoptionImage(openApiDto.getPopfile(), saved);
-
-            adoptionImageRepository.save(adoptionImage);
-
-
-        }
-    }
-
     public Adoption findByIdWithImage(Long id){
       return adoptionRepository.findByIdWithImage(id);
     }
@@ -273,7 +241,4 @@ public class AdoptionServiceImpl implements AdoptionService {
         return adoptionRepository.findAllWithImagesAndMember();
 
     }
-
-
-
 }

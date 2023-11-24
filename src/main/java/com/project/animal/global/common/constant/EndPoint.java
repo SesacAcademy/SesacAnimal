@@ -9,4 +9,5 @@ public abstract class EndPoint {
 
     public static final String ADOPTION_COMMENT = "/v1/adoption/comment"; // 댓글 영역 (읽기 게시판 아래)
 
+    // To do : EndPoint 클래스 삭제 + 컨트롤러 URL 수정
 }

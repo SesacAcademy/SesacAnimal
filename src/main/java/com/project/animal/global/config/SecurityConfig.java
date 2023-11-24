@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -38,6 +39,12 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
 
     private final HandlerExceptionResolver handlerExceptionResolver;
+
+    private final String[] authenticationArr = {
+            "/v1/adoption/edit/**",
+            "/v1/missing/new"
+    };
+    private final String[] authorizationArr = {};
 
     // JWT를 사용하기 위해서는 기본적으로 패스워드 인코딩이 필요하기에 패스워드 인코딩 전용 빈을 등록한다. (Bcrypt encoder)
     @Bean
@@ -70,8 +77,14 @@ public class SecurityConfig {
                 .antMatchers("/v1/api/auth/**").permitAll()
             .and()*/
             .authorizeRequests()                                              // 7. 인증이 필요한 페이지
-                .antMatchers("/test").authenticated()
-                .antMatchers("/v1/auth/logout").authenticated()
+                .antMatchers("/v1/adoption/edit/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/v1/adoption/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/v1/adoption/**").authenticated()
+                .antMatchers("/v1/missing/new", "/v1/missing/edit/**", "/v1/missing/delete/**",
+                             "/v1/missing/like", "/v1/missing/comment/**").authenticated()
+                .antMatchers("/v1/auth/logout", "/v1/member/mypage/**", "/v1/api/member/**").authenticated()
+                .antMatchers("/review/write/**", "/review/edit/**", "/review/update/**", "/review/delete/**",
+                             "/review/comment/**", "/review/like/**").authenticated()
             .and()
             .authorizeRequests()                                              // 8. 인가가 필요한 페이지
                 .antMatchers("/test2").hasRole("ADMIN")
