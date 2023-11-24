@@ -9,8 +9,9 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: end;
     width: 100%;
-    width: 787px;
+
 }
 
 .missing-new-thumb {
@@ -29,9 +30,8 @@
     border-radius: 10px;
     border: 1px solid black;
     width: 100%;
-    width: 787px;
 
-    padding: 20px; 30px;
+    padding: 30px; 30px;
     margin-top:30px;
 }
 
@@ -72,4 +72,26 @@
     border-radius: 10px;
     margin-left: 20px;
     cursor: pointer;
+}
+
+.missing-write-button {
+    border:none;
+    display: inline-block;
+    height:30px;
+    line-height: 30px;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+
+}
+
+.missing-write-button span {
+    color:#e7ac66;
+    vertical-align: middle;
+}
+
+.missing-new-image-box {
+    display: flex;
+    flex-direction: column;
 }

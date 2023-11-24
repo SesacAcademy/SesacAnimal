@@ -2,6 +2,7 @@ package com.project.animal.missing.service;
 
 import com.project.animal.global.common.annotation.Profiling;
 import com.project.animal.member.domain.Member;
+import com.project.animal.member.exception.NotFoundException;
 import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.missing.domain.MissingComment;
 import com.project.animal.missing.domain.MissingPost;
@@ -144,12 +145,12 @@ public class MissingPostServiceImpl implements MissingPostService {
 
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional
   public boolean createPost(long memberId, MissingNewDto dto) {
     try {
 
       Optional<Member> maybeMember = memberRepository.findById(memberId);
-      Member member = maybeMember.orElseThrow(() -> new RuntimeException("일치하는 회원이 존재하지 않습니다."));
+      Member member = maybeMember.orElseThrow(() -> new NotFoundException("일치하는 회원이 존재하지 않습니다."));
 
       MissingPost post = converter.toMissingPost(member, dto);
       MissingPost result = missingPostRepository.save(post);

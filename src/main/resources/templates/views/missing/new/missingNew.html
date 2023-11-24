@@ -47,6 +47,9 @@
     <link rel="stylesheet" th:href="@{/css/missing/new/missingNew.css}" />
     <link rel="stylesheet" th:href="@{/css/missing/new/missingNewCard.css}" />
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
     <title>새싹 애니멀</title>
     <script th:inline="javascript" defer>
         const _isRedirected = /*[[${isRedirected}]]*/ false;
@@ -68,7 +71,7 @@
 </head>
 <body>
 <th:block th:replace="../fragments/header/header :: header" />
-<th:block th:replace="../fragments/header/sectionHeader :: sectionHeader('실종동물', '실종동물', 'https://www.seocho.go.kr/images/animal/sub/sub2top_img.png' )" />
+<th:block th:replace="../fragments/header/sectionHeader :: sectionHeader('실종동물', '등록하기', 'https://www.seocho.go.kr/images/animal/sub/sub2top_img.png' )" />
     <section class="missing-new-page">
         <th:block th:replace="./missing/new/missingNewCard :: newCard(${endPoints.new})" />
     </section>

@@ -124,7 +124,7 @@ public class MissingController {
           RedirectAttributes redirectAttributes,
           @Member MemberDto member) {
 
-    if (br.hasErrors() || member == null ) {
+    if (br.hasErrors() || member == null) {
       throw new InvalidEditFormException(dto, br);
     }
 
