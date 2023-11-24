@@ -82,12 +82,16 @@
     <div class="missing-list-page">
 
 
-        <div style="display: flex; flex-direction: row; align-items: center;">
+        <div class="missing-sentence-section">
             <h3 class="missing-list-title">
                 실종 동물들이 가족의 품으로 돌아갈 수 있게 도와주세요
             </h3>
-            <a th:if="${member != null}" th:href="${endPoints.new}" class="missing-list-new">
-                게시글 작성하기
+            <a th:if="${member != null}" th:href="${endPoints.new}" >
+
+                <div class="missing-list-new">
+                    <span class="material-symbols-outlined">edit_square</span>
+                    <span style="margin-left: 5px;">게시글 작성하기</span>
+                </div>
             </a>
         </div>
         <div class="missing-list-page-content">

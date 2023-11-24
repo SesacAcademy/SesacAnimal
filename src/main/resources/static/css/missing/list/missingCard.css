@@ -53,3 +53,19 @@
   overflow: hidden;     /* 내용이 넘칠 경우 숨김 처리 */
   text-overflow: ellipsis;  /* 넘친 텍스트를 말줄임표로 표시 */
 }
+
+.missing-list-like-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.missing-card-bottom {
+    width: 170px;
+
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    align-items: end;
+}
