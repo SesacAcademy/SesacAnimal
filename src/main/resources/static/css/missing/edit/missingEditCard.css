@@ -29,7 +29,6 @@
     border-radius: 10px;
     border: 1px solid black;
     width: 100%;
-    width: 787px;
 
     padding: 20px; 30px;
     margin-top:30px;
@@ -59,3 +58,12 @@
     width:100%;
     min-height: 150px;
 }
+
+.image-delete-button {
+ background-color: white;
+ outline: none;
+ border: none;
+ font-size: 1.5rem;
+ cursor: pointer;
+}
+
