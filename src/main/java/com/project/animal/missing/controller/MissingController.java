@@ -42,9 +42,10 @@ public class MissingController {
   public String getPostList(
           @ModelAttribute MissingFilterDto filterDto,
           @Member MemberDto member,
+          @PageableDefault(size = 10)
           Pageable pageable,
           Model model) {
-
+    
     ListResponseDto<MissingListEntryDto> result = missingPostService.getPostList(filterDto, pageable);
     Map<String, String> endPoints = pathMaker.createLink("detail", "list", "new");
 
