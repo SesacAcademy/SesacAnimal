@@ -135,7 +135,7 @@
     font-size: 14px;
 }
 .adoption-selectBox .select {
-    width: inherit;
+    width: 100%;
     height: inherit;
     background: transparent;
     border: 0 none;
@@ -154,19 +154,20 @@
     font-size: 14px;
 }
 .adoption-selectBox .icoArrow {
+    display: flex;
     position: absolute;
     top: 0;
     right: 0;
     z-index: 1;
     width: 35px;
-    height: inherit;
+    height: 100%;
     border-left: 1px solid #D9D9D9;
-    display: flex;
     justify-content: center;
     align-items: center;
     color: #D9D9D9;
 }
 
-.adoption-selectBox .select:focus + .icoArrow{
+.adoption-selectBox .select:focus .icoArrow,
+.adoption-selectBox .select:focus-within .icoArrow{
     transform: rotate(180deg);
 }

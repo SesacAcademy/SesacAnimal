@@ -188,7 +188,7 @@
 
 .adoption-comments-read h4{
     width:1200px;
-    margin:0 auto;
+    margin:0 auto 10px;
     font-size: 20px;
     font-weight: 600;
 }
@@ -378,7 +378,7 @@
 
 .adoption-comments-write h4{
     /*width:1200px;*/
-    margin:0;
+    margin:10px 0;
     font-size: 20px;
     font-weight: 600;
 }
