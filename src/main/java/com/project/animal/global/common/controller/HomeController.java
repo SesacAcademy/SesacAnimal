@@ -25,12 +25,12 @@ public class HomeController {
         return member;
     }
 
-    @GetMapping("/")
+
     public String home() {
         return INDEX_VIEW;
     }
 
-
+    @GetMapping("/")
     public String homeReview(Model model) {
         List<ReviewIndexResponse> listDto =  reviewService.readByLike();
         model.addAttribute("listDto",listDto);

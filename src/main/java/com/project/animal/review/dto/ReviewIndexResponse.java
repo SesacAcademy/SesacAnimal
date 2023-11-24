@@ -24,12 +24,15 @@ public class ReviewIndexResponse {
 
     private int postLikeCount;
 
+    private int commentCount;
+
     public ReviewIndexResponse(ReviewPost reviewPost){
         this.title =  reviewPost.getTitle();
         this.content = reviewPost.getContent();
         this.viewCount = reviewPost.getViewCount();
         this.url = getActiveImage(reviewPost.getReviewImages());
         this.postLikeCount = reviewPost.getReviewPostLikes().size();
+        this.commentCount = reviewPost.getComments().size();
 
     }
     private String getActiveImage(List<ReviewImage> images) {

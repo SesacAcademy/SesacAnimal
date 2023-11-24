@@ -117,6 +117,7 @@
     .top-box{
     width: 100%;
     height:15%;
+    align-items: center;
         display: flex;
     }
     .dog-image{
@@ -186,7 +187,7 @@
     background-color: white;
     }
     .view-box{
-    width: 33%;
+    width: 30.5%;
     height:25%;
     margin-left:auto;
     }
@@ -195,8 +196,7 @@
     margin-left: 46px;
     }
     .write-review-button{
-     width: 12%;
-    height:100%;
+     width: 15%;
 
     }
      .write-review{
@@ -209,7 +209,7 @@
        text-align:center;
        line-height: 229px;
     margin-left: 2px;
-       padding: 4px;
+       padding: 7px;
           border: 2px solid #D2B48C;
       }
     .section{
@@ -424,6 +424,7 @@
         <a th:href="@{/review/one(reviewPostId=${post.reviewPostId})}">
           <div class="review-image">
             <img class="img" th:if="${post.url}" th:src="@{'http://infra.shucloud.site:8007/review' + ${post.url}}" alt="유기견 썸네일" />
+            <img class="img" th:unless="${post.url}" th:src="@{/img/sesac-animal-logo.png}">
           </div>
           <div class="review-text">
             <div class="review-upper">

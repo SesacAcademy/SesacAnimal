@@ -78,7 +78,7 @@
     }
     .top-left{
     height:100%;
-    width: 15%;
+    width: 13%;
 background-image: url('/img/review-image.png');
        background-size: contain;
     }
@@ -88,7 +88,7 @@ background-image: url('/img/review-image.png');
     }
     .top-right{
     height:100%;
-    width: 40%;
+    width: 355%;
     font-size: 15px;
     font-weight: 600;
     text-align:center;
@@ -102,7 +102,7 @@ background-image: url('/img/review-image.png');
       display:flex;
     }
     .title-null-box{
-    width:17.3%;
+    width:198px;
      height:100px;
 
     }
@@ -126,7 +126,7 @@ background-image: url('/img/review-image.png');
         justify-content: flex-end;
     }
     .date-left-null-box{
-    width:70%;
+    width:200%;
      height:45px;
      background-color: #FFFFF0;
 
@@ -138,6 +138,9 @@ background-image: url('/img/review-image.png');
     border-radius: 10px;
     font-size: 13px;
     font-weight: 550;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     }
     .edit-delete-box{
          width:100%;
@@ -150,7 +153,7 @@ background-image: url('/img/review-image.png');
      display:flex;
     }
     .left-null-box-null{
-      width:178px;
+      width:198px;
      height:100%;
 
     }
@@ -237,21 +240,26 @@ background-color: white;
     }
     .comment-list{
     width:65%;
-    height: 280px;
-    background-color:beige;
+    background-color:lightyellow;
           margin:auto;
 
     }
     .comment-nickname{
      width:100%;
     height: 40px;
-     background-color:white;
+    font-size: 15px;
+    font-weight: 600;
+             border: 1px solid #ECDCC3;
+    border-radius: 10px;
+
+
     }
     .comment-content-box{
      width:100%;
-    height: 100px;
-     background-color:red;
+    height: 80px;
      display:flex;
+     font-size: 13px;
+    font-weight: 600;
     }
     .comment-reply-div{
      width:100%;
@@ -269,12 +277,11 @@ width:87%;
    .comment-reply-edit-delete-box{
    width:13%;
     height: 100%;
-     background-color:green;
+     background-color:beige;
    }
 .comment-reply-button{
 width:100%;
-    height: 50%;
-     background-color:yellow;
+        height: 33%;
      display:flex;
 }
 .comment-update-button{
@@ -286,12 +293,10 @@ width:50%;
 .comment-delete-button{
 width:50%;
     height: 50%;
-     background-color:red;
 }
 .reply-comment-box{
 
     width:100%;
-    height: 210px;
     background-color:beige;
 
 }
@@ -300,7 +305,11 @@ width:50%;
       font-weight: 550;
       color:#f86868;
       height:100%;}
-
+.child-comment-update-button{
+width:50%;
+    height: 50%;
+         display: inline;
+}
 
 
 
@@ -315,10 +324,10 @@ width:50%;
         <div class="top">
             <div class="top-left"></div>
             <div class="top-center"></div>
-            <a href="@{/review/filter(type='like')}">
+            <a th:href="@{/review/filter(type='like')}">
                 <div class="top-right">
                     하트를 많이 받은 이야기를<br>보러 가는 건 어떠실까요?
-                    <span class="material-symbols-outlined">
+                    <span class="material-symbols-outlined" style="color:#f86868;">
             heart_check
         </span>
                 </div>
@@ -342,13 +351,13 @@ width:50%;
             <form action="/review/edit" method="get">
                 <input type="hidden" name="reviewPostId" th:value="${reviewDto.readOneReviewDto.reviewPostId}" />
                 <button type="submit" class="button edit-button" th:if="${member != null && member.id == reviewDto.readOneReviewDto.memberId}"
-                style=" width: 50px; margin: 2px; height: 30px; border:none; background-color:#FFFFF0";>수정</button>
+                style=" width: 50px; margin: 2px; height: 30px; border:none; background-color:#FFFFF0; font-weight: 550; color:darkgreen">수정</button>
             </form>
             <div class="delete-box">
                 <form action="/review/delete" method="get">
                     <input type="hidden" name="reviewPostId" th:value="${reviewDto.readOneReviewDto.reviewPostId}" />
                     <button type="submit" class="button delete-button" th:if="${member != null && member.id == reviewDto.readOneReviewDto.memberId}"
-                            style=" width: 50px; margin: 2px; height: 30px; border:none; background-color: #FFFFF0;">삭제</button>
+                            style=" width: 50px; margin: 2px; height: 30px; border:none; background-color: #FFFFF0;  font-weight: 550; color:darkgreen">삭제</button>
                 </form>
             </div>
         </div>
@@ -381,7 +390,7 @@ width:50%;
                 <span class="view-count"  th:text="${reviewDto.readOneReviewDto.viewCount}" style="color: #A9A9A9; font-weight: 550;">10</span>
             </div>
         </div>
-
+            <div>
             <div class="comment-input-box" th:if="${member != null}">
             <form th:action="@{/review/comment/add}" method="post" class="comment-input-form" >
                 <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" style="display: block;"/>
@@ -390,6 +399,8 @@ width:50%;
                     <i class="fas fa-pencil-alt"></i>
                 </button>
             </form>
+
+
             </div>
 
         <div class="comment-input-box" th:if="${member == null}">
@@ -403,22 +414,22 @@ width:50%;
             <div class="comment-content-box">
                 <div class="comment-content" th:text="${comment.content}"></div>
                 <div class="comment-reply-edit-delete-box">
-                    <div class="comment-reply-button">
-                            <button onclick="showReplyForm(this)" id="replyButton" th:if="${member != null}" style="border:none; ">대댓글 작성</button>
+                        <div class="comment-reply-button" style="display:block;">
+                            <button  id="replyButton" th:if="${member != null}" style="border:none; width:100%; height:100%; background-color: papayawhip; font-size: 12px; font-weight: 550;" >대댓글 작성</button>
                         </div>
                         <div class="comment-update-button">
-                            <button onclick="showUpdateForm(this)" th:if="${member != null && member.id == comment.memberId}" style="border:none;">댓글 수정</button>
+                            <button th:if="${member != null && member.id == comment.memberId}" style="border:none; width:100%; background-color: papayawhip; font-size: 12px; font-weight: 550;">댓글 수정</button>
                         </div>
                         <div class="comment-delete-button">
                             <form th:action="@{/review/comment/delete}" id="deleteForm" method="post" style="display: block;">
                                 <input type="hidden" th:value="${comment.reviewCommentId}" name="reviewCommentId" />
                                 <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
-                                <button type="submit" id="deleteButton_${comment.id}" th:if="${member != null && member.id == comment.memberId}" style="width: 82px; border:none;">댓글 삭제</button>
+                                <button type="submit"  th:if="${member != null && member.id == comment.memberId}" style="width:200%; border:none; background-color: papayawhip; font-size: 12px;  font-weight: 550;">댓글 삭제</button>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="comment-reply-div" id="commentReplyDiv_${comment.id}"  style="display: none;">
+                <div class="comment-reply-div" style="display: none;">
                     <form th:action="@{/review/comment/add}" class="comment-input-form" id="reReplyForm" method="post">
                         <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
                         <input type="hidden" th:value="${comment.reviewCommentId}" name="parentId" />
@@ -428,8 +439,8 @@ width:50%;
                         </button>
                     </form>
                 </div>
-                <div class="comment-update-div"  id="updateButton_${comment.id}" style="display:none">
-                        <form th:action="@{/review/comment/update}" id="editForm" method="post" >
+                <div class="comment-update-div"  id="updateButton_${comment.id}" style="display:none;">
+                        <form th:action="@{/review/comment/update}" id="editForm" method="post" style="width: 100%; display:flex;" >
                             <input type="hidden" th:value="${comment.reviewCommentId}" name="reviewCommentId" />
                             <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
                             <textarea id="editContent" name="content"  placeholder="수정댓글을 입력하세요." class="comment-input" ></textarea>
@@ -439,26 +450,26 @@ width:50%;
                 </form>
             </div>
             <div class="reply-comment-box" th:each="reply : ${comment.children}" th:if="${!#lists.isEmpty(comment.children)}" >
-                <div class="comment-nickname" th:text="${reply.nickname}"></div>
-                <div class="comment-content-box" th:text="${reply.content}">
-                    <div class="comment-content"></div>
-                    <div class="comment-reply-edit-delete-box">
+                <div class="comment-nickname" th:text="${reply.nickname}" style="background-color:seashell" ></div>
+                <div class="comment-content-box" >
+                    <div class="comment-content" th:text="${reply.content}" style="background-color: lavenderblush"></div>
+                    <div class="comment-reply-edit-delete-box" style="background-color: lavenderblush">
 
-                        <div class="comment-update-button">
-                            <button onclick="updateButton" th:if="${member != null && member.id == comment.memberId}" style=" height: 50px; border:none;">댓글 수정</button>
+                        <div class="child-comment-update-button" th:if="${member != null && member.id == comment.memberId}" >
+                            <button  style="border:none; width:100%; background-color: papayawhip; font-size: 12px; font-weight: 550;">댓글 수정</button>
                         </div>
-                        <div class="comment-delete-button">
+                        <div class="comment-delete-button" >
                             <form th:action="@{/review/comment/delete}" method="post" style="display: block;">
-                                <input type="hidden" th:value="${comment.reviewCommentId}" name="reviewCommentId" />
+                                <input type="hidden" th:value="${reply.reviewCommentId}" name="reviewCommentId" />
                                 <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
-                                <button type="submit" th:if="${member != null && member.id == comment.memberId}" style=" width: 82px;height: 50px; border:none;">댓글 삭제</button>
+                                <button type="submit" th:if="${member != null && member.id == comment.memberId}" style="width:200%; border:none; background-color: papayawhip; font-size: 12px;  font-weight: 550;">댓글 삭제</button>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="comment-update-div">
-                    <form th:action="@{/review/comment/update}" method="post" style="display: none; display:flex;" >
-                        <input type="hidden" th:value="${comment.reviewCommentId}" name="reviewCommentId" />
+                <div class="comment-update-div" style="display: none;" >
+                    <form th:action="@{/review/comment/update}" method="post" style="width: 100%; display:flex;" >
+                        <input type="hidden" th:value="${reply.reviewCommentId}" name="reviewCommentId" />
                         <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
                         <textarea  name="content"  placeholder="수정댓글을 입력하세요." class="comment-input" ></textarea>
                         <button type="submit" class="comment-submit-button"  style="width: 10%;">
@@ -470,6 +481,9 @@ width:50%;
         </div>
 
 
+            </div>
+
+
 
 
 
@@ -477,23 +491,55 @@ width:50%;
 </div>
 <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
 <script>
-   function showReplyForm(element) {
-    var commentId = element.id.split('_')[1];
-    document.getElementById('commentReplyDiv_' + commentId).style.display = 'block';
-    document.getElementById('replyButton_' + commentId).style.display = 'none';
-    document.getElementById('updateButton_' + commentId).style.display = 'none';
-    document.getElementById('deleteButton_' + commentId).style.display = 'none';
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const replyEditButton = document.getElementsByClassName('comment-update-button');
+    for(let button of replyEditButton){
+     button.addEventListener('click', function() {
+     const textarea = button.parentElement.parentElement.parentElement.querySelector('.comment-update-div');
 
-function showUpdateForm(element) {
-    var commentId = element.id.split('_')[1];
-    document.getElementById('commentUpdateDiv_' + commentId).style.display = 'block';
-    document.getElementById('replyButton_' + commentId).style.display = 'none';
-    document.getElementById('updateButton_' + commentId).style.display = 'none';
-    document.getElementById('deleteButton_' + commentId).style.display = 'none';
-}
+    textarea.style.display = 'flex';
 
-    </script>
+    const updateButton = button.parentElement.querySelector('.comment-update-button');
+    updateButton.style.display = 'none';
+     const deleteButton = button.parentElement.querySelector('.comment-delete-button')
+    deleteButton.style.display = 'none';
+     const replyButton = button.parentElement.querySelector('.comment-reply-button')
+    replyButton.style.display = 'none';
+     });
+    }
+    const replyButton = document.getElementsByClassName('comment-reply-button');
+    for(let button of replyButton){
+         button.addEventListener('click', function() {
+           const contentBox = button.parentElement.parentElement.parentElement;
+        const replyArea = contentBox.querySelector('.comment-reply-div');
+        console.log(replyArea);
+        replyArea.style.display = 'flex';
+
+        const reButton = button.parentElement.querySelector('.comment-reply-button');
+        reButton.style.display = 'none';
+              const upButton = button.parentElement.querySelector('.comment-update-button');
+        upButton.style.display = 'none';
+          const deButton = button.parentElement.querySelector('.comment-delete-button');
+        deButton.style.display = 'none';
+
+         });
+    }
+    const replyEditChild = document.getElementsByClassName('child-comment-update-button');
+    for(let button of replyEditChild){
+    button.addEventListener('click', function() {
+    const childCommentInput = button.parentElement.parentElement.parentElement;
+    console.log(childCommentInput)
+    const childReplyArea = childCommentInput.querySelector('.comment-update-div');
+    console.log(childReplyArea)
+    childReplyArea.style.display = 'flex';
+
+    });
+    }
+
+
+});
+
+</script>
 
 </body>
 </html>
