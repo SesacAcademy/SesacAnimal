@@ -1,4 +1,7 @@
 /* 공통 영역 */
+p, div{
+    margin:0; padding:0;
+}
 .red{
     color: #f86868;
 }
@@ -7,14 +10,88 @@
     color:#3f464d;
 }
 
+.adoption-title{
+    width:1200px;
+    margin:50px auto 0;
+}
+
+.adoption-title .title-route{
+    margin:30px 0 50px;
+    vertical-align: bottom;
+    color:#777;
+    font-size: 14px;
+}
+
+.adoption-title .title-route span.home{
+    font-size: 19px;
+    vertical-align: bottom;
+}
+
+.adoption-title .title-content{
+    position: relative;
+    padding:0;
+    border-bottom: 1px solid #777;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.adoption-title .title-content h2{
+    font-size:35px;
+}
+
+
+.adoption-title .title-content .image{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.adoption-title .title-content .image img{
+    width:120px;
+}
+
+/* swiper.js 사용 영역 */
+.swiper {
+    width: 150px;
+    height: 150px;
+}
+
+.swiper-slide {
+    text-align: center;
+}
+
+/* next, prev 버튼 영역*/
+.swiper-button-next::after,
+.swiper-button-prev::after{
+    color:rgba(222,216,209,1);
+    font-size: 25px !important;
+}
+.swiper-button-next::after{
+    right:7px !important;
+}
+
+.swiper-button-prev::after{
+    left:-7px !important;
+}
+
+/* Pagination 활성 상태의 색상 */
+.swiper-pagination .swiper-pagination-bullet-active {
+    background-color: rgba(222,216,209,1); /* 원하는 활성 상태의 색상으로 설정 */
+}
+
+
+/* *********************** */
 /* 입양 게시판 css 영역 */
 .adoption {
     width: 1200px;
-    margin: 150px auto;
-    padding:50px 100px;
+    margin: 80px auto;
+    padding:50px 100px 30px;
     /* background-color: #eee; */
-    border:1px solid #aaa;
     font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+    border:1px solid #f9f9f9;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+    border-radius: 50px;
 }
 
 /* 검색 영역 및 글쓰기 영역 */
@@ -35,7 +112,7 @@
     width:173px;
     height:41px;
     background-color: rgba(240,240,240,0.41);
-    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    box-shadow: 0 4px 4px rgba(0,0,0,0.25);
     border:1px solid rgb(240,240,240);
     border-radius: 10px;
     box-sizing: border-box;
@@ -56,13 +133,6 @@
 
 
 .adoption .select select {
-    /* height: 30px;
-    text-indent: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    vertical-align: top;
-    font-size: 15px; */
     width:173px;
     height:41px;
     background-color: rgba(240,240,240,0.41);
@@ -71,6 +141,7 @@
     border-radius: 10px;
     box-sizing: border-box;
     text-indent: 10px;
+    font-size: 15px;
 }
 
 .adoption .write .write-button{
@@ -101,16 +172,23 @@
     padding:0;
     margin-top:25px;
     list-style-type: none;
+    border-radius: 10px;
+    /*overflow: hidden;*/
 }
 
 .adoption-board ul li a{
     display: flex;
     justify-content: space-between;
-    border:1px solid #aaa;
-    /*border-bottom: none;*/
-    border-bottom: 1px solid #aaa;
+    border:1px solid #e1e1e1;
     box-sizing: border-box;
     padding: 5px 15px;
+}
+.adoption-board ul li:first-child a{
+   border-radius: 15px 15px 0 0;
+}
+
+.adoption-board ul li:last-child a{
+    border-radius: 0 0 15px 15px;
 }
 
 /*.adoption-board ul li:not(:first-child) a{*/
@@ -128,9 +206,10 @@
 
 .adoption-board ul li .image-area img {
     /* margin-left: 15px; */
-    width:200px;
-    height: 200px;
+    width:150px ;
+    height: 150px;
     object-fit: cover;
+    border-radius: 20px;
 }
 
 .adoption-board ul li .status-area {
@@ -141,23 +220,28 @@
 
 .adoption-board ul li .status-area span{
     vertical-align: middle;
+    font-size: 14px;
 }
 
 
 .adoption-board ul li .content-area{
     flex:60%;
-    padding: 0px 15px 15px 20px;
+    padding: 0 15px 15px 20px;
+    font-size: 16px;
+}
+
+.adoption-board ul li .content-area .content-are-title{
+    margin-bottom:10px;
 }
 
 .adoption-board ul li .info-area{
     flex:20%;
-    font-size: 19px;
+    font-size: 16px;
 }
 
 /* ********************************** */
 #paging {
     width:100%;
-
 }
 
 #paging ul {
@@ -166,17 +250,25 @@
     justify-content: center;
 }
 
+#paging ul li a,
+#paging ul li a span{
+    font-size: 15px;
+    vertical-align: bottom;
+}
 
 .page-item.first .page-link, .page-item.last .page-link, .page-item.next .page-link, .page-item.prev .page-link, .page-item.previous .page-link {
     /*width:15px;*/
     /*padding: 1rem;*/
     /*margin:0 10rem;*/
 }
-.page-item.disabled .page-link {
-    border-color: #d9dee3;
-}
+/*.page-item.disabled .page-link {*/
+/*    border-color: #d9dee3;*/
+/*}*/
 .page-item.active .page-link {
     margin: 0 0.1rem 0 0.3rem;
+}
+.page-item.active {
+    color:#5da5f8;
 }
 
 .page-link,
@@ -186,54 +278,27 @@
     line-height: 1;
     text-align: center;
     min-width: 20px;
-
-}
-.page-link:focus,
-.page-link > a:focus {
-    color: #697a8d;
 }
 
-/*.page-link.btn-primary {*/
-/*    box-shadow: none !important;*/
-/*}*/
-
-/*.pagination-lg .page-link,*/
-/*.pagination-lg > li > a:not(.page-link) {*/
-/*    min-width: calc(*/
-/*            2.875rem + 0px*/
-/*    );*/
-/*}*/
-
-/*.pagination-lg > .page-item.first .page-link, .pagination-lg > .page-item.last .page-link, .pagination-lg > .page-item.next .page-link, .pagination-lg > .page-item.prev .page-link, .pagination-lg > .page-item.previous .page-link {*/
-/*    padding-top: 0.853rem;*/
-/*    padding-bottom: 0.853rem;*/
-/*}*/
-
-/*.pagination-sm .page-link,*/
-/*.pagination-sm > li > a:not(.page-link) {*/
-/*    min-width: calc(*/
-/*            1.5rem + 0px*/
-/*    );*/
-/*}*/
-/*.pagination-sm .page-link .tf-icon,*/
-/*.pagination-sm > li > a:not(.page-link) .tf-icon {*/
-/*    font-size: 0.9375rem;*/
-/*}*/
-
-/*.pagination-sm > .page-item.first .page-link, .pagination-sm > .page-item.last .page-link, .pagination-sm > .page-item.next .page-link, .pagination-sm > .page-item.prev .page-link, .pagination-sm > .page-item.previous .page-link {*/
-/*    padding-top: 0.3rem;*/
-/*    padding-bottom: 0.3rem;*/
-/*}*/
+.page-item:focus .page-link,
+.page-item:hover .page-link,
+.page-item:active .page-link
+{
+    color: #5da5f8;
+}
 
 .page-item.active .page-link, .page-item.active .page-link:hover, .page-item.active .page-link:focus,
 .pagination li.active > a:not(.page-link),
 .pagination li.active > a:not(.page-link):hover,
 .pagination li.active > a:not(.page-link):focus {
-    width:50px;
-    border-color: #696cff;
-    background-color: #fff;
+/*.pagination li.active,*/
+/*.pagination li a:active*/
+/*{*/
+    /*width:50px;*/
+    /*border-color: #696cff;*/
+    /*background-color: #fff;*/
     color: #2087c9;
-    box-shadow: 0 0.125rem 0.25rem rgba(105, 108, 255, 0.4);
+    /*box-shadow: 0 0.125rem 0.25rem rgba(105, 108, 255, 0.4);*/
 }
 
 

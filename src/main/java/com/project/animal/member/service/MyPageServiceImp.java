@@ -1,22 +1,24 @@
 package com.project.animal.member.service;
 
 import com.project.animal.global.common.dto.MemberDto;
+import com.project.animal.member.domain.Board;
 import com.project.animal.member.domain.Member;
 import com.project.animal.member.dto.ChangePasswordFormDto;
-import com.project.animal.member.exception.LoginException;
 import com.project.animal.member.exception.NotFoundException;
 import com.project.animal.member.exception.WrongPasswordException;
+import com.project.animal.member.repository.BoardRepository;
 import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.member.service.inf.LoginService;
 import com.project.animal.member.service.inf.MyPageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -24,6 +26,8 @@ import java.util.Optional;
 public class MyPageServiceImp implements MyPageService {
 
     private final MemberRepository memberRepository;
+
+    private final BoardRepository boardRepository;
 
     private final LoginService loginService;
 
@@ -90,5 +94,36 @@ public class MyPageServiceImp implements MyPageService {
 
         // 비밀번호 변경
         findMember.setPassword(encoder.encode(changePasswordFormDto.getNewPassword()));
+    }
+
+    /**
+     * 해당 사용자가 작성한 게시글의 총 숫자를 리턴하는 메소드이다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param memberDto MemberDto 객체
+     * @return Long (게시글 수)
+     */
+    @Override
+    public Long getMyBoardCount(MemberDto memberDto) {
+        return boardRepository.getMyBoardCount(memberDto.getId());
+    }
+
+    /**
+     * 사용자가 작성한 게시글 목록을 가져오는 메소드이다.
+     *
+     * @version 0.1
+     * @author 박성수
+     * @param memberDto MemberDto 객체
+     * @param startRow 시작 행
+     * @param boardSize 가져올 게시글 개수
+     * @return List<Board> 게시글 리스트
+     */
+    @Override
+    public List<Board> getMyBoardList(MemberDto memberDto, int startRow, int boardSize) {
+        // PageRequest 객체 생성
+        PageRequest pageRequest = PageRequest.of(startRow, boardSize);
+
+        return boardRepository.getMyBoardList(memberDto.getId(), pageRequest).toList();
     }
 }

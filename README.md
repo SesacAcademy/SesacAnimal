@@ -1,10 +1,14 @@
 # 📝 프로젝트 소개
 
-![image](https://github.com/SesacAcademy/SesacAnimal/assets/55624470/ce742f0e-7432-401d-a444-3a242b27afe8)
+![image](https://github.com/SesacAcademy/SesacAnimal/assets/55624470/37b816ce-9cb4-4934-866d-9782e64e9ea7)
+
 
 <br/>
 
-> 유기견 커뮤니티입니다. <br/>
+> 매년 유기견들이 늘어남에 따라 많은 유기견들에게 보호와 돌봄이 필요하지만 자원이 부족한 상황입니다.
+>
+> 새싹 애니멀은 이러한 상황을 개선하고 유기견에게 더 나은 미래를 제공하기 위해 유기견 입양/임보 서비스를 제공합니다. <br/>
+> <br/>
 > 개발 인원 : 4명 (박성수, 류명한, 이경진, 손승범) <br/>
 > 개발 기간 : 2023.11.01 ~ 2023.11.17 
 
@@ -103,7 +107,8 @@
 
 ## 🔨 시스템 아키텍처
 
-![image](https://github.com/SesacAcademy/SesacAnimal/assets/55624470/c1acf282-d9b6-4e11-811c-b13bb9c34484)
+![image](https://github.com/SesacAcademy/SesacAnimal/assets/55624470/36358f15-f923-468b-8119-3a5ba593f4ae)
+
 
 <br/>
 
@@ -120,15 +125,13 @@
 
 #### 👩‍👧 회원 (박성수)
 
-- 이메일 인증을 통한 회원가입 기능 📌 [[코드 확인 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L61) [[코드 확인 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/MailAuthCodeProvider.java#L38)
+- 이메일 인증을 통한 회원가입 기능 📌 [[코드 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L58) [[코드 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/MailAuthCodeProvider.java#L38)
 
-- (JWT) 토큰 기반 방식의 로그인 기능 (Spring Security를 활용한 인증/인가) 📌 [[코드 확인 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/LoginController.java#L39) [[코드 확인 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtExceptionFilter.java#L62) [[코드 확인 3]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtAuthenticationFilter.java#L73) [[코드 확인 4]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtExceptionFilter.java#L62)
+- (JWT) 토큰 기반 방식의 로그인 기능 (Spring Security를 활용한 인증/인가) 📌 [[코드 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/LoginController.java#L60) [[코드 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtExceptionFilter.java#L32) [[코드 3]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtAuthenticationFilter.java#L32) [[코드 4]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/JwtTokenProvider.java#L58)
 
-- 네이버, 구글 플랫폼을 이용한 소셜 로그인 기능 (구현 예정)
+- 카카오 플랫폼을 이용한 소셜 로그인 기능 📌 [[코드 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/LoginController.java#L87)
   
-- 사용자 정보를 통한 아이디 찾기, SMS 문자 인증을 통한 비밀번호 찾기 기능 (구현 예정)
-
-- 장기간 미접속 시, 휴먼 계정 알림 기능 (Spring Batch 활용) (구현 예정)
+- 사용자 정보를 통한 아이디 찾기, SMS 문자 인증을 통한 비밀번호 찾기 기능 📌 [[코드 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/MemberController.java#L116) [[코드 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/MemberController.java#L137) [[코드 3]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L134) [[코드 4]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/SmsAuthCodeProvider.java#L37)
 
 #### 🚨 실종 (류명한)
 

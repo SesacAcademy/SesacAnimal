@@ -1,13 +1,63 @@
 /* ********************************** */
+/* 공통 영역 */
+.adoption-title{
+    width:1200px;
+    margin:50px auto 0;
+}
+
+.adoption-title .title-route{
+    margin:30px 0 50px;
+    vertical-align: bottom;
+    color:#777;
+    font-size: 14px;
+}
+
+.adoption-title .title-route span.home{
+    font-size: 19px;
+    vertical-align: bottom;
+}
+
+.adoption-title .title-content{
+    position: relative;
+    padding:0;
+    border-bottom: 1px solid #777;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.adoption-title .title-content h2{
+    font-size:35px;
+}
+
+
+.adoption-title .title-content .image{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.adoption-title .title-content .image img{
+    width:120px;
+}
+
+
+p, div{
+    margin:0;
+    padding:0;
+}
+
 
 /* 입양 글쓰기 페이지 */
 /* adoption-write */
 .adoption-write {
     width:1200px;
-    margin:100px auto 50px;
-    padding:50px;
-    border: 1px solid #ddd;
+    margin:80px auto;
+    padding:25px;
     font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+    border: 1px solid #f9f9f9;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+    border-radius: 35px;
 }
 
 .adoption-write fieldset{
@@ -26,8 +76,8 @@
 .adoption-write .write-view-area{
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 20px;
 }
-
 
 .adoption-write .write-view-area .write-button{
     border:none;
@@ -41,20 +91,23 @@
     text-decoration: none;
 }
 
+
 .adoption-write .write-view-area .reset-button {
     background-color: #fff;
     border:none;
     width:100px;
-    height: 50px;
+    /*height: 50px;*/
     color:#f0b062;
     vertical-align: middle;
     cursor: pointer;
     margin-right: 20px;
+    font-size: 19px;
 }
 
 .adoption-write .write-view-area .write-button span{
     color:#f0b062;
     vertical-align: middle;
+    font-size: 19px;
 }
 
 /* 글쓰기 게시판 내 영역 */
@@ -62,6 +115,11 @@
 .adoption-write .contents-area {
     width:100%;
     padding: 10px;
+    font-size: 17px;
+}
+
+.adoption-write .contents-area p{
+    margin:10px 0;
 }
 
 .adoption-write .contents-area .col{

@@ -21,6 +21,7 @@ import com.project.animal.missing.service.inf.MissingPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -48,6 +49,13 @@ public class MissingPostServiceImpl implements MissingPostService {
 
   private final DtoEntityConverter converter;
 
+  public ListResponseDto<MissingListEntryDto> getPostsForHome(int count) {
+    MissingFilterDto filter = new MissingFilterDto();
+    Pageable pageable = PageRequest.of(0, count);
+    ListResponseDto<MissingListEntryDto> pages = getPostList(filter, pageable);
+
+    return pages;
+  }
 
   public ListResponseDto<MissingListEntryDto> getPostList(MissingFilterDto filter, Pageable pageable) {
     Page<MissingPost> pages = missingPostRepository.findByFilter(filter, pageable);
