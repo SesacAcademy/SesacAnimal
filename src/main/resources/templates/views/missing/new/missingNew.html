@@ -38,8 +38,9 @@
 
     <!-- 기본 CSS 및 JS 설정-->
     <link rel="stylesheet" th:href="@{/css/main.css}" />
-    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/header/header.css}" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/header/sectionHeader.css}" />
     <script th:src="@{/js/main.js}"></script>
     <script th:src="@{/js/missing/new/addImageInput.js}" defer></script>
 
@@ -67,6 +68,7 @@
 </head>
 <body>
 <th:block th:replace="../fragments/header/header :: header" />
+<th:block th:replace="../fragments/header/sectionHeader :: sectionHeader('실종동물', '실종동물', 'https://www.seocho.go.kr/images/animal/sub/sub2top_img.png' )" />
     <section class="missing-new-page">
         <th:block th:replace="./missing/new/missingNewCard :: newCard(${endPoints.new})" />
     </section>

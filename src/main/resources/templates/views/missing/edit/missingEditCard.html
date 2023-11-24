@@ -1,16 +1,22 @@
 <div  xmlns:th="http://www.thymeleaf.org" th:fragment="editCard(detail, editPath)">
-
+    <script>
+        function handleClickDelBtn(btn) {
+            btn.parentNode.parentNode.style.display = "none";
+        }
+    </script>
     <h3>수정하기</h3>
     <form method="post" th:action="@{{editPath}/{id}(id=${detail.id}, editPath=${editPath})}" enctype="multipart/form-data" th:object="${detail}">
         <input type="hidden" name="_method" value="put"/>
         <input type="hidden" name="missingId" th:value="*{id}"/>
-        <input name="deletedIds" type="text" />
+        <input name="deletedIds" type="text" hidden/>
         <section class="missing-edit-page-content">
             <div style="display: flex; flex-direction:row; padding-right:30px;">
                 <div class="missing-edit-thumb-container">
                     <div th:each="imagePath : ${detail.images}" style="border: 1px solid black; border-radius: 8px; padding: 5px; margin-right:20px;">
                         <div style="position: relative;">
-                            <button class="image-delete-button" type="button" name="deleteImageIds" th:value="${imagePath.imageId}">x</button>
+                            <button class="image-delete-button" type="button" name="deleteImageIds" th:value="${imagePath.imageId}"
+                                onclick="handleClickDelBtn(this)"
+                            >x</button>
                             <figure>
                                 <img th:src="${imagePath.path}" width="160px" height="160px" style="border-radius: 8px;"/>
                             </figure>

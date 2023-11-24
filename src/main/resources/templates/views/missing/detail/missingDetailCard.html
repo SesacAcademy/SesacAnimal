@@ -19,7 +19,7 @@
                     <div class="missing-detail-field" th:text="'색상: ' + ${post.color}" />
                     <div class="missing-detail-field" th:text="'실종시간: ' + ${post.missingTime}" />
 
-                    <div th:if="${selfId > 0}" class="missing-card-like">
+                    <div th:if="${selfId > 0}" class="missing-card-like" style="display:flex; flex-direction: row; align-items: center;">
                         <div class="missing-card-post-id" th:text="${post.id}" hidden />
                         <div>
                             <i class="empty-heart far fa-heart" th:style="${post.isLiked == 0} ? 'display: block' : 'display: none'"></i>
@@ -31,7 +31,7 @@
             </div>
             <div style="flex flex-col">
                 <div>설명</div>
-                <textarea class="missing-detail-textarea" th:text="${post.description}" />
+                <textarea class="missing-detail-textarea" th:text="${post.description}" disabled/>
             </div>
         </section>
     </section>

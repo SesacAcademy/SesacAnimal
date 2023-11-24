@@ -11,7 +11,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 787px;
+    width: 787px;
 }
 
 .missing-detail-thumb {
@@ -24,7 +24,7 @@
     border-radius: 10px;
     border: 1px solid black;
     width: 100%;
-    max-width: 787px;
+    width: 787px;
 
     padding: 20px; 30px;
 }

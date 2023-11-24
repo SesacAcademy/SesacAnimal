@@ -6,7 +6,7 @@
             const href = document.getElementById("list-href").textContent;
             const dummyUrl = "http://www.dummy.com";
             const url = new URL(`${dummyUrl}${href}`);
-            url.searchParams.append("page", page);
+            url.searchParams.append("page", page - 1); // server page start from 0;
             url.searchParams.append("limit", size);
             if (search) url.searchParams.append("search", search);
             if (animalType) url.searchParams.append("animalType", animalType);

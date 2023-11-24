@@ -39,6 +39,7 @@
     <!-- 기본 CSS 및 JS 설정-->
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" th:href="@{/css/header/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/header/sectionHeader.css}" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
     <link rel="stylesheet" th:href="@{/css/missing/list/missingList.css}" />
     <link rel="stylesheet" th:href="@{/css/missing/list/missingCard.css}" />
@@ -77,13 +78,20 @@
 </head>
 <body>
     <th:block th:replace="../fragments/header/header :: header" />
+    <th:block th:replace="../fragments/header/sectionHeader :: sectionHeader('실종동물', '실종동물', 'https://www.seocho.go.kr/images/animal/sub/sub2top_img.png' )" />
     <div class="missing-list-page">
-        <div style="display: flex; flex-direction: row; align-items: center;">
+
+
+        <div class="missing-sentence-section">
             <h3 class="missing-list-title">
                 실종 동물들이 가족의 품으로 돌아갈 수 있게 도와주세요
             </h3>
-            <a th:if="${member != null}" th:href="${endPoints.new}" class="missing-list-new">
-                게시글 작성하기
+            <a th:if="${member != null}" th:href="${endPoints.new}" >
+
+                <div class="missing-list-new">
+                    <span class="material-symbols-outlined">edit_square</span>
+                    <span style="margin-left: 5px;">게시글 작성하기</span>
+                </div>
             </a>
         </div>
         <div class="missing-list-page-content">

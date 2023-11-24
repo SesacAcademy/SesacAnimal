@@ -42,7 +42,7 @@ public class MissingController {
   public String getPostList(
           @ModelAttribute MissingFilterDto filterDto,
           @Member MemberDto member,
-          @PageableDefault(sort="missing_id", direction = Sort.Direction.DESC)
+          @PageableDefault(size = 10)
           Pageable pageable,
           Model model) {
 
@@ -139,7 +139,7 @@ public class MissingController {
   public String handleDeleteRequest(@PathVariable("postId") long id, RedirectAttributes redirectAttributes) {
     // TODO: id 없는 경우 검증
     boolean result = missingPostService.deletePost(id);
-    redirectAttributes.addFlashAttribute("serverMsg", "Success to delete the post");
+    redirectAttributes.addFlashAttribute("serverMsg", "삭제에 성공하였습니다.");
 
     return "redirect:" + "/v1/missing/list";
   }

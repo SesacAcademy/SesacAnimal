@@ -10,10 +10,3 @@ export const specifics =_specifics;
 export const color =_color;
 export const fromDate =_fromDate;
 export const endDate = _endDate;
-
-console.log("search", search);
-console.log("animalType", animalType);
-console.log("specifics", specifics);
-console.log("color", color);
-console.log("fromDate", fromDate);
-console.log("endDate", endDate);

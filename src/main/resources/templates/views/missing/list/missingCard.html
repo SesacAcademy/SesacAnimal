@@ -12,9 +12,15 @@
                     <div th:text="${post.missingTime}" class="missing-card-content truncate-1-line"/>
                     <div th:text="${post.author}" class="missing-card-content truncate-1-line"/>
 
-                    <div th:if="${post.reward > -1}" th:text="'사례금: ' + ${post.reward}" class="missing-card-content truncate-1-line missing-card-reward"/>
+                    <div class="missing-card-bottom">
+                        <div th:if="${post.reward > -1}" th:text="'사례금: ' + ${post.reward}" class="missing-card-content truncate-1-line missing-card-reward"/>
 
-                    <div th:text="${post.likeCount}" />
+                        <div class="missing-list-like-container">
+                            <i class="empty-heart far fa-heart" th:style="${post.likeCount == 0} ? 'display: block' : 'display: none'"></i>
+                            <i class="filled-heart fas fa-heart" th:style="${post.likeCount > 0 } ? 'display: block' : 'display: none'"></i>
+                            <div th:text="${post.likeCount}" style="margin-left: 5px;" />
+                        </div>
+                    </div>
                 </div>
                 <img th:src="@{/img/ellipse.png}" alt="ellipse" width="100%" height="100%" class="missing-card-ellipse" />
 
