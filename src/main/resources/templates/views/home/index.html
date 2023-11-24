@@ -172,50 +172,48 @@
 <th:block th:replace="../fragments/home/adoption_index :: adoption_index"></th:block>
 <th:block th:replace="../fragments/home/missing_index :: missing_index"></th:block>
 
-<section>
-    <img th:src="@{/img/dummySection.png}"  style="width:100%;"/>
-</section>
+    <section>
+        <img th:src="@{/img/dummySection.png}"  style="width:100%;"/>
+    </section>
 
 
-<div class = "review-box">
-    <div class="review-small-box">
-        <div class="review-title">여러분의 따뜻한 후기를 남겨주세요</div>
-        <div class="review-post" th:each="reviewPost : ${listDto}">
-            <div class="review-image" >
-                <img class="img" th:if="${reviewPost.url}" th:src="@{'http://infra.shucloud.site:8007/review' + ${reviewPost.url}}">
-                <img class="img" th:unless="${reviewPost.url}" th:src="@{/img/sesac-animal-logo.png}">
-            </div>
-            <div class="review-text">
-                <div class="review-post-title" th:text="${reviewPost.title}">여러분의 제목</div>
-                <div class="content-like-box">
-                    <div class="review-post-content" th:text="${reviewPost.content}">내용임다~</div>
-
-                    <div class="review-like">
-
-                <span class="material-symbols-outlined">
-                favorite
-                </span>
-                        <span class="like-count" th:text="${reviewPost.postLikeCount}">10</span>
-                    </div>
-                    <div class="review-like">
-                    <span class="material-symbols-outlined" style="color:skyblue;">
-                    mark_unread_chat_alt
-                    </span>
-                        <span class="comment-count" th:text="${reviewPost.commentCount}" style="color:skyblue;">10</span>
-                    </div>
+    <div class = "review-box">
+        <div class="review-small-box">
+            <div class="review-title">여러분의 따뜻한 후기를 남겨주세요</div>
+            <div class="review-post" th:each="reviewPost : ${listDto}">
+                <div class="review-image" >
+                    <img class="img" th:if="${reviewPost.url}" th:src="@{'http://infra.shucloud.site:8007/review' + ${reviewPost.url}}">
+                    <img class="img" th:unless="${reviewPost.url}" th:src="@{/img/sesac-animal-logo.png}">
                 </div>
+                <div class="review-text">
+                    <div class="review-post-title" th:text="${reviewPost.title}">여러분의 제목</div>
+                    <div class="content-like-box">
+                        <div class="review-post-content" th:text="${reviewPost.content}">내용임다~</div>
+
+                        <div class="review-like">
+
+                    <span class="material-symbols-outlined">
+                    favorite
+                    </span>
+                            <span class="like-count" th:text="${reviewPost.postLikeCount}">10</span>
+                        </div>
+                        <div class="review-like">
+                        <span class="material-symbols-outlined" style="color:skyblue;">
+                        mark_unread_chat_alt
+                        </span>
+                            <span class="comment-count" th:text="${reviewPost.commentCount}" style="color:skyblue;">10</span>
+                        </div>
+                    </div>
 
 
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="write-cover">
-    <a href="/review/write" class="write-review" >이야기 쓰기</a>
-</div>
+    <div class="write-cover">
+        <a href="/review/write" class="write-review" >이야기 쓰기</a>
+    </div>
 
-</div>
-</div>
 
 <th:block th:replace="../fragments/footer/footer :: footer"></th:block>
 </body>
