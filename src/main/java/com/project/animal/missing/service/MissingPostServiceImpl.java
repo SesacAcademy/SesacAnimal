@@ -59,10 +59,11 @@ public class MissingPostServiceImpl implements MissingPostService {
   }
 
   public ListResponseDto<MissingListEntryDto> getPostList(MissingFilterDto filter, Pageable pageable) {
+    log.info("test:>> " + pageable.getPageNumber());
     Page<MissingPost> pages = missingPostRepository.findByFilter(filter, pageable);
 
     List<MissingListEntryDto> posts = pages.stream()
-            .map(this ::convertToMissingListEntryDto)
+            .map(this::convertToMissingListEntryDto)
             .collect(Collectors.toList());
 
     List<Integer> counts = getLikeCountById(pages);
@@ -101,10 +102,10 @@ public class MissingPostServiceImpl implements MissingPostService {
   }
 
   public MissingDetailDto getPostDetail(long postId, long memberId) {
-    Optional<MissingPost> maybePost =  missingPostRepository.findById(postId);
+    Optional<MissingPost> maybePost = missingPostRepository.findById(postId);
     MissingPost post = maybePost.orElseThrow(() -> new DetailNotFoundException(postId));
 
-    List<MissingCommentListEntryDto> comments =  createCommentList(post.getMissingId(), post.getComments());
+    List<MissingCommentListEntryDto> comments = createCommentList(post.getMissingId(), post.getComments());
     List<MissingPostImageDto> images = createImageList(post.getImages());
     int isLiked = missingLikeService.getStatusByPostIdAndMemberId(postId, memberId);
     int likeCount = missingLikeService.getLikeCount(postId);
@@ -121,7 +122,7 @@ public class MissingPostServiceImpl implements MissingPostService {
             .collect(Collectors.toList());
   }
 
-  private  List<MissingCommentListEntryDto> createCommentList(long postId, List<MissingComment> comments) {
+  private List<MissingCommentListEntryDto> createCommentList(long postId, List<MissingComment> comments) {
     List<MissingCommentListEntryDto> wholeComments = comments.stream()
             .map((entity) -> MissingCommentListEntryDto.fromMissingComment(postId, entity))
             .collect(Collectors.toList());
@@ -132,7 +133,7 @@ public class MissingPostServiceImpl implements MissingPostService {
 
     Map<Long, List<MissingCommentListEntryDto>> groupByParentId = wholeComments.stream()
             .filter((comment) -> comment.getParentId() != null)
-            .collect(Collectors.groupingBy(MissingCommentListEntryDto :: getParentId));
+            .collect(Collectors.groupingBy(MissingCommentListEntryDto::getParentId));
 
     List<MissingCommentListEntryDto> commentList = parents.stream()
             .map((comment) -> {

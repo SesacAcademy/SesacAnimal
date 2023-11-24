@@ -10,3 +10,5 @@ export const specifics =_specifics;
 export const color =_color;
 export const fromDate =_fromDate;
 export const endDate = _endDate;
+
+export const PAGE_RANGE = 5;
