@@ -109,23 +109,25 @@ public class AdoptionServiceImpl implements AdoptionService {
         String serverFileName;
         Adoption adoption = adoptionRepository.findByIdWithImageAndMember(postId);
 
-        adoption.updateAdoption(adoptionEditDto);
 
-        Adoption saved = adoptionRepository.save(adoption);
 
-            for (MultipartFile file : files) {
-                if(file.getSize()==0){
-                    System.out.println("입양 상세 페이지 수정 중 첨부된 file이 없습니다.");
-                }else {
-                    serverFileName = saveMinio(file); // 미니오에 저장하는 영역
-                    AdoptionImage adoptionImage = new AdoptionImage(serverFileName, saved);
-//                AdoptionImage adoptionImage = new AdoptionImage();
-//                adoptionImage.changeImage(serverFileName, adoption);
-                    adoptionImageRepository.save(adoptionImage);
+        for (MultipartFile file : files) {
+            if(file.getSize()==0){
+                System.out.println("입양 상세 페이지 수정 중 첨부된 file이 없습니다.");
+                adoption.updateAdoption(adoptionEditDto);
+            }else {
+                if(adoption.getAdoptionImages().get(0).getPath().equals("empty")){
+                    adoption.getAdoptionImages().get(0).changeIsActive(0);
                 }
+                adoption.updateAdoption(adoptionEditDto);
+                Adoption saved = adoptionRepository.save(adoption);
+                serverFileName = saveMinio(file); // 미니오에 저장하는 영역
+                AdoptionImage adoptionImage = new AdoptionImage(serverFileName, saved);
+                adoptionImageRepository.save(adoptionImage);
+            }
 
 
-        }
+         }
 
     }
 

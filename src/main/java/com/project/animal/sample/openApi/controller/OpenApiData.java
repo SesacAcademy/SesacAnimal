@@ -33,7 +33,7 @@ public class OpenApiData {
 
 
         try{
-            String stringResult = getResult(1); // api 데이터 가져오기
+            String stringResult = getResult(10); // api 데이터 가져오기
 
             List<OpenApiDto> openApiDtoList = getOpenApiDtos(stringResult); // 데이터 사용할 수 있게 가공하기
 

@@ -1,0 +1,82 @@
+<!--
+    -index 입양 영역 작성 : 231121 이경진
+    -아이콘 : 구글 폰트 아이콘 사용
+    -링크는 url 링크로 이동
+    -로고는 현재 구글 아이콘으로 사용하였으나 추후 변경 가능
+    -CSS는 static/css/adoption_index.css에 작성하였고, index.html에 링크하였음
+    - 폰트는 구글 폰트를 이용하여 Roboto, Noto Sans Kr을 사용하였음
+    -타임리프로 fragment만들어서 replace로 index.html에 연결하여서 사용하면됨
+-->
+    <section class="adoption" lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="adoption_index">
+        <div class="adoption-banner">
+            <img th:src="@{/img/adoption_banner.png}" alt="SSac Animal"/>
+
+            <a href="/v1/adoption" title="입양 게시판">
+                <div class="banner-button">입양동물 살펴보기</div>
+           </a>
+        </div>
+
+        <form class="adoption-find" method="POST" action="/">
+            <div class="adoption-filter-content">
+                <div class="adoption-find-title">
+                    <img th:src="@{/img/findnadopt.png}" alt="Find & Adopt" />
+                </div>
+
+                <div class="adoption-find-area">
+                    <div class="blank-space-left"></div>
+                    <a class="adoption-animal-filter-link" href="/v1/adoption?breed=dog" title="강아지 보기">
+                        <img th:src="@{/img/dog_icon.png}" alt="강아지 선택" />
+                    </a>
+                    <div class="blank-between-animal-icons" ></div>
+                    <a class="adoption-animal-filter-link" href="/v1/adoption?breed=cat" title="고양이 보기">
+                        <img th:src="@{/img/cat_icon.png}" alt="고양이 선택" />
+                    </a>
+                    <div class="blank-cat-icon-right" ></div>
+                    <div class="center-area">
+                        <label for="is-center">센터 보호 여부</label>
+                        <p class="adoption-selectBox">
+                            <select name="center" class="select" id="is-center">
+                                <option value="" disabled selected></option>
+                                <option value="N">일반</option>
+                                <option value="Y">센터</option>
+                            </select>
+                            <span class="material-symbols-outlined icoArrow">expand_more</span>
+                        </p>
+                    </div>
+                    <div class="blank-between-select-box" ></div>
+                    <div class="local-area">
+                        <label for="local">지역</label>
+                        <p class="adoption-selectBox">
+                            <select id="local" name="local" class="select">
+                                <option selected value=""></option>
+                                <option value="서울">서울</option>
+                                <option value="경기">경기</option>
+                                <option value="부산">부산</option>
+                                <option value="경북">경북</option>
+                                <option value="경남">경남</option>
+                                <option value="대구">대구</option>
+                                <option value="대전">대전</option>
+                                <option value="충북">충북</option>
+                                <option value="충남">충남</option>
+                                <option value="강원">강원</option>
+                                <option value="광주">광주</option>
+                                <option value="전북">전북</option>
+                                <option value="전남">전남</option>
+                                <option value="제주">제주</option>
+                            </select>
+                            <span class="material-symbols-outlined icoArrow">expand_more</span>
+                        </p>
+                    </div>
+
+                    <div class="button-area">
+                        <a href="/v1/adoption">
+                            <button>입양동물 찾아보기</button>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+
+    </section>
