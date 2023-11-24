@@ -27,7 +27,9 @@ public class ReviewPostLikeController {
     @PostMapping("/like/add")
     public String createLike(@Member MemberDto member,
                              @RequestParam(name = "reviewPostId") Long reviewPostId){
+        log.info("past test");
         reviewPostLikeService.checkLikeStatus(member, reviewPostId);
+        log.info("test ");
         return "redirect:/review/one?reviewPostId=" + reviewPostId;
     }
 
