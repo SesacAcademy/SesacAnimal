@@ -34,6 +34,12 @@
                         <input class="missing-new-image" type="file" placeholder="사진을 등록해주세요" name="images" />
                     </div>
                 </div>
+                <div>
+                    <button type="submit" class="missing-write-button" title="글쓰기">
+                        <span class="material-symbols-outlined">edit_square</span>
+                        <span>수정하기</span>
+                    </button>
+                </div>
             </div>
             <section class="missing-edit-info-container">
                 <div>
@@ -86,9 +92,6 @@
                 </div>
             </section>
         </section>
-        <div style="margin-top: 20px">
-            <button>수정하기</button>
-        </div>
     </form>
     <script th:src="@{/js/missing/edit/missingTimeFormatter.js}" defer></script>
 </div>
