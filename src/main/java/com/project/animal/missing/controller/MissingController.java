@@ -41,8 +41,8 @@ public class MissingController {
 
   @GetMapping("/list")
   public String getPostList(
-          @ModelAttribute MissingFilterDto filterDto,
           @Member MemberDto member,
+          @ModelAttribute MissingFilterDto filterDto,
           @PageableDefault(size = 10)
           Pageable pageable,
           Model model) {
@@ -57,6 +57,7 @@ public class MissingController {
     model.addAttribute("endPoints", endPoints);
     model.addAttribute("list", result.getList());
     model.addAttribute("count", result.getTotalCount());
+    model.addAttribute("filters", filterDto);
     model.addAttribute("member", member);
 
     return ViewName.POST_LIST;
