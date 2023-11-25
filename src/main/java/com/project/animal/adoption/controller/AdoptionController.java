@@ -57,9 +57,11 @@ public class AdoptionController {
         }
 
         // index페이지에서 넘어오는 강아지, 고양이 리스트 불러오기
-        Page<Adoption> list;
-        if(breed.equals("개") || breed.equals("고양이")){
-            list = adoptionService.findPatsByBreed(breed, pageNumber, pageSize);
+        Page<Adoption> list = null;
+        if(breed != null){
+            if(breed.equals("개") || breed.equals("고양이")){
+                list = adoptionService.findPatsByBreed(breed, pageNumber, pageSize);
+            }
         }else{
             // 고양이 , 강아지 종으로 넘어오는 경우가 아닌 모든 경우
             //전체 리스트
@@ -82,8 +84,9 @@ public class AdoptionController {
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("endPage", endPage);
         model.addAttribute("count", count);
+        model.addAttribute("breed", breed);
 //        model.addAttribute("pageCount", pageCount);
-    
+
         // 좋아요 리스트를 체크하기 위한 로직
         if(memberDto != null){
             List<Boolean> likeStatusList = new ArrayList<>();
@@ -188,7 +191,7 @@ public class AdoptionController {
     // 상세 게시글 수정 하고 Post 보내는 영역
     @PostMapping ("/v1/adoption/edit/{id}")
     public String adoptionEditPut(@ModelAttribute @Validated AdoptionEditDto adoptionEditDto, BindingResult bindingResult,
-                               @RequestParam(name="image") List<MultipartFile> file,
+                                  @RequestParam(name="image") List<MultipartFile> file,
                                   @PathVariable(name="id") Long postId,
                                   @Member MemberDto memberDto){
 
@@ -208,12 +211,12 @@ public class AdoptionController {
     }
 
 
-    // 게시글 상세 수정 영역 중 게시글, 이미지 삭제 영역
-    @CrossOrigin(origins = {"http://localhost:8080", "http://infra.shucloud.site"})
+    // 게시글 상세 수정 영역 중 게시글 삭제, 이미지 삭제 영역
+    @CrossOrigin(origins = {"http://localhost:8080", "https://infra.shucloud.site", "toyproject.shucloud.site", "https://toyproject.shucloud.site"})
     @DeleteMapping("/v1/adoption/edit/{id}")
     @ResponseBody
     public ResponseEntity<String> handleImageDeleteRequest(@RequestBody Map<String, String> requestBody, @PathVariable Long id) {
-        
+
         try{
             // 이미지, 게시글 삭제 로직
             Adoption adoption = adoptionService.findByIdWidhImageAndMember(id);
@@ -244,8 +247,8 @@ public class AdoptionController {
         // 삭제 결과에 따라 적절한 응답 반환
         return ResponseEntity.ok("success delete");
     }
-    
-    
+
+
 
 
 
