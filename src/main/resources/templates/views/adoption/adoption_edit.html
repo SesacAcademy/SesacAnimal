@@ -125,7 +125,7 @@
 
                                  <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 -->
                                  <p class="image" th:each="image, index : ${edit.path}" data-edit-index="${index.index}" th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') and image.isActive==1 }">
-                                     <img th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
+                                     <img th:src="'https://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
                                      <button th:id="'remove-button'+${index.index}" type="button" class="remove-image btn-close" aria-label="Close"></button>
                                      <input type="hidden" name="deleteIndex" th:value="${index.index}"/>
                                  </p>

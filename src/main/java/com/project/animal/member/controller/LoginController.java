@@ -1,7 +1,6 @@
 package com.project.animal.member.controller;
 
 import com.project.animal.global.common.annotation.Member;
-import com.project.animal.global.common.constant.EndPoint;
 import com.project.animal.global.common.constant.ViewName;
 import com.project.animal.global.common.dto.MemberDto;
 import com.project.animal.global.common.dto.ResponseDto;

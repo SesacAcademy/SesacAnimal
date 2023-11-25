@@ -127,7 +127,7 @@
                                          <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않는 경우 -->
                                          <img th:if="${not image.path.endsWith('www.animal.go.kr/') and !image.path.equals('empty') and image.path.startsWith('http') and image.isActive==1 }" th:src="${image.path}" alt="유기동물 이미지"/>
                                          <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나고, image.path가 'empty'가 아닌 경우 -->
-                                         <img th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') and image.isActive==1 }" th:src="'http://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
+                                         <img th:if="${not image.path.equals('empty') and !image.path.endsWith('www.animal.go.kr/') and !image.path.startsWith('http') and image.isActive==1 }" th:src="'https://infra.shucloud.site:8007/adoption/' + ${image.path}" alt="유기동물 이미지"/>
                                          <!-- 조건: image.path가 'www.animal.go.kr/'로 끝나지 않고, image.path가 'empty'인 경우 -->
                                          <img th:if="${image.path.endsWith('www.animal.go.kr/') or image.path.equals('empty') and image.isActive==1}" th:src="@{/img/sesac-animal-logo.png}" alt="유기동물 이미지"/>
                                      </div>
