@@ -2,6 +2,7 @@ package com.project.animal.missing.service;
 
 import com.project.animal.global.common.annotation.Profiling;
 import com.project.animal.member.domain.Member;
+import com.project.animal.member.exception.NotFoundException;
 import com.project.animal.member.repository.MemberRepository;
 import com.project.animal.missing.domain.MissingComment;
 import com.project.animal.missing.domain.MissingPost;
@@ -61,7 +62,7 @@ public class MissingPostServiceImpl implements MissingPostService {
     Page<MissingPost> pages = missingPostRepository.findByFilter(filter, pageable);
 
     List<MissingListEntryDto> posts = pages.stream()
-            .map(this ::convertToMissingListEntryDto)
+            .map(this::convertToMissingListEntryDto)
             .collect(Collectors.toList());
 
     List<Integer> counts = getLikeCountById(pages);
@@ -100,10 +101,10 @@ public class MissingPostServiceImpl implements MissingPostService {
   }
 
   public MissingDetailDto getPostDetail(long postId, long memberId) {
-    Optional<MissingPost> maybePost =  missingPostRepository.findById(postId);
+    Optional<MissingPost> maybePost = missingPostRepository.findById(postId);
     MissingPost post = maybePost.orElseThrow(() -> new DetailNotFoundException(postId));
 
-    List<MissingCommentListEntryDto> comments =  createCommentList(post.getMissingId(), post.getComments());
+    List<MissingCommentListEntryDto> comments = createCommentList(post.getMissingId(), post.getComments());
     List<MissingPostImageDto> images = createImageList(post.getImages());
     int isLiked = missingLikeService.getStatusByPostIdAndMemberId(postId, memberId);
     int likeCount = missingLikeService.getLikeCount(postId);
@@ -120,7 +121,7 @@ public class MissingPostServiceImpl implements MissingPostService {
             .collect(Collectors.toList());
   }
 
-  private  List<MissingCommentListEntryDto> createCommentList(long postId, List<MissingComment> comments) {
+  private List<MissingCommentListEntryDto> createCommentList(long postId, List<MissingComment> comments) {
     List<MissingCommentListEntryDto> wholeComments = comments.stream()
             .map((entity) -> MissingCommentListEntryDto.fromMissingComment(postId, entity))
             .collect(Collectors.toList());
@@ -131,7 +132,7 @@ public class MissingPostServiceImpl implements MissingPostService {
 
     Map<Long, List<MissingCommentListEntryDto>> groupByParentId = wholeComments.stream()
             .filter((comment) -> comment.getParentId() != null)
-            .collect(Collectors.groupingBy(MissingCommentListEntryDto :: getParentId));
+            .collect(Collectors.groupingBy(MissingCommentListEntryDto::getParentId));
 
     List<MissingCommentListEntryDto> commentList = parents.stream()
             .map((comment) -> {
@@ -144,12 +145,12 @@ public class MissingPostServiceImpl implements MissingPostService {
 
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional
   public boolean createPost(long memberId, MissingNewDto dto) {
     try {
 
       Optional<Member> maybeMember = memberRepository.findById(memberId);
-      Member member = maybeMember.orElseThrow(() -> new RuntimeException("일치하는 회원이 존재하지 않습니다."));
+      Member member = maybeMember.orElseThrow(() -> new NotFoundException("일치하는 회원이 존재하지 않습니다."));
 
       MissingPost post = converter.toMissingPost(member, dto);
       MissingPost result = missingPostRepository.save(post);

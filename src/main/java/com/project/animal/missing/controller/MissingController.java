@@ -11,6 +11,7 @@ import com.project.animal.missing.exception.InvalidEditFormException;
 import com.project.animal.missing.service.inf.MissingPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,11 @@ public class MissingController {
           Pageable pageable,
           Model model) {
 
-    ListResponseDto<MissingListEntryDto> result = missingPostService.getPostList(filterDto, pageable);
+    Pageable adjustedPageable = PageRequest.of(
+            pageable.getPageNumber() != 0 ? pageable.getPageNumber() - 1 : 0,
+            pageable.getPageSize(),
+            pageable.getSort());
+    ListResponseDto<MissingListEntryDto> result = missingPostService.getPostList(filterDto, adjustedPageable);
     Map<String, String> endPoints = pathMaker.createLink("detail", "list", "new");
 
     model.addAttribute("endPoints", endPoints);
@@ -124,7 +129,7 @@ public class MissingController {
           RedirectAttributes redirectAttributes,
           @Member MemberDto member) {
 
-    if (br.hasErrors() || member == null ) {
+    if (br.hasErrors() || member == null) {
       throw new InvalidEditFormException(dto, br);
     }
 
