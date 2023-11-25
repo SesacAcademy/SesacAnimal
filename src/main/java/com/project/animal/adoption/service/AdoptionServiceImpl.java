@@ -163,6 +163,10 @@ public class AdoptionServiceImpl implements AdoptionService {
         return adoptionRepository.findByBreedContaining(breed, pageable);
     }
 
+    public Page<Adoption> findCenterAndLocal(String center, String local, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
+        return adoptionRepository.findByCenterAndCenterAddrContaining(center, local, pageable);
+    }
 
     public Page<Adoption> getAdoptionPageWithImagesAndMemberPages(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);

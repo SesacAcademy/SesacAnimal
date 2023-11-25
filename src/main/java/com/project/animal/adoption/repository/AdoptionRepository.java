@@ -35,6 +35,8 @@ public interface AdoptionRepository extends JpaRepository<Adoption, Long> {
 
     Page<Adoption> findByBreedContaining(String breed, Pageable pageable);
 
+    Page<Adoption> findByCenterAndCenterAddrContaining(String center, String centerAddr, Pageable pageable);
+
 
 //    @Query(value = "SELECT distinct a FROM Adoption a " +
 //            "LEFT JOIN FETCH a.adoptionImages " +

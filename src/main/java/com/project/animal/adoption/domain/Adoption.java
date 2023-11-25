@@ -141,6 +141,7 @@ public class Adoption extends BaseEntity {
         this.status="보호중";
         this.isActive=1;
         this.member = member;
+        this.centerAddr=happenPlace;
     }
 
 

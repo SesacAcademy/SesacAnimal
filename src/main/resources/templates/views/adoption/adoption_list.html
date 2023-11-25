@@ -1,13 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html><!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
@@ -167,6 +158,7 @@
                     </div>
                     <div class="info-area">
                         <p id="noticeEdt" th:if="${adoption.noticeEdt != null}">공고종료일 : <span th:text="${adoption.noticeEdt}"></span></p>
+                        <p th:if="${adoption.noticeEdt != null}">센터이름 : <span th:text="${adoption.centerName}"></span></p>
                         <p th:if="${adoption.member.getNickname() != null}">작성자 : <span th:text="${adoption.member.getNickname()}"></span></p>
                         <p th:if="${adoption.happenPlace != null}">발견장소 : <span th:text="${adoption.happenPlace}"></span></p>
                         <p th:if="${adoption.specialMark != null and adoption.center != 'Y'}">특이사항 : <span th:text="${adoption.specialMark}"></span></p>
