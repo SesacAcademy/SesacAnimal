@@ -34,4 +34,7 @@ public class Board {
 
     @Column
     private String category;
+
+    @Column
+    private Integer isActive;
 }

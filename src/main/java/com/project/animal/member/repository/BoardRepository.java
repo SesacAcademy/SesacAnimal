@@ -9,9 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    @Query("select count(b) from Board b where b.member.id = :memberId")
+    @Query("select count(b) from Board b where b.member.id = :memberId and b.isActive = 1")
     Long getMyBoardCount(@Param("memberId") Long memberId);
 
-    @Query("select b from Board b where b.member.id = :memberId")
+    @Query("select b from Board b where b.member.id = :memberId and b.isActive = 1")
     Page<Board> getMyBoardList(@Param("memberId") Long memberId, Pageable pageable);
 }

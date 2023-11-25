@@ -32,6 +32,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final NumberPath<Integer> isActive = createNumber("isActive", Integer.class);
+
     public final QMember member;
 
     public final StringPath title = createString("title");
