@@ -1,0 +1,77 @@
+  .review-index-container {
+    position: relative;
+    width: 100%;
+  }
+
+  .review-index-container .review-index-bg {
+    width: 100%;
+  }
+
+  .review-index-content-container {
+
+    position: absolute;
+    top: 20%;
+    left: 50.70%;
+    width: 38.28%;
+  }
+
+  .review-index-content-container .review-card {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 6%;
+  }
+
+  .review-index-content-container .review-image-container {
+      width: 36.73%;
+      height: 40%;
+      background-color: white;
+      border-radius: 10px 0px 0px 10px;
+  }
+
+    .review-index-content-container .review-image {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px 0px 0px 10px;
+    }
+
+.review-text-content {
+    max-width: 500px;
+    width: 100%;
+    padding: 2% 4% 2% 4%;
+    background-color: white;
+    border-radius: 0px 10px 10px 0px;
+
+}
+
+.review-text-title {
+    color: #393B4A;
+    font-size: 1.2rem;
+    font-weight: 700;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.review-post-content {
+    margin-top: 5px;
+    color: #81849C;
+    font-size: 1rem;
+    max-width: 180px;
+    overflow: hidden;
+}
+
+.write-cover {
+    display: inline-block;
+    border: 1px solid white;
+
+    padding: 10px 30px;
+
+    border-radius: 45px;
+}
+
+.write-cover a {
+        color: white;
+        font-weight: 700;
+}
