@@ -19,19 +19,19 @@
                     <div class="missing-detail-field" th:text="'색상: ' + ${post.color}" />
                     <div class="missing-detail-field" th:text="'실종시간: ' + ${post.missingTime}" />
 
-                    <div th:if="${selfId > 0}" class="missing-card-like" style="display:flex; flex-direction: row; align-items: center;">
+                    <div th:if="${selfId > 0}" class="missing-card-like" style="display:flex; flex-direction: row; align-items: center; cursor: pointer;">
                         <div class="missing-card-post-id" th:text="${post.id}" hidden />
                         <div>
                             <i class="empty-heart far fa-heart" th:style="${post.isLiked == 0} ? 'display: block' : 'display: none'"></i>
                             <i class="filled-heart fas fa-heart" th:style="${post.isLiked == 1} ? 'display: block' : 'display: none'"></i>
                         </div>
-                        <div class="missing-like-count" th:text="${post.likeCount}" />
+                        <div class="missing-like-count" style="margin-left: 5px;" th:text="${post.likeCount}" />
                     </div>
                 </div>
             </div>
             <div style="flex flex-col">
                 <div>설명</div>
-                <textarea class="missing-detail-textarea" th:text="${post.description}" disabled/>
+                <textarea class="missing-detail-textarea" th:text="${post.description}" readonly/>
             </div>
         </section>
     </section>

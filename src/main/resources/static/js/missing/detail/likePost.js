@@ -7,7 +7,7 @@ const filledHeart = document.querySelector(".filled-heart");
 const likeCount = document.querySelector(".missing-like-count");
 
 
-
+let lock = false;
 button.addEventListener('click',async () => {
     const { isLiked } = await toggleLike();
 
@@ -24,15 +24,18 @@ button.addEventListener('click',async () => {
 });
 
 const toggleLike = async () => {
-    const res = await fetch("/v1/missing/like", {
-        method: "POST",
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({ postId })
-    });
+    if (!lock) {
+        lock = true;
+        const res = await fetch("/v1/missing/like", {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ postId })
+        });
 
-    const result = await res.json();
-
-    return result;
+        const result = await res.json();
+        lock = false;
+        return result;
+    }
 }
