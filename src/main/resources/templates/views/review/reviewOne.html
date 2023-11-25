@@ -362,7 +362,7 @@ width:50%;
             </div>
         </div>
         <div class="div-img" th:each="image : ${reviewDto.readOneReviewDto.urls}">
-            <img class="img" th:src="@{'http://infra.shucloud.site:8007/review' + ${image.value}}" />
+            <img class="img" th:src="@{'https://infra.shucloud.site:8007/review' + ${image.value}}" />
         </div>
         <div class="content" th:text="${reviewDto.readOneReviewDto.content}"></div>
         <div class="like-comment-view-box">

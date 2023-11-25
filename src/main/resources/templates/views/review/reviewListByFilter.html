@@ -422,7 +422,7 @@
       <div class="review-box" th:each="post : ${listDto.list}">
         <a th:href="@{/review/one(reviewPostId=${post.reviewPostId})}">
           <div class="review-image">
-            <img class="img" th:if="${post.url}" th:src="@{'http://infra.shucloud.site:8007/review' + ${post.url}}" alt="유기견 썸네일" />
+            <img class="img" th:if="${post.url}" th:src="@{'https://infra.shucloud.site:8007/review' + ${post.url}}" alt="유기견 썸네일" />
           </div>
           <div class="review-text">
             <div class="review-upper">
