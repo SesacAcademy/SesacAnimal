@@ -30,7 +30,7 @@ public class ReviewPostLikeController {
         log.info("past test");
         reviewPostLikeService.checkLikeStatus(member, reviewPostId);
         log.info("test ");
-        return "redirect:/review/one?reviewPostId=" + reviewPostId;
+        return "redirect:review/one?reviewPostId=" + reviewPostId;
     }
 
 }

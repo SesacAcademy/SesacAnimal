@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <!-- user-scalable 을 사용하지 않는 디바이스를 위해, maximun-scale/minimum-scale 설정-->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="작성 예정" />
+    <meta name="keywords" content="1, 2, 3" />
+    <meta name="author" content="SungSoo Park" />
+
+
+    <!-- 일반적인 fabicon 설정 -->
+    <link rel="icon" th:href="@{/img/fabicon.ico}" />
+    <!-- 아이폰용 fabicon 설정 -->
+    <link rel="apple-touch-icon" th:href="@{/img/fabicon.ico}" />
+    <!-- 인터넷 익스플로어용 fabicon 설정 -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/fabicon.ico}" />
+
+    <!-- Normalize 설정 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.css" />
+
+    <!-- 폰트 어썸 설정 -->
+    <script src="https://kit.fontawesome.com/8bfedc8e3a.js" crossorigin="anonymous"></script>
+    <!-- 폰트 설정 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Roboto&display=swap" rel="stylesheet">
+
+    <!-- 글꼴 설정 -->
+    <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet" type="text/css"/>
+
+    <!--아이콘 설정-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <!-- 기본 CSS 및 JS 설정-->
+
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/header/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/adoption/adoption_index.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/adoption/adoption_index.js}"></script>
+
+    <!-- 부트스트랩 설정 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+    <style>
+        body{
+height: 100%;
+
+ }
+   .entire{
+
+  width: 100%;
+   height: 100%;
+   display:flex;
+
+   }
+    .left-side{
+   width: 20%;
+   height:100%;
+   }
+   .center{
+   width: 60%;
+   height:100%;
+   background-color: #FFFFF0;
+   }
+   .top{
+    width: 100%;
+   height:130px;
+   display:flex;
+   }
+   .top-left{
+   height:100%;
+   width: 13%;
+background-image: url('/img/review-image.png');
+      background-size: contain;
+   }
+   .top-center{
+   height:100%;
+   width: 45%;
+   }
+   .top-right{
+   height:100%;
+   width: 355%;
+   font-size: 15px;
+   font-weight: 600;
+   text-align:center;
+   display: flex;
+   justify-content: center; /* 가로 정렬 */
+   align-items: center;
+   }
+   .title-box{
+   width:100%;
+    height:100px;
+     display:flex;
+   }
+   .title-null-box{
+   width:198px;
+    height:100px;
+
+   }
+   .title{
+   width:82.7%;
+       height:100px;
+            border: 2px solid #ECDCC3;
+   border-radius: 10px;
+   font-size: 21px;
+   font-weight: 800;
+       display: flex;
+   align-items: center;
+   background-color: white;
+   }
+   .date{
+    width:100%;
+    height:45px;
+     background: linear-gradient(to top, beige 5%, white 10%);
+         display: flex;
+   align-items: center;
+       justify-content: flex-end;
+   }
+   .date-left-null-box{
+   width:200%;
+    height:45px;
+    background-color: #FFFFF0;
+
+   }
+   .content-date{
+   width:30%;
+    height:45px;
+        border: 2px solid #ECDCC3;
+   border-radius: 10px;
+   font-size: 13px;
+   font-weight: 550;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   }
+   .edit-delete-box{
+        width:100%;
+             height:40px;
+              display:flex;
+   }
+   .left-null-box{
+    width:70%;
+    height:100%;
+    display:flex;
+   }
+   .left-null-box-null{
+     width:198px;
+    height:100%;
+
+   }
+   .post-author{
+     width:250px;
+    height:100%;
+        border: 2px solid #ECDCC3;
+   border-radius: 10px;
+   font-size: 15px;
+   font-weight: 700;
+       display: flex;
+   align-items: center;
+   background-color: white;
+
+   }
+   .edit-box{
+    width:15%;
+    height:100%;
+
+   }
+   .delete-box{
+   width:15%;
+    height:100%;
+
+   }
+   .div-img{
+    width:65%;
+    height: 450px;
+    margin:auto;
+   }
+   .img{
+     height: 450px;
+      width:80%;
+   }
+   .content{
+   width:65%;
+    height: 300px;
+       background-color: #F5F5DC;
+       margin:auto;
+       border-radius: 10px;
+   font-size: 15px;
+   font-weight: 600;
+   background-color: white;
+   }
+   .like-comment-view-box{
+   width:65%;
+    height: 50px;
+    margin:auto;
+    background-color: white;
+    display:flex;
+background-color: white;
+   }
+   .like{
+   height: 100%;
+    width:12%;
+    background-color: white;
+    display:flex;
+   }
+   .comment-count{
+   height: 100%;
+    width:11%;
+   }
+   .view{
+   height: 100%;
+    width:12%;
+   }
+   .comment-input-box{
+   width:65%;
+     height: 70px;
+          margin:auto;
+           display:none;
+   }
+   .comment-input-form{
+   width:100%;
+    display:flex;
+   }
+   .comment-input{
+      width:90%;
+   height: 70px;
+   }
+   .comment-submit-button{
+    width:10%;
+   height: 70px;
+   }
+   .comment-list{
+   width:65%;
+   background-color:lightyellow;
+         margin:auto;
+
+   }
+   .comment-nickname{
+    width:100%;
+   height: 40px;
+   font-size: 15px;
+   font-weight: 600;
+            border: 1px solid #ECDCC3;
+   border-radius: 10px;
+
+
+   }
+   .comment-content-box{
+    width:100%;
+   height: 80px;
+    display:flex;
+    font-size: 13px;
+   font-weight: 600;
+   background-color: beige;
+   }
+   .comment-reply-div{
+    width:100%;
+   height: 70px;
+   }
+   .comment-update-div{
+     width:100%;
+   height: 70px;
+   }
+.comment-content{
+width:87%;
+   height: 100%;
+    background-color:beige;
+  }
+  .comment-reply-edit-delete-box{
+  width:13%;
+   height: 100%;
+    background-color:beige;
+    display:none;
+  }
+.comment-reply-button{
+width:100%;
+       height: 33%;
+    display:flex;
+}
+.comment-update-button{
+width:50%;
+   height: 50%;
+    background-color:blue;
+        display: inline;
+}
+.comment-delete-button{
+width:50%;
+   height: 50%;
+}
+.reply-comment-box{
+
+   width:100%;
+   background-color:beige;
+
+}
+.like-count{
+  vertical-align: middle;
+     font-weight: 550;
+     color:#f86868;
+     height:100%;}
+.child-comment-update-button{
+width:50%;
+   height: 50%;
+        display: inline;
+}
+
+
+
+    </style>
+    <title>새싹 애니멀</title>
+</head>
+<body>
+<th:block th:replace="../fragments/header/header :: header"></th:block>
+<div class="entire">
+    <div class="left-side"></div>
+    <div class="center">
+        <div class="top">
+            <div class="top-left"></div>
+            <div class="top-center"></div>
+            <a th:href="@{/review/filter(type='like')}">
+                <div class="top-right">
+                    하트를 많이 받은 이야기를<br>보러 가는 건 어떠실까요?
+                    <span class="material-symbols-outlined" style="color:#f86868;">
+            heart_check
+        </span>
+                </div>
+            </a>
+        </div>
+        <form action="/review/update" method="post" enctype="multipart/form-data">
+        <div class="title-box">
+            <div class="title-null-box"></div>
+
+            <div class="title">
+                <input type="text" name="title"  style="font-weight: 550; width: 100%; height: 100%;" th:value="${reviewDto.readOneReviewDto.title}"/>
+            </div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="date" >
+            <div class="date-left-null-box"></div>
+            <div class="content-date" th:text="${#temporals.format(reviewDto.readOneReviewDto.updatedAt, 'yyyy-MM-dd HH:mm')}"></div>
+        </div>
+        <div class="edit-delete-box">
+            <div class="left-null-box">
+                <div class="left-null-box-null" ></div>
+                <div class="post-author" th:text="${reviewDto.readOneReviewDto.nickname}"></div>
+            </div>
+            <div class="edit-box"></div>
+
+
+
+
+                <input type="hidden" name="reviewPostId" th:value="${reviewDto.readOneReviewDto.reviewPostId}" />
+                <button type="submit" class="button edit-button" th:if="${member != null && member.id == reviewDto.readOneReviewDto.memberId}"
+                        style=" width: 50px; margin: 2px; height: 30px; border:none; background-color:#FFFFF0; font-weight: 550; color:darkgreen">수정 완료</button>
+
+
+
+
+
+            <div class="delete-box">
+
+            </div>
+        </div>
+        <div class="div-img" th:each="image : ${reviewDto.readOneReviewDto.urls}">
+            <img class="img" th:src="@{'https://infra.shucloud.site:8007/review' + ${image.value}}" />
+            <input  type="checkbox" class="delete-checkbox"  name="reviewImageIds" th:value="${image.key}">이미지 삭제</button>
+
+        </div>
+        <div class="content">
+            <textarea name="content" th:text="${reviewDto.readOneReviewDto.content}" style="font-weight: 550; width: 100%; border: 2px solid #ECDCC3;
+    height: 100%;" > </textarea>
+        </div>
+            <div class="input-group mb-3" style="width: 65%; text-align: center; margin-left: 197px;">
+                <label class="input-group-text" for="inputGroupFile01">Upload</label>
+                <input type="file" class="form-control" id="inputGroupFile01" name="imageList" multiple>
+            </div>
+        </form>
+        <div class="like-comment-view-box">
+            <div class="like">
+
+                <span class="like-count" th:text="${reviewDto.readOneReviewDto.postLikeCount}" style="font-weight: 550">10</span>
+            </div>
+            <div class="comment-count">
+                <span class="material-symbols-outlined" style="color:skyblue;">
+                    mark_unread_chat_alt
+                    </span>
+                <span class="comment-count"  th:text="${commentCount}" style="color:skyblue; font-weight: 550">10</span>
+            </div>
+            <div class="view">
+                <span class="material-symbols-outlined" style="color:#A9A9A9">
+                    preview
+                    </span>
+                <span class="view-count"  th:text="${reviewDto.readOneReviewDto.viewCount}" style="color: #A9A9A9; font-weight: 550;">10</span>
+            </div>
+        </div>
+        <div>
+            <div class="comment-input-box" th:if="${member != null}">
+
+
+
+            </div>
+
+            <div class="comment-input-box" th:if="${member == null}">
+                <textarea placeholder="로그인을 해야 댓글 작성이 가능해요." class="comment-input" name="contents"></textarea>
+                <button type="submit" class="comment-submit-button">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+            </div>
+            <div class="comment-list" th:each="comment : ${reviewDto.reviewCommentResponseDto}">
+                <div class="comment-nickname" th:text="${comment.nickname}"></div>
+                <div class="comment-content-box">
+                    <div class="comment-content" th:text="${comment.content}"></div>
+                    <div class="comment-reply-edit-delete-box">
+                        <div class="comment-reply-button" style="display:block;">
+                            <button  id="replyButton" th:if="${member != null}" style="border:none; width:100%; height:100%; background-color: papayawhip; font-size: 12px; font-weight: 550;" >대댓글 작성</button>
+                        </div>
+                        <div class="comment-update-button">
+                            <button th:if="${member != null && member.id == comment.memberId}" style="border:none; width:100%; background-color: papayawhip; font-size: 12px; font-weight: 550;">댓글 수정</button>
+                        </div>
+                        <div class="comment-delete-button">
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="comment-reply-div" style="display: none;">
+
+                </div>
+                <div class="comment-update-div"  id="updateButton_${comment.id}" style="display:none;">
+
+                </div>
+                <div class="reply-comment-box" th:each="reply : ${comment.children}" th:if="${!#lists.isEmpty(comment.children)}" >
+                    <div class="comment-nickname" th:text="${reply.nickname}" style="background-color:seashell" ></div>
+                    <div class="comment-content-box" >
+                        <div class="comment-content" th:text="${reply.content}" style="background-color: lavenderblush"></div>
+                        <div class="comment-reply-edit-delete-box" style="background-color: lavenderblush">
+
+                            <div class="child-comment-update-button" th:if="${member != null && member.id == comment.memberId}" >
+                                <button  style="border:none; width:100%; background-color: papayawhip; font-size: 12px; font-weight: 550;">댓글 수정</button>
+                            </div>
+                            <div class="comment-delete-button" >
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-update-div" style="display: none;" >
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+    </div>
+</div>
+<th:block th:replace="../fragments/footer/footer :: footer"></th:block>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const replyEditButton = document.getElementsByClassName('comment-update-button');
+        for(let button of replyEditButton){
+         button.addEventListener('click', function() {
+         const textarea = button.parentElement.parentElement.parentElement.querySelector('.comment-update-div');
+
+        textarea.style.display = 'flex';
+
+        const updateButton = button.parentElement.querySelector('.comment-update-button');
+        updateButton.style.display = 'none';
+         const deleteButton = button.parentElement.querySelector('.comment-delete-button')
+        deleteButton.style.display = 'none';
+         const replyButton = button.parentElement.querySelector('.comment-reply-button')
+        replyButton.style.display = 'none';
+         });
+        }
+        const replyButton = document.getElementsByClassName('comment-reply-button');
+        for(let button of replyButton){
+             button.addEventListener('click', function() {
+               const contentBox = button.parentElement.parentElement.parentElement;
+            const replyArea = contentBox.querySelector('.comment-reply-div');
+            console.log(replyArea);
+            replyArea.style.display = 'flex';
+
+            const reButton = button.parentElement.querySelector('.comment-reply-button');
+            reButton.style.display = 'none';
+                  const upButton = button.parentElement.querySelector('.comment-update-button');
+            upButton.style.display = 'none';
+              const deButton = button.parentElement.querySelector('.comment-delete-button');
+            deButton.style.display = 'none';
+
+             });
+        }
+        const replyEditChild = document.getElementsByClassName('child-comment-update-button');
+        for(let button of replyEditChild){
+        button.addEventListener('click', function() {
+        const childCommentInput = button.parentElement.parentElement.parentElement;
+        console.log(childCommentInput)
+        const childReplyArea = childCommentInput.querySelector('.comment-update-div');
+        console.log(childReplyArea)
+        childReplyArea.style.display = 'flex';
+
+        });
+        }
+
+
+    });
+
+</script>
+
+</body>
+</html>

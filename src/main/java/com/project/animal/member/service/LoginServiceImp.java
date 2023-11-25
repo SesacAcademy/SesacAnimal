@@ -29,7 +29,7 @@ import java.util.Optional;
 
 import static com.project.animal.global.common.constant.AuthType.KAKAO;
 import static com.project.animal.global.common.constant.AuthType.MAIL;
-import static com.project.animal.global.common.constant.EndPoint.*;
+
 import static com.project.animal.global.common.constant.TokenTypeValue.JWT_ACCESS_TOKEN;
 import static com.project.animal.global.common.constant.TokenTypeValue.JWT_REFRESH_TOKEN;
 
