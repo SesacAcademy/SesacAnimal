@@ -29,7 +29,6 @@ import java.util.Optional;
 
 import static com.project.animal.global.common.constant.AuthType.KAKAO;
 import static com.project.animal.global.common.constant.AuthType.MAIL;
-
 import static com.project.animal.global.common.constant.TokenTypeValue.JWT_ACCESS_TOKEN;
 import static com.project.animal.global.common.constant.TokenTypeValue.JWT_REFRESH_TOKEN;
 
@@ -55,7 +54,7 @@ public class LoginServiceImp implements LoginService {
      * 사용자가 존재하면 JWT 토큰을 생성하여 리턴한다.
      *
      * 만약, DB에 해당 사용자가 없다면 LoginException 예외가 발생한다.
-     * 
+     *
      * @version 0.1
      * @author 박성수
      * @param loginFormDto 로그인 폼 DTO
@@ -134,7 +133,7 @@ public class LoginServiceImp implements LoginService {
 
         // Get 전송
         ResponseEntity<String> kakaoUserInfo = restTemplate.exchange("https://kapi.kakao.com/v2/user/me",
-                                                HttpMethod.GET, new HttpEntity<>(headers), String.class);
+                HttpMethod.GET, new HttpEntity<>(headers), String.class);
 
         // 사용자 정보 조회 (소셜 로그인은 사업자 등록이 되어 있지 않아 따로 DTO를 만들지 않고 직접 파싱하였습니다)
         List<String> userData = Arrays.stream(kakaoUserInfo.getBody().split(","))
