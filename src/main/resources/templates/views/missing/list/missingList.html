@@ -51,6 +51,7 @@
     <title>새싹 애니멀</title>
     <script th:inline="javascript" defer>
         const list = /*[[${list}]]*/ [];
+        const _filters = /*[[${filters}]]*/ {};
         const __count = /*[[${count}]]*/ 0;
         const params = new URLSearchParams(window.location.search);
 
@@ -65,7 +66,7 @@
         const _fromDate = params.get('fromDate');
         const _endDate = params.get('endDate');
 
-
+        console.log(_filters);
 
     </script>
     <script th:inline="javascript" defer>
@@ -103,7 +104,7 @@
                 </div>
             </div>
             <div>
-                <th:block th:replace="./missing/list/missingListFilter :: filter(${endPoints.list})" />
+                <th:block th:replace="./missing/list/missingListFilter :: filter(${filters}, ${endPoints.list})" />
             </div>
         </div>
 
