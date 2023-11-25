@@ -46,6 +46,7 @@ public class MissingController {
           @PageableDefault(size = 10)
           Pageable pageable,
           Model model) {
+
     Pageable adjustedPageable = PageRequest.of(
             pageable.getPageNumber() != 0 ? pageable.getPageNumber() - 1 : 0,
             pageable.getPageSize(),

@@ -59,7 +59,6 @@ public class MissingPostServiceImpl implements MissingPostService {
   }
 
   public ListResponseDto<MissingListEntryDto> getPostList(MissingFilterDto filter, Pageable pageable) {
-    log.info("test:>> " + pageable.getPageNumber());
     Page<MissingPost> pages = missingPostRepository.findByFilter(filter, pageable);
 
     List<MissingListEntryDto> posts = pages.stream()

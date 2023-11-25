@@ -29,13 +29,12 @@ const drawIndicator = (pages, currentPage) => {
 };
 
 function handleDomContentLoaded(page = 1) {
-  const targetGroup = pageNumbers.find((numbers) => numbers.includes(page));
+  const targetGroup = pageNumbers.find((numbers) => numbers.includes(page)) ?? [1];
   drawIndicator(targetGroup, page);
 }
 
 // 실행
      document.addEventListener("DOMContentLoaded", (event) => {
-          console.log(getAllPageNumber(maxPageCount))
           handleDomContentLoaded(page);
         });
 

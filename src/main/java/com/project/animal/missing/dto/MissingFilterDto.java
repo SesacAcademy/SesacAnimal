@@ -1,13 +1,14 @@
 package com.project.animal.missing.dto;
 
 import com.project.animal.global.common.utils.CustomDateParser;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Data
 @ToString
 @NoArgsConstructor
 public class MissingFilterDto {
@@ -23,14 +24,12 @@ public class MissingFilterDto {
   private LocalDateTime endDate;
 
   private String search;
-
-  public MissingFilterDto(String animalType, String specifics, String color, String fromDate, String endDate, String search) {
-    this.animalType = animalType;
-    this.specifics = specifics;
-    this.color = color;
+  
+  public void setFromDate(String fromDate) {
     this.fromDate = CustomDateParser.formatDate(fromDate);
-    this.endDate = CustomDateParser.formatDate(endDate);
-    this.search = search;
   }
 
+  public void setEndDate(String endDate) {
+    this.endDate = CustomDateParser.formatDate(endDate);
+  }
 }
