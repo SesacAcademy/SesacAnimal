@@ -47,23 +47,31 @@ public class AdoptionController {
     @GetMapping("/v1/adoption")
     public String adoptionMainGet(@RequestParam(required = false) Integer pageNumber,
                                   @RequestParam(required = false) String breed,
+                                  @RequestParam(required = false) String center,
+                                  @RequestParam(required = false) String local,
                                   Model model,
-                                  @Member MemberDto memberDto){
+                                  @Member MemberDto memberDto
+                                  ){
 
+//        System.out.println("adoptionIndexSearchDto:>>"+adoptionIndexSearchDto.getCenter());
+//        System.out.println("adoptionIndexSearchDto:>>"+adoptionIndexSearchDto.getLocal());
         int pageSize = 10; // 한 페이지에 보여줄 데이터 개수
 
         if (pageNumber == null || pageNumber == 0) {
             pageNumber = 1; // 페이지 번호가 없거나 1보다 작으면 기본값으로 1 설정
         }
 
-        // index페이지에서 넘어오는 강아지, 고양이 리스트 불러오기
+
         Page<Adoption> list = null;
         if(breed != null){
+            // index페이지에서 넘어오는 강아지, 고양이 리스트 불러오기
             if(breed.equals("개") || breed.equals("고양이")){
                 list = adoptionService.findPatsByBreed(breed, pageNumber, pageSize);
             }
+        }else if(center != null && local !=null){
+            // index페이지에서 넘어오는 center, local 리스트 불러오기
+            list = adoptionService.findCenterAndLocal(center,local,pageNumber,pageSize);
         }else{
-            // 고양이 , 강아지 종으로 넘어오는 경우가 아닌 모든 경우
             //전체 리스트
             list = adoptionService.getAdoptionPageWithImagesAndMemberPages(pageNumber,pageSize); // 전체 리스트
         }
@@ -277,7 +285,7 @@ public class AdoptionController {
     }
 
     // 댓글 / 대댓글 삭제
-    @CrossOrigin(origins = {"http://localhost:8080", "http://infra.shucloud.site"})
+    @CrossOrigin(origins = {"http://localhost:8080", "https://infra.shucloud.site", "toyproject.shucloud.site", "https://toyproject.shucloud.site"})
     @DeleteMapping("/v1/adoption/{id}")
     @ResponseBody
     public ResponseEntity<String> adoptionCommentDelete(@RequestBody Map<String, String> requestBody, @PathVariable(name="id") Long postId){
