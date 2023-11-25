@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import com.project.animal.missing.domain.QMissingPost;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,12 +33,7 @@ public class CustomMissingPostRepositoryImpl implements CustomMissingPostReposit
     List<MissingPost> results = queryFactory
             .selectFrom(qMissing)
             .innerJoin(qMissing.images, qImage).fetchJoin()
-            .where(
-                    eqAnimalType(filter.getAnimalType()),
-                    containKeyword(filter.getSearch()),
-                    goeFromDate(filter.getFromDate()),
-                    loeEndDate(filter.getEndDate()),
-                    eqIsActive(isActive))
+            .where(getFilterExpressions(filter))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .orderBy(qMissing.updatedAt.desc())
@@ -45,16 +41,24 @@ public class CustomMissingPostRepositoryImpl implements CustomMissingPostReposit
 
     long total = queryFactory
             .select(qMissing.missingId.count())
-            .where(
-                    eqAnimalType(filter.getAnimalType()),
-                    containKeyword(filter.getSearch()),
-                    goeFromDate(filter.getFromDate()),
-                    loeEndDate(filter.getEndDate()),
-                    eqIsActive(isActive))
+            .where(getFilterExpressions(filter))
             .from(qMissing)
             .fetchOne();
 
     return new PageImpl<>(results, pageable, total);
+  }
+
+  private BooleanExpression[] getFilterExpressions(MissingFilterDto filter) {
+
+    return new BooleanExpression[] {
+            eqAnimalType(filter.getAnimalType()),
+            eqSpecifics(filter.getSpecifics()),
+            containKeyword(filter.getSearch()),
+            eqColor(filter.getColor()),
+            goeFromDate(filter.getFromDate()),
+            loeEndDate(filter.getEndDate()),
+            eqIsActive(isActive)
+    };
   }
 
   private BooleanExpression eqAnimalType(String animalType) {
@@ -87,6 +91,22 @@ public class CustomMissingPostRepositoryImpl implements CustomMissingPostReposit
 
   private BooleanExpression eqIsActive(int status) {
     return qMissing.isActive.eq(status);
+  }
+
+  private BooleanExpression eqSpecifics(String specifics) {
+    if (StringUtils.isNullOrEmpty(specifics)) {
+      return null;
+    }
+
+    return qMissing.specifics.eq(specifics);
+  }
+
+  private BooleanExpression eqColor(String color) {
+    if (StringUtils.isNullOrEmpty(color)) {
+      return null;
+    }
+
+    return qMissing.color.eq(color);
   }
 
 }

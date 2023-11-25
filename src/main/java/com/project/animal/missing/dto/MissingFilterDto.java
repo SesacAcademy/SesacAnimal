@@ -18,9 +18,7 @@ public class MissingFilterDto {
   private String specifics;
 
   private String color;
-
   private LocalDateTime fromDate;
-
   private LocalDateTime endDate;
 
   private String search;
