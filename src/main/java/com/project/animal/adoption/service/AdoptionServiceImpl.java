@@ -140,24 +140,6 @@ public class AdoptionServiceImpl implements AdoptionService {
     }
 
 
-    public List<Adoption> findAll() {
-       return adoptionRepository.findAll();
-    }
-
-    public int getCount(List<Adoption> list){
-        return list.size();
-    }
-
-//    public List<Adoption> getDogList() {
-//        // Adoption 엔터티에서 breed 값이 "[개]"를 포함하는 데이터 검색
-//        return adoptionRepository.findByBreedContaining("[개]");
-//    }
-//
-//    public List<Adoption> getCatList() {
-//        // Adoption 엔터티에서 breed 값이 "[고양이]"를 포함하는 데이터 검색
-//        return adoptionRepository.findByBreedContaining("[고양이]");
-//    }
-
     public Page<Adoption> findPatsByBreed(String breed, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber -1, pageSize);
         return adoptionRepository.findByBreedContaining(breed, pageable);
@@ -189,7 +171,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 
     @Transactional
     public int likeAdoption(Long postId, MemberDto memberDto) {
-        Map<String,Object> responseBody = new HashMap<>();
+
         // 좋아요 로직 수행
         Adoption adoption = adoptionRepository.findById(postId).orElse(null);
         if (adoption != null) {
@@ -208,11 +190,7 @@ public class AdoptionServiceImpl implements AdoptionService {
                 adoptionPostLikeRepository.save(postLike);
             }
         }
-        // 업데이트된 상태 반환
-//        responseBody.put("status", getPostLikeByAdoptionId(postId).getStatus());
 
-//        responseBody.put("likeCount", );
-        // 업데이트된 좋아요 수 반환
         return adoption.getAdoptionPostLikes().size();
     }
 
@@ -228,21 +206,12 @@ public class AdoptionServiceImpl implements AdoptionService {
         return false;
     }
 
-    public Adoption findByIdWithImage(Long id){
-      return adoptionRepository.findByIdWithImage(id);
-    }
+
 
     public Adoption findByIdWidhImageAndMember(Long id){
         return adoptionRepository.findByIdWithImageAndMember(id);
     }
 
 
-    public List<Adoption> findAllWithImages() {
-        return adoptionRepository.findAllWithImages();
-    }
 
-    public List<Adoption> findAllWithImagesAndMember() {
-        return adoptionRepository.findAllWithImagesAndMember();
-
-    }
 }
