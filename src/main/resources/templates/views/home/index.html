@@ -182,7 +182,7 @@
             <div class="review-title">여러분의 따뜻한 후기를 남겨주세요</div>
             <div class="review-post" th:each="reviewPost : ${listDto}">
                 <div class="review-image" >
-                    <img class="img" th:if="${reviewPost.url}" th:src="@{'http://infra.shucloud.site:8007/review' + ${reviewPost.url}}">
+                    <img class="img" th:if="${reviewPost.url}" th:src="@{'https://infra.shucloud.site:8007/review' + ${reviewPost.url}}">
                     <img class="img" th:unless="${reviewPost.url}" th:src="@{/img/sesac-animal-logo.png}">
                 </div>
                 <div class="review-text">
