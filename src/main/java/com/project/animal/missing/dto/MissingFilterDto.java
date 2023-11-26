@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 public class MissingFilterDto {
-  private static final String DEFAULT_TIME = "T00:00:00";
   private String animalType;
 
   private String specifics;

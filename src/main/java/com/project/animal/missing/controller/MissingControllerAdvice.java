@@ -103,4 +103,10 @@ public class MissingControllerAdvice {
 
     return "redirect:" + "/v1/missing/detail/" + ex.getTargetId();
   }
+
+  @ExceptionHandler(RuntimeException.class)
+  public String handleRuntimeException(RuntimeException ex) {
+
+    return "/error/500";
+  }
 }

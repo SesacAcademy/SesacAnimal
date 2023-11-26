@@ -9,6 +9,7 @@ public class MissingPostImageDto {
 
   private String path;
 
+  public MissingPostImageDto() {}
   public MissingPostImageDto(long imageId, String path) {
     this.imageId = imageId;
     this.path = PREFIX + path;

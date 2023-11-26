@@ -3,6 +3,7 @@ package com.project.animal.missing.dto;
 import com.project.animal.missing.domain.MissingPost;
 import com.project.animal.missing.dto.image.MissingPostImageDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
@@ -41,6 +42,8 @@ public class MissingListEntryDto {
   private List<MissingPostImageDto> images;
 
   private int likeCount;
+
+  public MissingListEntryDto() {}
 
   private MissingListEntryDto(long id, String title, long memberId, String author, String animalType, String specifics, String color, int viewCount, String missingPlace, LocalDateTime missingTime, int reward, int missingStatus, LocalDateTime updatedAt) {
     this.id = id;
