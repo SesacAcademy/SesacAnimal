@@ -11,12 +11,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @SpringBootTest
 class ApplicationTests {
-	@Mock
-//	TestController controller;
-	@InjectMocks
-//	TestService service;
-
-	MockMvc mockMvc;
 
 	@BeforeEach
 	void setUp() throws Exception {
