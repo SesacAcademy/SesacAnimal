@@ -147,6 +147,9 @@
   [[서비스_테스트]](https://github.com/SesacAcademy/SesacAnimal/blob/2d9c2dc57077e5e9d376245170cc2e9a9d96d619/src/test/java/com/project/animal/missing/controller/MissingControllerTest.java#L54C3-L139C4)
   <br /> -> Junit5를 사용하여 테스트 작성
 
+- 메소드의 실행 속도 측정을 위한 AOP 작성 📌 [[프로파일_AOP]](https://github.com/SesacAcademy/SesacAnimal/blob/2d9c2dc57077e5e9d376245170cc2e9a9d96d619/src/main/java/com/project/animal/global/common/aop/ProfileAspect.java#L1C1-L33C2)
+  <br /> -> 클래스 레벨과 메소드 레벨에 모두 적용가능
+
 #### 🐈 입양/임보 (이경진)
 
 #### ✏️ 입양 후기 (손승범)
@@ -416,7 +419,7 @@ backend app
 			옵션
 		</td>
 		<td>
-   			좋아요 숫자를 반정규화 vs 별도의 장소에 캐싱
+   			좋아요 테이블을 반정규화 vs 미리 집계한 count를 별도의 장소에 캐싱
     		</td>
 	</tr>
  	<tr>
@@ -432,7 +435,7 @@ backend app
 			근거
 		</td>
 		<td>
-      			1. 프로젝트에서 이미 Redis를 사용 중이기 때문에, 인프라 비용이 발생하지 않음. <br/> 2. 테이블 구조를 변경하는 것은 서비스 전반에 영향을 미치기 때문에 개발 후반부에 작업하기에 부적절하다고 판단.
+      			1. 프로젝트에서 이미 Redis를 사용 중이기 때문에, 즉시 사용가능한 상황 <br/> 2. 테이블 구조를 변경하는 것은 서비스 전반에 영향을 미치기 때문에 개발 후반부에 작업하기에 부적절하다고 판단
     		</td>
       </tr>
 </table>
@@ -578,6 +581,9 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 
 <details>
 <summary>류명한</summary>
+<hr/>
+
+- 📌 [[코드 확인]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/missing/repository/CustomMissingPostRepositoryImpl.java)
 
 <table>
   	<tr>
@@ -585,7 +591,7 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
       			Before
     		</td>
 		<td>
-      			작성 예정
+      			BooleanBuilder와 반복되는 if문을 사용하여 필터를 위한 동적 쿼리 생성
     		</td>
   	</tr>
 	<tr>
@@ -593,10 +599,114 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 			After
 		</td>
 		<td>
-   			작성 예정
+   			BooleanExpression을 사용하여 조건문을 제거하고 쿼리를 보다 직관적으로 변경
     		</td>
 	</tr>
 </table>
+
+<pre>
+<code>
+ [Before]
+ @Override
+  public Page<MissingPost> findByFilter(MissingFilterDto filter, Pageable pageable) {
+    QMissingPost qMissing = QMissingPost.missingPost;
+    QMissingPostImage qImage = QMissingPostImage.missingPostImage;
+
+    BooleanBuilder builder = new BooleanBuilder();
+
+    builder.and(qMissing.isActive.eq(isActive));
+
+    if (filter.getAnimalType() != null) {
+      builder.and(qMissing.animalType.equalsIgnoreCase(filter.getAnimalType()));
+    }
+
+    if (filter.getFromDate() != null) {
+      builder.and(qMissing.missingTime.goe(filter.getFromDate()));
+    }
+
+    if (filter.getEndDate() != null) {
+      builder.and(qMissing.missingTime.loe(filter.getEndDate()));
+    }
+
+    if (filter.getSearch() != null && !filter.getSearch().isBlank() && !filter.getSearch().isEmpty()) {
+      builder.and(qMissing.title.containsIgnoreCase(filter.getSearch()));
+    }
+
+    List<MissingPost> results = queryFactory
+            .selectFrom(qMissing).distinct()
+            .where(builder)
+            .innerJoin(qMissing.images, qImage)
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .orderBy()
+            .fetch();
+
+    long total = queryFactory
+            .select(qMissing.missingId.count())
+            .where(qMissing.isActive.eq(isActive))
+            .from(qMissing)
+            .fetchOne();
+
+    return new PageImpl<>(results, pageable, total);
+  }
+</code>
+</pre>
+
+<pre>
+<code>
+ [After]
+ @Override
+  public Page<MissingPost> findByFilter(MissingFilterDto filter, Pageable pageable) {
+
+    List<MissingPost> results = queryFactory
+            .selectFrom(qMissing)
+            .innerJoin(qMissing.images, qImage).fetchJoin()
+            .where(getFilterExpressions(filter))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .orderBy(qMissing.updatedAt.desc())
+            .fetch();
+
+    long total = queryFactory
+            .select(qMissing.missingId.count())
+            .where(getFilterExpressions(filter))
+            .from(qMissing)
+            .fetchOne();
+
+    return new PageImpl<>(results, pageable, total);
+  }
+
+  private BooleanExpression[] getFilterExpressions(MissingFilterDto filter) {
+
+    return new BooleanExpression[] {
+            eqAnimalType(filter.getAnimalType()),
+            eqSpecifics(filter.getSpecifics()),
+            containKeyword(filter.getSearch()),
+            eqColor(filter.getColor()),
+            goeFromDate(filter.getFromDate()),
+            loeEndDate(filter.getEndDate()),
+            eqIsActive(isActive)
+    };
+  }
+
+  private BooleanExpression eqAnimalType(String animalType) {
+    if (StringUtils.isNullOrEmpty(animalType)) {
+      return null;
+    }
+    return qMissing.animalType.equalsIgnoreCase(animalType);
+  }
+
+  private BooleanExpression containKeyword(String keyword) {
+    if (StringUtils.isNullOrEmpty(keyword)) {
+      return null;
+    }
+    return qMissing.title.containsIgnoreCase(keyword);
+  }
+	...
+</code>
+</pre>
+
+<hr/>
 </details>
 
 <details>
