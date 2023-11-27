@@ -3,10 +3,14 @@ package com.project.animal.missing.service.converter;
 import com.project.animal.member.domain.Member;
 import com.project.animal.missing.domain.MissingPost;
 import com.project.animal.missing.dto.MissingEditDto;
+import com.project.animal.missing.dto.MissingListEntryDto;
 import com.project.animal.missing.dto.MissingNewDto;
+import com.project.animal.missing.dto.image.MissingPostImageDto;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class DtoEntityConverter {
@@ -43,5 +47,16 @@ public class DtoEntityConverter {
 
     return new MissingPost(missingId, member, title, animalType, specifics, color, viewCount,
             missingPlace, missingTime, description, reward, missingStatus, isActive);
+  }
+
+  public MissingListEntryDto toMissingListEntryDto(MissingPost entity) {
+    MissingListEntryDto entry = MissingListEntryDto.fromMissingPost(entity);
+    List<MissingPostImageDto> images = entity.getImages().stream()
+            .map(image -> new MissingPostImageDto(image.getImageId(), image.getPath()))
+            .collect(Collectors.toList());
+    entry.addImages(images);
+
+
+    return entry;
   }
 }
