@@ -107,7 +107,8 @@
 
 ## 🔨 시스템 아키텍처
 
-![image](https://github.com/SesacAcademy/SesacAnimal/assets/55624470/36358f15-f923-468b-8119-3a5ba593f4ae)
+![image](https://github.com/SesacAcademy/SesacAnimal/assets/55624470/1ffa4dcf-22c2-4451-a8e0-f7458b4f53b1)
+
 
 
 <br/>
@@ -531,6 +532,42 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 <br/>
 
 ## 📋 프로젝트를 진행하며 느낀 점
+
+<details>
+<summary>박성수</summary>
+
+- 작성 예정
+
+- 작성 예정
+
+</details>
+
+<details>
+<summary>류명한</summary>
+
+- 작성 예정
+
+- 작성 예정
+
+</details>
+
+<details>
+<summary>이경진</summary>
+
+- 작성 예정
+
+- 작성 예정
+
+</details>
+
+<details>
+<summary>손승범</summary>
+
+- 작성 예정
+
+- 작성 예정
+
+</details>
 
 
 
