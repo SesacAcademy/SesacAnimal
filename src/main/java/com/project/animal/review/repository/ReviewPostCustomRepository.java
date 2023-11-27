@@ -8,6 +8,7 @@ import com.project.animal.review.domain.ReviewPost;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,6 +19,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository
+@Log4j2
 public class ReviewPostCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
     @Autowired
@@ -58,8 +60,6 @@ public class ReviewPostCustomRepository {
 
         long total = jpaQueryFactory
                 .selectFrom(reviewPost)
-                .leftJoin(reviewPost.member, member)
-                .leftJoin(reviewPost.reviewImages, reviewImage)
                 .where(builder)
                 .fetchCount();
 
@@ -68,7 +68,6 @@ public class ReviewPostCustomRepository {
     public Page<ReviewPost> findAllByType(String type, Pageable pageable) {
         QReviewPost reviewPost = QReviewPost.reviewPost;
         QMember member = QMember.member;
-        QReviewImage reviewImage = QReviewImage.reviewImage;
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(reviewPost.isActive.eq(1));
@@ -92,8 +91,6 @@ public class ReviewPostCustomRepository {
 
         long total = jpaQueryFactory
                 .selectFrom(reviewPost)
-                .leftJoin(reviewPost.member, member)
-                .leftJoin(reviewPost.reviewImages, reviewImage)
                 .where(builder)
                 .fetchCount();
 
@@ -102,8 +99,6 @@ public class ReviewPostCustomRepository {
 
     public List<ReviewPost> findPostByLike() {
         QReviewPost reviewPost = QReviewPost.reviewPost;
-        QMember member = QMember.member;
-
         return jpaQueryFactory
                 .selectFrom(reviewPost)
                 .groupBy(reviewPost.id)

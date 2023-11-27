@@ -1,14 +1,12 @@
 package com.project.animal.review.controller;
 
 import com.project.animal.global.common.annotation.Member;
-import com.project.animal.global.common.dto.ImageListDto;
 import com.project.animal.global.common.dto.MemberDto;
 
 import com.project.animal.review.constant.ViewName;
 import com.project.animal.review.domain.ReviewPost;
 import com.project.animal.review.dto.*;
 
-import com.project.animal.review.dummy.CreateMemberWithoutSecurity;
 import com.project.animal.review.service.ReviewCommentService;
 import com.project.animal.review.service.ReviewImageService;
 import com.project.animal.review.service.ReviewService;
@@ -24,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/review")
@@ -66,7 +63,7 @@ public class ReviewController {
     @GetMapping()
     public String readByCreatedAt(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                   Model model){
-        ReadListGeneric viewDto = reviewService.readAll(page, size);
+        readList viewDto = reviewService.readAll(page, size);
         model.addAttribute("listDto", viewDto);
         return ViewName.REVIEW_LIST;
     }
@@ -87,18 +84,19 @@ public class ReviewController {
                                @RequestParam(name = "page", defaultValue = "0") Integer page,
                                Model model) {
 
-        ReadListGeneric<ReadListGeneric> viewDto = reviewService.readByKeyword(type, page, size, keyword);
+        readList viewDto = reviewService.readByKeyword(type, page, size, keyword);
         model.addAttribute("listDto", viewDto);
         model.addAttribute("type", type);         // 검색 유형 추가
         model.addAttribute("keyword", keyword);
         return ViewName.REVIEW_LIST_BY_SEARCH;
     }
+
     @GetMapping("/filter")
     public String readByFilter(@RequestParam(name = "type") String type,
                                @RequestParam(name = "page", defaultValue = "0") Integer page,
                                Model model) {
 
-        ReadListGeneric<ReadListGeneric> viewDto = reviewService.readByFilter(type, page, size);
+        readList viewDto = reviewService.readByFilter(type, page, size);
         model.addAttribute("listDto", viewDto);
         model.addAttribute("type", type);
         return ViewName.REVIEW_LIST_BY_FILTER;

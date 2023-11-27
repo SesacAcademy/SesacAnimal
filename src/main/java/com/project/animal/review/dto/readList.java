@@ -13,10 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Data
-public class ReadListGeneric<T> {
+@Log4j2
+public class readList {
     private List<ReviewPostAllDto> list;
     private int totalPages;
     private int currentPage;
-    private int maxPage = 10;
-
+    private final int maxPage = 10;
 }
