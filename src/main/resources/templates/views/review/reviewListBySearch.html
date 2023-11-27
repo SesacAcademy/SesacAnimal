@@ -403,6 +403,7 @@
                     </div>
                     <div class="view-box">
                         <select class="sort-select" onchange="location = this.value;">
+                            <option>정렬 선택</option>
                             <option th:value="@{/review}">최신순</option>
                             <option th:value="@{/review/filter(type='like')}">좋아요순</option>
                             <option th:value="@{/review/filter(type='view')}">조회순</option>

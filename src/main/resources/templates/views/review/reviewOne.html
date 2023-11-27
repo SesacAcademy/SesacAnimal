@@ -455,14 +455,14 @@ width:50%;
                     <div class="comment-content" th:text="${reply.content}" style="background-color: lavenderblush"></div>
                     <div class="comment-reply-edit-delete-box" style="background-color: lavenderblush">
 
-                        <div class="child-comment-update-button" th:if="${member != null && member.id == comment.memberId}" >
+                        <div class="child-comment-update-button" th:if="${member != null && member.id == reply.memberId}" >
                             <button  style="border:none; width:100%; background-color: papayawhip; font-size: 12px; font-weight: 550;">댓글 수정</button>
                         </div>
                         <div class="comment-delete-button" >
                             <form th:action="@{/review/comment/delete}" method="post" style="display: block;">
                                 <input type="hidden" th:value="${reply.reviewCommentId}" name="reviewCommentId" />
                                 <input type="hidden" th:value="${reviewDto.readOneReviewDto.reviewPostId}" name="reviewPostId" />
-                                <button type="submit" th:if="${member != null && member.id == comment.memberId}" style="width:200%; border:none; background-color: papayawhip; font-size: 12px;  font-weight: 550;">댓글 삭제</button>
+                                <button type="submit" th:if="${member != null && member.id == reply.memberId}" style="width:200%; border:none; background-color: papayawhip; font-size: 12px;  font-weight: 550;">댓글 삭제</button>
                             </form>
                         </div>
                     </div>

@@ -9,8 +9,6 @@ import com.project.animal.review.exception.NotFoundException;
 import com.project.animal.review.exception.ReviewDtoNullException;
 import com.project.animal.review.repository.ReviewPostCustomRepository;
 import com.project.animal.review.repository.ReviewRepository;
-import io.minio.MinioClient;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -48,20 +46,20 @@ public class ReviewService {
         return PageRequest.of(page, size, sort);
     }
     @Transactional(readOnly = true)
-    public ReadListGeneric readAll(int page, int size) {
+    public readList readAll(int page, int size) {
         Pageable pageable = createPageByCreatedAt(page,size);
         Page<ReviewPost> postList = reviewRepository.findAll(pageable);
 
         return entityToDtoByReadAll(postList);
     }
-    private ReadListGeneric entityToDtoByReadAll(Page<ReviewPost> entity) {
+    private readList entityToDtoByReadAll(Page<ReviewPost> entity) {
         int totalPages =  entity.getTotalPages();
         int currentPage = entity.getNumber();
         List<ReviewPostAllDto> dtoList = entity.getContent()
                 .stream()
                 .map(reviewPost -> new ReviewPostAllDto(reviewPost))
                 .collect(Collectors.toList());
-        return ReadListGeneric.builder()
+        return readList.builder()
                 .list(dtoList)
                 .totalPages(totalPages)
                 .currentPage(currentPage)
@@ -97,7 +95,7 @@ public class ReviewService {
 //        return entityToDtoByReadAll(postList);
 //    }
     @Transactional(readOnly = true)
-    public ReadListGeneric readByKeyword(String type, Integer page, int size, String keyword) {
+    public readList readByKeyword(String type, Integer page, int size, String keyword) {
         Pageable pageable = createPageByCreatedAt(page,size);
         Page<ReviewPost> postList = reviewPostCustomRepository.findAllWithMemberAndImageByTypeAndKeyword(type, keyword,pageable);
         return entityToDtoByReadAll(postList);
@@ -170,8 +168,9 @@ public class ReviewService {
         return optionalMember.orElseThrow(()->new NotFoundException("해당 게시글의 유효 id가 유효하지 않습니다. 유효하지 않은 memberId: "+ memberDtoId));
     }
 
-    public ReadListGeneric<ReadListGeneric> readByFilter(String type, Integer page, int size) {
-        Pageable pageable = createPageByCreatedAt(page,size);
+    public readList readByFilter(String type, Integer page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
         Page<ReviewPost> postList = reviewPostCustomRepository.findAllByType(type, pageable);
         return entityToDtoByReadAll(postList);
     }
