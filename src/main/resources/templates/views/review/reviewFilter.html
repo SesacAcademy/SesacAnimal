@@ -462,14 +462,14 @@ mark_unread_chat_alt
     <div class="page">
       <ul class="page-ul" th:if="${listDto.totalPages > 1}">
         <li class="page-li" th:if="${listDto.currentPage / 10 * 10 - 1 >= 0}">
-          <a th:href="@{/review(page=${listDto.currentPage / 10 * 10 - 10})}">이전</a>
+          <a th:href="@{/review/filter(page=${listDto.currentPage / 10 * 10 - 10}, type=${type})}">이전</a>
         </li>
         <li class="page-li" th:each="num : ${#numbers.sequence(listDto.currentPage / 10 * 10 + 1, (listDto.currentPage / 10 + 1) * 10)}"
             th:if="${num <= listDto.totalPages}" style="margin: 0 10px;">
-          <a th:href="@{/review(page=${num-1})}" th:text="${num}" th:class="${num == listDto.currentPage+1 ? 'active' : ''}"></a>
+          <a th:href="@{/review/filter(page=${num-1}, type=${type})}" th:text="${num}" th:class="${num == listDto.currentPage+1 ? 'active' : ''}"></a>
         </li>
         <li class="page-li" th:if="${(listDto.currentPage / 10 + 1) * 10 + 1 <= listDto.totalPages}">
-          <a th:href="@{/review(page=${(listDto.currentPage / 10 + 1) * 10})}">더보기</a>
+          <a th:href="@{/review/filter(page=${(listDto.currentPage / 10 + 1) * 10}, type=${type})}">더보기</a>
         </li>
       </ul>
     </div>

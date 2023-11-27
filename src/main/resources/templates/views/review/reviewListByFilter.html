@@ -186,7 +186,7 @@
     background-color: white;
     }
     .view-box{
-    width: 30%;
+    width: 30.5%;
     height:25%;
     margin-left:auto;
     }
@@ -195,8 +195,8 @@
     margin-left: 46px;
     }
     .write-review-button{
-     width: 12%;
-    height:100%;
+     width: 15%;
+
 
     }
      .write-review{
@@ -209,7 +209,7 @@
        text-align:center;
        line-height: 229px;
     margin-left: 2px;
-       padding: 4px;
+       padding: 7px;
           border: 2px solid #D2B48C;
       }
     .section{
@@ -403,6 +403,7 @@
           </div>
           <div class="view-box">
             <select class="sort-select" onchange="location = this.value;">
+              <option>정렬 선택</option>
               <option th:value="@{/review}">최신순</option>
               <option th:value="@{/review/filter(type='like')}">좋아요순</option>
               <option th:value="@{/review/filter(type='view')}">조회순</option>
