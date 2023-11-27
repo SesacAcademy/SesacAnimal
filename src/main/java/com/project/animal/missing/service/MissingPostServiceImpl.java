@@ -25,7 +25,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -62,10 +61,14 @@ public class MissingPostServiceImpl implements MissingPostService {
     Page<MissingPost> pages = missingPostRepository.findByFilter(filter, pageable);
 
     List<MissingListEntryDto> posts = pages.stream()
-            .map(this::convertToMissingListEntryDto)
+            .map(converter :: toMissingListEntryDto)
             .collect(Collectors.toList());
 
-    List<Integer> counts = getLikeCountById(pages);
+    List<Long> ids = pages.stream()
+            .map(MissingPost::getMissingId)
+            .collect(Collectors.toList());
+
+    List<Integer> counts = missingLikeService.getLikeCountMultiple(ids);
 
     List<MissingListEntryDto> postsWithLikes = IntStream.range(0, posts.size())
             .mapToObj((idx) -> {
@@ -79,25 +82,6 @@ public class MissingPostServiceImpl implements MissingPostService {
     int count = (int) pages.getTotalElements();
 
     return new ListResponseDto<>(count, postsWithLikes);
-  }
-
-  private List<Integer> getLikeCountById(Page<MissingPost> pages) {
-    List<Long> ids = pages.stream()
-            .map(MissingPost::getMissingId)
-            .collect(Collectors.toList());
-
-    return missingLikeService.getLikeCountMultiple(ids);
-  }
-
-  private MissingListEntryDto convertToMissingListEntryDto(MissingPost entity) {
-    MissingListEntryDto entry = MissingListEntryDto.fromMissingPost(entity);
-    List<MissingPostImageDto> images = entity.getImages().stream()
-            .map(image -> new MissingPostImageDto(image.getImageId(), image.getPath()))
-            .collect(Collectors.toList());
-    entry.addImages(images);
-
-
-    return entry;
   }
 
   public MissingDetailDto getPostDetail(long postId, long memberId) {
