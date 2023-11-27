@@ -303,22 +303,26 @@ backend app
 
 <details>
 <summary>류명한</summary>
+<hr/>
+
+- 📌 [[코드 확인]](https://github.com/SesacAcademy/SesacAnimal/blob/2d9c2dc57077e5e9d376245170cc2e9a9d96d619/src/main/java/com/project/animal/missing/service/MissingLikeCacheServiceImpl.java#L51C1-L60C4)
 
 <table>
   	<tr>
   		<td align="center">
-      			문제 상황  
+      			문제 #1
     		</td>
-		<td>
-      			작성 예정
+			<td>
+      			Redis의 캐싱된 좋아요 Count를 갱신할 때 동시성 이슈 발생
     		</td>
+  	</tr>
   	</tr>
 	<tr>
 		<td align="center">
 			원인
 		</td>
 		<td>
-   			작성 예정
+   			get과 set 연산 사이에 다른 스레드의 요청에 의해 값이 변경될 수 있음
     		</td>
 	</tr>
  	<tr>
@@ -326,10 +330,116 @@ backend app
 			해결
 		</td>
 		<td>
-      			작성 예정
+      			redis에서 제공하는 원자성을 보장하는 함수를 사용하여 해결 (incr, dec)
     		</td>
-      	</tr>
+      </tr>
 </table>
+
+<pre>
+<code>[Before]
+@Override
+  public void update(long postId, int status) {
+    String likeCountKey = cachePrefix + postId;
+    Optional<String> maybeCurrentCount = redisServiceProvider.get(likeCountKey);
+
+    int currentCount = maybeCurrentCount.isPresent()
+            ? Integer.parseInt(maybeCurrentCount.get())
+            : missingLikeRepository.likedCountByPostId(postId);
+
+    int nextCount = status == ADD
+            ? addCount(currentCount)
+            : subCount(currentCount);
+
+    redisServiceProvider.save(likeCountKey, nextCount);
+  }
+
+
+  private int addCount(int currentCount) {
+    return currentCount + 1;
+  }
+
+  private int subCount(int currentCount) {
+    return currentCount > 0 ? currentCount - 1 : 0;
+  }
+</code>
+</pre>
+
+<pre>
+<code>[After]
+  @Override
+  public Optional<Integer> getCountByPostId(long postId) {
+    String likeCountKey = cachePrefix + postId;
+    Optional<String> maybeCurrentCount = redisServiceProvider.get(likeCountKey);
+
+    Integer currentCount = maybeCurrentCount.isPresent()
+            ? Integer.parseInt(maybeCurrentCount.get())
+            : null;
+
+    return Optional.ofNullable(currentCount);
+  }
+
+  @Override
+  public void updateLike(long postId, int status) {
+    String likeCountKey = cachePrefix + postId;
+
+    if (status == ADD) {
+      redisServiceProvider.increase(likeCountKey); // 함수 내부에서 incr 실행
+    } else {
+      redisServiceProvider.decrease(likeCountKey); // 함수 내부에서 decr 실행
+    }
+  }
+</code>
+</pre>
+
+<hr/>
+
+<table>
+  	<tr>
+  		<td align="center">
+      			문제 #2
+    		</td>
+			<td>
+      			게시판 목록에서 게시글 별로 좋아요 숫자를 표현하는 로직이 비효율적인 상황
+    		</td>
+  	</tr>
+  	</tr>
+	<tr>
+		<td align="center">
+			원인
+		</td>
+		<td>
+   			초기 테이블 설계 좋아요 숫자 표현이 고려되지 않음
+    		</td>
+	</tr>
+	<tr>
+		<td align="center">
+			옵션
+		</td>
+		<td>
+   			좋아요 숫자를 반정규화 vs 별도의 장소에 캐싱
+    		</td>
+	</tr>
+ 	<tr>
+     		<td align="center">
+			선택
+		</td>
+		<td>
+      			Redis를 사용하여 게시글 별 좋아요 숫자를 캐싱함
+    		</td>
+      </tr>
+			<tr>
+     		<td align="center">
+			근거
+		</td>
+		<td>
+      			1. 프로젝트에서 이미 Redis를 사용 중이기 때문에, 인프라 비용이 발생하지 않음. <br/> 2. 테이블 구조를 변경하는 것은 서비스 전반에 영향을 미치기 때문에 개발 후반부에 작업하기에 부적절하다고 판단.
+    		</td>
+      </tr>
+</table>
+
+<hr/>
+
+</details>
 </details>
 
 <details>
