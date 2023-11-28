@@ -26,10 +26,12 @@ public class ReviewPostCustomRepository {
     public ReviewPostCustomRepository(EntityManager entityManager) {
         this.jpaQueryFactory = new JPAQueryFactory(entityManager);
     }
+
+    // 제목, 작성자, 내용 검색 따른 동적 쿼리 작성
+    // 투원 관계 - > 패치조인, 투 매니(컬렉션) 관계 -> 배치 활용
     public Page<ReviewPost> findAllWithMemberAndImageByTypeAndKeyword(String type, String keyword, Pageable pageable) {
         QReviewPost reviewPost = QReviewPost.reviewPost;
         QMember member = QMember.member;
-        QReviewImage reviewImage = QReviewImage.reviewImage;
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(reviewPost.isActive.eq(1));
@@ -45,10 +47,8 @@ public class ReviewPostCustomRepository {
                 case "content":
                     builder.and(reviewPost.content.contains(keyword));
                     break;
-
             }
         }
-
         List<ReviewPost> content = jpaQueryFactory
                 .selectFrom(reviewPost)
                 .leftJoin(reviewPost.member, member).fetchJoin()
@@ -65,6 +65,8 @@ public class ReviewPostCustomRepository {
 
         return new PageImpl<>(content, pageable, total);
     }
+    // 조회순, 좋아요순에 따른 동적 쿼리 구현
+    // 투원 관계 - > 패치조인, 투 매니(컬렉션) 관계 -> 배치 활용
     public Page<ReviewPost> findAllByType(String type, Pageable pageable) {
         QReviewPost reviewPost = QReviewPost.reviewPost;
         QMember member = QMember.member;

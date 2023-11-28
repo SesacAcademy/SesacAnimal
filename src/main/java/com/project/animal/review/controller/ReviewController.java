@@ -49,20 +49,19 @@ public class ReviewController {
     }
     @PostMapping("/write")
     public String createReviewPost(@ModelAttribute @Valid CreateReviewPostDto createReviewPostDto,
-                               BindingResult bindingResult,
-                               @RequestParam(name = "imageList") List<MultipartFile> imageFiles,
-                               @Member MemberDto member
-    ){
+                                    BindingResult bindingResult,
+                                   @RequestParam(name = "imageList") List<MultipartFile> imageFiles,
+                                   @Member MemberDto member){
         if (bindingResult.hasErrors()){
             return ViewName.WRITE_PAGE;
         }
+
         ReviewPost reviewPost = reviewService.createReviewPost(createReviewPostDto, member);
         reviewImageService.saveImg(imageFiles, reviewPost);
-      return ViewName.HOME;
+        return ViewName.HOME;
     }
     @GetMapping()
-    public String readByCreatedAt(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                  Model model){
+    public String readByCreatedAt(@RequestParam(name = "page", defaultValue = "0") Integer page, Model model){
         readList viewDto = reviewService.readAll(page, size);
         model.addAttribute("listDto", viewDto);
         return ViewName.REVIEW_LIST;
@@ -95,7 +94,6 @@ public class ReviewController {
     public String readByFilter(@RequestParam(name = "type") String type,
                                @RequestParam(name = "page", defaultValue = "0") Integer page,
                                Model model) {
-
         readList viewDto = reviewService.readByFilter(type, page, size);
         model.addAttribute("listDto", viewDto);
         model.addAttribute("type", type);
@@ -115,8 +113,7 @@ public class ReviewController {
                          @ModelAttribute @Valid CreateReviewPostDto updatePostDto,
                          @RequestParam(name = "reviewPostId")Long reviewPostId,
                          @RequestParam(name = "imageList", required = false) List<MultipartFile> imageFiles,
-                         BindingResult bindingResult, Model model
-                         ){
+                         BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()){
             log.info("update binding errors={}", bindingResult);
             model.addAttribute("updatePostDto", updatePostDto);
