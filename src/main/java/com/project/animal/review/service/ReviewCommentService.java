@@ -66,7 +66,7 @@ public class ReviewCommentService {
     }
 
     public ReviewCommentDtoCount readByReviewPostId(Long reviewPostId) {
-        List<ReviewComment> reviewComments = reviewCommentCustomRepository.findAllByPost(reviewPostId);;
+        List<ReviewComment> reviewComments = reviewCommentCustomRepository.findAllByPostId(reviewPostId);;
         List<ReviewCommentResponseDto> commentResponseList = new ArrayList<>();
         Map<Long, ReviewCommentResponseDto> commentHashMap = new HashMap<>();
         reviewComments.forEach(c->{
