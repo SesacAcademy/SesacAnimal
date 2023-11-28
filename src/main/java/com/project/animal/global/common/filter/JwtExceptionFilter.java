@@ -60,6 +60,11 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
                 removeTokenInCookie(request, response);
                 response.sendError(HttpStatus.UNAUTHORIZED.value());
             }
+
+            // JWT 관련 예외가 아닌 경우, 예외 던지기
+            else {
+                throw e;
+            }
         }
     }
 
