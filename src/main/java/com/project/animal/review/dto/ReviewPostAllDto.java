@@ -1,18 +1,12 @@
 package com.project.animal.review.dto;
-
 import com.project.animal.review.domain.ReviewImage;
 import com.project.animal.review.domain.ReviewPost;
-import com.project.animal.review.domain.ReviewPostLike;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Log4j2
 @NoArgsConstructor
 public class ReviewPostAllDto {
 
@@ -46,8 +40,6 @@ public class ReviewPostAllDto {
         this.viewCount = reviewPost.getViewCount();
         this.postLikeCount = reviewPost.getReviewPostLikes().size();
     }
-
-
     private String getActiveImage(List<ReviewImage> images) {
         return images.stream()
                 .filter(image -> image.getIsActiveToDto() == 1)

@@ -46,32 +46,33 @@ public class ReviewService {
         return PageRequest.of(page, size, sort);
     }
     @Transactional(readOnly = true)
-    public readList readAll(int page, int size) {
+    public ReadList readAll(int page, int size) {
         Pageable pageable = createPageByCreatedAt(page,size);
         Page<ReviewPost> postList = reviewRepository.findAll(pageable);
         return entityToDtoByReadAll(postList);
     }
     //좋아요순, 조회순 구현
-    public readList readByFilter(String type, Integer page, int size) {
+    public ReadList readByFilter(String type, Integer page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ReviewPost> postList = reviewPostCustomRepository.findAllByType(type, pageable);
         return entityToDtoByReadAll(postList);
     }
-    private readList entityToDtoByReadAll(Page<ReviewPost> entity) {
+
+    private ReadList entityToDtoByReadAll(Page<ReviewPost> entity) {
         int totalPages =  entity.getTotalPages();
         int currentPage = entity.getNumber();
         List<ReviewPostAllDto> dtoList = entity.getContent()
                 .stream()
                 .map(reviewPost -> new ReviewPostAllDto(reviewPost))
                 .collect(Collectors.toList());
-        return readList.builder()
+        return ReadList.builder()
                 .list(dtoList)
                 .totalPages(totalPages)
                 .currentPage(currentPage)
                 .build();
     }
     @Transactional(readOnly = true)
-    public readList readByKeyword(String type, Integer page, int size, String keyword) {
+    public ReadList readByKeyword(String type, Integer page, int size, String keyword) {
         Pageable pageable = createPageByCreatedAt(page,size);
         Page<ReviewPost> postList = reviewPostCustomRepository.findAllWithMemberAndImageByTypeAndKeyword(type, keyword,pageable);
         return entityToDtoByReadAll(postList);

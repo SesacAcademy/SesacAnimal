@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @Data
 @Log4j2
-public class readList {
+public class ReadList {
     private List<ReviewPostAllDto> list;
     private int totalPages;
     private int currentPage;
