@@ -62,7 +62,7 @@ public class ReviewController {
     }
     @GetMapping()
     public String readByCreatedAt(@RequestParam(name = "page", defaultValue = "0") Integer page, Model model){
-        readList viewDto = reviewService.readAll(page, size);
+        ReadList viewDto = reviewService.readAll(page, size);
         model.addAttribute("listDto", viewDto);
         return ViewName.REVIEW_LIST;
     }
@@ -83,7 +83,7 @@ public class ReviewController {
                                @RequestParam(name = "page", defaultValue = "0") Integer page,
                                Model model) {
 
-        readList viewDto = reviewService.readByKeyword(type, page, size, keyword);
+        ReadList viewDto = reviewService.readByKeyword(type, page, size, keyword);
         model.addAttribute("listDto", viewDto);
         model.addAttribute("type", type);         // 검색 유형 추가
         model.addAttribute("keyword", keyword);
@@ -94,7 +94,7 @@ public class ReviewController {
     public String readByFilter(@RequestParam(name = "type") String type,
                                @RequestParam(name = "page", defaultValue = "0") Integer page,
                                Model model) {
-        readList viewDto = reviewService.readByFilter(type, page, size);
+        ReadList viewDto = reviewService.readByFilter(type, page, size);
         model.addAttribute("listDto", viewDto);
         model.addAttribute("type", type);
         return ViewName.REVIEW_LIST_BY_FILTER;

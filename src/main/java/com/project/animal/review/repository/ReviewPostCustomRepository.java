@@ -1,9 +1,7 @@
 package com.project.animal.review.repository;
 
 import com.project.animal.member.domain.QMember;
-import com.project.animal.review.domain.QReviewImage;
 import com.project.animal.review.domain.QReviewPost;
-import com.project.animal.review.domain.QReviewPostLike;
 import com.project.animal.review.domain.ReviewPost;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -14,9 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import java.util.List;
+import static com.project.animal.review.domain.QReviewPostLike.reviewPostLike;
 
 @Repository
 @Log4j2
@@ -77,13 +75,14 @@ public class ReviewPostCustomRepository {
         JPAQuery<ReviewPost> query = jpaQueryFactory
                 .selectFrom(reviewPost)
                 .leftJoin(reviewPost.member, member).fetchJoin()
+                .leftJoin(reviewPost.reviewPostLikes, reviewPostLike)
                 .where(builder);
 
         if ("view".equals(type)) {
             query.orderBy(reviewPost.viewCount.desc());
         } else if ("like".equals(type)) {
             query.groupBy(reviewPost.id)
-                    .orderBy(reviewPost.reviewPostLikes.size().desc());
+                    .orderBy(reviewPostLike.count().desc());
         }
 
         List<ReviewPost> content = query
@@ -98,6 +97,8 @@ public class ReviewPostCustomRepository {
 
         return new PageImpl<>(content, pageable, total);
     }
+
+
 
     public List<ReviewPost> findPostByLike() {
         QReviewPost reviewPost = QReviewPost.reviewPost;
