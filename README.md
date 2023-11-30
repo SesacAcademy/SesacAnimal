@@ -6,7 +6,7 @@
 
 > 매년 유기견들이 늘어남에 따라 많은 유기견들에게 보호와 돌봄이 필요하지만 자원이 부족한 상황입니다.
 >
-> 새싹 애니멀은 이러한 상황을 개선하고 유기견에게 더 나은 미래를 제공하기 위해 유기견 입양/임보 서비스를 제공합니다. <br/> > <br/>
+> 새싹 애니멀은 이러한 상황을 개선하고 유기견에게 더 나은 미래를 제공하기 위해 유기견 입양/임보 서비스를 제공합니다. <br/> <br/>
 > 개발 인원 : 4명 (박성수, 류명한, 이경진, 손승범) <br/>
 > 개발 기간 : 2023.11.01 ~ 2023.11.17
 
@@ -109,22 +109,28 @@
 
 ## 🗒️ ERD 설계
 
-- [ERD 링크]()
+- [ERD 링크](https://www.erdcloud.com/d/ThYDwhruPuZBwNyE9)
 
 ![image](https://github.com/SesacAcademy/SesacAnimal/assets/55624470/3574c649-eea8-4932-83ad-f772b691c36c)
 
 <br/>
 
-## 💡 주요 기능
+## 💡 주요 업무
 
 #### 👩‍👧 회원 (박성수)
 
-- 이메일 인증을 통한 회원가입 기능 📌 [[코드 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L58) [[코드 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/MailAuthCodeProvider.java#L38)
+- 이메일 인증을 통한 회원가입 기능 📌 [[회원가입_서비스]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L58) [[메일 인증_프로바이더]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/MailAuthCodeProvider.java#L72)
 
-- (JWT) 토큰 기반 방식의 로그인 기능 (Spring Security를 활용한 인증/인가) 📌 [[코드 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/LoginController.java#L60) [[코드 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtExceptionFilter.java#L32) [[코드 3]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtAuthenticationFilter.java#L32) [[코드 4]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/JwtTokenProvider.java#L58)
+- (Spring Security 활용) JWT 토큰 기반 방식의 로그인 기능 📌 [[로그인_컨트롤러]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/LoginController.java#L59) [[JWT_예외 필터]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtExceptionFilter.java#L32) [[JWT_인증 필터]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtAuthenticationFilter.java#L32) [[JWT 토큰_프로바이더]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/JwtTokenProvider.java#L58)
 
-- 카카오 플랫폼을 이용한 소셜 로그인 기능 📌 [[코드 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/LoginController.java#L87)
-- 사용자 정보를 통한 아이디 찾기, SMS 문자 인증을 통한 비밀번호 찾기 기능 📌 [[코드 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/MemberController.java#L116) [[코드 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/MemberController.java#L137) [[코드 3]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L134) [[코드 4]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/SmsAuthCodeProvider.java#L37)
+- 카카오 플랫폼을 이용한 소셜 로그인 기능 📌 [[로그인_컨트롤러]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/LoginController.java#L86)
+- 사용자 정보를 통한 아이디 찾기, SMS 문자 인증을 통한 비밀번호 찾기 기능 📌 [[아이디 찾기_서비스]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L197) [[비밀번호 찾기_서비스]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L158) [[문자 인증_프로바이더]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/SmsAuthCodeProvider.java#L37)
+
+- Oracle Cloud 및 Docker를 활용한 기본 인프라 구축
+
+- Gitea 및 Jenkins CI/CD Pipeline 구축
+
+- Certbot, Let's Encrypt 이용하여 HTTPS 적용 (SSL-Offloading)
 
 #### 🚨 실종 (류명한)
 
@@ -762,9 +768,9 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 <details>
 <summary>박성수</summary>
 
-- 작성 예정
+- 프로젝트를 진행하며 현재 나의 위치와 수준을 파악할 수 있었습니다.
 
-- 작성 예정
+- 리팩토링 과정을 거치게 되면서, 테스트 코드의 중요성을 깨닫게 되었습니다.
 
 </details>
 
