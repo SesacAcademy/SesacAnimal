@@ -1,7 +1,6 @@
 package com.project.animal.review.repository;
 
 import com.project.animal.member.domain.QMember;
-import com.project.animal.review.domain.QReviewPost;
 import com.project.animal.review.domain.ReviewPost;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -14,7 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
+
+import static com.project.animal.member.domain.QMember.member;
+import static com.project.animal.review.domain.QReviewPost.reviewPost;
 import static com.project.animal.review.domain.QReviewPostLike.reviewPostLike;
+
 
 @Repository
 @Log4j2
@@ -28,8 +31,6 @@ public class ReviewPostCustomRepository {
     // 제목, 작성자, 내용 검색 따른 동적 쿼리 작성
     // 투원 관계 - > 패치조인, 투 매니(컬렉션) 관계 -> 배치 활용
     public Page<ReviewPost> findAllWithMemberAndImageByTypeAndKeyword(String type, String keyword, Pageable pageable) {
-        QReviewPost reviewPost = QReviewPost.reviewPost;
-        QMember member = QMember.member;
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(reviewPost.isActive.eq(1));
@@ -66,8 +67,6 @@ public class ReviewPostCustomRepository {
     // 조회순, 좋아요순에 따른 동적 쿼리 구현
     // 투원 관계 - > 패치조인, 투 매니(컬렉션) 관계 -> 배치 활용
     public Page<ReviewPost> findAllByType(String type, Pageable pageable) {
-        QReviewPost reviewPost = QReviewPost.reviewPost;
-        QMember member = QMember.member;
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(reviewPost.isActive.eq(1));
@@ -101,7 +100,7 @@ public class ReviewPostCustomRepository {
 
 
     public List<ReviewPost> findPostByLike() {
-        QReviewPost reviewPost = QReviewPost.reviewPost;
+
         return jpaQueryFactory
                 .selectFrom(reviewPost)
                 .groupBy(reviewPost.id)

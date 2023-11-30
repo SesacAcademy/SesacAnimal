@@ -74,6 +74,11 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReadList readByKeyword(String type, Integer page, int size, String keyword) {
         Pageable pageable = createPageByCreatedAt(page,size);
+        String author = "author";
+        if (author.equals(type)){
+            Page<ReviewPost> reviewPostPage = reviewRepository.findAllWithMemberAndImageByNickname(keyword, pageable);
+            return entityToDtoByReadAll(reviewPostPage);
+        }
         Page<ReviewPost> postList = reviewPostCustomRepository.findAllWithMemberAndImageByTypeAndKeyword(type, keyword,pageable);
         return entityToDtoByReadAll(postList);
     }
