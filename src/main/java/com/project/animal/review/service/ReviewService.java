@@ -76,11 +76,9 @@ public class ReviewService {
         Pageable pageable = createPageByCreatedAt(page,size);
         String author = "author";
         if (author.equals(type)){
-            log.info("is it come?");
             Page<ReviewPost> reviewPostPage = reviewRepository.findAllWithMemberAndImageByNickname(keyword, pageable);
             return entityToDtoByReadAll(reviewPostPage);
         }
-        log.info("or is it come?");
         Page<ReviewPost> postList = reviewPostCustomRepository.findAllWithMemberAndImageByTypeAndKeyword(type, keyword,pageable);
         return entityToDtoByReadAll(postList);
     }
