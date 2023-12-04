@@ -777,9 +777,9 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 <details>
 <summary>류명한</summary>
 
-- 작성 예정
+- 효율적인 협업을 위해서는 커뮤니케이션이 중요하다고 다시 한번 느꼈습니다.
 
-- 작성 예정
+- 데일리 스크럼이 효과가 있다는 것을 느꼈습니다.
 
 </details>
 
