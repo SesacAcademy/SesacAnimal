@@ -159,6 +159,11 @@
 #### 🐈 입양/임보 (이경진)
 
 #### ✏️ 입양 후기 (손승범)
+- 계층 구조를 활용해 댓글, 대댓글 구현 📌 [[코드 확인 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/service/ReviewCommentService.java#L68) [[코드 확인 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewCommentCustomRepository.java#L25)
+  
+- 제목, 작성자, 내용을 통한 검색 기능 구현 📌 [[코드 확인 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewPostCustomRepository.java#L29) [[코드 확인 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/service/ReviewService.java#L72)
+  
+- 좋아요순, 조회순에 따른 정렬 기능  구현 📌 [[코드 확인 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewPostCustomRepository.java#L71) [[코드 확인 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/service/ReviewService.java#L55)
 
 <br/>
 
@@ -485,13 +490,16 @@ backend app
 <details>
 <summary>손승범</summary>
 
+<hr/>
+
+- 📌 [[코드 확인]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewPostCustomRepository.java#L69)
 <table>
   	<tr>
   		<td align="center">
-      			문제 상황  
+      			문제#1 
     		</td>
 		<td>
-      			작성 예정
+      			1. 좋아요순으로 게시글 조회시 데이터 정렬을 어플리케이션에서 처리<br> -> 이에 따른 어플리케이션 과부하 가능성 존재 
     		</td>
   	</tr>
 	<tr>
@@ -499,7 +507,125 @@ backend app
 			원인
 		</td>
 		<td>
-   			작성 예정
+   			1. 초기 ERD 설계 시 게시글 좋아요 숫자 반영하지 않음<br>
+				2. DB에서 조회시 쿼리를 통해 데이터 정렬하지 않음
+    		</td>
+	</tr>
+ 	<tr>
+		<td align="center">
+			옵션
+		</td>
+		<td>
+   			좋아요 테이블을 반정규화 vs 각 게시글 별로 좋아요 숫자만큼 그룹화하여 그 크기별로 정렬
+    		</td>
+	</tr>
+ 	<tr>
+     		<td align="center">
+			선택
+		</td>
+		<td>
+      			각 게시글 별로 좋아요 숫자만큼 그룹화하여 그 크기별로 정렬
+    		</td>
+      </tr>
+			<tr>
+     		<td align="center">
+			근거
+		</td>
+		<td>
+      			개발 일정이 얼마 남지 않은 상황에서 테이블 구조를 변경하는 것은 협업, 코드 수정에 있어서 예측불가의 과업이 생길 수 있다고 판단
+    		</td>
+      </tr>
+</table>
+
+<pre>
+<code>[Before]
+   public Page<ReviewPost> findAllByType(String type, Pageable pageable) {
+        QReviewPost reviewPost = QReviewPost.reviewPost;
+        QMember member = QMember.member;
+        QReviewImage reviewImage = QReviewImage.reviewImage;
+
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(reviewPost.isActive.eq(1));
+
+        JPAQuery<ReviewPost> query = jpaQueryFactory
+                .selectFrom(reviewPost)
+                .leftJoin(reviewPost.member, member).fetchJoin()
+                .where(builder);
+
+        if ("view".equals(type)) {
+            query.orderBy(reviewPost.viewCount.desc());
+        } else if ("like".equals(type)) {
+            query.groupBy(reviewPost.id)
+                    .orderBy(reviewPost.reviewPostLikes.size().desc());
+        }
+
+        List<ReviewPost> content = query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = jpaQueryFactory
+                .selectFrom(reviewPost)
+                .leftJoin(reviewPost.member, member)
+                .leftJoin(reviewPost.reviewImages, reviewImage)
+                .where(builder)
+                .fetchCount();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+</code>
+</pre>
+
+<pre>
+<code>[After]
+public Page<ReviewPost> findAllByType(String type, Pageable pageable) {
+
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(reviewPost.isActive.eq(1));
+
+        JPAQuery<ReviewPost> query = jpaQueryFactory
+                .selectFrom(reviewPost)
+                .leftJoin(reviewPost.member, member).fetchJoin()
+                .leftJoin(reviewPost.reviewPostLikes, reviewPostLike)
+                .where(builder);
+
+        if ("view".equals(type)) {
+            query.orderBy(reviewPost.viewCount.desc());
+        } else if ("like".equals(type)) {
+            query.groupBy(reviewPost.id)
+                    .orderBy(reviewPostLike.count().desc());
+        }
+
+        List<ReviewPost> content = query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = jpaQueryFactory
+                .selectFrom(reviewPost)
+                .where(builder)
+                .fetchCount();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+</code>
+</pre>
+- 📌 [[코드 확인]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewCommentCustomRepository.java#25)
+<table>
+  	<tr>
+  		<td align="center">
+      			문제#2
+    		</td>
+		<td>
+      			데이터 중복 로드, N+1로 인한 불필요한 쿼리 발생
+    		</td>
+  	</tr>
+	<tr>
+		<td align="center">
+			원인
+		</td>
+		<td>
+   				N+1 문제 발생을 위해 컬렉션을 패치조인하여 데이터 중복이 발생
     		</td>
 	</tr>
  	<tr>
@@ -507,10 +633,45 @@ backend app
 			해결
 		</td>
 		<td>
-      			작성 예정
+      			1. ToMany를 로드할 때는 Batch 활용 <br>
+				2. 가져와야 할 컬렉션의 양이 제한적이라면 Batch 활용이 아닌 직접 쿼리 작성 <br>
+				3. ToOne을 로드할 때는 Fetch Join 활용 <br>
     		</td>
-      	</tr>
+      </tr>
+			
 </table>
+
+<pre>
+<code>[Before]
+     @Query(value = "SELECT p FROM ReviewPost p JOIN FETCH p.member m LEFT JOIN FETCH p.		reviewImages i WHERE p.isActive = 1",
+            countQuery = "SELECT count(p.id) FROM ReviewPost p WHERE p.isActive = 1")
+    Page<ReviewPost> findAllPrevious(Pageable pageable);
+</code>
+</pre>
+
+<pre>
+<code>[After]
+ @Query(value = "SELECT p FROM ReviewPost p JOIN FETCH p.member m WHERE p.isActive = 1",
+            countQuery = "SELECT count(p.id) FROM ReviewPost p WHERE p.isActive = 1")
+    Page<ReviewPost> findAll(Pageable pageable);
+
+
+	//댓글의 데이터가 방대할 시에 Batch를 활용해 가져온다면 불필요한 데이터를 로드할 것이라고 판단
+	//후에 내부 결정에 따른 limit을 걸 수 있게 쿼리 직접 작성
+	public List<ReviewComment> findAllByPostId(Long reviewPostId){
+        QReviewComment reviewComment = QReviewComment.reviewComment;
+        QMember member = QMember.member;
+        return jpaQueryFactory.selectFrom(reviewComment)
+                .leftJoin(reviewComment.member)
+                .fetchJoin()
+                .leftJoin(reviewComment.parentComment)
+                .fetchJoin()
+                .where(reviewComment.reviewPost.id.eq(reviewPostId))
+                .orderBy(reviewComment.parentComment.id.asc().nullsFirst(), reviewComment.createdAt.desc())
+                .fetch();
+    }
+</code>
+</pre>
 </details>
 
 <br/>
@@ -741,13 +902,18 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 <details>
 <summary>손승범</summary>
 
+<hr/>
+
+- 📌 [[코드 확인]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/resolver/MemberDtoArgumentResolver.java#L37)
+
 <table>
   	<tr>
   		<td align="center">
       			Before
     		</td>
 		<td>
-      			작성 예정
+      			제목, 작성자, 내용에 따른 검색 시에 요구되는 api와 1대1 매핑관계 형성<br> 
+				추가되는 기능에 따른 메소드 증가로 인한 불필요한 코드 증가
     		</td>
   	</tr>
 	<tr>
@@ -755,10 +921,130 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 			After
 		</td>
 		<td>
-   			작성 예정
+   			동적 쿼리를 작성하여 변경, 수정사항이 생길 시에 where절만 수정하게끔 변경
     		</td>
 	</tr>
 </table>
+
+<pre>
+<code>
+        public ReadListGeneric<ReadListGeneric> readBySearch(String type, String keyword, Integer page, int size) {
+            switch (type){
+                case "view":
+                    return readByView(page ,size, keyword);
+                case "author":
+                    return readByName(page ,size, keyword);
+                case "title":
+                    return readByTitle(page,size,keyword);
+                case "content":
+                    return readByContent(page, size, keyword);
+            }
+            return null;
+        }
+
+		// 내용 검색
+        @Transactional(readOnly = true)
+        private ReadListGeneric<ReadListGeneric> readByContent(Integer page, int size, String content) {
+            Pageable pageable = createPageByCreatedAt(page,size);
+            Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByContent(content, pageable);
+            return entityToDtoByReadAll(postList);
+        }
+
+		// 제목 검색
+        @Transactional(readOnly = true)
+        private ReadListGeneric<ReadListGeneric> readByTitle(Integer page, int size, String title) {
+            Pageable pageable = createPageByCreatedAt(page,size);
+            Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByTitle(title,pageable);
+            return entityToDtoByReadAll(postList);
+        }
+
+		//유저 닉네임으로 검색
+        @Transactional(readOnly = true)
+        private ReadListGeneric readBynickName(Integer page, int size, String nickname) {
+            Pageable pageable = createPageByCreatedAt(page,size);
+            Page<ReviewPost> postList = reviewRepository.findAllWithMemberAndImageByNickname(nickname,pageable);
+            return entityToDtoByReadAll(postList);
+        }
+</code>
+</pre>
+
+<pre>
+<code>
+		// 닉네임 검색 쿼리
+		@Query(value = "SELECT p FROM ReviewPost p JOIN FETCH p.member m LEFT JOIN FETCH p.reviewImages i WHERE m.nickname = :nickname AND p.isActive = 1",
+				countQuery = "SELECT count(p.id) FROM ReviewPost p JOIN p.member m WHERE m.nickname = :nickname AND p.isActive = 1")
+		Page<ReviewPost> findAllWithMemberAndImageByNickname(@Param("nickname") String nickname, Pageable pageable);
+
+
+		// 제목 검색 쿼리
+		@Query(value = "SELECT p FROM ReviewPost p JOIN FETCH p.member m LEFT JOIN FETCH p.reviewImages i WHERE p.title LIKE %:title% AND p.isActive = 1",
+				countQuery = "SELECT count(p.id) FROM ReviewPost p WHERE p.title LIKE %:title% AND p.isActive = 1")
+		Page<ReviewPost> findAllWithMemberAndImageByTitle(@Param("title") String title, Pageable pageable);
+
+
+		//내용 검색 쿼리
+		@Query(value = "SELECT p FROM ReviewPost p JOIN FETCH p.member m LEFT JOIN FETCH p.reviewImages i WHERE p.content LIKE %:content% AND p.isActive = 1",
+				countQuery = "SELECT count(p.id) FROM ReviewPost p WHERE p.content LIKE %:content% AND p.isActive = 1")
+		Page<ReviewPost> findAllWithMemberAndImageByContent(@Param("content") String content, Pageable pageable);
+</code>
+</pre>
+
+<pre>
+<code>
+	// 검색 관련 서비스 로직
+    @Transactional(readOnly = true)
+    public readList readByKeyword(String type, Integer page, int size, String keyword) {
+        Pageable pageable = createPageByCreatedAt(page,size);
+        Page<ReviewPost> postList = reviewPostCustomRepository.findAllWithMemberAndImageByTypeAndKeyword(type, keyword,pageable);
+        return entityToDtoByReadAll(postList);
+    }
+</code>
+</pre>
+
+<pre>
+<code>
+    // 제목, 작성자, 내용 검색 따른 동적 쿼리 작성
+    // 투원 관계 - > 패치조인, 투 매니(컬렉션) 관계 -> 배치 활용
+    public Page<ReviewPost> findAllWithMemberAndImageByTypeAndKeyword(String type, String keyword, Pageable pageable) {
+        QReviewPost reviewPost = QReviewPost.reviewPost;
+        QMember member = QMember.member;
+
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(reviewPost.isActive.eq(1));
+
+        if(type != null && keyword != null) {
+            switch(type) {
+                case "author":
+                    builder.and(member.nickname.eq(keyword));
+                    break;
+                case "title":
+                    builder.and(reviewPost.title.eq(keyword));
+                    break;
+                case "content":
+                    builder.and(reviewPost.content.contains(keyword));
+                    break;
+            }
+        }
+        List<ReviewPost> content = jpaQueryFactory
+                .selectFrom(reviewPost)
+                .leftJoin(reviewPost.member, member).fetchJoin()
+                .where(builder)
+                .orderBy(reviewPost.createdAt.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = jpaQueryFactory
+                .selectFrom(reviewPost)
+                .where(builder)
+                .fetchCount();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+</code>
+</pre>
+
+
 </details>
 
 <br/>
@@ -795,8 +1081,15 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 <details>
 <summary>손승범</summary>
 
-- 작성 예정
+- 팀의 목표를 기간별로 나누어 수행하는 것이 2가지 측면에서 이점이 있음을 알게되었습니다.
 
-- 작성 예정
+ 1. 나의 수준과 역량을 파악할 수 있다.
+     
+ 2. 프로젝트 진행에 대한 피드백을 빠르게 가질 수 있다.
+     
+- 단순 코드를 치는 것보다 고민을 하는 시간을 가지는 것이 2가지 측면에서 이점이 있다는 것을 배웠습니다.
 
+ 1. 미시적 관점보다 거시적 관점에서 해당 로직을 바라볼 수 있다.
+ 
+ 2. 하고 있는 과업에 대해 단계별 접근이 가능하다.
 </details>
