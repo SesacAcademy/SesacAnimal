@@ -1072,9 +1072,11 @@ public class MemberDtoArgumentResolver implements HandlerMethodArgumentResolver 
 <details>
 <summary>이경진</summary>
 
-- 작성 예정
+- 확장성을 고려한 설계가 중요하다고 생각했습니다. 설계를 하더라도 수정사항이 생기게 되는데 미리 구상하고 설계를 하면 업무가 수월하다는 걸 느꼈습니다.
 
-- 작성 예정
+- 효율적인 업무를 위해서 커뮤니케이션이 중요하다고 느꼈습니다. 공통의 작업과 일정과 업무를 정할 때도 커뮤니케이션이 원활해야 순조롭게 진행되는 점을 느꼈습니다.
+
+- 데일리 스크럼을 통하여 작업 진행 사항을 바로 파악하여 조정해보았는데 좋은 경험이었습니다.
 
 </details>
 
