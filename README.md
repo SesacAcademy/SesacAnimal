@@ -119,12 +119,26 @@
 
 #### 👩‍👧 회원 (박성수)
 
-- 이메일 인증을 통한 회원가입 기능 📌 [[회원가입_서비스]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L58) [[메일 인증_프로바이더]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/MailAuthCodeProvider.java#L72)
+- 이메일 인증을 통한 회원가입 기능
+  - 📌 Code - [[회원가입_서비스]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L58) [[메일 인증_프로바이더]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/MailAuthCodeProvider.java#L72)
+  - 🔀 [Flow Chart](https://shu0622.notion.site/shu0622/Flow-Chart-8a9a4fc2c2ff438085c21cd695ab0e31)
 
-- (Spring Security 활용) JWT 토큰 기반 방식의 로그인 기능 📌 [[로그인_컨트롤러]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/LoginController.java#L59) [[JWT_예외 필터]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtExceptionFilter.java#L32) [[JWT_인증 필터]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtAuthenticationFilter.java#L32) [[JWT 토큰_프로바이더]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/JwtTokenProvider.java#L58)
 
-- 카카오 플랫폼을 이용한 소셜 로그인 기능 📌 [[로그인_컨트롤러]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/LoginController.java#L86)
-- 사용자 정보를 통한 아이디 찾기, SMS 문자 인증을 통한 비밀번호 찾기 기능 📌 [[아이디 찾기_서비스]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L197) [[비밀번호 찾기_서비스]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L158) [[문자 인증_프로바이더]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/SmsAuthCodeProvider.java#L37)
+- (Spring Security 활용) JWT 토큰 기반 방식의 로그인 기능
+  
+  - 📌 Code - [[로그인_컨트롤러]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/LoginController.java#L59) [[JWT_예외 필터]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtExceptionFilter.java#L32) [[JWT_인증 필터]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/filter/JwtAuthenticationFilter.java#L32) [[JWT 토큰_프로바이더]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/JwtTokenProvider.java#L58)
+  - 🔀 [Flow Chart](https://shu0622.notion.site/shu0622/Flow-Chart-8a9a4fc2c2ff438085c21cd695ab0e31#9c32c40340584311843f616c662a8380)
+
+- 카카오 플랫폼을 이용한 소셜 로그인 기능
+  - Code - 📌 [[로그인_컨트롤러]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/LoginController.java#L86)
+
+- 사용자 정보를 통한 아이디 찾기, SMS 문자 인증을 통한 비밀번호 찾기 기능
+  - 📌 Code - [[아이디 찾기_서비스]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L197) [[비밀번호 찾기_서비스]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/service/MemberServiceImp.java#L158) [[문자 인증_프로바이더]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/SmsAuthCodeProvider.java#L37)
+  - 🔀 Flow Chart - [[아이디 찾기]](https://shu0622.notion.site/shu0622/Flow-Chart-8a9a4fc2c2ff438085c21cd695ab0e31#c36c3add9b4f49678fc25a04be0a4183) [[비밀번호 찾기]](https://shu0622.notion.site/shu0622/Flow-Chart-8a9a4fc2c2ff438085c21cd695ab0e31#4529c9e978d247519979442eed80a2a3)
+
+- MyPage 에서의 회원 탈퇴, 비밀번호 변경, 내 게시글 목록 기능
+  - 📌 Code - [[회원 탈퇴_컨트롤러]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/MyPageController.java#L63) [[비밀번호 변경_컨트롤러]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/MyPageController.java#L98) [[내 게시글 목록_컨트롤러]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/member/controller/MyPageController.java#L117)
+  - 🔀 Flow Chart - [[회원 탈퇴]](https://shu0622.notion.site/shu0622/Flow-Chart-8a9a4fc2c2ff438085c21cd695ab0e31#d7343e687a8148a0b12d2b148931e23c) [[비밀번호 변경]](https://shu0622.notion.site/shu0622/Flow-Chart-8a9a4fc2c2ff438085c21cd695ab0e31#2c1f8f503d7c41969da4a4974664a533) [[내 게시글 목록]](https://shu0622.notion.site/shu0622/Flow-Chart-8a9a4fc2c2ff438085c21cd695ab0e31#062fd5802ff0409b874b5e0b052f4b78)
 
 - Oracle Cloud 및 Docker를 활용한 기본 인프라 구축
 
