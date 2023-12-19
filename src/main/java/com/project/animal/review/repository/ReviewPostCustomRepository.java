@@ -59,6 +59,7 @@ public class ReviewPostCustomRepository {
 
         long total = jpaQueryFactory
                 .selectFrom(reviewPost)
+                .leftJoin(reviewPost.member, member)
                 .where(builder)
                 .fetchCount();
 
