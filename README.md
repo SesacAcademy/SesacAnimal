@@ -173,11 +173,17 @@
 #### 🐈 입양/임보 (이경진)
 
 #### ✏️ 입양 후기 (손승범)
-- 계층 구조를 활용해 댓글, 대댓글 구현 📌 [[코드 확인 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/service/ReviewCommentService.java#L68) [[코드 확인 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewCommentCustomRepository.java#L25)
+- 계층 구조를 활용해 댓글, 대댓글 구현
+	- 📌 Code - [[댓글 계층 구조_서비스]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/service/ReviewCommentService.java#L68) [[댓글_레포지토리]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewCommentCustomRepository.java#L25)
+	- 🔀 [Flow Chart](https://www.notion.so/Flow-Chart-2147b30b6f9949c1aa887b861e639149?pvs=4#bb212f717a2a442bb7cf729396c83cea)
   
-- 제목, 작성자, 내용을 통한 검색 기능 구현 📌 [[코드 확인 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewPostCustomRepository.java#L29) [[코드 확인 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/service/ReviewService.java#L72)
+- 제목, 작성자, 내용을 통한 검색 기능 구현
+	- 📌 Code - [[게시글_레포지토리]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewPostCustomRepository.java#L29) 
+   - 🔀 [Flow Chart](https://www.notion.so/Flow-Chart-2147b30b6f9949c1aa887b861e639149?pvs=4#7971b81717de4deba49765000acbe365)
   
-- 좋아요순, 조회순에 따른 정렬 기능  구현 📌 [[코드 확인 1]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewPostCustomRepository.java#L71) [[코드 확인 2]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/service/ReviewService.java#L55)
+- 좋아요순, 조회순에 따른 정렬 기능  구현
+	- 📌  Code - [[게시글 레포지토리]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewPostCustomRepository.java#L71) 
+ 	- 🔀 [Flow Chart](https://www.notion.so/Flow-Chart-2147b30b6f9949c1aa887b861e639149?pvs=4#403edddc4c7b4590b2c8ec906e9492cd)
 
 <br/>
 
