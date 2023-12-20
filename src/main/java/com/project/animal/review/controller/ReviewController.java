@@ -63,7 +63,7 @@ public class ReviewController {
      * @return String (게시글 리스트 뷰)
      */
     @PostMapping("/write")
-    public String createReviewPost(@ModelAttribute @Valid CreateReviewPostDto createReviewPostDto,
+    public String createReview(@ModelAttribute @Valid CreateReviewPostDto createReviewPostDto,
                                     BindingResult bindingResult,
                                    @RequestParam(name = "imageList") List<MultipartFile> imageFiles,
                                    @Member MemberDto member){
