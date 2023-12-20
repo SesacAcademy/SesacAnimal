@@ -25,6 +25,14 @@ public class ReviewPostLikeService {
     private final ReviewService reviewService;
     private final ReviewPostLikeMapper reviewPostLikeMapper;
 
+    /**
+     * 좋아요 생성, 삭제를 담당하는 Service
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param MemberDto 좋아요 누른 Member DTO
+     * @Param reviewPostId 수정하고자 하는 게시글의 아이디
+     * */
     public void checkLikeStatus(MemberDto memberDto, Long reviewPostId) {
         Long memberId = memberDto.getId();
         Optional<ReviewPostLike> reviewPostLikeOptional = reviewPostLikeRepository.findByMemberIdAndReviewPostId(memberId, reviewPostId);
@@ -37,12 +45,15 @@ public class ReviewPostLikeService {
           return null;
       });
     }
+
     private void insertLike(Long memberId, Long reviewPostId) {
         Member member = findMemberById(memberId);
         ReviewPost reviewPost = reviewService.findById(reviewPostId);
         ReviewPostLike reviewPostLike = reviewPostLikeMapper.createEntity(member, reviewPost);
         reviewPostLikeRepository.save(reviewPostLike);
     }
+
+
     private void delete(ReviewPostLike reviewPostLike){
         reviewPostLikeRepository.delete(reviewPostLike);
     }

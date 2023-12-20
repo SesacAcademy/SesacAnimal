@@ -43,10 +43,25 @@ public class ReviewController {
         return member;
     }
 
+    /**
+     * 게시글 작성 폼으로 이동하는 Controller
+     *
+     * @version 0.1
+     * @author 손승범
+     * @return String (게시글 작성 뷰)
+     */
     @GetMapping("/write")
     public String writeReviewPage(){
         return ViewName.WRITE_PAGE;
     }
+
+    /**
+     * 게시글 작성을 처리하는 Controller
+     *
+     * @version 0.1
+     * @author 손승범
+     * @return String (게시글 리스트 뷰)
+     */
     @PostMapping("/write")
     public String createReviewPost(@ModelAttribute @Valid CreateReviewPostDto createReviewPostDto,
                                     BindingResult bindingResult,
@@ -60,6 +75,14 @@ public class ReviewController {
         reviewImageService.saveImg(imageFiles, reviewPost);
         return ViewName.HOME;
     }
+
+    /**
+     * 최신글 리스트를 보여주는 Controller
+     *
+     * @version 0.1
+     * @author 손승범
+     * @return String (게시글 리스트 뷰)
+     */
     @GetMapping()
     public String readByCreatedAt(@RequestParam(name = "page", defaultValue = "0") Integer page, Model model){
         ReadList viewDto = reviewService.readAll(page, size);
@@ -67,6 +90,13 @@ public class ReviewController {
         return ViewName.REVIEW_LIST;
     }
 
+    /**
+     * 단일 게시글로 이동하는 Controller
+     *
+     * @version 0.1
+     * @author 손승범
+     * @return String (단일 게시글 뷰)
+     */
     @GetMapping("/one")
     public String readOne(@RequestParam(name = "reviewPostId") Long reviewPostId, Model model){
          ReadOneReviewDto readOneReviewDto = reviewService.readOne(reviewPostId);
@@ -77,6 +107,13 @@ public class ReviewController {
          return ViewName.READ_ONE;
     }
 
+    /**
+     * 게시글 검색을 처리하는 Controller
+     *
+     * @version 0.1
+     * @author 손승범
+     * @return String (게시글 리스트 뷰)
+     */
     @GetMapping("/search")
     public String readBySearch(@RequestParam(name = "type") String type,
                                @RequestParam(name = "keyword") String keyword,
@@ -90,6 +127,13 @@ public class ReviewController {
         return ViewName.REVIEW_LIST_BY_SEARCH;
     }
 
+    /**
+     * 게시글 정렬(좋아요순, 조회순)을 처리하는 Controller
+     *
+     * @version 0.1
+     * @author 손승범
+     * @return String (게시글 리스트 뷰)
+     */
     @GetMapping("/filter")
     public String readByFilter(@RequestParam(name = "type") String type,
                                @RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -99,6 +143,14 @@ public class ReviewController {
         model.addAttribute("type", type);
         return ViewName.REVIEW_LIST_BY_FILTER;
     }
+
+    /**
+     * 게시글 수정폼으로 이동하게 하는 Controller
+     *
+     * @version 0.1
+     * @author 손승범
+     * @return String (게시글 수정 뷰)
+     */
     @GetMapping("/edit")
     public String edit(@RequestParam(name = "reviewPostId") Long reviewPostId, Model model){
         ReadOneReviewDto readOneReviewDto = reviewService.readOne(reviewPostId);
@@ -108,6 +160,14 @@ public class ReviewController {
         model.addAttribute("reviewDto", readOneResponse);
         return ViewName.EDIT_ONE;
     }
+
+    /**
+     * 게시글 수정을 처리하는 Controller
+     *
+     * @version 0.1
+     * @author 손승범
+     * @return String (게시글 리스트 뷰)
+     */
     @PostMapping("/update")
     public String update(@RequestParam(name = "reviewImageIds", required = false) List<Long> reviewImageIds,
                          @ModelAttribute @Valid CreateReviewPostDto updatePostDto,
@@ -126,6 +186,14 @@ public class ReviewController {
         reviewImageService.saveImg(imageFiles,reviewPost);
         return ViewName.HOME;
     }
+
+    /**
+     * 게시글 삭제를 처리하는 Controller
+     *
+     * @version 0.1
+     * @author 손승범
+     * @return String (게시글 리스트 뷰)
+     */
     @GetMapping("/delete")
     public String delete(@RequestParam(name = "reviewPostId")Long reviewPostId){
         reviewService.delete(reviewPostId);

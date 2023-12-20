@@ -22,8 +22,14 @@ public class ReviewCommentCustomRepository {
     }
 
 
-    // 게시글의 댓글 전체 가져오기
-    // 게시글 단일 조회 시에 연관관계 댓글 모두 조회
+    /**
+     * 댓글, 대댓글 불러오는 Repository
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param reviewPostId 댓글을 가져오고자 하는 게시글의 아이디
+     * 댓글 수 제한이 있다면 limit 추가
+     * */
     public List<ReviewComment> findAllByPostId(Long reviewPostId){
         QReviewComment reviewComment = QReviewComment.reviewComment;
         QMember member = QMember.member;

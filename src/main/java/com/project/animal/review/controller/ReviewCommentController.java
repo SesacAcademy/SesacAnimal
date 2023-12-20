@@ -29,6 +29,14 @@ public class ReviewCommentController {
     public MemberDto addMemberInModel(@Member MemberDto member) {
         return member;
     }
+
+    /**
+     * 댓글 작성을 처리하는 Controller
+     *
+     * @version 0.1
+     * @author 손승범
+     * @return String (댓글 작성한 게시글 뷰)
+     */
     @PostMapping("/comment/add")
     public String createReviewComment(@ModelAttribute @Valid ReviewCommentDto reviewCommentDto,
                                       BindingResult bindingResult,
@@ -44,6 +52,14 @@ public class ReviewCommentController {
             return "redirect:/review/one?reviewPostId=" + reviewPostId;
         }
     }
+
+    /**
+     * 댓글 수정을 처리하는 Controller
+     *
+     * @version 0.1
+     * @author 손승범
+     * @return String (댓글 작성한 게시글 뷰)
+     */
     @PostMapping("/comment/update")
     public String commentUpdate(@RequestParam("reviewCommentId")Long reviewCommentId,
                                 @RequestParam("reviewPostId")Long reviewPostId,
