@@ -39,7 +39,7 @@ public class ReviewPostCustomRepository {
      * 제목, 작성자, 내용 검색 따른 동적 쿼리 작성
      * toOne - > 패치조인, toMany(컬렉션) 관계 -> 배치 활용
      * */
-    public Page<ReviewPost> findAllWithMemberAndImageByTypeAndKeyword(String type, String keyword, Pageable pageable) {
+    public Page<ReviewPost> findAllByKeyword(String type, String keyword, Pageable pageable) {
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(reviewPost.isActive.eq(1));
@@ -123,8 +123,9 @@ public class ReviewPostCustomRepository {
 
         return jpaQueryFactory
                 .selectFrom(reviewPost)
+                .leftJoin(reviewPost.reviewPostLikes, reviewPostLike)
                 .groupBy(reviewPost.id)
-                .orderBy(reviewPost.reviewPostLikes.size().desc())
+                .orderBy(reviewPostLike.count().desc())
                 .limit(3)
                 .fetch();
     }

@@ -112,10 +112,10 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReadList readByKeyword(String type, Integer page, int size, String keyword) {
         Pageable pageable = createPageByCreatedAt(page,size);
-        Page<ReviewPost> postList = reviewPostCustomRepository.findAllWithMemberAndImageByTypeAndKeyword(type, keyword,pageable);
+        Page<ReviewPost> postList = reviewPostCustomRepository.findAllByKeyword(type, keyword,pageable);
         return entityToDtoByReadAll(postList);
     }
-    private List<ReviewIndexResponse> entityToDtoByHome(List<ReviewPost> reviewPostList) {
+    private List<ReviewIndexResponse> entityToDtoByIndex(List<ReviewPost> reviewPostList) {
 
         List<ReviewIndexResponse> dtoList = reviewPostList
                 .stream()
@@ -148,7 +148,7 @@ public class ReviewService {
 
     public List<ReviewIndexResponse> readByLike(){
         List<ReviewPost> reviewPostList = reviewPostCustomRepository.findPostByLike();
-        return entityToDtoByHome(reviewPostList);
+        return entityToDtoByIndex(reviewPostList);
     }
 
     /**
