@@ -28,8 +28,17 @@ public class ReviewPostCustomRepository {
         this.jpaQueryFactory = new JPAQueryFactory(entityManager);
     }
 
-    // 제목, 작성자, 내용 검색 따른 동적 쿼리 작성
-    // 투원 관계 - > 패치조인, 투 매니(컬렉션) 관계 -> 배치 활용
+    /**
+     * 검색을 통해 page를 반환하는 Repository
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param type 검색어 종류(작성자, 내용, 제목)
+     * @Param keyword 검색어
+     * @Param Pageable
+     * 제목, 작성자, 내용 검색 따른 동적 쿼리 작성
+     * toOne - > 패치조인, toMany(컬렉션) 관계 -> 배치 활용
+     * */
     public Page<ReviewPost> findAllWithMemberAndImageByTypeAndKeyword(String type, String keyword, Pageable pageable) {
 
         BooleanBuilder builder = new BooleanBuilder();
@@ -65,8 +74,18 @@ public class ReviewPostCustomRepository {
 
         return new PageImpl<>(content, pageable, total);
     }
-    // 조회순, 좋아요순에 따른 동적 쿼리 구현
-    // 투원 관계 - > 패치조인, 투 매니(컬렉션) 관계 -> 배치 활용
+
+    /**
+     * 필터를 통해 page를 반환하는 Repository
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param type 필터(좋아요, 조회수)
+     * @Param Pageable
+     *
+     * 조회순, 좋아요순에 따른 동적 쿼리 구현
+     * toOne - > 패치조인, toMany(컬렉션) 관계 -> 배치 활용
+     * */
     public Page<ReviewPost> findAllByType(String type, Pageable pageable) {
 
         BooleanBuilder builder = new BooleanBuilder();

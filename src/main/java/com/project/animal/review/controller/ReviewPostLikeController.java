@@ -24,6 +24,13 @@ public class ReviewPostLikeController {
         return member;
     }
 
+    /**
+     * 좋아요를 처리하는 Controller
+     *
+     * @version 0.1
+     * @author 손승범
+     * @return String (좋아요를 누른게시글 뷰)
+     */
     @PostMapping("/like/add")
     public String createLike(@Member MemberDto member,
                              @RequestParam(name = "reviewPostId") Long reviewPostId){

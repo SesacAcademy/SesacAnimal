@@ -25,8 +25,15 @@ public class ReviewImageService {
 
     private final ReviewImageRepository reviewImageRepository;
 
+    /**
+     * 이미지 저장을 담당하는 Service
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param List<MultipartFile> 저장 이미지 리스트
+     * @Param ReviewPost 게시글
+     * */
         public void saveImg(List<MultipartFile> imageFiles, ReviewPost reviewPost){
-//            List<ReviewImage> reviewImageList = new ArrayList<>();
             List<String> urls = uploadMinio(imageFiles);
             for (String url : urls) {
                 ReviewImage reviewImage = ReviewImage.builder()
@@ -35,15 +42,20 @@ public class ReviewImageService {
                         .isActive(1)
                         .build();
                 reviewImageRepository.save(reviewImage);
-//                reviewImageList.add(reviewImage);
             }
-//            return reviewImageList; 추후 튜닝예정
         }
         private List<String> uploadMinio(List<MultipartFile> imageFiles){
             ImageListDto imageListDto = new ImageListDto(imageFiles);
             return minioServiceProvider.insertImageMinio(imageListDto, minioServiceProvider.REVIEW);
         }
 
+    /**
+     * 게시글 수정 -> 이미지 수정을 담당하는 Service
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param List<Long> 수정하고자 하는 이미지 아이디 리스트
+     * */
     public void imageChangeStatus(List<Long> imageIds) {
         List<ReviewImage> list = reviewImageRepository.findAllByIds(imageIds);
         if (list.isEmpty()){

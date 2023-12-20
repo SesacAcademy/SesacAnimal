@@ -34,7 +34,15 @@ public class ReviewCommentService {
     private final ReviewCommentCustomRepository reviewCommentCustomRepository;
     private final MemberRepository memberRepository;
 
-
+    /**
+     * 댓글 작성을 담당하는 Service
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param commentDto 댓글 DTO
+     * @Param reviewPost 게시글
+     * @Param MemberDto 멤버 DTO
+     * */
     public void createComment(ReviewCommentDto commentDto, ReviewPost reviewPost, MemberDto memberDto) {
         dtoCheck(commentDto);
         Member member = findMember(memberDto);
@@ -65,6 +73,13 @@ public class ReviewCommentService {
         return optionalMember.orElseThrow(()->new NotFoundException("해당 id의 멤버를 조회할 수 없습니다."+memberId));
     }
 
+    /**
+     * 댓글 계층구조를  담당하는 Service
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param reviewPostId 게시글 id
+     * */
     public ReviewCommentDtoCount readByReviewPostId(Long reviewPostId) {
         List<ReviewComment> reviewComments = reviewCommentCustomRepository.findAllByPostId(reviewPostId);;
         List<ReviewCommentResponseDto> commentResponseList = new ArrayList<>();
@@ -82,12 +97,26 @@ public class ReviewCommentService {
     }
 
 
+    /**
+     * 댓글 수정을 담당하는 Service
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param reviewPostId 게시글 id
+     * @Param ReviewCommentDto 수정하고자 하는 DTO
+     * */
     public void update(Long reviewCommentId, ReviewCommentDto dto) {
         dtoCheck(dto);
         ReviewComment reviewComment = findReviewComment(reviewCommentId);
         reviewComment.update(dto);
     }
-
+    /**
+     * 댓글 삭제를 담당하는 Service
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param reviewPostId 게시글 id
+     * */
     public void delete(Long reviewCommentId) {
         ReviewComment reviewComment = findReviewComment(reviewCommentId);
         reviewCommentRepository.delete(reviewComment);
