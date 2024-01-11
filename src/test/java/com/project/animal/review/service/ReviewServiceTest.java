@@ -73,5 +73,4 @@ public class ReviewServiceTest {
         assertEquals(size, readList.getList().size(), "The size of the response should match the number of review posts");
     }
 
-
 }
