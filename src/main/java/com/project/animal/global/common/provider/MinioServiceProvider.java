@@ -28,9 +28,11 @@ public class MinioServiceProvider {
     public final String ADOPTION = "adoption";
     public final String MISSING = "missing";
 
+
     private String getImgUrl(MultipartFile file){
         return  "/" +  UUID.randomUUID() + "_" +file.getName() +"." +getExtension(file);
     }
+
     private boolean checkBucket(String bucketName) {
         try {
             boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
@@ -40,6 +42,7 @@ public class MinioServiceProvider {
             throw new RuntimeException(e);
         }
     }
+
     public List<String> insertImageMinio(ImageListDto imageListDto, String type) {
         List<String> urls = new ArrayList<>();
         try {
@@ -63,35 +66,6 @@ public class MinioServiceProvider {
         }
         return urls;
     }
-
-//    public List<String> insertImageMinio(ImageListDto imageListDto, String type) {
-//        List<String> urls = new ArrayList<>();
-//
-//        try {
-//            if (!checkBucket(type) || !imageDtoSizeCheck(imageListDto)) {
-//                return urls; // Bucket이나 이미지 크기 체크에 문제가 있으면 빈 리스트 반환
-//            }
-//
-//            List<MultipartFile> images = imageListDto.getImageList();
-//            for (MultipartFile image : images) {
-//                if (image.isEmpty()) {
-//                    continue; // 이미지가 비어있으면 건너뜁니다.
-//                }
-//
-//                if (image.getSize() >= 10 * 1024 * 1024) {
-//                    throw new MinioException(image.getName() + ": 파일의 용량이 너무 큽니다");
-//                }
-//
-//                String url = uploadImageToMinio(image, type);
-//                urls.add(url);
-//            }
-//        } catch (io.minio.errors.MinioException e) {
-//            log.error(e.getMessage());
-//            throw new RuntimeException(e);
-//        }
-//
-//        return urls;
-//    }
 
     private boolean imageDtoSizeCheck(ImageListDto imageListDto) throws io.minio.errors.MinioException {
         int userInputCount = imageListDto.getImageCount();
@@ -127,4 +101,28 @@ public class MinioServiceProvider {
             throw new RuntimeException(e);
         }
     }
+    public List<String> insertImageToMinio(ImageListDto imageListDto, String type) {
+        List<String> urls = new ArrayList<>();
+        try {
+            if (!checkBucket(type) || !imageDtoSizeCheck(imageListDto)){
+                throw new MinioException();
+            }
+            List<MultipartFile> images = imageListDto.getImageList();
+            for (MultipartFile image:images) {
+                if (!image.isEmpty() && image.getSize()<10*1024*1024){
+                    String url = uploadImageToMinio(image, type);
+                    urls.add(url);
+                } else {
+                    throw new MinioException(image.getName()+": 파일의 용량이 너무 큽니다");
+                }
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return urls;
+    }
+
+
+
 }

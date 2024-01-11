@@ -46,7 +46,8 @@ public class ReviewImageService {
         }
         private List<String> uploadMinio(List<MultipartFile> imageFiles){
             ImageListDto imageListDto = new ImageListDto(imageFiles);
-            return minioServiceProvider.insertImageMinio(imageListDto, minioServiceProvider.REVIEW);
+//            return minioServiceProvider.insertImageMinio(imageListDto, minioServiceProvider.REVIEW);
+            return minioServiceProvider.insertImageToMinio(imageListDto, minioServiceProvider.REVIEW);
         }
 
     /**
