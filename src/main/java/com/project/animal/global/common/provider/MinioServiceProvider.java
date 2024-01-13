@@ -77,11 +77,30 @@ public class MinioServiceProvider {
                     " 유저가 올리고자 하는 이미지: " + userInputCount + " 등록된 이미지 갯수: " + inputImageCount);
         }
     }
+    /**
+     * MultipartFile 확장자를 얻기 위한 메서드
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param multipartFile 올리려고 하는 사진
+     * 확장자를 리턴
+     * */
+
     private String getExtension(MultipartFile multipartFile) {
         String fileName = multipartFile.getOriginalFilename();
         String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
         return extension;
     }
+
+    /**
+     * 이미지를 미니오에 저장
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param image 올리려고 하는 사진(들)
+     * @Param type 이미지 버켓 (어떠한 게시판 버켓에 넣을 것인지)
+     * 미니오에 저장이 완료되면 저정한 url return
+     * */
     private String uploadImageToMinio(MultipartFile image, String type){
         try {
             String url = getImgUrl(image);
@@ -101,6 +120,18 @@ public class MinioServiceProvider {
             throw new RuntimeException(e);
         }
     }
+
+
+    /**
+     * 이미지를 미니오에 저장하기 위해 각 도메인에서 호출하는 공용 메소드
+     *
+     * @version 0.1
+     * @author 손승범
+     * @Param imageListDto 저장하려고 하는 이미지들
+     * @Param type 이미지 버켓 (어떠한 게시판 버켓에 넣을 것인지)
+     * 갯수 체크, 파일 크기 체크 후
+     * DB에 저장할 url List return
+     * */
     public List<String> insertImageToMinio(ImageListDto imageListDto, String type) {
         List<String> urls = new ArrayList<>();
         try {
