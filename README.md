@@ -173,7 +173,7 @@
 #### 🐈 입양/임보 (이경진)
 
 #### ✏️ 입양 후기 (손승범)
-- QueryDsl를 통해 계층 구조의 댓글, 대댓글 구현
+- 계층 구조의 댓글, 대댓글 구현
 	- 📌 Code - [[댓글 계층 구조_서비스]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/service/ReviewCommentService.java#L68) [[댓글_레포지토리]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewCommentCustomRepository.java#L25)
 	- 🔀 [Flow Chart](https://www.notion.so/Flow-Chart-2147b30b6f9949c1aa887b861e639149?pvs=4#bb212f717a2a442bb7cf729396c83cea)
   
@@ -185,12 +185,16 @@
 - 좋아요순, 조회순에 따른 정렬 기능  구현
 	- 📌  Code - [[게시글 레포지토리]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/review/repository/ReviewPostCustomRepository.java#L71) 
  	- 🔀 [Flow Chart](https://www.notion.so/Flow-Chart-2147b30b6f9949c1aa887b861e639149?pvs=4#403edddc4c7b4590b2c8ec906e9492cd)
+    
+- 게시판 이미지 미니오 업로드
+   - 📌  Code - [[미니오 서비스]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/main/java/com/project/animal/global/common/provider/MinioServiceProvider.java#135)
+	- 🔀 [Flow Chart](https://www.notion.so/Flow-Chart-2147b30b6f9949c1aa887b861e639149?pvs=4#a12baaa6f67d4fc7a9cc3d9b392c212f)
  
 - 테스트 코드 작성
 	- 📌  Code - [[게시글 컨트롤러 테스트]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/test/java/com/project/animal/review/controller/ReviewControllerTest.java#L27) [[좋아요 컨트롤러 테스트]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/test/java/com/project/animal/review/controller/ReviewPostLikeControllerTest.java#L18)[[댓글 컨트롤러 테스트]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/test/java/com/project/animal/review/controller/ReviewCommentControllerTest.java#L27)
-  	- 📌  Code - [[게시글 서비스 테스트]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/test/java/com/project/animal/review/service/ReviewServiceTest.java#L30)[[좋아요 서비스 테스트]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/test/java/com/project/animal/review/service/ReviewPostLikeServiceTest.java#L24)[[댓글 서비 테스트]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/test/java/com/project/animal/review/service/ReviewCommentServiceTest.java#L24
+  	- 📌  Code - [[게시글 서비스 테스트]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/test/java/com/project/animal/review/service/ReviewServiceTest.java#L30)[[좋아요 서비스 테스트]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/test/java/com/project/animal/review/service/ReviewPostLikeServiceTest.java#L24)[[댓글 서비스 테스트]](https://github.com/SesacAcademy/SesacAnimal/blob/dev/src/test/java/com/project/animal/review/service/ReviewCommentServiceTest.java#L24
 )
-	-![스크린샷 2024-01-11 115833](https://github.com/SesacAcademy/SesacAnimal/assets/127067296/b1c1f3d8-a860-45d4-8dba-e784278d547f)
+	![스크린샷 2024-01-11 115833](https://github.com/SesacAcademy/SesacAnimal/assets/127067296/b1c1f3d8-a860-45d4-8dba-e784278d547f)
       <br /> -> Junit5를 사용하여 테스트
 
 <br/>
